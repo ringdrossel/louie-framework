@@ -23,15 +23,20 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
    - Read and follow `_LOUIE_/agents/analyst.md`
    - Tom interviews the user and produces `_LOUIE-output/requirements/[feature-name]-requirements.md`
    - Use the template from `_LOUIE_/templates/requirements-template.md`
+   - Tom also updates `_LOUIE-output/implementations/overview.md` with the project context (name, goal, status) and adds the first feature to the Planned table
 
 5. **Invoke Sophie (Architect):**
    - Read and follow `_LOUIE_/agents/architect.md`
-   - Sophie produces `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`
+   - Sophie reads Tom's requirements and produces:
+     - `_LOUIE-output/architecture.md` — system architecture with mermaid diagram, layers, patterns, folder structure, security model
+     - `_LOUIE-output/tech-stack.md` — every technology choice with rationale
    - Use templates from `_LOUIE_/templates/architecture-template.md` and `_LOUIE_/templates/tech-stack-template.md`
 
 6. **Confirmation gate:**
-   - Show the user the requirements, architecture, and tech stack
+   - Present the requirements, architecture, and tech stack to the user
+   - Walk through the key decisions and their rationale
    - Wait for explicit confirmation before proceeding to feature work
+   - If the user wants changes, update the documents and re-present
 
 ## Usage
 

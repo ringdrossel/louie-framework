@@ -87,6 +87,12 @@ Rules for the document:
 - Light Mode documents can skip the User Personas section and keep User Stories minimal
 - Mark any unresolved items in the Open Questions section
 
+### Step 5b: Update Overview
+
+Update `_LOUIE-output/implementations/overview.md`:
+- Fill in the **Project Context** section (name, goal, status) if this is the first feature
+- Add the new feature to the **Planned** table with its priority and a link to the requirements document
+
 ### Step 6: Handoff
 
 End the requirements document with a `## Handoff to Sophie (Architect)` section containing:
