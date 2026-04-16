@@ -184,15 +184,15 @@ Ivy suggests ideas. If you like one, run `louie-feature` to build it.
 
 | Command | What it does |
 |---------|-------------|
-| `louie-setup` | Initialize a new project |
-| `louie-feature` | Add a new feature (full chain) |
+| `louie-setup` | Initialize a new project (Tom interviews, Sophie architects) |
+| `louie-feature` | Add a new feature (full chain: Tom → Sophie → Leo → Nina → Max → Ava) |
 | `louie-extend` | Extend an existing feature |
-| `louie-update` | Quick change (< 50 lines, auto-escalates) |
+| `louie-update` | Quick change (< 50 lines, auto-escalates to `louie-extend`) |
 | `louie-bugfix` | Diagnose and fix a bug |
 | `louie-review` | Code review by Max |
 | `louie-review-doc` | Review + fix + update docs in one flow |
 | `louie-test` | Write or improve tests with Ava |
-| `louie-doc` | Update documentation + generate commit message |
+| `louie-doc` | Update documentation and generate a commit message |
 | `louie-ideate` | Brainstorm ideas with Ivy |
 
 Command definitions live in `_LOUIE_/commands/`.

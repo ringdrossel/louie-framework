@@ -145,13 +145,13 @@ To update the framework:
 
 | What you want | Command |
 |---------------|---------|
-| Start a new project | `louie-setup` |
-| Add a feature | `louie-feature` |
-| Extend a feature | `louie-extend` |
-| Quick small change | `louie-update` |
-| Fix a bug | `louie-bugfix` |
-| Review code | `louie-review` |
-| Review + fix + update docs | `louie-review-doc` |
-| Write tests | `louie-test` |
-| Update documentation | `louie-doc` |
-| Brainstorm ideas | `louie-ideate` |
+| Initialize a new project (Tom interviews, Sophie architects) | `louie-setup` |
+| Add a new feature (full chain: Tom → Sophie → Leo → Nina → Max → Ava) | `louie-feature` |
+| Extend an existing feature | `louie-extend` |
+| Quick change (< 50 lines, auto-escalates to `louie-extend`) | `louie-update` |
+| Diagnose and fix a bug | `louie-bugfix` |
+| Code review by Max | `louie-review` |
+| Review + fix + update docs in one flow | `louie-review-doc` |
+| Write or improve tests with Ava | `louie-test` |
+| Update documentation and generate a commit message | `louie-doc` |
+| Brainstorm ideas with Ivy | `louie-ideate` |

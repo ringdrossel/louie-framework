@@ -5,6 +5,7 @@ When the user says **`louie-bugfix`**, follow this procedure to diagnose and fix
 ## Procedure
 
 1. **Read project context:**
+   - Read `_LOUIE_/templates/bugfix-prompt-template.md` — follow this structure
    - Read `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`
    - Read `_LOUIE_/guidelines/coding-guidelines.md`
    - Read `_LOUIE-output/implementations/overview.md` to understand the feature landscape
