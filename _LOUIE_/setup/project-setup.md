@@ -6,59 +6,29 @@ This guide walks you through deploying the LOUIE framework into a new project an
 
 ## Step 1: Copy the Framework
 
-Copy the `_LOUIE_/` directory into your project root:
+Copy both `_LOUIE_/` and `_LOUIE-output/` into your project root:
 
 ```
 your-project/
-├── _LOUIE_/          ← copy this entire directory
-├── src/              ← your source code
+├── _LOUIE_/              ← the framework (tool)
+├── _LOUIE-output/        ← pre-created output directories (work)
+│   ├── requirements/
+│   └── implementations/
+├── src/                  ← your source code
 └── README.md
 ```
 
-That's it for the framework itself. The `_LOUIE-output/` directory will be created automatically as agents produce their artifacts.
+Both directories are included in the repo — no manual setup needed. `_LOUIE-output/` comes with the right folder structure so agents can write their artifacts immediately.
 
-## Step 2: Create the Output Directory
-
-Create the initial output structure:
-
-```bash
-mkdir -p _LOUIE-output/requirements
-mkdir -p _LOUIE-output/implementations
-```
-
-Optionally, create a starter `overview.md`:
-
-```bash
-touch _LOUIE-output/implementations/overview.md
-```
-
-Your project should now look like:
-
-```
-your-project/
-├── _LOUIE_/                         ← the framework (tool)
-│   ├── README.md
-│   ├── setup/
-│   ├── agents/
-│   ├── templates/
-│   ├── guidelines/
-│   └── workflow/
-├── _LOUIE-output/                   ← agent artifacts (work)
-│   ├── requirements/
-│   └── implementations/
-│       └── overview.md
-└── src/
-```
-
-## Step 3: First-Time Agent Sequence
+## Step 2: First-Time Agent Sequence
 
 When starting a brand new project, run the agents in this order:
 
-### 3a. Start with Tom (Analyst)
+### 2a. Start with Tom (Analyst)
 
 Paste the initial prompt from `_LOUIE_/setup/initial-prompt.md` into your AI assistant, filling in your project idea. Tom will interview you and produce a requirements document.
 
-### 3b. Run Sophie (Architect)
+### 2b. Run Sophie (Architect)
 
 After Tom produces requirements, invoke Sophie:
 
@@ -75,7 +45,7 @@ Sophie will produce:
 
 **Review both documents carefully.** These define every technical decision for your project. Confirm before proceeding.
 
-### 3c. Proceed with Feature Work
+### 2c. Proceed with Feature Work
 
 Once architecture is confirmed, follow the standard workflow in `_LOUIE_/workflow/ai-workflow.md`:
 1. Create a feature document from the template
@@ -107,9 +77,8 @@ Most teams benefit from tracking `_LOUIE-output/` — it provides a history of r
 
 If your project already has source code but no LOUIE framework:
 
-1. Copy `_LOUIE_/` into the project root
-2. Create `_LOUIE-output/` structure (Step 2 above)
-3. Run Sophie (Architect) to document your existing architecture and tech stack
+1. Copy both `_LOUIE_/` and `_LOUIE-output/` into the project root
+2. Run Sophie (Architect) to document your existing architecture and tech stack
 4. From now on, follow the standard workflow for new features
 
 You don't need to retroactively create requirements or feature docs for existing code — just use LOUIE going forward.
