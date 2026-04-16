@@ -1,0 +1,30 @@
+<!-- LOUIE-FRAMEWORK -->
+# LOUIE Framework
+
+This project uses **LOUIE** (Lean Orchestration for Unified Intelligent Engineering) for AI-assisted development.
+
+## Commands
+
+When the user types a `louie-*` command, read the matching file from `_LOUIE_/commands/` and follow the instructions in it.
+
+| Command | File | Description |
+|---------|------|-------------|
+| `louie-setup` | `_LOUIE_/commands/louie-setup.md` | Initialize a new project |
+| `louie-feature` | `_LOUIE_/commands/louie-feature.md` | Add a new feature (full agent chain) |
+| `louie-extend` | `_LOUIE_/commands/louie-extend.md` | Extend an existing feature |
+| `louie-update` | `_LOUIE_/commands/louie-update.md` | Quick change (< 50 lines) |
+| `louie-bugfix` | `_LOUIE_/commands/louie-bugfix.md` | Diagnose and fix a bug |
+| `louie-review` | `_LOUIE_/commands/louie-review.md` | Code review by Max |
+| `louie-review-doc` | `_LOUIE_/commands/louie-review-doc.md` | Review + fix + update docs |
+| `louie-test` | `_LOUIE_/commands/louie-test.md` | Write or improve tests with Ava |
+| `louie-doc` | `_LOUIE_/commands/louie-doc.md` | Update documentation + commit message |
+| `louie-ideate` | `_LOUIE_/commands/louie-ideate.md` | Brainstorm ideas with Ivy |
+
+## Key References
+
+- `README.md` — framework overview
+- `_LOUIE_/workflow/ai-workflow.md` — full workflow with scenarios
+- `_LOUIE_/guidelines/coding-guidelines.md` — coding rules all agents follow
+- `_LOUIE_/agents/` — agent definitions (read when invoking an agent)
+- `_LOUIE-output/` — agent-produced artifacts (requirements, architecture, feature docs)
+<!-- /LOUIE-FRAMEWORK -->
