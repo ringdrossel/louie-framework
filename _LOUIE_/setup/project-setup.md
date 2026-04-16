@@ -20,13 +20,62 @@ your-project/
 
 Both directories are included in the repo — no manual setup needed. `_LOUIE-output/` comes with the right folder structure so agents can write their artifacts immediately.
 
-## Step 2: First-Time Agent Sequence
+## Step 2: Initialize for Your AI Tool
+
+Run the init script for your AI tool to wire up LOUIE commands:
+
+### Claude Code
+
+```bash
+# macOS / Linux
+bash _LOUIE_/setup/claude-init.sh
+
+# Windows
+_LOUIE_\setup\claude-init.bat
+```
+
+This creates `CLAUDE.md` (project bootstrap) and copies all `louie-*` commands to `.claude/commands/` so they work as native slash commands (`/louie-setup`, `/louie-feature`, etc.).
+
+### Cursor
+
+```bash
+# macOS / Linux
+bash _LOUIE_/setup/cursor-init.sh
+
+# Windows
+_LOUIE_\setup\cursor-init.bat
+```
+
+This creates/updates `.cursorrules` with LOUIE command routing. Type `louie-setup` in Cursor chat and it will read the matching command file.
+
+### Codex (OpenAI)
+
+```bash
+# macOS / Linux
+bash _LOUIE_/setup/codex-init.sh
+
+# Windows
+_LOUIE_\setup\codex-init.bat
+```
+
+This creates/updates `AGENTS.md` with LOUIE command routing.
+
+### Other AI Tools
+
+If your tool isn't listed above, you have two options:
+
+1. **Manual bootstrap:** Tell your AI assistant "Read `_LOUIE_/README.md` to understand the LOUIE framework" at the start of each session. After that, `louie-*` commands will work.
+2. **Config file:** If your tool has a project-level instructions file (similar to `CLAUDE.md`), add the command routing section from any of the init scripts above.
+
+> **Note:** All init scripts are idempotent — running them twice won't duplicate the LOUIE section. They detect existing sections and skip if already present.
+
+## Step 3: First-Time Agent Sequence
 
 When starting a brand new project, run the agents in this order:
 
-### 2a. Run `louie-setup`
+### 3a. Run `louie-setup`
 
-Type `louie-setup` in your AI assistant (optionally followed by your project idea):
+Type `louie-setup` (or `/louie-setup` in Claude Code) in your AI assistant, optionally followed by your project idea:
 
 ```
 louie-setup
@@ -43,7 +92,7 @@ This kicks off the full setup sequence automatically:
 
 See `_LOUIE_/commands/louie-setup.md` for the full command reference.
 
-### 2b. Proceed with Feature Work
+### 3b. Proceed with Feature Work
 
 Once architecture is confirmed, use `louie-feature` to add features:
 
