@@ -32,11 +32,36 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
      - `_LOUIE-output/tech-stack.md` — every technology choice with rationale
    - Use templates from `_LOUIE_/templates/architecture-template.md` and `_LOUIE_/templates/tech-stack-template.md`
 
-6. **Confirmation gate:**
+6. **Confirmation gate (architecture):**
    - Present the requirements, architecture, and tech stack to the user
    - Walk through the key decisions and their rationale
-   - Wait for explicit confirmation before proceeding to feature work
+   - Wait for explicit confirmation before proceeding
    - If the user wants changes, update the documents and re-present
+
+7. **Create feature document:**
+   - Create `_LOUIE-output/implementations/[feature-name].md` using `_LOUIE_/templates/feature-template.md`
+   - Fill in all sections based on Tom's requirements and Sophie's architecture
+   - This is for the feature Tom already captured — do NOT ask "which feature?" again
+
+8. **Confirmation gate (feature doc):**
+   - Present the feature document and implementation plan to the user
+   - Wait for explicit confirmation before coding
+
+9. **Invoke Leo (Designer) — if the feature has UI:**
+   - Read and follow `_LOUIE_/agents/designer.md`
+   - Skip this step for backend-only features
+
+10. **Invoke Nina (Coder):**
+    - Read and follow `_LOUIE_/agents/coder.md`
+    - Nina implements the feature and updates the feature document
+
+11. **Invoke Max (Reviewer):**
+    - Read and follow `_LOUIE_/agents/reviewer.md`
+    - If changes are needed, Nina fixes them before proceeding
+
+12. **Invoke Ava (Tester):**
+    - Read and follow `_LOUIE_/agents/tester.md`
+    - Ava writes tests and gives a ship recommendation
 
 ## Usage
 
