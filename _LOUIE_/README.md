@@ -39,15 +39,31 @@ Both sort to the top of file explorers thanks to the underscore prefix. Deleting
 
 For detailed setup instructions, see [`setup/project-setup.md`](setup/project-setup.md).
 
+## Commands
+
+All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
+
+| Command | What it does |
+|---------|-------------|
+| `louie-setup` | Initialize a new project (Tom interviews, Sophie architects) |
+| `louie-feature` | Add a new feature (full chain: Tom → Sophie → Leo → Nina → Max → Ava) |
+| `louie-extend` | Extend an existing feature |
+| `louie-bugfix` | Diagnose and fix a bug |
+| `louie-review` | Code review by Max |
+| `louie-test` | Write or improve tests with Ava |
+| `louie-ideate` | Brainstorm ideas with Ivy |
+
+Command definitions live in [`commands/`](commands/).
+
 ## Key Files
 
 | File | Purpose |
 |------|---------|
+| [`commands/`](commands/) | All `louie-*` command definitions |
 | [`workflow/ai-workflow.md`](workflow/ai-workflow.md) | Full workflow with scenarios and prompts |
 | [`workflow/agent-handoffs.md`](workflow/agent-handoffs.md) | How agents pass work to each other |
 | [`guidelines/coding-guidelines.md`](guidelines/coding-guidelines.md) | Language-agnostic clean code rules |
 | [`setup/project-setup.md`](setup/project-setup.md) | How to deploy LOUIE into a project |
-| [`setup/initial-prompt.md`](setup/initial-prompt.md) | Ready-to-paste kickoff prompt |
 
 ## Design Principles
 

@@ -120,87 +120,79 @@ Ava writes tests and provides a final ship/no-ship recommendation.
 
 ## Scenario 2: Adding a Feature to an Existing Project
 
-Architecture and tech stack already exist. The chain is shorter.
+Use `louie-feature`:
 
-### Step 1: Talk to Tom (Analyst)
+```
+louie-feature
+Add a notification system for real-time alerts.
+```
 
-Same as above — Tom interviews you about the new feature.
-
-### Step 2: Sophie (Architect) — self-assessment
-
-Sophie reads the new requirements and checks if they fit the existing architecture.
-
-- **If yes:** skip to Step 3 — Sophie writes a brief handoff note
-- **If no:** Sophie proposes minimal updates, gets your confirmation, then proceeds
-
-### Steps 3–7: Same as New Project
-
-Create feature doc → Leo (if UI) → Nina → Max → Ava.
+This runs the full chain automatically — Tom interviews, Sophie evaluates fit with existing architecture, then feature doc → Leo → Nina → Max → Ava.
 
 ---
 
-## Scenario 3: Bug Fix
+## Scenario 3: Extending an Existing Feature
+
+Use `louie-extend`:
 
 ```
-CONTEXT:
-- Read _LOUIE-output/architecture.md
-- Read _LOUIE_/guidelines/coding-guidelines.md
-- Find the affected feature document
-
-Bug in Feature: [Feature-Name]
-Problem: [Brief description]
-
-PROCEDURE:
-1. Find and read the feature document
-2. Analyze the problem
-3. Fix the bug
-4. Run tests
-5. Update change history in feature document
-6. Have Max review the fix
+louie-extend user-authentication
+Add OAuth2 support for Google and GitHub login.
 ```
 
 ---
 
-## Scenario 4: Product Ideation
+## Scenario 4: Bug Fix
+
+Use `louie-bugfix`:
 
 ```
-Invoke _LOUIE_/agents/muse.md
-
-I'd like ideas for improving [area/feature/the whole product].
+louie-bugfix user-authentication
+The password reset link expires immediately instead of after 24 hours.
 ```
 
-Ivy suggests ideas. If you like one, engage Tom to write requirements for it.
+Nina diagnoses and fixes, Max reviews, Ava adds a regression test.
 
 ---
 
-## Short-Form Prompts
+## Scenario 5: Code Review
 
-### New Project
-```
-Invoke Tom: _LOUIE_/agents/analyst.md
-My idea: [description]
-→ Full chain from there
-```
+Use `louie-review`:
 
-### New Feature (existing project)
 ```
-Invoke Tom: _LOUIE_/agents/analyst.md
-New feature: [description]
-→ Tom interviews, then chain continues
+louie-review user-authentication
 ```
 
-### Bug Fix
+Max reviews against architecture, guidelines, and the feature document.
+
+---
+
+## Scenario 6: Product Ideation
+
+Use `louie-ideate`:
+
 ```
-Context: _LOUIE-output/implementations/[feature].md
-Bug: [feature] — [problem]
-→ Analyze, fix, review, test
+louie-ideate
+I think the dashboard could be more useful. What ideas do you have?
 ```
 
-### Ideation
-```
-Invoke Ivy: _LOUIE_/agents/muse.md
-→ Get ideas, pick favorites, send to Tom
-```
+Ivy suggests ideas. If you like one, run `louie-feature` to build it.
+
+---
+
+## All Commands
+
+| Command | What it does |
+|---------|-------------|
+| `louie-setup` | Initialize a new project |
+| `louie-feature` | Add a new feature (full chain) |
+| `louie-extend` | Extend an existing feature |
+| `louie-bugfix` | Diagnose and fix a bug |
+| `louie-review` | Code review by Max |
+| `louie-test` | Write or improve tests with Ava |
+| `louie-ideate` | Brainstorm ideas with Ivy |
+
+Command definitions live in `_LOUIE_/commands/`.
 
 ---
 

@@ -41,17 +41,20 @@ This kicks off the full setup sequence automatically:
 2. **Sophie (Architect)** defines architecture and tech stack
 3. Both are shown for your **confirmation** before any code is written
 
-See `_LOUIE_/setup/initial-prompt.md` for the full command reference.
+See `_LOUIE_/commands/louie-setup.md` for the full command reference.
 
 ### 2b. Proceed with Feature Work
 
-Once architecture is confirmed, follow the standard workflow in `_LOUIE_/workflow/ai-workflow.md`:
-1. Create a feature document from the template
-2. Get confirmation
-3. Run Leo (Designer) if UI is involved
-4. Run Nina (Coder) to implement
-5. Run Max (Reviewer) to review
-6. Run Ava (Tester) to test
+Once architecture is confirmed, use `louie-feature` to add features:
+
+```
+louie-feature
+Add user authentication with email/password login.
+```
+
+This runs the full chain automatically: Tom → Sophie (eval) → feature doc → Leo → Nina → Max → Ava.
+
+See `_LOUIE_/commands/` for all available commands.
 
 ## Git Recommendations
 
@@ -91,11 +94,12 @@ To update the framework:
 
 ## Quick Reference
 
-| What you want | What to do |
-|---------------|------------|
-| Start a new project | Type `louie-setup` in your AI assistant |
-| Add a feature | Invoke Tom (`agents/analyst.md`) with your idea |
-| Fix a bug | Follow the bug fix scenario in `workflow/ai-workflow.md` |
-| Get ideas | Invoke Ivy (`agents/muse.md`) |
-| Understand the workflow | Read `workflow/ai-workflow.md` |
-| Know the coding rules | Read `guidelines/coding-guidelines.md` |
+| What you want | Command |
+|---------------|---------|
+| Start a new project | `louie-setup` |
+| Add a feature | `louie-feature` |
+| Extend a feature | `louie-extend` |
+| Fix a bug | `louie-bugfix` |
+| Review code | `louie-review` |
+| Write tests | `louie-test` |
+| Brainstorm ideas | `louie-ideate` |
