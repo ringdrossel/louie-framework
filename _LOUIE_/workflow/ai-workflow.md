@@ -187,6 +187,7 @@ Ivy suggests ideas. If you like one, run `louie-feature` to build it.
 | `louie-setup` | Initialize a new project |
 | `louie-feature` | Add a new feature (full chain) |
 | `louie-extend` | Extend an existing feature |
+| `louie-update` | Quick change (< 50 lines, auto-escalates) |
 | `louie-bugfix` | Diagnose and fix a bug |
 | `louie-review` | Code review by Max |
 | `louie-review-doc` | Review + fix + update docs in one flow |

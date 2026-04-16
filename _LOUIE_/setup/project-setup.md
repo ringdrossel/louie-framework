@@ -99,6 +99,7 @@ To update the framework:
 | Start a new project | `louie-setup` |
 | Add a feature | `louie-feature` |
 | Extend a feature | `louie-extend` |
+| Quick small change | `louie-update` |
 | Fix a bug | `louie-bugfix` |
 | Review code | `louie-review` |
 | Review + fix + update docs | `louie-review-doc` |

@@ -13,6 +13,7 @@ All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
 | `louie-setup` | Initialize a new project (Tom interviews, Sophie architects) |
 | `louie-feature` | Add a new feature (full chain: Tom → Sophie → Leo → Nina → Max → Ava) |
 | `louie-extend` | Extend an existing feature |
+| `louie-update` | Quick change (< 50 lines, auto-escalates to `louie-extend`) |
 | `louie-bugfix` | Diagnose and fix a bug |
 | `louie-review` | Code review by Max |
 | `louie-review-doc` | Review + fix + update docs in one flow |
