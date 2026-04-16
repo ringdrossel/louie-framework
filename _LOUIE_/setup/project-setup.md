@@ -102,4 +102,5 @@ To update the framework:
 | Fix a bug | `louie-bugfix` |
 | Review code | `louie-review` |
 | Write tests | `louie-test` |
+| Update documentation | `louie-doc` |
 | Brainstorm ideas | `louie-ideate` |

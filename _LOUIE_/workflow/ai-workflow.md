@@ -190,6 +190,7 @@ Ivy suggests ideas. If you like one, run `louie-feature` to build it.
 | `louie-bugfix` | Diagnose and fix a bug |
 | `louie-review` | Code review by Max |
 | `louie-test` | Write or improve tests with Ava |
+| `louie-doc` | Update documentation + generate commit message |
 | `louie-ideate` | Brainstorm ideas with Ivy |
 
 Command definitions live in `_LOUIE_/commands/`.

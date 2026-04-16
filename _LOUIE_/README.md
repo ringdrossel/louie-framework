@@ -4,9 +4,34 @@
 
 LOUIE is a lightweight framework for feature-based AI-assisted development. It gives your AI assistant a structured workflow with specialized agents, so you go from idea to tested code without skipping steps or losing context.
 
-## How It Works
+## Commands
 
-LOUIE uses 7 specialized agents, each with a clear role in the development chain:
+All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
+
+| Command | What it does |
+|---------|-------------|
+| `louie-setup` | Initialize a new project (Tom interviews, Sophie architects) |
+| `louie-feature` | Add a new feature (full chain: Tom → Sophie → Leo → Nina → Max → Ava) |
+| `louie-extend` | Extend an existing feature |
+| `louie-bugfix` | Diagnose and fix a bug |
+| `louie-review` | Code review by Max |
+| `louie-test` | Write or improve tests with Ava |
+| `louie-doc` | Update documentation and generate a commit message |
+| `louie-ideate` | Brainstorm ideas with Ivy |
+
+Command definitions live in [`commands/`](commands/).
+
+## Quick Start
+
+1. Copy both `_LOUIE_/` and `_LOUIE-output/` into your project root
+2. Type `louie-setup` in your AI assistant (optionally with your project idea)
+3. Tom interviews you, Sophie sets up architecture, then you're off to the races
+
+For detailed setup instructions, see [`setup/project-setup.md`](setup/project-setup.md).
+
+## The Team
+
+LOUIE uses 7 specialized agents, each with a clear role:
 
 ```
 Tom (Analyst) → Sophie (Architect) → Leo (Designer) → Nina (Coder) → Max (Reviewer) → Ava (Tester)
@@ -30,30 +55,6 @@ Ivy (Muse) — independent ideation, feeds ideas back to Tom
 - **`_LOUIE-output/`** — artifacts produced by agents (requirements, architecture, feature docs). This is the work. It grows with every feature.
 
 Both sort to the top of file explorers thanks to the underscore prefix. Deleting `_LOUIE_/` removes the framework cleanly without touching your project artifacts.
-
-## Quick Start
-
-1. Copy both `_LOUIE_/` and `_LOUIE-output/` into your project root
-2. Type `louie-setup` in your AI assistant (optionally with your project idea)
-3. Tom interviews you, Sophie sets up architecture, then you're off to the races
-
-For detailed setup instructions, see [`setup/project-setup.md`](setup/project-setup.md).
-
-## Commands
-
-All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
-
-| Command | What it does |
-|---------|-------------|
-| `louie-setup` | Initialize a new project (Tom interviews, Sophie architects) |
-| `louie-feature` | Add a new feature (full chain: Tom → Sophie → Leo → Nina → Max → Ava) |
-| `louie-extend` | Extend an existing feature |
-| `louie-bugfix` | Diagnose and fix a bug |
-| `louie-review` | Code review by Max |
-| `louie-test` | Write or improve tests with Ava |
-| `louie-ideate` | Brainstorm ideas with Ivy |
-
-Command definitions live in [`commands/`](commands/).
 
 ## Key Files
 
