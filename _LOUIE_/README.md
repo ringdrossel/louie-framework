@@ -23,11 +23,70 @@ All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
 
 Command definitions live in [`commands/`](commands/).
 
-## Quick Start
+## Install
 
-1. Copy both `_LOUIE_/` and `_LOUIE-output/` into your project root
-2. Type `louie-setup` in your AI assistant (optionally with your project idea)
-3. Tom interviews you, Sophie sets up architecture, then you're off to the races
+### 1. Copy the framework into your project root
+
+Copy both `_LOUIE_/` and `_LOUIE-output/` into your project.
+
+### 2. Run the init script for your AI tool
+
+#### Claude Code
+
+```bash
+# macOS / Linux
+bash _LOUIE_/setup/claude-init.sh
+
+# Windows
+_LOUIE_\setup\claude-init.bat
+```
+
+Creates `CLAUDE.md` and installs all commands as native slash commands (`/louie-setup`, `/louie-feature`, etc.).
+
+#### Cursor
+
+```bash
+# macOS / Linux
+bash _LOUIE_/setup/cursor-init.sh
+
+# Windows
+_LOUIE_\setup\cursor-init.bat
+```
+
+Creates/updates `.cursorrules` with LOUIE command routing.
+
+#### Codex (OpenAI)
+
+```bash
+# macOS / Linux
+bash _LOUIE_/setup/codex-init.sh
+
+# Windows
+_LOUIE_\setup\codex-init.bat
+```
+
+Creates/updates `AGENTS.md` with LOUIE command routing.
+
+#### Other AI Tools / Local AI
+
+If your tool has a project-level instructions file, add this to it:
+
+```
+This project uses the LOUIE framework for AI-assisted development.
+When the user types a louie-* command, read the matching file from
+_LOUIE_/commands/ and follow the instructions. Read _LOUIE_/README.md
+for the full framework overview.
+```
+
+If your tool has no config file, tell it once per session:
+
+```
+Read _LOUIE_/README.md to understand the LOUIE framework.
+```
+
+### 3. Start building
+
+Type `louie-setup` (or `/louie-setup` in Claude Code) to kick off your first project.
 
 For detailed setup instructions, see [`setup/project-setup.md`](setup/project-setup.md).
 
