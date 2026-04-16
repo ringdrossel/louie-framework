@@ -24,28 +24,26 @@ Both directories are included in the repo — no manual setup needed. `_LOUIE-ou
 
 When starting a brand new project, run the agents in this order:
 
-### 2a. Start with Tom (Analyst)
+### 2a. Run `louie-setup`
 
-Paste the initial prompt from `_LOUIE_/setup/initial-prompt.md` into your AI assistant, filling in your project idea. Tom will interview you and produce a requirements document.
-
-### 2b. Run Sophie (Architect)
-
-After Tom produces requirements, invoke Sophie:
+Type `louie-setup` in your AI assistant (optionally followed by your project idea):
 
 ```
-Invoke _LOUIE_/agents/architect.md
+louie-setup
 
-Requirements are ready in _LOUIE-output/requirements/[feature]-requirements.md.
-This is a new project — please produce architecture.md and tech-stack.md.
+I want to build a recipe manager where I can save recipes from URLs,
+organize them by tags, and plan weekly meals.
 ```
 
-Sophie will produce:
-- `_LOUIE-output/architecture.md`
-- `_LOUIE-output/tech-stack.md`
+This kicks off the full setup sequence automatically:
 
-**Review both documents carefully.** These define every technical decision for your project. Confirm before proceeding.
+1. **Tom (Analyst)** interviews you and produces requirements
+2. **Sophie (Architect)** defines architecture and tech stack
+3. Both are shown for your **confirmation** before any code is written
 
-### 2c. Proceed with Feature Work
+See `_LOUIE_/setup/initial-prompt.md` for the full command reference.
+
+### 2b. Proceed with Feature Work
 
 Once architecture is confirmed, follow the standard workflow in `_LOUIE_/workflow/ai-workflow.md`:
 1. Create a feature document from the template
@@ -95,7 +93,7 @@ To update the framework:
 
 | What you want | What to do |
 |---------------|------------|
-| Start a new project | Paste `setup/initial-prompt.md` into your AI assistant |
+| Start a new project | Type `louie-setup` in your AI assistant |
 | Add a feature | Invoke Tom (`agents/analyst.md`) with your idea |
 | Fix a bug | Follow the bug fix scenario in `workflow/ai-workflow.md` |
 | Get ideas | Invoke Ivy (`agents/muse.md`) |

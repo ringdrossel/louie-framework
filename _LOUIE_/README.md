@@ -34,8 +34,8 @@ Both sort to the top of file explorers thanks to the underscore prefix. Deleting
 ## Quick Start
 
 1. Copy both `_LOUIE_/` and `_LOUIE-output/` into your project root
-2. Paste the kickoff prompt from [`setup/initial-prompt.md`](setup/initial-prompt.md) into your AI assistant
-4. Tom interviews you, Sophie sets up architecture, then you're off to the races
+2. Type `louie-setup` in your AI assistant (optionally with your project idea)
+3. Tom interviews you, Sophie sets up architecture, then you're off to the races
 
 For detailed setup instructions, see [`setup/project-setup.md`](setup/project-setup.md).
 
