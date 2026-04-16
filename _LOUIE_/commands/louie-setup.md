@@ -5,7 +5,7 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
 ## Procedure
 
 1. **Read the framework context:**
-   - Read `_LOUIE_/README.md` for an overview of LOUIE
+   - Read `README.md` (project root) for an overview of LOUIE
    - Read `_LOUIE_/workflow/ai-workflow.md` for the full workflow
    - Read `_LOUIE_/workflow/agent-handoffs.md` for handoff protocol
 

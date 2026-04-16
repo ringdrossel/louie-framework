@@ -56,7 +56,7 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 
 ### Key Files
 
-- `_LOUIE_/README.md` — framework overview
+- `README.md` — framework overview (project root)
 - `_LOUIE_/workflow/ai-workflow.md` — full workflow
 - `_LOUIE_/guidelines/coding-guidelines.md` — coding rules
 - `_LOUIE_/agents/` — agent definitions

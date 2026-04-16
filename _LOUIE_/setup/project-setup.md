@@ -64,7 +64,7 @@ This creates/updates `AGENTS.md` with LOUIE command routing.
 
 If your tool isn't listed above, you have two options:
 
-1. **Manual bootstrap:** Tell your AI assistant "Read `_LOUIE_/README.md` to understand the LOUIE framework" at the start of each session. After that, `louie-*` commands will work.
+1. **Manual bootstrap:** Tell your AI assistant "Read `README.md` to understand the LOUIE framework" at the start of each session. After that, `louie-*` commands will work.
 2. **Config file:** If your tool has a project-level instructions file (similar to `CLAUDE.md`), add the command routing section from any of the init scripts above.
 
 > **Note:** All init scripts are idempotent — running them twice won't duplicate the LOUIE section. They detect existing sections and skip if already present.

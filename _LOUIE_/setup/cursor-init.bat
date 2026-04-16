@@ -44,7 +44,7 @@ echo - `louie-ideate` → `_LOUIE_/commands/louie-ideate.md`
 echo.
 echo ### Key Files
 echo.
-echo - `_LOUIE_/README.md` — framework overview
+echo - `README.md` — framework overview ^(project root^)
 echo - `_LOUIE_/workflow/ai-workflow.md` — full workflow
 echo - `_LOUIE_/guidelines/coding-guidelines.md` — coding rules
 echo - `_LOUIE_/agents/` — agent definitions

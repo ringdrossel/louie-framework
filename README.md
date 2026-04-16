@@ -74,7 +74,7 @@ If your tool has a project-level instructions file, add this to it:
 ```
 This project uses the LOUIE framework for AI-assisted development.
 When the user types a louie-* command, read the matching file from
-_LOUIE_/commands/ and follow the instructions. Read _LOUIE_/README.md
+_LOUIE_/commands/ and follow the instructions. Read README.md
 for the full framework overview.
 ```
 
