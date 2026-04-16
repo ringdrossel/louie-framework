@@ -155,3 +155,4 @@ To update the framework:
 | Write or improve tests with Ava | `louie-test` |
 | Update documentation and generate a commit message | `louie-doc` |
 | Brainstorm ideas with Ivy | `louie-ideate` |
+| Update LOUIE to the latest version | `louie-update-framework` |
