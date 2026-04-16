@@ -42,6 +42,12 @@ echo - `louie-test` → `_LOUIE_/commands/louie-test.md`
 echo - `louie-doc` → `_LOUIE_/commands/louie-doc.md`
 echo - `louie-ideate` → `_LOUIE_/commands/louie-ideate.md`
 echo.
+echo ### Critical Rules
+echo.
+echo 1. **Never implement directly** — create a feature document and get user confirmation first.
+echo 2. **Never start feature work** without a confirmed `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`.
+echo 3. **Never merge to `main`** without explicit user approval after Max's review and Ava's tests pass.
+echo.
 echo ### Key Files
 echo.
 echo - `README.md` — framework overview ^(project root^)

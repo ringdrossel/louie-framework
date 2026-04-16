@@ -58,6 +58,12 @@ echo ^| `/louie-test` ^| Write or improve tests with Ava ^|
 echo ^| `/louie-doc` ^| Update documentation + commit message ^|
 echo ^| `/louie-ideate` ^| Brainstorm ideas with Ivy ^|
 echo.
+echo ### Critical Rules
+echo.
+echo 1. **Never implement directly** — create a feature document and get user confirmation first.
+echo 2. **Never start feature work** without a confirmed `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`.
+echo 3. **Never merge to `main`** without explicit user approval after Max's review and Ava's tests pass.
+echo.
 echo ### Key Files
 echo.
 echo - `README.md` — framework overview ^(project root^)

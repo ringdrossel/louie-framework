@@ -37,6 +37,12 @@ Available commands:
 - `louie-doc` → `_LOUIE_/commands/louie-doc.md`
 - `louie-ideate` → `_LOUIE_/commands/louie-ideate.md`
 
+### Critical Rules
+
+1. **Never implement directly** — create a feature document and get user confirmation first.
+2. **Never start feature work** without a confirmed `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`.
+3. **Never merge to `main`** without explicit user approval after Max's review and Ava's tests pass.
+
 ### Key Files
 
 - `README.md` — framework overview (project root)

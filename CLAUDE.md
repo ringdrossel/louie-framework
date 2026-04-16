@@ -21,6 +21,12 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 | `louie-ideate` | `_LOUIE_/commands/louie-ideate.md` | Brainstorm ideas with Ivy |
 | `louie-update-framework` | `_LOUIE_/commands/louie-update-framework.md` | Update LOUIE to the latest version |
 
+## Critical Rules
+
+1. **Never implement directly** — create a feature document and get user confirmation first.
+2. **Never start feature work** without a confirmed `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`.
+3. **Never merge to `main`** without explicit user approval after Max's review and Ava's tests pass.
+
 ## Key References
 
 - `README.md` — framework overview

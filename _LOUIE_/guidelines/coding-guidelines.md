@@ -72,6 +72,7 @@ These guidelines apply to ALL code in this project, regardless of language or fr
 - Conventional Commits: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`
 - Branch naming: `feature/[name]`, `bugfix/[name]`, `refactor/[name]`
 - Commit messages explain the WHY
+- **Merge to `main` after review, with user confirmation.** Once Max's review passes and Ava's tests are green on a feature branch, ask the user for explicit permission to merge. On approval, fast-forward the branch into `main` and push. Never merge without asking; never skip the ask because the change "looks safe".
 
 ## Security Baseline
 

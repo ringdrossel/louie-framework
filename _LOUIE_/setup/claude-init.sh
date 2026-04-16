@@ -54,6 +54,12 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 | `/louie-doc` | Update documentation + commit message |
 | `/louie-ideate` | Brainstorm ideas with Ivy |
 
+### Critical Rules
+
+1. **Never implement directly** — create a feature document and get user confirmation first.
+2. **Never start feature work** without a confirmed `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`.
+3. **Never merge to `main`** without explicit user approval after Max's review and Ava's tests pass.
+
 ### Key Files
 
 - `README.md` — framework overview (project root)
