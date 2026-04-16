@@ -189,6 +189,7 @@ Ivy suggests ideas. If you like one, run `louie-feature` to build it.
 | `louie-extend` | Extend an existing feature |
 | `louie-bugfix` | Diagnose and fix a bug |
 | `louie-review` | Code review by Max |
+| `louie-review-doc` | Review + fix + update docs in one flow |
 | `louie-test` | Write or improve tests with Ava |
 | `louie-doc` | Update documentation + generate commit message |
 | `louie-ideate` | Brainstorm ideas with Ivy |
