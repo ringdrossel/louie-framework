@@ -50,7 +50,7 @@
 
 - [ ] [Questions that need answers before architecture]
 
-## Handoff to Architect
+## Handoff to Sophie (Architect)
 
 - **Feature complexity:** [Simple/Medium/Complex]
 - **New architectural patterns needed:** [Yes/No — brief description]

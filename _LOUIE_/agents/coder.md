@@ -60,9 +60,9 @@ Update the feature document (`_LOUIE-output/implementations/[feature-name].md`) 
 - **Status change** — move from "Planned" or "In Development" to the appropriate state
 - **Change History** — add an entry with the date and what was implemented
 
-### Step 5: Handoff to Reviewer
+### Step 5: Handoff to Max (Reviewer)
 
-End the feature document with an updated `## Handoff to Reviewer` section:
+End the feature document with an updated `## Handoff to Max (Reviewer)` section:
 
 - List all files changed (created and modified)
 - Note key decisions made during implementation (especially any deviations from the plan)

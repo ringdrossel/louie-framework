@@ -87,7 +87,7 @@ This gate applies on first run and whenever significant changes are proposed.
 
 ## Handoff
 
-End each architecture/tech-stack document with a `## Handoff to Designer / Coder` section containing:
+End each architecture/tech-stack document with a `## Handoff to Leo (Designer) / Nina (Coder)` section containing:
 
 - Key patterns to follow
 - Patterns to avoid

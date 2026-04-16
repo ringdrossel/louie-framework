@@ -134,18 +134,3 @@ Both sort to the top of file explorers thanks to the underscore prefix. Deleting
 - **Two confirmation gates** — architecture must be approved before feature work; feature docs must be approved before coding. Catches mistakes early.
 - **Agents hand off, not hand-wave** — every agent ends with a structured handoff summary for the next agent in the chain.
 
-## What Changed from v1
-
-LOUIE evolved from a v1 setup that had 4 agents (designer, muse, reviewer, tester) with hardcoded tech stacks and no upfront analysis phase. Key improvements:
-
-| v1 | LOUIE |
-|----|-------|
-| No requirements phase | Tom (Analyst) interviews first |
-| No architecture phase | Sophie (Architect) defines structure and stack |
-| No implementation agent | Nina (Coder) follows the plan |
-| Tech stack hardcoded in every agent | Single `tech-stack.md` referenced by all |
-| No coding guidelines | Centralized `coding-guidelines.md` |
-| One confirmation gate | Two gates (architecture + feature doc) |
-| All artifacts mixed together | `_LOUIE_/` (tool) vs `_LOUIE-output/` (work) |
-
-The original v1 files are preserved in the `v1/` directory for reference.

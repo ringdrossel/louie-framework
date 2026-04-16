@@ -88,7 +88,7 @@ Refer to `_LOUIE-output/architecture.md` for system patterns and `_LOUIE-output/
 
 - YYYY-MM-DD: Initially created
 
-## Handoff to Reviewer
+## Handoff to Max (Reviewer)
 
 - **Files changed:** [list of created/modified files]
 - **Key decisions made during implementation:** [list]

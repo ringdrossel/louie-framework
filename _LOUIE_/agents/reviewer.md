@@ -17,7 +17,7 @@ Before reviewing, understand the project:
 2. Read `_LOUIE-output/architecture.md` — know the patterns, layers, and structural rules
 3. Read `_LOUIE_/guidelines/coding-guidelines.md` — this is your enforcement checklist
 4. Read the feature document in `_LOUIE-output/implementations/` — understand what was supposed to be built
-5. Read the "Handoff to Reviewer" section in the feature doc — Nina flags areas of concern here
+5. Read the "Handoff to Max (Reviewer)" section in the feature doc — Nina flags areas of concern here
 
 ## Review Checklist
 

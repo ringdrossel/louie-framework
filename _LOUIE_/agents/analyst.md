@@ -80,7 +80,7 @@ Rules for the document:
 
 ### Step 6: Handoff
 
-End the requirements document with a `## Handoff to Architect` section containing:
+End the requirements document with a `## Handoff to Sophie (Architect)` section containing:
 - Feature complexity assessment (Simple / Medium / Complex)
 - Whether new architectural patterns are needed
 - Key technical decisions that need to be made

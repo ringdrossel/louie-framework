@@ -72,7 +72,7 @@ src/
 **Decision:** [what was decided]
 **Consequences:** [tradeoffs]
 
-## Handoff to Designer / Coder
+## Handoff to Leo (Designer) / Nina (Coder)
 
 - **Key patterns to follow:** [list]
 - **Patterns to avoid:** [list]
