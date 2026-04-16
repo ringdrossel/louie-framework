@@ -1,0 +1,64 @@
+@echo off
+setlocal enabledelayedexpansion
+
+echo LOUIE — Codex Setup
+echo ====================
+echo.
+
+set "SCRIPT_DIR=%~dp0"
+set "LOUIE_DIR=%SCRIPT_DIR%..\.."
+set "AGENTS_MD=%LOUIE_DIR%\AGENTS.md"
+
+:: Check if LOUIE section already exists
+if exist "%AGENTS_MD%" (
+    findstr /c:"LOUIE-FRAMEWORK" "%AGENTS_MD%" > nul 2>&1
+    if !errorlevel! equ 0 (
+        echo   AGENTS.md already contains LOUIE section — skipped.
+        goto :done
+    )
+)
+
+:: Append LOUIE section to AGENTS.md
+(
+echo.
+echo ^<!-- LOUIE-FRAMEWORK --^>
+echo ## LOUIE Framework
+echo.
+echo This project uses **LOUIE** ^(Lean Orchestration for Unified Intelligent Engineering^) for AI-assisted development.
+echo.
+echo ### Command Routing
+echo.
+echo When the user types a `louie-*` command, read the matching file from `_LOUIE_/commands/` and follow the instructions in it.
+echo.
+echo Available commands:
+echo - `louie-setup` → `_LOUIE_/commands/louie-setup.md`
+echo - `louie-feature` → `_LOUIE_/commands/louie-feature.md`
+echo - `louie-extend` → `_LOUIE_/commands/louie-extend.md`
+echo - `louie-update` → `_LOUIE_/commands/louie-update.md`
+echo - `louie-bugfix` → `_LOUIE_/commands/louie-bugfix.md`
+echo - `louie-review` → `_LOUIE_/commands/louie-review.md`
+echo - `louie-review-doc` → `_LOUIE_/commands/louie-review-doc.md`
+echo - `louie-test` → `_LOUIE_/commands/louie-test.md`
+echo - `louie-doc` → `_LOUIE_/commands/louie-doc.md`
+echo - `louie-ideate` → `_LOUIE_/commands/louie-ideate.md`
+echo.
+echo ### Key Files
+echo.
+echo - `_LOUIE_/README.md` — framework overview
+echo - `_LOUIE_/workflow/ai-workflow.md` — full workflow
+echo - `_LOUIE_/guidelines/coding-guidelines.md` — coding rules
+echo - `_LOUIE_/agents/` — agent definitions
+echo - `_LOUIE-output/` — agent-produced artifacts
+echo ^<!-- /LOUIE-FRAMEWORK --^>
+) >> "%AGENTS_MD%"
+
+echo   Created/updated AGENTS.md with LOUIE section.
+
+:done
+echo.
+echo Done!
+echo.
+echo You can now type 'louie-setup' in Codex to start a new project,
+echo or 'louie-feature' to add a feature.
+
+endlocal
