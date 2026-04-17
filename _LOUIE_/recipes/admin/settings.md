@@ -18,7 +18,6 @@ Most applications accumulate a handful of runtime-tunable values — feature fla
 
 ### Do not use this for
 
-- Secrets that must never appear in a DB (API keys, credentials) — use a secret manager or env vars. See *Variations* for a hybrid `secret` type that stores references only.
 - Per-user preferences — those belong in a user-scoped table, not a global settings store.
 - High-frequency, high-volume config (feature flags with millions of evaluations per second) — use a dedicated feature-flag service.
 
