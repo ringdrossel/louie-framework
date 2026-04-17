@@ -20,6 +20,7 @@ All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
 | `louie-test` | Write or improve tests with Ava |
 | `louie-doc` | Update documentation and generate a commit message |
 | `louie-ideate` | Brainstorm ideas with Ivy |
+| `louie-recipe` | Browse or load a reusable recipe (settings, auth, Docker, etc.) |
 | `louie-update-framework` | Update LOUIE to the latest version |
 
 Command definitions live in [`_LOUIE_/commands/`](_LOUIE_/commands/).

@@ -53,6 +53,7 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 | `/louie-test` | Write or improve tests with Ava |
 | `/louie-doc` | Update documentation + commit message |
 | `/louie-ideate` | Brainstorm ideas with Ivy |
+| `/louie-recipe` | Browse or load a reusable recipe |
 
 ### Critical Rules
 

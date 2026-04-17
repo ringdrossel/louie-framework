@@ -36,6 +36,7 @@ Available commands:
 - `louie-test` → `_LOUIE_/commands/louie-test.md`
 - `louie-doc` → `_LOUIE_/commands/louie-doc.md`
 - `louie-ideate` → `_LOUIE_/commands/louie-ideate.md`
+- `louie-recipe` → `_LOUIE_/commands/louie-recipe.md`
 
 ### Critical Rules
 

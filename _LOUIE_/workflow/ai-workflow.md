@@ -194,6 +194,7 @@ Ivy suggests ideas. If you like one, run `louie-feature` to build it.
 | `louie-test` | Write or improve tests with Ava |
 | `louie-doc` | Update documentation and generate a commit message |
 | `louie-ideate` | Brainstorm ideas with Ivy |
+| `louie-recipe` | Browse or load a reusable recipe (settings, auth, Docker, etc.) |
 | `louie-update-framework` | Update LOUIE to the latest version |
 
 Command definitions live in `_LOUIE_/commands/`.

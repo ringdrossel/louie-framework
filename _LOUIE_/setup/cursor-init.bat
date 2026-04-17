@@ -41,6 +41,7 @@ echo - `louie-review-doc` → `_LOUIE_/commands/louie-review-doc.md`
 echo - `louie-test` → `_LOUIE_/commands/louie-test.md`
 echo - `louie-doc` → `_LOUIE_/commands/louie-doc.md`
 echo - `louie-ideate` → `_LOUIE_/commands/louie-ideate.md`
+echo - `louie-recipe` → `_LOUIE_/commands/louie-recipe.md`
 echo.
 echo ### Critical Rules
 echo.

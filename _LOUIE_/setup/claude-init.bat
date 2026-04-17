@@ -57,6 +57,7 @@ echo ^| `/louie-review-doc` ^| Review + fix + update docs ^|
 echo ^| `/louie-test` ^| Write or improve tests with Ava ^|
 echo ^| `/louie-doc` ^| Update documentation + commit message ^|
 echo ^| `/louie-ideate` ^| Brainstorm ideas with Ivy ^|
+echo ^| `/louie-recipe` ^| Browse or load a reusable recipe ^|
 echo.
 echo ### Critical Rules
 echo.
