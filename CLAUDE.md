@@ -34,4 +34,10 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 - `_LOUIE_/guidelines/coding-guidelines.md` — coding rules all agents follow
 - `_LOUIE_/agents/` — agent definitions (read when invoking an agent)
 - `_LOUIE-output/` — agent-produced artifacts (requirements, architecture, feature docs)
+
+## Framework-Dev Only
+
+This repository is the LOUIE framework itself. When working on *extending the framework* (adding commands, agents, recipes, templates, or cross-cutting rules), read `_LOUIE-internals/README.md` on demand for internal architecture and conventions.
+
+`_LOUIE-internals/` is **not** part of the distributed framework — it stays in this repo and must never be referenced from user-facing docs or generated downstream files. Do not preload it.
 <!-- /LOUIE-FRAMEWORK -->
