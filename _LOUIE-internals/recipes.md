@@ -4,7 +4,7 @@ Design doc for the LOUIE recipe system. Read this before touching `_LOUIE_/recip
 
 ## Status
 
-**Designed, not yet implemented.** This document captures the locked-in design so implementation can happen without re-deriving decisions. See `CHANGELOG.md` for implementation status.
+**Implemented.** First recipe (`admin:settings`) shipped. See `CHANGELOG.md` for details.
 
 ## Motivation
 
