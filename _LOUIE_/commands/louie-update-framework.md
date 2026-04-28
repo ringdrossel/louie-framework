@@ -23,6 +23,7 @@ When the user says **`louie-update-framework`**, follow this procedure to update
    - Replace `_LOUIE_/guidelines/` with the latest versions
    - Replace `_LOUIE_/workflow/` with the latest versions
    - Replace `_LOUIE_/setup/` with the latest versions
+   - Replace `_LOUIE_/recipes/` with the latest versions (recipe library)
    - Update `CLAUDE.md` at project root (replace the LOUIE-FRAMEWORK section, preserve any user-added sections)
 
 4. **Re-run the appropriate init script:**
@@ -34,6 +35,8 @@ When the user says **`louie-update-framework`**, follow this procedure to update
    - List new/updated/removed commands
    - List new/updated agents
    - List any template changes
+   - List new/updated recipes (sections and individual recipes)
+   - **Check `_LOUIE-output/` for any new canonical outputs introduced by this framework update.** If a new output is now expected (e.g. `runbook.md`) and the project doesn't have it, tell the user and offer to bootstrap it from existing artifacts (architecture, ad-hoc context files). Never silently create files in `_LOUIE-output/`.
    - Highlight breaking changes if any (e.g., renamed files, changed handoff format)
 
 6. **Confirm success:**
