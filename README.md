@@ -115,7 +115,7 @@ Ivy (Muse) — independent ideation, feeds ideas back to Tom
 ## The Two Directories
 
 - **`_LOUIE_/`** — the framework itself (agents, templates, guidelines, workflow). This is the tool. It rarely changes after setup.
-- **`_LOUIE-output/`** — artifacts produced by agents (requirements, architecture, feature docs). This is the work. It grows with every feature.
+- **`_LOUIE-output/`** — artifacts produced by agents (requirements, architecture, tech stack, runbook, feature docs). This is the work. It grows with every feature.
 
 Both sort to the top of file explorers thanks to the underscore prefix. Deleting `_LOUIE_/` removes the framework cleanly without touching your project artifacts.
 

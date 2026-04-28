@@ -33,10 +33,10 @@ Ivy (Muse) — runs independently, feeds ideas back to Tom
 | Agent | Role | Produces |
 |-------|------|----------|
 | **Tom** (Analyst) | Requirements interview | `_LOUIE-output/requirements/[feature].md` |
-| **Sophie** (Architect) | Architecture + tech stack | `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md` |
+| **Sophie** (Architect) | Architecture + tech stack + runbook (initial) | `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, `_LOUIE-output/runbook.md` |
 | **Leo** (Designer) | UI/UX design | UI section in feature document |
-| **Nina** (Coder) | Implementation | Source code + `_LOUIE-output/implementations/[feature].md` |
-| **Max** (Reviewer) | Code review | Review comments on feature doc |
+| **Nina** (Coder) | Implementation + runbook updates | Source code + `_LOUIE-output/implementations/[feature].md` + appended entries in `runbook.md` |
+| **Max** (Reviewer) | Code review + runbook coverage check | Review comments on feature doc |
 | **Ava** (Tester) | Test writing | Test files + coverage notes |
 | **Ivy** (Muse) | Product ideation | Idea list for user consideration |
 
@@ -64,9 +64,9 @@ Invoke _LOUIE_/agents/architect.md
 Requirements are ready in _LOUIE-output/requirements/[feature]-requirements.md
 ```
 
-Sophie produces `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`.
+Sophie produces `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, and `_LOUIE-output/runbook.md`.
 
-**CONFIRMATION GATE:** Review both documents. No one proceeds until you approve.
+**CONFIRMATION GATE:** Review all three documents. No one proceeds until you approve.
 
 ### Step 3: Create Feature Document
 
@@ -210,7 +210,7 @@ New Requirement
 Tom (Analyst) ─── interview ──→ requirements.md
       │
       ▼
-Sophie (Architect) ─── evaluate ──→ architecture.md + tech-stack.md
+Sophie (Architect) ─── evaluate ──→ architecture.md + tech-stack.md + runbook.md
       │                              (first run or update)
       ▼
   ┌─────────────────┐
@@ -258,8 +258,9 @@ _LOUIE_/                          ← The framework (you are here)
 └── setup/                        ← Deployment & kickoff
 
 _LOUIE-output/                    ← Agent-produced artifacts
-├── architecture.md               ← Sophie's output
-├── tech-stack.md                 ← Sophie's output
+├── architecture.md               ← Sophie's output (design)
+├── tech-stack.md                 ← Sophie's output (build-time)
+├── runbook.md                    ← Sophie's output (run-time); Nina appends
 ├── requirements/                 ← Tom's output
 │   └── [feature]-requirements.md
 └── implementations/              ← Feature docs + overview

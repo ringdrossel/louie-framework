@@ -5,7 +5,7 @@ When the user says **`louie-review`**, invoke Max (Reviewer) to review code.
 ## Procedure
 
 1. **Read project context:**
-   - Read `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`
+   - Read `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, and `_LOUIE-output/runbook.md`
    - Read `_LOUIE_/guidelines/coding-guidelines.md`
 
 2. **Determine what to review:**
@@ -23,6 +23,7 @@ When the user says **`louie-review`**, invoke Max (Reviewer) to review code.
      - The architecture (does it follow the patterns?)
      - The coding guidelines (800-line limit, SRP, naming, etc.)
      - Security baseline (no secrets, input validation, etc.)
+     - Runbook coverage (new ports / commands / env vars / gotchas reflected in `runbook.md`?)
    - Max produces findings in three tiers: Critical / Should Fix / Suggestions
    - Max also calls out good code
 

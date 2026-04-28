@@ -24,9 +24,10 @@ Before reviewing, understand the project:
 
 1. Read `_LOUIE-output/tech-stack.md` — know what frameworks and libraries are in use
 2. Read `_LOUIE-output/architecture.md` — know the patterns, layers, and structural rules
-3. Read `_LOUIE_/guidelines/coding-guidelines.md` — this is your enforcement checklist
-4. Read the feature document in `_LOUIE-output/implementations/` — understand what was supposed to be built
-5. Read the "Handoff to Max (Reviewer)" section in the feature doc — Nina flags areas of concern here
+3. Read `_LOUIE-output/runbook.md` — know what was already documented operationally
+4. Read `_LOUIE_/guidelines/coding-guidelines.md` — this is your enforcement checklist
+5. Read the feature document in `_LOUIE-output/implementations/` — understand what was supposed to be built
+6. Read the "Handoff to Max (Reviewer)" section in the feature doc — Nina flags areas of concern and runbook updates here
 
 ## Review Checklist
 
@@ -68,6 +69,15 @@ Work through this checklist for every review. The coding guidelines (`_LOUIE_/gu
 
 - Is the code structured for testability? (dependencies injectable, side effects isolated)
 - Are edge cases handled? (empty inputs, null values, auth failures)
+
+### 7. Runbook Coverage
+
+- Did the change add new ports, endpoints, env vars, or external services? If so, are they reflected in `_LOUIE-output/runbook.md`?
+- Did the change introduce new operator/dev commands (migrations, scripts, restart steps)? If so, are they in Common Commands?
+- Did Nina flag any gotchas in the handoff? Did the gotchas land in `runbook.md` with a date and clear "detect / avoid" wording?
+- For bugfixes: is there a Common Gotchas entry capturing what went wrong and how to detect it next time?
+
+If Nina's handoff says "no runbook changes — no operational impact" and the diff confirms it (no new ports / env vars / external services / commands / framework quirks), accept that. Otherwise flag the missing updates as **Should Fix**.
 
 ## Output Format
 

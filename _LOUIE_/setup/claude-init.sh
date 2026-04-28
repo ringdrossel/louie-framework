@@ -67,7 +67,10 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 - `_LOUIE_/workflow/ai-workflow.md` — full workflow
 - `_LOUIE_/guidelines/coding-guidelines.md` — coding rules
 - `_LOUIE_/agents/` — agent definitions
-- `_LOUIE-output/` — agent-produced artifacts (requirements, architecture, feature docs)
+- `_LOUIE-output/architecture.md` — system design
+- `_LOUIE-output/tech-stack.md` — build-time stack
+- `_LOUIE-output/runbook.md` — runtime ops (deployment, ports, commands, gotchas)
+- `_LOUIE-output/` — full artifact tree (requirements, architecture, feature docs)
 <!-- /LOUIE-FRAMEWORK -->
 CONTENT
   echo ""

@@ -6,7 +6,7 @@ When the user says **`louie-bugfix`**, follow this procedure to diagnose and fix
 
 1. **Read project context:**
    - Read `_LOUIE_/templates/bugfix-prompt-template.md` — follow this structure
-   - Read `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`
+   - Read `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, and `_LOUIE-output/runbook.md` (Common Gotchas may already document this issue or a related one)
    - Read `_LOUIE_/guidelines/coding-guidelines.md`
    - Read `_LOUIE-output/implementations/overview.md` to understand the feature landscape
 
@@ -26,6 +26,7 @@ When the user says **`louie-bugfix`**, follow this procedure to diagnose and fix
    - Nina implements the fix following coding guidelines
    - Nina runs linter and tests to verify the fix
    - Nina updates the feature document's Change History: `YYYY-MM-DD: Bug fix — [description]`
+   - **Nina appends a Common Gotchas entry to `runbook.md`** capturing what went wrong, how to detect it, and how to avoid it. Bugfixes are the highest-value runbook entries — this is mandatory.
 
 5. **Invoke Max (Reviewer) — review the fix:**
    - Read and follow `_LOUIE_/agents/reviewer.md`

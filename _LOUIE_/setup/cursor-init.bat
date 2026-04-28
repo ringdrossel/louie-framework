@@ -55,7 +55,10 @@ echo - `README.md` — framework overview ^(project root^)
 echo - `_LOUIE_/workflow/ai-workflow.md` — full workflow
 echo - `_LOUIE_/guidelines/coding-guidelines.md` — coding rules
 echo - `_LOUIE_/agents/` — agent definitions
-echo - `_LOUIE-output/` — agent-produced artifacts
+echo - `_LOUIE-output/architecture.md` — system design
+echo - `_LOUIE-output/tech-stack.md` — build-time stack
+echo - `_LOUIE-output/runbook.md` — runtime ops ^(deployment, ports, commands, gotchas^)
+echo - `_LOUIE-output/` — full artifact tree
 echo ^<!-- /LOUIE-FRAMEWORK --^>
 ) >> "%CURSORRULES%"
 

@@ -26,7 +26,7 @@ Before making any architectural decisions:
 2. Read `_LOUIE-output/architecture.md` if it exists — understand the current architecture
 3. Read `_LOUIE-output/tech-stack.md` if it exists — understand the current stack
 4. Read `_LOUIE_/guidelines/coding-guidelines.md` — your architecture must support these rules (e.g., if the 800-line file limit is difficult in a chosen framework, flag it)
-5. Read `_LOUIE_/templates/architecture-template.md` and `_LOUIE_/templates/tech-stack-template.md` — these are your output formats
+5. Read `_LOUIE_/templates/architecture-template.md`, `_LOUIE_/templates/tech-stack-template.md`, and `_LOUIE_/templates/runbook-template.md` — these are your output formats
 
 ## Process
 
@@ -38,7 +38,8 @@ When no `architecture.md` or `tech-stack.md` exist yet:
 2. Assess project complexity from the Analyst's handoff (Simple / Medium / Complex)
 3. Produce `_LOUIE-output/architecture.md` from the architecture template
 4. Produce `_LOUIE-output/tech-stack.md` from the tech-stack template
-5. Present both to the user for confirmation before any feature work begins
+5. Produce `_LOUIE-output/runbook.md` from the runbook template — fill in deployment model, ports, common commands, env vars, and external services from the architectural decisions you just made. Common Gotchas starts empty (Nina will populate it as she discovers things).
+6. Present all three to the user for confirmation before any feature work begins
 
 **Default depth: Comprehensive.** Cover all sections in the architecture template:
 - High-level diagram (mermaid)
@@ -60,14 +61,16 @@ When no `architecture.md` or `tech-stack.md` exist yet:
 When `architecture.md` and `tech-stack.md` already exist:
 
 1. Read the new requirements document
-2. Evaluate whether the new feature fits the existing architecture:
-   - **If yes** — state "No architectural changes needed" and write a handoff summary explaining how the feature maps to existing patterns
+2. Read the existing `_LOUIE-output/runbook.md` if it exists — note any new ports / env vars / external services the feature will introduce
+3. Evaluate whether the new feature fits the existing architecture:
+   - **If yes** — state "No architectural changes needed" and write a handoff summary explaining how the feature maps to existing patterns. Note any runbook updates Nina should make (new ports, env vars, services).
    - **If no** — propose minimal, targeted updates to the architecture and/or tech stack
-3. For any proposed changes:
+4. For any proposed changes:
    - Explain what needs to change and why
    - Show the specific diffs to the existing documents
    - Get user confirmation before updating
-4. Update the `Last Updated` date in any modified documents
+5. Update the `Last Updated` date in any modified documents
+6. If the feature introduces new ports, env vars, or external services, update `runbook.md` directly (Ports & Endpoints, Environment & Dependencies). Operational gotchas remain Nina's domain — she'll append those during implementation.
 
 ### Architecture Document Requirements
 
@@ -88,9 +91,20 @@ The `_LOUIE-output/tech-stack.md` must include:
 - **Testing frameworks** for each layer — the Tester agent depends on this
 - **Development tools** (linter, formatter, package manager) — the Coder agent depends on this
 
+### Runbook Document Requirements
+
+The `_LOUIE-output/runbook.md` (initial version) must include:
+
+- **Deployment Model** — how the system actually runs (host/Docker/k8s/serverless + orchestrator)
+- **Ports & Endpoints** — every port the system or its dependencies bind, plus external services it calls
+- **Common Commands** — start, stop, restart, status, logs, DB connect/migrate. Use real working commands, not placeholders.
+- **Environment & Dependencies** — required env vars and external services with endpoints
+- **Common Gotchas** — start empty; Nina populates during implementation
+- **Debugging** — at minimum, a row for "app won't start" with the first thing to check
+
 ### Confirmation Gate
 
-> **CRITICAL:** Present `architecture.md` + `tech-stack.md` to the user for confirmation before any feature work begins. No agent proceeds until the user approves the architecture.
+> **CRITICAL:** Present `architecture.md` + `tech-stack.md` + `runbook.md` to the user for confirmation before any feature work begins. No agent proceeds until the user approves all three.
 
 This gate applies on first run and whenever significant changes are proposed.
 

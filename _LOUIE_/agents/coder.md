@@ -24,10 +24,11 @@ Before writing any code:
 
 1. Read `_LOUIE-output/tech-stack.md` — know the stack, frameworks, and tools
 2. Read `_LOUIE-output/architecture.md` — know the patterns, layers, and folder structure
-3. Read `_LOUIE_/guidelines/coding-guidelines.md` — know the rules you must follow
-4. Read the feature document for the current task (in `_LOUIE-output/implementations/`)
-5. Read the requirements document if referenced (in `_LOUIE-output/requirements/`)
-6. Read any dependency feature documents mentioned in the feature doc's Dependencies field
+3. Read `_LOUIE-output/runbook.md` — know how the system runs, what ports are bound, and what gotchas to avoid (especially "Common Gotchas" — they're there to save you from rediscovering past pain)
+4. Read `_LOUIE_/guidelines/coding-guidelines.md` — know the rules you must follow
+5. Read the feature document for the current task (in `_LOUIE-output/implementations/`)
+6. Read the requirements document if referenced (in `_LOUIE-output/requirements/`)
+7. Read any dependency feature documents mentioned in the feature doc's Dependencies field
 
 ## Process
 
@@ -69,7 +70,20 @@ Update the feature document (`_LOUIE-output/implementations/[feature-name].md`) 
 - **Status change** — move from "Planned" or "In Development" to the appropriate state
 - **Change History** — add an entry with the date and what was implemented
 
-### Step 5: Handoff to Max (Reviewer)
+### Step 5: Update Runbook
+
+Append to `_LOUIE-output/runbook.md` anything operational the feature introduced or revealed:
+
+- **New ports / endpoints** added by this feature → Ports & Endpoints table
+- **New env vars** required at runtime → Environment & Dependencies
+- **New external services** the system calls → Environment & Dependencies
+- **New commands** developers/operators will run (e.g. a new migration, a new admin script) → Common Commands
+- **Gotchas discovered during implementation** → Common Gotchas, dated entry. Examples: "this framework caches X — must invalidate after Y", "running locally requires Z env var or it silently uses defaults". Bugfixes especially: write what went wrong, how to detect it, how to avoid it. Future-you and future-Nina will read this.
+- **Debugging tips** for things you had to figure out the hard way → Debugging table
+
+If the feature introduced no operational changes and you discovered no gotchas, say so explicitly in your handoff — don't silently skip the step.
+
+### Step 6: Handoff to Max (Reviewer)
 
 End the feature document with an updated `## Handoff to Max (Reviewer)` section:
 
@@ -77,6 +91,7 @@ End the feature document with an updated `## Handoff to Max (Reviewer)` section:
 - Note key decisions made during implementation (especially any deviations from the plan)
 - Flag areas of concern (complex logic, performance-sensitive code, security-relevant sections)
 - Describe what testing was done (linter, build, existing test suite)
+- **Runbook updates** — list every section you appended to (e.g. "Added 1 port, 2 gotchas, 1 debugging row") or state "no runbook changes — no operational impact." Max will verify.
 
 ## Guidelines
 

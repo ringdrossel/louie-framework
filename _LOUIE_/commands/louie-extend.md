@@ -5,7 +5,7 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
 ## Procedure
 
 1. **Read project context:**
-   - Read `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`
+   - Read `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, and `_LOUIE-output/runbook.md`
    - Read `_LOUIE-output/implementations/overview.md` to see existing features
 
 2. **Identify the feature to extend:**

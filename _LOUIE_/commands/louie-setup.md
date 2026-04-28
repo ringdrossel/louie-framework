@@ -30,10 +30,11 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
    - Sophie reads Tom's requirements and produces:
      - `_LOUIE-output/architecture.md` — system architecture with mermaid diagram, layers, patterns, folder structure, security model
      - `_LOUIE-output/tech-stack.md` — every technology choice with rationale
-   - Use templates from `_LOUIE_/templates/architecture-template.md` and `_LOUIE_/templates/tech-stack-template.md`
+     - `_LOUIE-output/runbook.md` — deployment model, ports, common commands, env vars, external services (Common Gotchas starts empty)
+   - Use templates from `_LOUIE_/templates/architecture-template.md`, `_LOUIE_/templates/tech-stack-template.md`, and `_LOUIE_/templates/runbook-template.md`
 
 6. **Confirmation gate (architecture):**
-   - Present the requirements, architecture, and tech stack to the user
+   - Present the requirements, architecture, tech stack, and runbook to the user
    - Walk through the key decisions and their rationale
    - Wait for explicit confirmation before proceeding
    - If the user wants changes, update the documents and re-present

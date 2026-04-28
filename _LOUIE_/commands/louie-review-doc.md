@@ -9,7 +9,7 @@ This combines `louie-review` and `louie-doc` into a single command. Max reviews 
 ### Phase 1: Review (Max)
 
 1. **Read project context:**
-   - Read `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`
+   - Read `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, and `_LOUIE-output/runbook.md`
    - Read `_LOUIE_/guidelines/coding-guidelines.md`
 
 2. **Determine what to review:**
@@ -35,6 +35,7 @@ This combines `louie-review` and `louie-doc` into a single command. Max reviews 
    - Feature document (`_LOUIE-output/implementations/[feature].md`) — update status, code structure, change history
    - Overview (`_LOUIE-output/implementations/overview.md`) — update feature table if status changed
    - Architecture / tech stack — update if new patterns or libraries were introduced
+   - Runbook (`_LOUIE-output/runbook.md`) — update if new ports / commands / env vars / external services were added, or if Max found gotchas Nina missed
 
 7. **Update the documentation:**
    - Add Change History entries with today's date
