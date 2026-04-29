@@ -11,6 +11,7 @@ All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
 | Command | What it does |
 |---------|-------------|
 | `louie-setup` | Initialize a new project (Tom interviews, Sophie architects) |
+| `louie-import` | Import an existing project — Sophie infers architecture/tech-stack/runbook from code; Tom fills gaps. Auto-detects v1 docs (`docs/implementations/`) when present |
 | `louie-feature` | Add a new feature (full chain: Tom → Sophie → Leo → Nina → Max → Ava) |
 | `louie-extend` | Extend an existing feature |
 | `louie-update` | Quick change (< 50 lines, auto-escalates to `louie-extend`) |

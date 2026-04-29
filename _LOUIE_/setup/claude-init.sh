@@ -44,6 +44,7 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 | Command | Description |
 |---------|-------------|
 | `/louie-setup` | Initialize a new project |
+| `/louie-import` | Import an existing project (cold or v1 docs) into LOUIE |
 | `/louie-feature` | Add a new feature (full agent chain) |
 | `/louie-extend` | Extend an existing feature |
 | `/louie-update` | Quick change (< 50 lines) |
@@ -80,5 +81,37 @@ fi
 echo ""
 echo "Done! $count commands installed."
 echo ""
-echo "You can now use /louie-setup to start a new project,"
-echo "or /louie-feature to add a feature."
+
+# Detect existing project — recommend louie-import if so
+EXISTING_PROJECT=0
+HAS_V1_DOCS=0
+if [ -f "$LOUIE_DIR/docs/implementations/overview.md" ]; then
+  if ls "$LOUIE_DIR/docs/implementations/"*.md 2>/dev/null | grep -v '/overview\.md$' > /dev/null; then
+    EXISTING_PROJECT=1
+    HAS_V1_DOCS=1
+  fi
+fi
+if [ $EXISTING_PROJECT -eq 0 ]; then
+  for marker in package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle composer.json Gemfile mix.exs setup.py requirements.txt; do
+    if [ -f "$LOUIE_DIR/$marker" ]; then EXISTING_PROJECT=1; break; fi
+  done
+fi
+if [ $EXISTING_PROJECT -eq 0 ]; then
+  for srcdir in src app lib; do
+    if [ -d "$LOUIE_DIR/$srcdir" ]; then EXISTING_PROJECT=1; break; fi
+  done
+fi
+
+if [ $EXISTING_PROJECT -eq 1 ]; then
+  if [ $HAS_V1_DOCS -eq 1 ]; then
+    echo "Detected v1 LOUIE docs at docs/implementations/."
+    echo "Run /louie-import next to translate them into LOUIE format."
+  else
+    echo "Detected existing project source."
+    echo "Run /louie-import next to have LOUIE generate architecture, tech-stack,"
+    echo "runbook, and feature docs from the existing code."
+  fi
+else
+  echo "You can now use /louie-setup to start a new project,"
+  echo "or /louie-feature to add a feature."
+fi

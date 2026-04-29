@@ -167,7 +167,28 @@ Max reviews against architecture, guidelines, and the feature document.
 
 ---
 
-## Scenario 6: Product Ideation
+## Scenario 6: Importing an Existing Project
+
+Use `louie-import` when adding LOUIE to a project that already has source code (and optionally v1-style docs at `docs/implementations/`):
+
+```
+louie-import
+```
+
+The command auto-detects mode:
+
+- **Cold import** — no prior LOUIE-shaped docs. Sophie scans the codebase to infer architecture, tech stack, runbook, and discovered features. Tom interviews to fill gaps (project goal, target users, acceptance criteria).
+- **v1-docs import** — `docs/implementations/overview.md` plus per-feature `*.md` siblings exist. Sophie still scans the code; v1 docs are translated into LOUIE feature docs. Tom asks only what's missing.
+
+In both modes, discovered features are written with status **Implemented** (the running code is the source of truth). After Sophie + Tom finish, the standard architecture confirmation gate applies.
+
+`louie-import` does not run Leo, Nina, Max, or Ava. It is a documentation pass — no source code is modified. After it completes, the project behaves like one that went through `louie-setup` plus several rounds of `louie-feature`.
+
+The init scripts (`_LOUIE_/setup/<tool>-init.{sh,bat}`) detect existing projects and recommend running `louie-import` after install.
+
+---
+
+## Scenario 7: Product Ideation
 
 Use `louie-ideate`:
 
@@ -185,6 +206,7 @@ Ivy suggests ideas. If you like one, run `louie-feature` to build it.
 | Command | What it does |
 |---------|-------------|
 | `louie-setup` | Initialize a new project (Tom interviews, Sophie architects) |
+| `louie-import` | Import an existing project (cold or v1 docs) into LOUIE |
 | `louie-feature` | Add a new feature (full chain: Tom → Sophie → Leo → Nina → Max → Ava) |
 | `louie-extend` | Extend an existing feature |
 | `louie-update` | Quick change (< 50 lines, auto-escalates to `louie-extend`) |

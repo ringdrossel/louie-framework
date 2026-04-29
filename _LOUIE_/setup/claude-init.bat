@@ -48,6 +48,7 @@ echo.
 echo ^| Command ^| Description ^|
 echo ^|---------|-------------|
 echo ^| `/louie-setup` ^| Initialize a new project ^|
+echo ^| `/louie-import` ^| Import an existing project ^(cold or v1 docs^) into LOUIE ^|
 echo ^| `/louie-feature` ^| Add a new feature ^(full agent chain^) ^|
 echo ^| `/louie-extend` ^| Extend an existing feature ^|
 echo ^| `/louie-update` ^| Quick change ^(^< 50 lines^) ^|
@@ -85,7 +86,41 @@ echo   Created/updated CLAUDE.md with LOUIE section.
 echo.
 echo Done! %count% commands installed.
 echo.
-echo You can now use /louie-setup to start a new project,
-echo or /louie-feature to add a feature.
+
+:: Detect existing project — recommend louie-import if so
+set "EXISTING_PROJECT=0"
+set "HAS_V1_DOCS=0"
+if exist "%LOUIE_DIR%\docs\implementations\overview.md" (
+    for %%f in ("%LOUIE_DIR%\docs\implementations\*.md") do (
+        if /I not "%%~nxf"=="overview.md" (
+            set "EXISTING_PROJECT=1"
+            set "HAS_V1_DOCS=1"
+        )
+    )
+)
+if !EXISTING_PROJECT! equ 0 (
+    for %%m in (package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle composer.json Gemfile mix.exs setup.py requirements.txt) do (
+        if exist "%LOUIE_DIR%\%%m" set "EXISTING_PROJECT=1"
+    )
+)
+if !EXISTING_PROJECT! equ 0 (
+    for %%d in (src app lib) do (
+        if exist "%LOUIE_DIR%\%%d\" set "EXISTING_PROJECT=1"
+    )
+)
+
+if !EXISTING_PROJECT! equ 1 (
+    if !HAS_V1_DOCS! equ 1 (
+        echo Detected v1 LOUIE docs at docs\implementations\.
+        echo Run /louie-import next to translate them into LOUIE format.
+    ) else (
+        echo Detected existing project source.
+        echo Run /louie-import next to have LOUIE generate architecture, tech-stack,
+        echo runbook, and feature docs from the existing code.
+    )
+) else (
+    echo You can now use /louie-setup to start a new project,
+    echo or /louie-feature to add a feature.
+)
 
 endlocal

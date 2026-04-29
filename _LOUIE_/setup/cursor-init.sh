@@ -27,6 +27,7 @@ When the user types a `louie-*` command (e.g., `louie-setup`, `louie-feature`), 
 
 Available commands:
 - `louie-setup` → `_LOUIE_/commands/louie-setup.md`
+- `louie-import` → `_LOUIE_/commands/louie-import.md`
 - `louie-feature` → `_LOUIE_/commands/louie-feature.md`
 - `louie-extend` → `_LOUIE_/commands/louie-extend.md`
 - `louie-update` → `_LOUIE_/commands/louie-update.md`
@@ -62,5 +63,37 @@ fi
 echo ""
 echo "Done!"
 echo ""
-echo "You can now type 'louie-setup' in Cursor to start a new project,"
-echo "or 'louie-feature' to add a feature."
+
+# Detect existing project — recommend louie-import if so
+EXISTING_PROJECT=0
+HAS_V1_DOCS=0
+if [ -f "$LOUIE_DIR/docs/implementations/overview.md" ]; then
+  if ls "$LOUIE_DIR/docs/implementations/"*.md 2>/dev/null | grep -v '/overview\.md$' > /dev/null; then
+    EXISTING_PROJECT=1
+    HAS_V1_DOCS=1
+  fi
+fi
+if [ $EXISTING_PROJECT -eq 0 ]; then
+  for marker in package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle composer.json Gemfile mix.exs setup.py requirements.txt; do
+    if [ -f "$LOUIE_DIR/$marker" ]; then EXISTING_PROJECT=1; break; fi
+  done
+fi
+if [ $EXISTING_PROJECT -eq 0 ]; then
+  for srcdir in src app lib; do
+    if [ -d "$LOUIE_DIR/$srcdir" ]; then EXISTING_PROJECT=1; break; fi
+  done
+fi
+
+if [ $EXISTING_PROJECT -eq 1 ]; then
+  if [ $HAS_V1_DOCS -eq 1 ]; then
+    echo "Detected v1 LOUIE docs at docs/implementations/."
+    echo "Run 'louie-import' in Cursor next to translate them into LOUIE format."
+  else
+    echo "Detected existing project source."
+    echo "Run 'louie-import' in Cursor next to have LOUIE generate architecture,"
+    echo "tech-stack, runbook, and feature docs from the existing code."
+  fi
+else
+  echo "You can now type 'louie-setup' in Cursor to start a new project,"
+  echo "or 'louie-feature' to add a feature."
+fi

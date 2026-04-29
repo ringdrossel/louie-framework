@@ -10,7 +10,7 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
    - Read `_LOUIE_/workflow/ai-workflow.md` for the workflow
 
 2. **Check prerequisites:**
-   - If `_LOUIE-output/architecture.md` does not exist, tell the user: "No architecture defined yet. Run `louie-setup` first to set up the project foundation."
+   - If `_LOUIE-output/architecture.md` does not exist, tell the user: "No architecture defined yet. Run `louie-setup` first to set up the project foundation, or `louie-import` if this is an existing project with source code already in place."
    - Do not proceed without architecture and tech stack in place.
    - If `_LOUIE-output/runbook.md` is missing on a project that has architecture (legacy LOUIE project), suggest the user generate it via Sophie before proceeding — or proceed and ask Sophie to bootstrap one based on the existing architecture.
 

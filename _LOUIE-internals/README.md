@@ -17,6 +17,7 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 | `core.md` | Core mechanics — lazy loading, directory split, gates, naming, cross-platform |
 | `recipes.md` | Recipe system design — dispatcher rules, folder layout, name resolution |
 | `runbook.md` | Runbook system design — operational doc separate from architecture |
+| `import.md` | Import system design — cold + v1-docs modes, init-script detection, agent reuse |
 | `CHANGELOG.md` | Framework version log |
 
 ## When to Read What

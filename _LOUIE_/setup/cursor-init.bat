@@ -32,6 +32,7 @@ echo When the user types a `louie-*` command, read the matching file from `_LOUI
 echo.
 echo Available commands:
 echo - `louie-setup` → `_LOUIE_/commands/louie-setup.md`
+echo - `louie-import` → `_LOUIE_/commands/louie-import.md`
 echo - `louie-feature` → `_LOUIE_/commands/louie-feature.md`
 echo - `louie-extend` → `_LOUIE_/commands/louie-extend.md`
 echo - `louie-update` → `_LOUIE_/commands/louie-update.md`
@@ -68,7 +69,41 @@ echo   Created/updated .cursorrules with LOUIE section.
 echo.
 echo Done!
 echo.
-echo You can now type 'louie-setup' in Cursor to start a new project,
-echo or 'louie-feature' to add a feature.
+
+:: Detect existing project — recommend louie-import if so
+set "EXISTING_PROJECT=0"
+set "HAS_V1_DOCS=0"
+if exist "%LOUIE_DIR%\docs\implementations\overview.md" (
+    for %%f in ("%LOUIE_DIR%\docs\implementations\*.md") do (
+        if /I not "%%~nxf"=="overview.md" (
+            set "EXISTING_PROJECT=1"
+            set "HAS_V1_DOCS=1"
+        )
+    )
+)
+if !EXISTING_PROJECT! equ 0 (
+    for %%m in (package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle composer.json Gemfile mix.exs setup.py requirements.txt) do (
+        if exist "%LOUIE_DIR%\%%m" set "EXISTING_PROJECT=1"
+    )
+)
+if !EXISTING_PROJECT! equ 0 (
+    for %%d in (src app lib) do (
+        if exist "%LOUIE_DIR%\%%d\" set "EXISTING_PROJECT=1"
+    )
+)
+
+if !EXISTING_PROJECT! equ 1 (
+    if !HAS_V1_DOCS! equ 1 (
+        echo Detected v1 LOUIE docs at docs\implementations\.
+        echo Run 'louie-import' in Cursor next to translate them into LOUIE format.
+    ) else (
+        echo Detected existing project source.
+        echo Run 'louie-import' in Cursor next to have LOUIE generate architecture,
+        echo tech-stack, runbook, and feature docs from the existing code.
+    )
+) else (
+    echo You can now type 'louie-setup' in Cursor to start a new project,
+    echo or 'louie-feature' to add a feature.
+)
 
 endlocal

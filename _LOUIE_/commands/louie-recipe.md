@@ -91,7 +91,7 @@ A recipe is a **seed for the standard agent chain**, not a bypass. After reading
    - `_LOUIE-output/implementations/overview.md` (if it exists)
    - `_LOUIE_/guidelines/coding-guidelines.md`
 
-2. **If no architecture exists yet:** stop and tell the user. Recipes require a confirmed architecture (Critical Rule 2). Suggest running `louie-setup` or `louie-feature` first — both of those will establish architecture before touching code.
+2. **If no architecture exists yet:** stop and tell the user. Recipes require a confirmed architecture (Critical Rule 2). Suggest running `louie-setup` (new project), `louie-import` (existing project), or `louie-feature` first — all of those establish architecture before touching code.
 
 3. **Summarize the recipe to the user** in 3–5 lines: what it builds, key assumptions, and how it will adapt to their project.
 

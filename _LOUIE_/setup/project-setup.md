@@ -127,11 +127,15 @@ Most teams benefit from tracking `_LOUIE-output/` — it provides a history of r
 
 If your project already has source code but no LOUIE framework:
 
-1. Copy both `_LOUIE_/` and `_LOUIE-output/` into the project root
-2. Run Sophie (Architect) to document your existing architecture and tech stack
-4. From now on, follow the standard workflow for new features
+1. Copy both `_LOUIE_/` and `_LOUIE-output/` into the project root.
+2. Run the init script for your AI tool (Step 2 above). The script detects existing source and prints a recommendation to run `louie-import` next.
+3. Run `louie-import` in your AI tool. The command auto-detects two modes:
+   - **Cold import** — no prior docs. Sophie scans the codebase to infer architecture, tech stack, runbook, and discovered features. Tom interviews to fill gaps.
+   - **v1-docs import** — if `docs/implementations/overview.md` plus per-feature `*.md` siblings exist (the LOUIE precursor schema), they are translated into LOUIE format and code-scanned to fill what v1 didn't cover.
+4. Confirm the architecture/tech-stack/runbook at the gate. Discovered features are written with status `Implemented` — the running code is the source of truth.
+5. From now on, follow the standard workflow (`louie-feature`, `louie-extend`, `louie-bugfix`, etc.).
 
-You don't need to retroactively create requirements or feature docs for existing code — just use LOUIE going forward.
+`louie-import` is a documentation pass only — it never modifies source code.
 
 ## Updating LOUIE
 
@@ -146,6 +150,7 @@ To update the framework:
 | What you want | Command |
 |---------------|---------|
 | Initialize a new project (Tom interviews, Sophie architects) | `louie-setup` |
+| Import an existing project (cold or v1 docs) into LOUIE | `louie-import` |
 | Add a new feature (full chain: Tom → Sophie → Leo → Nina → Max → Ava) | `louie-feature` |
 | Extend an existing feature | `louie-extend` |
 | Quick change (< 50 lines, auto-escalates to `louie-extend`) | `louie-update` |
