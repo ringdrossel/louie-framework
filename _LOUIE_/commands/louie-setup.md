@@ -21,9 +21,10 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
 
 4. **Invoke Tom (Analyst):**
    - Read and follow `_LOUIE_/agents/analyst.md`
-   - Tom interviews the user and produces `_LOUIE-output/requirements/[feature-name]-requirements.md`
+   - Tom creates the feature folder `_LOUIE-output/implementations/[feature-name]/` if it doesn't exist
+   - Tom interviews the user and produces `_LOUIE-output/implementations/[feature-name]/requirements.md`
    - Use the template from `_LOUIE_/templates/requirements-template.md`
-   - Tom also updates `_LOUIE-output/implementations/overview.md` with the project context (name, goal, status) and adds the first feature to the Planned table
+   - Tom also updates `_LOUIE-output/implementations/overview.md` with the project context (name, goal, status) and adds the first feature to the Planned table — the Document column links to `implementations/[feature-name]/feature.md`
 
 5. **Invoke Sophie (Architect):**
    - Read and follow `_LOUIE_/agents/architect.md`
@@ -40,8 +41,8 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
    - If the user wants changes, update the documents and re-present
 
 7. **Create feature document:**
-   - Create `_LOUIE-output/implementations/[feature-name].md` using `_LOUIE_/templates/feature-template.md`
-   - Fill in all sections based on Tom's requirements and Sophie's architecture
+   - Create `_LOUIE-output/implementations/[feature-name]/feature.md` using `_LOUIE_/templates/feature-template.md`
+   - Fill in all sections based on Tom's requirements (in `[feature-name]/requirements.md`) and Sophie's architecture
    - This is for the feature Tom already captured — do NOT ask "which feature?" again
 
 8. **Confirmation gate (feature doc):**

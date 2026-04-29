@@ -11,6 +11,7 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 |---------|------|-------------|
 | `louie-setup` | `_LOUIE_/commands/louie-setup.md` | Initialize a new project |
 | `louie-import` | `_LOUIE_/commands/louie-import.md` | Import an existing project (cold or v1 docs) into LOUIE |
+| `louie-migrate` | `_LOUIE_/commands/louie-migrate.md` | Migrate an old-layout LOUIE project to the per-feature folder layout |
 | `louie-feature` | `_LOUIE_/commands/louie-feature.md` | Add a new feature (full agent chain) |
 | `louie-extend` | `_LOUIE_/commands/louie-extend.md` | Extend an existing feature |
 | `louie-update` | `_LOUIE_/commands/louie-update.md` | Quick change (< 50 lines) |

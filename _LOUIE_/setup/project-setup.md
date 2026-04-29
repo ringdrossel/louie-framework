@@ -10,15 +10,17 @@ Copy both `_LOUIE_/` and `_LOUIE-output/` into your project root:
 
 ```
 your-project/
-├── _LOUIE_/              ← the framework (tool)
-├── _LOUIE-output/        ← pre-created output directories (work)
-│   ├── requirements/
-│   └── implementations/
-├── src/                  ← your source code
+├── _LOUIE_/                            ← the framework (tool)
+├── _LOUIE-output/                      ← pre-created output structure (work)
+│   ├── implementations/
+│   │   └── overview.md                 (slim index, populated as features land)
+│   └── bugfixes/
+│       └── overview.md                 (cross-project bug-fix index)
+├── src/                                ← your source code
 └── README.md
 ```
 
-Both directories are included in the repo — no manual setup needed. `_LOUIE-output/` comes with the right folder structure so agents can write their artifacts immediately.
+Both directories are included in the repo — no manual setup needed. As features land, agents create per-feature folders under `_LOUIE-output/implementations/<feature>/` containing `feature.md`, `requirements.md`, `decisions.md`, and `bugfixes/`.
 
 ## Step 2: Initialize for Your AI Tool
 
@@ -139,11 +141,14 @@ If your project already has source code but no LOUIE framework:
 
 ## Updating LOUIE
 
-To update the framework:
+To update the framework, run `louie-update-framework` in your AI tool:
 
-1. Replace the `_LOUIE_/` directory with the new version
-2. Your `_LOUIE-output/` artifacts are untouched — they live separately by design
-3. Review the changelog for any changes to agent behavior or templates
+1. The command pulls the latest `_LOUIE_/` files (agents, commands, templates, guidelines, workflow, recipes).
+2. Your `_LOUIE-output/` artifacts are untouched — they live separately by design.
+3. The command checks for new canonical outputs (e.g. `runbook.md`) and offers to bootstrap them rather than silently creating files.
+4. The command checks for the **old flat layout** (top-level `*.md` under `implementations/`, or a `requirements/` directory) and offers to run `louie-migrate` to restructure to the per-feature folder layout. Migration is one-way and uses `git mv` to preserve history.
+
+Review the changelog for any changes to agent behavior or templates.
 
 ## Quick Reference
 
@@ -151,6 +156,7 @@ To update the framework:
 |---------------|---------|
 | Initialize a new project (Tom interviews, Sophie architects) | `louie-setup` |
 | Import an existing project (cold or v1 docs) into LOUIE | `louie-import` |
+| Migrate an old-layout LOUIE project to per-feature folders | `louie-migrate` |
 | Add a new feature (full chain: Tom → Sophie → Leo → Nina → Max → Ava) | `louie-feature` |
 | Extend an existing feature | `louie-extend` |
 | Quick change (< 50 lines, auto-escalates to `louie-extend`) | `louie-update` |

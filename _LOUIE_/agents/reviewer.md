@@ -26,8 +26,9 @@ Before reviewing, understand the project:
 2. Read `_LOUIE-output/architecture.md` — know the patterns, layers, and structural rules
 3. Read `_LOUIE-output/runbook.md` — know what was already documented operationally
 4. Read `_LOUIE_/guidelines/coding-guidelines.md` — this is your enforcement checklist
-5. Read the feature document in `_LOUIE-output/implementations/` — understand what was supposed to be built
-6. Read the "Handoff to Max (Reviewer)" section in the feature doc — Nina flags areas of concern and runbook updates here
+5. Read the feature folder for the work under review — `_LOUIE-output/implementations/<feature>/feature.md`, plus `requirements.md` and `decisions.md` for context
+6. For bugfixes: read the new bug-fix doc at `_LOUIE-output/implementations/<feature>/bugfixes/<date>-<slug>.md` (or `_LOUIE-output/bugfixes/` if cross-cutting), and check the row Nina added to `_LOUIE-output/bugfixes/overview.md`
+7. Read the "Handoff to Max (Reviewer)" section in `feature.md` — Nina flags areas of concern and runbook updates here
 
 ## Review Checklist
 
@@ -76,6 +77,7 @@ Work through this checklist for every review. The coding guidelines (`_LOUIE_/gu
 - Did the change introduce new operator/dev commands (migrations, scripts, restart steps)? If so, are they in Common Commands?
 - Did Nina flag any gotchas in the handoff? Did the gotchas land in `runbook.md` with a date and clear "detect / avoid" wording?
 - For bugfixes: is there a Common Gotchas entry capturing what went wrong and how to detect it next time?
+- For bugfixes: was the per-fix document created (`<feature>/bugfixes/<date>-<slug>.md` or `_LOUIE-output/bugfixes/<date>-<slug>.md` for cross-cutting), and is the row in `_LOUIE-output/bugfixes/overview.md`?
 
 If Nina's handoff says "no runbook changes — no operational impact" and the diff confirms it (no new ports / env vars / external services / commands / framework quirks), accept that. Otherwise flag the missing updates as **Should Fix**.
 

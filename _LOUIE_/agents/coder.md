@@ -26,8 +26,8 @@ Before writing any code:
 2. Read `_LOUIE-output/architecture.md` — know the patterns, layers, and folder structure
 3. Read `_LOUIE-output/runbook.md` — know how the system runs, what ports are bound, and what gotchas to avoid (especially "Common Gotchas" — they're there to save you from rediscovering past pain)
 4. Read `_LOUIE_/guidelines/coding-guidelines.md` — know the rules you must follow
-5. Read the feature document for the current task (in `_LOUIE-output/implementations/`)
-6. Read the requirements document if referenced (in `_LOUIE-output/requirements/`)
+5. Read the feature folder for the current task: `_LOUIE-output/implementations/<feature>/feature.md`, `requirements.md`, and `decisions.md` (if present)
+6. Skim recent fixes in `_LOUIE-output/implementations/<feature>/bugfixes/` and `_LOUIE-output/bugfixes/overview.md` — past pain you don't want to recreate
 7. Read any dependency feature documents mentioned in the feature doc's Dependencies field
 
 ## Process
@@ -63,12 +63,14 @@ After implementation:
 
 ### Step 4: Update Feature Document
 
-Update the feature document (`_LOUIE-output/implementations/[feature-name].md`) with:
+Update `_LOUIE-output/implementations/[feature-name]/feature.md` with:
 
 - **Actual files created/modified** — update the Code Structure / Files section
 - **Key interfaces/types** — add the real signatures, not placeholders
 - **Status change** — move from "Planned" or "In Development" to the appropriate state
 - **Change History** — add an entry with the date and what was implemented
+
+If you made any architectural decisions specific to this feature (a pattern choice, a tradeoff worth recording), add an ADR to `_LOUIE-output/implementations/[feature-name]/decisions.md` (create from `_LOUIE_/templates/decisions-template.md` if it doesn't exist).
 
 ### Step 5: Update Runbook
 
@@ -82,6 +84,17 @@ Append to `_LOUIE-output/runbook.md` anything operational the feature introduced
 - **Debugging tips** for things you had to figure out the hard way → Debugging table
 
 If the feature introduced no operational changes and you discovered no gotchas, say so explicitly in your handoff — don't silently skip the step.
+
+### Step 5b: When Fixing a Bug
+
+If this work is a bug fix (you arrived here via `louie-bugfix`), in addition to the steps above:
+
+- Create the bug-fix doc using `_LOUIE_/templates/bugfix-template.md` at:
+  - `_LOUIE-output/implementations/<feature>/bugfixes/<YYYY-MM-DD>-<slug>.md` for fixes scoped to one feature
+  - `_LOUIE-output/bugfixes/<YYYY-MM-DD>-<slug>.md` for cross-cutting fixes touching multiple features
+- Append a row at the top of the appropriate table in `_LOUIE-output/bugfixes/overview.md` (Recent Fixes for per-feature, Cross-Cutting Fixes for multi-feature)
+- The Common Gotchas entry in `runbook.md` is still mandatory — bugfixes are the highest-value runbook content
+- Reference the bug-fix doc from the feature's `feature.md` Change History entry
 
 ### Step 6: Handoff to Max (Reviewer)
 

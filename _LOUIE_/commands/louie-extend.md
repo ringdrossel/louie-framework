@@ -9,12 +9,13 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
    - Read `_LOUIE-output/implementations/overview.md` to see existing features
 
 2. **Identify the feature to extend:**
-   - If the user specified which feature alongside the command, find its feature document in `_LOUIE-output/implementations/`
+   - If the user specified which feature alongside the command, find its folder at `_LOUIE-output/implementations/[feature-name]/`
    - If not, show the list of existing features from `overview.md` and ask: "Which feature would you like to extend?"
 
-3. **Read the existing feature document:**
-   - Read `_LOUIE-output/implementations/[feature-name].md` completely
-   - Read the original requirements from `_LOUIE-output/requirements/[feature-name]-requirements.md` if it exists
+3. **Read the existing feature folder:**
+   - Read `_LOUIE-output/implementations/[feature-name]/feature.md` completely
+   - Read `_LOUIE-output/implementations/[feature-name]/requirements.md` if it exists
+   - Skim `_LOUIE-output/implementations/[feature-name]/decisions.md` and `bugfixes/` for context (prior ADRs, recent bug history)
 
 4. **Ask what the extension should do:**
    - If the user already described the extension, proceed
@@ -23,7 +24,7 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
 5. **Invoke Tom (Analyst) — Light Mode recommended:**
    - Read and follow `_LOUIE_/agents/analyst.md`
    - Tom interviews about the extension (Light Mode is usually sufficient for extensions)
-   - Tom produces updated or new requirements: `_LOUIE-output/requirements/[feature-name]-extension-requirements.md`
+   - Tom appends an "Extension: <date>" section to `_LOUIE-output/implementations/[feature-name]/requirements.md` rather than creating a new file. This keeps all requirements for one feature in one document.
 
 6. **Invoke Sophie (Architect) — evaluation:**
    - Read and follow `_LOUIE_/agents/architect.md`
@@ -31,8 +32,9 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
    - If changes are needed, get user confirmation before updating docs
 
 7. **Update the feature document:**
-   - Add a new implementation phase to `_LOUIE-output/implementations/[feature-name].md`
+   - Add a new implementation phase to `_LOUIE-output/implementations/[feature-name]/feature.md`
    - Add a Change History entry
+   - If a new ADR was made for the extension, append it to `_LOUIE-output/implementations/[feature-name]/decisions.md` (create from template if absent)
    - Update `overview.md` if the feature status changes
 
 8. **Confirmation gate:**

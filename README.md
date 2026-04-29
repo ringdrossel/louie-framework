@@ -12,6 +12,7 @@ All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
 |---------|-------------|
 | `louie-setup` | Initialize a new project (Tom interviews, Sophie architects) |
 | `louie-import` | Import an existing project — Sophie infers architecture/tech-stack/runbook from code; Tom fills gaps. Auto-detects v1 docs (`docs/implementations/`) when present |
+| `louie-migrate` | Migrate an old-layout LOUIE project to the per-feature folder layout (one-way; uses `git mv`) |
 | `louie-feature` | Add a new feature (full chain: Tom → Sophie → Leo → Nina → Max → Ava) |
 | `louie-extend` | Extend an existing feature |
 | `louie-update` | Quick change (< 50 lines, auto-escalates to `louie-extend`) |
@@ -116,9 +117,31 @@ Ivy (Muse) — independent ideation, feeds ideas back to Tom
 ## The Two Directories
 
 - **`_LOUIE_/`** — the framework itself (agents, templates, guidelines, workflow). This is the tool. It rarely changes after setup.
-- **`_LOUIE-output/`** — artifacts produced by agents (requirements, architecture, tech stack, runbook, feature docs). This is the work. It grows with every feature.
+- **`_LOUIE-output/`** — artifacts produced by agents. This is the work. It grows with every feature.
 
 Both sort to the top of file explorers thanks to the underscore prefix. Deleting `_LOUIE_/` removes the framework cleanly without touching your project artifacts.
+
+### `_LOUIE-output/` Layout
+
+```
+_LOUIE-output/
+├── architecture.md                       (Sophie's design output)
+├── tech-stack.md                         (Sophie's build-time stack)
+├── runbook.md                            (Sophie creates; Nina appends)
+├── implementations/
+│   ├── overview.md                       (slim index of all features)
+│   └── <feature>/                        (one folder per feature)
+│       ├── feature.md                    (the implementation doc)
+│       ├── requirements.md               (Tom's requirements for this feature)
+│       ├── decisions.md                  (feature-scoped ADRs; created when needed)
+│       └── bugfixes/
+│           └── <YYYY-MM-DD>-<slug>.md    (one file per per-feature bug fix)
+└── bugfixes/
+    ├── overview.md                       (cross-project bug-fix index)
+    └── <YYYY-MM-DD>-<slug>.md            (cross-cutting bug fixes touching multiple features)
+```
+
+This layout scales — projects with hundreds of features and thousands of bug fixes stay navigable. Each feature is self-contained in its folder; agents lazy-load only what they need.
 
 ## Key Files
 

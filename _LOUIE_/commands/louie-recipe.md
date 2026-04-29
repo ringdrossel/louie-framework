@@ -95,11 +95,11 @@ A recipe is a **seed for the standard agent chain**, not a bypass. After reading
 
 3. **Summarize the recipe to the user** in 3–5 lines: what it builds, key assumptions, and how it will adapt to their project.
 
-4. **Invoke Tom (Analyst)** per `_LOUIE_/agents/analyst.md`, seeded with the recipe's Requirements Seed block. Tom adapts the seeded requirements to the current project — filling gaps via interview, resolving conflicts with existing features, and producing `_LOUIE-output/requirements/<feature>-requirements.md`.
+4. **Invoke Tom (Analyst)** per `_LOUIE_/agents/analyst.md`, seeded with the recipe's Requirements Seed block. Tom adapts the seeded requirements to the current project — filling gaps via interview, resolving conflicts with existing features, and producing `_LOUIE-output/implementations/<feature>/requirements.md` (creating the feature folder).
 
 5. **Invoke Sophie (Architect)** per `_LOUIE_/agents/architect.md` to validate the recipe's architectural assumptions against the project's tech stack. If Sophie needs to amend architecture, the architecture confirmation gate fires.
 
-6. **Create the feature document** at `_LOUIE-output/implementations/<feature>.md` using `_LOUIE_/templates/feature-template.md`, seeded with the recipe's Implementation Guidance.
+6. **Create the feature document** at `_LOUIE-output/implementations/<feature>/feature.md` using `_LOUIE_/templates/feature-template.md`, seeded with the recipe's Implementation Guidance.
 
 7. **Feature doc gate:** show the feature doc to the user and wait for confirmation before coding.
 

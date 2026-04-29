@@ -13,8 +13,9 @@ When the user says **`louie-test`**, invoke Ava (Tester) to write or improve tes
    - If the user specified a feature or files alongside the command, use that scope
    - If not, ask: "What would you like me to test? A specific feature, recent changes, or the whole project's coverage?"
 
-3. **Read the relevant feature document:**
-   - Find and read `_LOUIE-output/implementations/[feature-name].md` if a specific feature is being tested
+3. **Read the relevant feature folder:**
+   - Find and read `_LOUIE-output/implementations/[feature-name]/feature.md` if a specific feature is being tested
+   - For regression tests on a bug fix, read the bug-fix doc at `<feature>/bugfixes/<date>-<slug>.md` (or `_LOUIE-output/bugfixes/` for cross-cutting)
    - Read Max's review if available — his "Key concerns for testing" section highlights focus areas
 
 4. **Invoke Ava (Tester):**

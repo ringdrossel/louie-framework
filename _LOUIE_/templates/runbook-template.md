@@ -107,5 +107,5 @@ curl http://localhost:[port]/[health-path]
 ## Notes for Maintainers
 
 - This file grows over time. **Don't delete old gotchas** — they may resurface. Move stale ones to a "Resolved" subsection at the bottom of *Common Gotchas* if they no longer apply, but keep them visible for context.
-- Cross-reference: detailed architecture is in `_LOUIE-output/architecture.md`. Tech stack is in `_LOUIE-output/tech-stack.md`. Per-feature details are in `_LOUIE-output/implementations/[feature].md`.
+- Cross-reference: detailed architecture is in `_LOUIE-output/architecture.md`. Tech stack is in `_LOUIE-output/tech-stack.md`. Per-feature details are in `_LOUIE-output/implementations/[feature]/feature.md`. Bug-fix history is in each feature's `bugfixes/` folder and the cross-project index at `_LOUIE-output/bugfixes/overview.md`.
 - Sophie creates this file at project setup. Nina appends after every implementation or bugfix. Max checks during review that new ports / commands / gotchas from the change made it in.

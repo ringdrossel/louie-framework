@@ -1,5 +1,7 @@
 # Feature: [Name]
 
+> **Layout:** this file lives at `_LOUIE-output/implementations/<feature>/feature.md`. Sibling files in the same folder: `requirements.md` (Tom's output), `decisions.md` (feature-scoped ADRs), and `bugfixes/<YYYY-MM-DD>-<slug>.md` (one per fix).
+
 ## Status
 
 - [ ] Planned
@@ -22,7 +24,11 @@
 
 ## Requirements Reference
 
-See `_LOUIE-output/requirements/[feature-name]-requirements.md` for full requirements, user stories, and acceptance criteria.
+See `_LOUIE-output/implementations/[feature]/requirements.md` for full requirements, user stories, and acceptance criteria.
+
+## Decisions Reference
+
+See `_LOUIE-output/implementations/[feature]/decisions.md` for ADRs scoped to this feature (if any have been recorded).
 
 ## Technical Details
 
@@ -78,6 +84,12 @@ Refer to `_LOUIE-output/architecture.md` for system patterns and `_LOUIE-output/
 - Unit Tests
 - Integration Tests
 - E2E Tests
+
+## Bug Fixes
+
+Per-feature bug fixes live in the sibling `bugfixes/` folder, one file per fix named `YYYY-MM-DD-<slug>.md`. They follow `_LOUIE_/templates/bugfix-template.md`.
+
+The cross-project index is `_LOUIE-output/bugfixes/overview.md` — Nina updates it whenever she lands a fix.
 
 ## Open Questions
 

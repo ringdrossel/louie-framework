@@ -2,14 +2,17 @@
 
 When the user says **`louie-import`**, follow this procedure to retrofit LOUIE onto a project that already has source code (and optionally v1-style docs).
 
-The command produces the same artifacts as `louie-setup`:
+The command produces the same artifacts as `louie-setup` plus several rounds of `louie-feature`, in the per-feature folder layout:
 
 - `_LOUIE-output/architecture.md`
 - `_LOUIE-output/tech-stack.md`
 - `_LOUIE-output/runbook.md`
-- `_LOUIE-output/requirements/<feature>-requirements.md` (one per discovered feature)
-- `_LOUIE-output/implementations/<feature>.md` (one per discovered feature, status: Implemented)
-- `_LOUIE-output/implementations/overview.md`
+- `_LOUIE-output/implementations/overview.md` — slim index
+- `_LOUIE-output/implementations/<feature>/feature.md` — per discovered feature, status: Implemented
+- `_LOUIE-output/implementations/<feature>/requirements.md` — per discovered feature
+- `_LOUIE-output/implementations/<feature>/decisions.md` — only if decisions were captured during import
+- `_LOUIE-output/implementations/<feature>/bugfixes/.gitkeep` — folder created empty
+- `_LOUIE-output/bugfixes/overview.md` — empty cross-cutting index, ready for future fixes
 
 After it completes, the project is indistinguishable from one that went through `louie-setup` plus several rounds of `louie-feature`.
 
@@ -30,7 +33,8 @@ After it completes, the project is indistinguishable from one that went through 
    - Do not proceed without an explicit answer.
 
 3. **Refuse to overwrite without permission:**
-   - If `_LOUIE-output/architecture.md`, `tech-stack.md`, or `runbook.md` already exist with content (not just template placeholders), stop and ask the user before continuing. Show them which files exist and ask whether to overwrite, merge, or abort. Never silently overwrite.
+   - If `_LOUIE-output/architecture.md`, `tech-stack.md`, `runbook.md`, or any subfolder under `_LOUIE-output/implementations/` already exists with content (not just template placeholders), stop and ask the user before continuing. Show them which files exist and ask whether to overwrite, merge, or abort. Never silently overwrite.
+   - Special case: a project on the **old flat layout** (`_LOUIE-output/implementations/<feature>.md` files at top level, or any `_LOUIE-output/requirements/` directory) should **not** be imported — it should be migrated. Tell the user to run `louie-migrate` instead.
 
 4. **Greet the user and explain what's about to happen:**
    - Briefly describe what import does: Sophie will scan the codebase to infer architecture/tech-stack/runbook; Tom will interview to fill gaps; both will discover features and produce per-feature requirements + implementation docs.
@@ -61,26 +65,29 @@ After it completes, the project is indistinguishable from one that went through 
    - For v1-docs mode, Tom should mine the v1 feature docs first (they often contain goal/overview text) and only ask the user about what is still missing.
    - Tom keeps the interview short. Do not over-ask — most of the requirements information should be derivable from code or v1 docs.
 
-8. **Produce per-feature requirements docs:**
-   - For each discovered feature, create `_LOUIE-output/requirements/<feature>-requirements.md` from `_LOUIE_/templates/requirements-template.md`.
-   - Fill in user stories and acceptance criteria from Tom's interview answers (or v1 docs in v1-docs mode).
-   - If specific requirements remain unknown, leave them in Open Questions — do not fabricate.
+8. **Produce per-feature folders:**
+   For each discovered feature `<feature>`:
+   - Create the folder `_LOUIE-output/implementations/<feature>/`.
+   - Create `<feature>/requirements.md` from `_LOUIE_/templates/requirements-template.md`. Fill in user stories and acceptance criteria from Tom's interview answers (or v1 docs in v1-docs mode). Leave Open Questions populated if specific requirements remain unknown — do not fabricate.
+   - Create `<feature>/feature.md` from `_LOUIE_/templates/feature-template.md`:
+     - Set status to **Implemented** (trust-as-truth: the running code is the source of authority). Tick Planned, In Development, and Implemented; tick Tested only if test files exist for that feature.
+     - Fill Components/Modules, Files, and Key Interfaces/Types from the actual code.
+     - In v1-docs mode, carry over content from the matching `docs/implementations/<feature>.md` where it adds detail beyond what code reveals. v1 sections map directly to LOUIE feature sections — the LOUIE template is a strict superset.
+     - Fill Change History with one entry: `YYYY-MM-DD: Imported into LOUIE from existing codebase` (or `from v1 docs` for v1-docs mode).
+     - Omit the `Handoff to Max (Reviewer)` section — there's nothing to hand off; the code already exists.
+   - Create the empty bugfixes folder: `<feature>/bugfixes/.gitkeep`.
+   - Skip `<feature>/decisions.md` unless an actual decision was captured during import (e.g., something Sophie surfaced from code that warrants an ADR). Don't create empty placeholders.
 
-9. **Produce per-feature implementation docs:**
-   - For each discovered feature, create `_LOUIE-output/implementations/<feature>.md` from `_LOUIE_/templates/feature-template.md`.
-   - Set status to **Implemented** (trust-as-truth: the code is running, that is the source of authority). All status checkboxes for Planned, In Development, and Implemented should be checked; Tested only if test files exist for that feature.
-   - Fill Components/Modules, Files, and Key Interfaces/Types from the actual code.
-   - In v1-docs mode, carry over content from the matching `docs/implementations/<feature>.md` where it adds detail beyond what code reveals. v1 sections map directly to v2 sections — the v2 template is a strict superset.
-   - Fill the Change History with a single entry: `YYYY-MM-DD: Imported into LOUIE from existing codebase` (or `from v1 docs` for v1-docs mode).
-   - Skip the `Handoff to Max (Reviewer)` section — there's nothing to hand off; the code already exists.
+9. **Produce overview:**
+   - Create or update `_LOUIE-output/implementations/overview.md` from the existing skeleton.
+   - Fill Project Context (name, goal, status) from Tom's answers and v1 docs (if any).
+   - List every discovered feature in the **Implemented** table with a one-line description and a link to `implementations/<feature>/feature.md`.
 
-10. **Produce overview:**
-    - Create or update `_LOUIE-output/implementations/overview.md` from the existing template.
-    - Fill Project Context (name, goal, status) from Tom's answers and v1 docs (if any).
-    - List every discovered feature in the **Implemented** table with a link to its implementation doc.
+10. **Bootstrap the bugfix index:**
+    - Create `_LOUIE-output/bugfixes/overview.md` from `_LOUIE_/templates/bugfixes-overview-template.md` if it doesn't exist. Leave the tables empty — there are no recorded fixes yet (we don't backfill from existing source).
 
 11. **Confirmation gate (architecture):**
-    - Present `architecture.md`, `tech-stack.md`, `runbook.md`, the per-feature requirements docs, the per-feature implementation docs, and the overview.
+    - Present `architecture.md`, `tech-stack.md`, `runbook.md`, the per-feature folders (with their `feature.md` and `requirements.md`), and the overviews (`implementations/overview.md` + `bugfixes/overview.md`).
     - Walk the user through Sophie's key inferences and any Open Questions.
     - Wait for explicit confirmation before declaring the import complete.
     - If the user wants changes, update the documents and re-present.

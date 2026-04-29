@@ -22,9 +22,9 @@ This command is for changes that are:
    - Read `_LOUIE_/guidelines/coding-guidelines.md`
 
 2. **Identify the feature:**
-   - If the user specified the feature alongside the command, find its document in `_LOUIE-output/implementations/`
+   - If the user specified the feature alongside the command, open its folder at `_LOUIE-output/implementations/[feature-name]/`
    - If not, ask: "Which feature does this change belong to?"
-   - Read the feature document completely
+   - Read `feature.md` completely
 
 3. **Verify the change is truly simple:**
    - Estimate lines of code affected
@@ -42,7 +42,7 @@ This command is for changes that are:
    - If quality check fails, fix before proceeding
 
 6. **Update the feature document:**
-   - Add to Change History: `YYYY-MM-DD: [Brief change description]`
+   - Add to Change History in `_LOUIE-output/implementations/[feature-name]/feature.md`: `YYYY-MM-DD: [Brief change description]`
    - Update code snippets or structure sections if relevant
 
 7. **Generate a commit message:**

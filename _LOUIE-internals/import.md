@@ -13,16 +13,20 @@ Before this command, `_LOUIE_/setup/project-setup.md` punted on both cases ("jus
 
 ## Scope
 
-`louie-import` produces the same artifacts as a successful `louie-setup`:
+`louie-import` produces the same artifacts as a successful `louie-setup` plus N rounds of `louie-feature`, in the per-feature folder layout (see `_LOUIE-internals/scaling.md`):
 
 - `_LOUIE-output/architecture.md`
 - `_LOUIE-output/tech-stack.md`
 - `_LOUIE-output/runbook.md`
-- `_LOUIE-output/requirements/<feature>-requirements.md` (one per discovered feature)
-- `_LOUIE-output/implementations/<feature>.md` (one per discovered feature, status: Implemented)
-- `_LOUIE-output/implementations/overview.md`
+- `_LOUIE-output/implementations/overview.md` — slim index
+- `_LOUIE-output/implementations/<feature>/feature.md` — per discovered feature, status: Implemented
+- `_LOUIE-output/implementations/<feature>/requirements.md`
+- `_LOUIE-output/implementations/<feature>/bugfixes/.gitkeep` — empty bugfix folder
+- `_LOUIE-output/bugfixes/overview.md` — empty cross-cutting index, ready for future fixes
 
 After `louie-import` exits successfully, the project is indistinguishable from one that went through `louie-setup` + N rounds of `louie-feature`. The two architecture confirmation gates apply identically.
+
+**Import never produces the old flat layout.** A project with the flat layout already in `_LOUIE-output/` should run `louie-migrate`, not `louie-import`. The import command refuses to start when it sees the flat-layout signal and points the user at `louie-migrate` instead.
 
 ## Two Modes
 
@@ -52,15 +56,15 @@ A v1 project's docs live at:
 docs/
 ├── ai-workflow.md                    ← discard (replaced by LOUIE workflow)
 ├── implementations/
-│   ├── overview.md                   ← maps to _LOUIE-output/implementations/overview.md
-│   └── <feature>.md                  ← maps to _LOUIE-output/implementations/<feature>.md
+│   ├── overview.md                   ← maps to _LOUIE-output/implementations/overview.md (slim form)
+│   └── <feature>.md                  ← maps to _LOUIE-output/implementations/<feature>/feature.md
 └── templates/
     └── feature-template.md           ← discard (LOUIE has its own)
 ```
 
 The unambiguous v1 signature is `docs/implementations/overview.md` plus sibling per-feature `.md` files. v1 had no requirements/architecture/tech-stack/runbook concepts — those still need reverse engineering from code, the same way Cold Import does it. v1 docs only short-circuit the **feature discovery** step.
 
-v1 feature docs translate directly to LOUIE's feature template (the v2 template is a strict superset). New sections (Type, Affected Entities, Testing Strategy, Handoff) get filled from architecture context.
+v1 feature docs translate directly into the **per-feature folder** layout: each v1 `<feature>.md` becomes `_LOUIE-output/implementations/<feature>/feature.md` (LOUIE's feature template is a strict superset). Tom's per-feature `requirements.md` is freshly produced from the gap-filling interview (v1 had no requirements artifact).
 
 ### Mode Detection
 

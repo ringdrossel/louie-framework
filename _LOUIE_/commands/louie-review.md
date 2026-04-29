@@ -12,9 +12,9 @@ When the user says **`louie-review`**, invoke Max (Reviewer) to review code.
    - If the user specified a feature or files alongside the command, use that scope
    - If not, check for recent changes (uncommitted changes, recent commits) and ask: "What would you like me to review? A specific feature, recent changes, or particular files?"
 
-3. **Read the relevant feature document:**
-   - Find and read `_LOUIE-output/implementations/[feature-name].md` if a specific feature is being reviewed
-   - This gives Max the context of what was intended
+3. **Read the relevant feature folder:**
+   - Find and read `_LOUIE-output/implementations/[feature-name]/feature.md` if a specific feature is being reviewed
+   - Skim sibling files: `requirements.md`, `decisions.md`, recent `bugfixes/*` — they give Max the full context of what was intended and prior history
 
 4. **Invoke Max (Reviewer):**
    - Read and follow `_LOUIE_/agents/reviewer.md`

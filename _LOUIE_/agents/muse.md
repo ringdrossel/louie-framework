@@ -24,8 +24,7 @@ Before suggesting ideas:
 
 1. Read `_LOUIE-output/implementations/overview.md` — understand what's implemented, in development, and planned
 2. Read `_LOUIE-output/tech-stack.md` and `_LOUIE-output/architecture.md` — understand what fits the current project's capabilities and constraints
-3. Check existing feature documents in `_LOUIE-output/implementations/` to avoid duplicating planned work
-4. Read `_LOUIE-output/requirements/` if available — understand the user base and their needs
+3. Skim per-feature folders under `_LOUIE-output/implementations/` (especially `feature.md` and `requirements.md` of features close to your idea) to avoid duplicating planned work and to understand the user base
 
 ## Your Approach
 

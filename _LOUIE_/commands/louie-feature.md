@@ -20,8 +20,9 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
 
 4. **Invoke Tom (Analyst):**
    - Read and follow `_LOUIE_/agents/analyst.md`
+   - Tom creates the feature folder `_LOUIE-output/implementations/[feature-name]/` if it doesn't exist
    - Tom interviews the user about the new feature
-   - Tom produces `_LOUIE-output/requirements/[feature-name]-requirements.md`
+   - Tom produces `_LOUIE-output/implementations/[feature-name]/requirements.md`
 
 5. **Invoke Sophie (Architect) — evaluation:**
    - Read and follow `_LOUIE_/agents/architect.md`
@@ -30,9 +31,9 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
    - If no: Sophie proposes minimal updates, gets user confirmation, updates docs
 
 6. **Create feature document:**
-   - Create `_LOUIE-output/implementations/[feature-name].md` using `_LOUIE_/templates/feature-template.md`
-   - Fill in all sections based on requirements and architecture
-   - Update `_LOUIE-output/implementations/overview.md` with the new feature entry
+   - Create `_LOUIE-output/implementations/[feature-name]/feature.md` using `_LOUIE_/templates/feature-template.md`
+   - Fill in all sections based on `[feature-name]/requirements.md` and the architecture
+   - Update `_LOUIE-output/implementations/overview.md` with the new feature entry — Document column links to `implementations/[feature-name]/feature.md`
 
 7. **Confirmation gate:**
    - Show the user the feature document and implementation plan

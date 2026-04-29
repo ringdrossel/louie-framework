@@ -15,7 +15,9 @@ When the user says **`louie-doc`**, follow this procedure to update project docu
    - Ask the user for context if the changes aren't clear from the diff
 
 3. **Identify which documents need updating:**
-   - **Feature document** (`_LOUIE-output/implementations/[feature].md`) — update status, code structure, change history
+   - **Feature document** (`_LOUIE-output/implementations/[feature]/feature.md`) — update status, code structure, change history
+   - **Decisions** (`_LOUIE-output/implementations/[feature]/decisions.md`) — append a new ADR if a non-trivial decision was made (create from `_LOUIE_/templates/decisions-template.md` if absent)
+   - **Bug fixes overview** (`_LOUIE-output/bugfixes/overview.md`) — if any bug fixes landed, ensure the index is current
    - **Overview** (`_LOUIE-output/implementations/overview.md`) — update feature table if status changed
    - **Architecture** (`_LOUIE-output/architecture.md`) — update if new patterns, layers, or integration points were introduced
    - **Tech stack** (`_LOUIE-output/tech-stack.md`) — update if new libraries or tools were added

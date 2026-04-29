@@ -78,7 +78,7 @@ If the user agrees, continue with the Comprehensive Mode questions. If not, do y
 
 ### Step 5: Produce Requirements Document
 
-Write the output to `_LOUIE-output/requirements/[feature-name]-requirements.md` using the requirements template (`_LOUIE_/templates/requirements-template.md`).
+Write the output to `_LOUIE-output/implementations/[feature-name]/requirements.md` using the requirements template (`_LOUIE_/templates/requirements-template.md`). Create the feature folder if it doesn't exist yet — Tom is usually the first to write into a new feature folder.
 
 Rules for the document:
 - Requirements must be **testable** — every acceptance criterion must be verifiable
@@ -91,7 +91,7 @@ Rules for the document:
 
 Update `_LOUIE-output/implementations/overview.md`:
 - Fill in the **Project Context** section (name, goal, status) if this is the first feature
-- Add the new feature to the **Planned** table with its priority and a link to the requirements document
+- Add the new feature to the **Planned** table with its priority, a one-line description, and a Document column link to `implementations/[feature]/feature.md` (the implementation doc Nina will produce; the link is added now even though the file doesn't exist yet)
 
 ### Step 6: Handoff
 

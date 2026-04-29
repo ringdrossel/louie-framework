@@ -32,12 +32,12 @@ Ivy (Muse) — runs independently, feeds ideas back to Tom
 
 | Agent | Role | Produces |
 |-------|------|----------|
-| **Tom** (Analyst) | Requirements interview | `_LOUIE-output/requirements/[feature].md` |
+| **Tom** (Analyst) | Requirements interview | `_LOUIE-output/implementations/[feature]/requirements.md` |
 | **Sophie** (Architect) | Architecture + tech stack + runbook (initial) | `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, `_LOUIE-output/runbook.md` |
-| **Leo** (Designer) | UI/UX design | UI section in feature document |
-| **Nina** (Coder) | Implementation + runbook updates | Source code + `_LOUIE-output/implementations/[feature].md` + appended entries in `runbook.md` |
-| **Max** (Reviewer) | Code review + runbook coverage check | Review comments on feature doc |
-| **Ava** (Tester) | Test writing | Test files + coverage notes |
+| **Leo** (Designer) | UI/UX design | UI section in `[feature]/feature.md` |
+| **Nina** (Coder) | Implementation + runbook updates + bugfix docs | Source code + `_LOUIE-output/implementations/[feature]/feature.md` (and `decisions.md` when an ADR is made) + bugfix docs + appended entries in `runbook.md` |
+| **Max** (Reviewer) | Code review + runbook + bugfix coverage check | Review comments on `[feature]/feature.md` |
+| **Ava** (Tester) | Test writing | Test files + coverage notes in `[feature]/feature.md` |
 | **Ivy** (Muse) | Product ideation | Idea list for user consideration |
 
 ---
@@ -54,14 +54,14 @@ Invoke _LOUIE_/agents/analyst.md
 My idea: [describe your project or first feature]
 ```
 
-Tom interviews you and produces `_LOUIE-output/requirements/[feature]-requirements.md`.
+Tom creates the feature folder and produces `_LOUIE-output/implementations/[feature]/requirements.md`.
 
 ### Step 2: Talk to Sophie (Architect)
 
 ```
 Invoke _LOUIE_/agents/architect.md
 
-Requirements are ready in _LOUIE-output/requirements/[feature]-requirements.md
+Requirements are ready in _LOUIE-output/implementations/[feature]/requirements.md
 ```
 
 Sophie produces `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, and `_LOUIE-output/runbook.md`.
@@ -70,7 +70,7 @@ Sophie produces `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, 
 
 ### Step 3: Create Feature Document
 
-Create `_LOUIE-output/implementations/[feature].md` using `_LOUIE_/templates/feature-template.md`. Fill in all sections based on the requirements and architecture.
+Create `_LOUIE-output/implementations/[feature]/feature.md` using `_LOUIE_/templates/feature-template.md`. Fill in all sections based on the requirements and architecture.
 
 **CONFIRMATION GATE:** Review the feature document and implementation plan. Confirm before coding.
 
@@ -79,7 +79,7 @@ Create `_LOUIE-output/implementations/[feature].md` using `_LOUIE_/templates/fea
 ```
 Invoke _LOUIE_/agents/designer.md
 
-Feature doc: _LOUIE-output/implementations/[feature].md
+Feature folder: _LOUIE-output/implementations/[feature]/
 ```
 
 Leo designs the component structure and UX. Skip this step for backend-only features.
@@ -89,17 +89,17 @@ Leo designs the component structure and UX. Skip this step for backend-only feat
 ```
 Invoke _LOUIE_/agents/coder.md
 
-Feature doc: _LOUIE-output/implementations/[feature].md
+Feature folder: _LOUIE-output/implementations/[feature]/
 ```
 
-Nina implements the feature, updates the feature doc, and hands off to Max.
+Nina implements the feature, updates `feature.md` (and creates `decisions.md` if an ADR was made), and hands off to Max.
 
 ### Step 6: Talk to Max (Reviewer)
 
 ```
 Invoke _LOUIE_/agents/reviewer.md
 
-Feature doc: _LOUIE-output/implementations/[feature].md
+Feature folder: _LOUIE-output/implementations/[feature]/
 Review the implementation.
 ```
 
@@ -110,7 +110,7 @@ Max reviews and provides feedback. If changes are needed, Nina fixes them before
 ```
 Invoke _LOUIE_/agents/tester.md
 
-Feature doc: _LOUIE-output/implementations/[feature].md
+Feature folder: _LOUIE-output/implementations/[feature]/
 Write tests for the implementation.
 ```
 
@@ -207,6 +207,7 @@ Ivy suggests ideas. If you like one, run `louie-feature` to build it.
 |---------|-------------|
 | `louie-setup` | Initialize a new project (Tom interviews, Sophie architects) |
 | `louie-import` | Import an existing project (cold or v1 docs) into LOUIE |
+| `louie-migrate` | Migrate an old-layout LOUIE project to per-feature folders |
 | `louie-feature` | Add a new feature (full chain: Tom → Sophie → Leo → Nina → Max → Ava) |
 | `louie-extend` | Extend an existing feature |
 | `louie-update` | Quick change (< 50 lines, auto-escalates to `louie-extend`) |
@@ -283,11 +284,17 @@ _LOUIE-output/                    ← Agent-produced artifacts
 ├── architecture.md               ← Sophie's output (design)
 ├── tech-stack.md                 ← Sophie's output (build-time)
 ├── runbook.md                    ← Sophie's output (run-time); Nina appends
-├── requirements/                 ← Tom's output
-│   └── [feature]-requirements.md
-└── implementations/              ← Feature docs + overview
+├── implementations/              ← One folder per feature + slim overview
+│   ├── overview.md               ← slim index of all features
+│   └── [feature]/
+│       ├── feature.md            ← Nina's output (the implementation doc)
+│       ├── requirements.md       ← Tom's output (requirements for this feature)
+│       ├── decisions.md          ← feature-scoped ADRs; created when needed
+│       └── bugfixes/
+│           └── YYYY-MM-DD-<slug>.md   ← one file per per-feature bug fix
+└── bugfixes/                     ← Cross-project bug-fix index + cross-cutting fixes
     ├── overview.md
-    └── [feature].md
+    └── YYYY-MM-DD-<slug>.md      ← bug fixes touching multiple features
 ```
 
 ---

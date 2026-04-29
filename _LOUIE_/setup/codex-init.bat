@@ -33,6 +33,7 @@ echo.
 echo Available commands:
 echo - `louie-setup` → `_LOUIE_/commands/louie-setup.md`
 echo - `louie-import` → `_LOUIE_/commands/louie-import.md`
+echo - `louie-migrate` → `_LOUIE_/commands/louie-migrate.md`
 echo - `louie-feature` → `_LOUIE_/commands/louie-feature.md`
 echo - `louie-extend` → `_LOUIE_/commands/louie-extend.md`
 echo - `louie-update` → `_LOUIE_/commands/louie-update.md`
@@ -59,7 +60,8 @@ echo - `_LOUIE_/agents/` — agent definitions
 echo - `_LOUIE-output/architecture.md` — system design
 echo - `_LOUIE-output/tech-stack.md` — build-time stack
 echo - `_LOUIE-output/runbook.md` — runtime ops ^(deployment, ports, commands, gotchas^)
-echo - `_LOUIE-output/` — full artifact tree
+echo - `_LOUIE-output/implementations/^<feature^>/` — per-feature folder ^(feature.md, requirements.md, decisions.md, bugfixes/^)
+echo - `_LOUIE-output/bugfixes/overview.md` — cross-project bug-fix index
 echo ^<!-- /LOUIE-FRAMEWORK --^>
 ) >> "%AGENTS_MD%"
 

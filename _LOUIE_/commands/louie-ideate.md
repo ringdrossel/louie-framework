@@ -7,7 +7,7 @@ When the user says **`louie-ideate`**, invoke Ivy (Muse) for product brainstormi
 1. **Read project context:**
    - Read `_LOUIE-output/implementations/overview.md` — understand existing features
    - Read `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md` — understand what's technically feasible
-   - Check existing feature documents in `_LOUIE-output/implementations/` to avoid duplicating planned work
+   - Skim per-feature folders under `_LOUIE-output/implementations/<feature>/` (especially `feature.md`) to avoid duplicating planned work
 
 2. **Determine the scope:**
    - If the user specified a focus area alongside the command, use that

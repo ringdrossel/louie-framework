@@ -39,8 +39,17 @@ When the user says **`louie-update-framework`**, follow this procedure to update
    - **Check `_LOUIE-output/` for any new canonical outputs introduced by this framework update.** If a new output is now expected (e.g. `runbook.md`) and the project doesn't have it, tell the user and offer to bootstrap it from existing artifacts (architecture, ad-hoc context files). Never silently create files in `_LOUIE-output/`.
    - Highlight breaking changes if any (e.g., renamed files, changed handoff format)
 
-6. **Confirm success:**
-   - "Framework updated to the latest version. Your `_LOUIE-output/` artifacts are untouched."
+6. **Detect old artifact layout and offer migration:**
+   - Inspect `_LOUIE-output/` for the old flat layout signal:
+     - At least one `*.md` file directly in `_LOUIE-output/implementations/` other than `overview.md`, OR
+     - The directory `_LOUIE-output/requirements/` exists
+   - If the old layout is detected, tell the user:
+     > "Your `_LOUIE-output/` is on the old flat layout. The framework now uses per-feature folders (`implementations/<feature>/feature.md` + `requirements.md` + `decisions.md` + `bugfixes/`) and a top-level `bugfixes/overview.md` index. I can run `louie-migrate` for you now to restructure your artifacts (one-way; uses `git mv` so history is preserved)."
+   - On user confirmation, follow `_LOUIE_/commands/louie-migrate.md` directly. Do not re-prompt for the same confirmations `louie-migrate` would ask.
+   - On decline, leave the project on the old layout and warn that newly-shipped commands assume the new layout — features run via `louie-feature` etc. will produce per-feature folders alongside the old flat files until migration runs.
+
+7. **Confirm success:**
+   - "Framework updated to the latest version. Your `_LOUIE-output/` artifacts are [untouched / migrated to the new layout]."
 
 ## Usage
 

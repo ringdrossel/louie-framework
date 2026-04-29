@@ -45,6 +45,7 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 |---------|-------------|
 | `/louie-setup` | Initialize a new project |
 | `/louie-import` | Import an existing project (cold or v1 docs) into LOUIE |
+| `/louie-migrate` | Migrate an old-layout LOUIE project to per-feature folders |
 | `/louie-feature` | Add a new feature (full agent chain) |
 | `/louie-extend` | Extend an existing feature |
 | `/louie-update` | Quick change (< 50 lines) |
@@ -71,7 +72,8 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 - `_LOUIE-output/architecture.md` — system design
 - `_LOUIE-output/tech-stack.md` — build-time stack
 - `_LOUIE-output/runbook.md` — runtime ops (deployment, ports, commands, gotchas)
-- `_LOUIE-output/` — full artifact tree (requirements, architecture, feature docs)
+- `_LOUIE-output/implementations/<feature>/` — per-feature folder (`feature.md`, `requirements.md`, `decisions.md`, `bugfixes/`)
+- `_LOUIE-output/bugfixes/overview.md` — cross-project bug-fix index
 <!-- /LOUIE-FRAMEWORK -->
 CONTENT
   echo ""

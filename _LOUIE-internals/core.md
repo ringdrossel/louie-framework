@@ -50,7 +50,7 @@ When adding a new file that should ship: put it under `_LOUIE_/`. When adding a 
 LOUIE enforces two gates in the full feature chain:
 
 1. **Architecture gate** — no feature work begins until `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md` are approved by the user.
-2. **Feature doc gate** — no implementation begins until the feature document in `_LOUIE-output/implementations/[feature].md` is approved.
+2. **Feature doc gate** — no implementation begins until the feature document in `_LOUIE-output/implementations/[feature]/feature.md` is approved.
 
 These are load-bearing. They catch mistakes before expensive work happens. Any new command or flow that produces code **must** respect them, either by running through the existing chain or by re-asserting the gates explicitly.
 
@@ -76,8 +76,16 @@ Additionally, a third rule (added later): **no merge to `main` without explicit 
 
 ### Artifacts
 
-- Requirements: `_LOUIE-output/requirements/<feature>-requirements.md`
-- Implementations: `_LOUIE-output/implementations/<feature>.md`
+- Per-feature folder: `_LOUIE-output/implementations/<feature>/`
+- Implementation doc: `_LOUIE-output/implementations/<feature>/feature.md`
+- Requirements: `_LOUIE-output/implementations/<feature>/requirements.md`
+- Decisions (feature-scoped ADRs): `_LOUIE-output/implementations/<feature>/decisions.md`
+- Per-feature bug fixes: `_LOUIE-output/implementations/<feature>/bugfixes/<YYYY-MM-DD>-<slug>.md`
+- Cross-cutting bug fixes: `_LOUIE-output/bugfixes/<YYYY-MM-DD>-<slug>.md`
+- Bug-fix index: `_LOUIE-output/bugfixes/overview.md`
+- Feature index: `_LOUIE-output/implementations/overview.md` (slim — one-line description per feature)
+
+See `_LOUIE-internals/scaling.md` for the design rationale (universal per-feature folders, lazy-loading-friendly, AI-efficiency criterion).
 
 ## Cross-Platform Constraints
 

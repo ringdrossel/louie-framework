@@ -49,6 +49,7 @@ echo ^| Command ^| Description ^|
 echo ^|---------|-------------|
 echo ^| `/louie-setup` ^| Initialize a new project ^|
 echo ^| `/louie-import` ^| Import an existing project ^(cold or v1 docs^) into LOUIE ^|
+echo ^| `/louie-migrate` ^| Migrate an old-layout LOUIE project to per-feature folders ^|
 echo ^| `/louie-feature` ^| Add a new feature ^(full agent chain^) ^|
 echo ^| `/louie-extend` ^| Extend an existing feature ^|
 echo ^| `/louie-update` ^| Quick change ^(^< 50 lines^) ^|
@@ -75,7 +76,8 @@ echo - `_LOUIE_/agents/` — agent definitions
 echo - `_LOUIE-output/architecture.md` — system design
 echo - `_LOUIE-output/tech-stack.md` — build-time stack
 echo - `_LOUIE-output/runbook.md` — runtime ops ^(deployment, ports, commands, gotchas^)
-echo - `_LOUIE-output/` — full artifact tree
+echo - `_LOUIE-output/implementations/^<feature^>/` — per-feature folder ^(feature.md, requirements.md, decisions.md, bugfixes/^)
+echo - `_LOUIE-output/bugfixes/overview.md` — cross-project bug-fix index
 echo ^<!-- /LOUIE-FRAMEWORK --^>
 ) >> "%CLAUDE_MD%"
 

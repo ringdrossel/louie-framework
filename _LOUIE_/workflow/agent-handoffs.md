@@ -37,13 +37,13 @@ Keep it concise — 5-10 bullet points max. The full document is there for deep 
 
 | Agent | Produces | Reads |
 |-------|----------|-------|
-| **Tom** (Analyst) | `_LOUIE-output/requirements/[feature].md` | `_LOUIE-output/implementations/overview.md` |
-| **Sophie** (Architect) | `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md` | Requirements docs |
-| **Leo** (Designer) | UI section in feature doc | Requirements, architecture, tech-stack |
-| **Nina** (Coder) | `_LOUIE-output/implementations/[feature].md`, source code | All docs + guidelines |
-| **Max** (Reviewer) | Review comments on feature doc | Feature doc, source code, guidelines |
-| **Ava** (Tester) | Test files, coverage notes in feature doc | Feature doc, source code, guidelines |
-| **Ivy** (Muse) | Idea list (returned to user) | Overview, architecture, tech-stack |
+| **Tom** (Analyst) | `_LOUIE-output/implementations/[feature]/requirements.md` | `_LOUIE-output/implementations/overview.md` |
+| **Sophie** (Architect) | `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, `_LOUIE-output/runbook.md` | Requirements docs (in each feature folder) |
+| **Leo** (Designer) | UI section in `[feature]/feature.md` | Requirements, architecture, tech-stack |
+| **Nina** (Coder) | `_LOUIE-output/implementations/[feature]/feature.md`, source code, optionally `[feature]/decisions.md`, and on bugfixes `[feature]/bugfixes/<date>-<slug>.md` (or top-level `_LOUIE-output/bugfixes/` for cross-cutting) plus a row in `_LOUIE-output/bugfixes/overview.md` | All docs + guidelines |
+| **Max** (Reviewer) | Review comments on `[feature]/feature.md` | Feature folder (`feature.md`, `requirements.md`, `decisions.md`, recent `bugfixes/`), source code, guidelines |
+| **Ava** (Tester) | Test files, coverage notes in `[feature]/feature.md` | Feature folder, source code, guidelines |
+| **Ivy** (Muse) | Idea list (returned to user) | Overview, architecture, tech-stack, per-feature folders |
 
 ---
 

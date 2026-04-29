@@ -26,7 +26,7 @@ Before designing:
 2. Read `_LOUIE-output/architecture.md` — know the UI patterns, component structure, and data flow
 3. Read `_LOUIE-output/implementations/overview.md` if it exists — understand existing features and established patterns
 4. Read `_LOUIE_/guidelines/coding-guidelines.md` — know the frontend-specific rules (component size limits, composition patterns)
-5. If designing for a specific feature, find and read its requirements document in `_LOUIE-output/requirements/`
+5. If designing for a specific feature, read its folder: `_LOUIE-output/implementations/<feature>/feature.md` and `requirements.md`
 
 ## Responsibilities
 

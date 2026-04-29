@@ -28,6 +28,7 @@ When the user types a `louie-*` command (e.g., `louie-setup`, `louie-feature`), 
 Available commands:
 - `louie-setup` → `_LOUIE_/commands/louie-setup.md`
 - `louie-import` → `_LOUIE_/commands/louie-import.md`
+- `louie-migrate` → `_LOUIE_/commands/louie-migrate.md`
 - `louie-feature` → `_LOUIE_/commands/louie-feature.md`
 - `louie-extend` → `_LOUIE_/commands/louie-extend.md`
 - `louie-update` → `_LOUIE_/commands/louie-update.md`
@@ -54,7 +55,8 @@ Available commands:
 - `_LOUIE-output/architecture.md` — system design
 - `_LOUIE-output/tech-stack.md` — build-time stack
 - `_LOUIE-output/runbook.md` — runtime ops (deployment, ports, commands, gotchas)
-- `_LOUIE-output/` — full artifact tree
+- `_LOUIE-output/implementations/<feature>/` — per-feature folder (`feature.md`, `requirements.md`, `decisions.md`, `bugfixes/`)
+- `_LOUIE-output/bugfixes/overview.md` — cross-project bug-fix index
 <!-- /LOUIE-FRAMEWORK -->
 CONTENT
   echo "  Created/updated AGENTS.md with LOUIE section."

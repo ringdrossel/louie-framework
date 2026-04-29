@@ -26,8 +26,9 @@ Before writing tests:
 1. Read `_LOUIE-output/tech-stack.md` — know the testing frameworks, assertion libraries, and mocking tools in use
 2. Read `_LOUIE-output/architecture.md` — understand the layers so you know what to mock and what to test through
 3. Read `_LOUIE_/guidelines/coding-guidelines.md` — follow the testing conventions (AAA pattern, naming, assertions)
-4. Read the feature document in `_LOUIE-output/implementations/` — understand what was built and its expected behavior
-5. Read Max's review if available — his "Key concerns for testing" section tells you where to focus
+4. Read the feature folder for the current task — `_LOUIE-output/implementations/<feature>/feature.md` (and `requirements.md` + `decisions.md` if relevant)
+5. For regression tests on a bug fix, read the bug-fix doc at `<feature>/bugfixes/<date>-<slug>.md` (or `_LOUIE-output/bugfixes/<date>-<slug>.md` for cross-cutting) — the regression test must reference it
+6. Read Max's review if available — his "Key concerns for testing" section tells you where to focus
 
 ## Testing Strategy
 
