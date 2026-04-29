@@ -144,11 +144,16 @@ A complete implementation has to update:
 
 This is the largest structural change since the framework was built. Worth a separate feature branch with thorough review before merging.
 
+## Decisions Locked
+
+The following were open during initial design and are now locked. Rationale in each: optimizing for **AI working efficiently with the .md files** (lazy-loading, minimum tool calls, trustworthy indexes).
+
+- **`overview.md` keeps a one-line description column.** Without it, the AI can't triage which feature a user is asking about without loading every `feature.md`. The description column is what makes the index actually function as an index. One short line per feature, not a paragraph.
+- **No backfill of existing bug fixes from Change History during migration.** Heuristic backfill produces noisy data, and a noisy bugfix index is worse than an incomplete one — false matches pollute "have we hit this bug before?" searches. Old bugs stay readable in their feature's Change History; new bugs all land cleanly in the new structure.
+- **`decisions.md` single file, split when it grows.** Typical feature ADR counts are small (<10), so a single 200-500-line file is one Read call. A folder layout would force list-then-read (more tool calls). If a feature exceeds ~10 ADRs, the team can split manually to `decisions/<date>-<slug>.md`. Don't bake the split into the framework; let it emerge.
+- **Migration command name: `louie-migrate`.**
+
 ## Open Questions
 
-- **`overview.md` description column.** Today it's a paragraph-ish description. With per-feature `feature.md` as the canonical home, should the overview keep a one-liner only, or drop descriptions entirely and rely on the link? Leaning one-liner for skimmability, but it's a judgement call.
-- **Backfill of existing bug fixes from Change History.** Default off (heuristic, noisy). Worth offering as an opt-in step in `louie-migrate`?
-- **`decisions.md` vs `decisions/` folder.** Single file is simpler; folder scales better past ~10 ADRs per feature. Single file with a documented split-when-needed rule seems right, but worth confirming.
-- **Bugfix template ownership.** A new `_LOUIE_/templates/bugfix-template.md` is needed (the existing `bugfix-prompt-template.md` is for prompting, not for output). Naming: `bugfix-template.md` (parallel to feature-template) or `bugfix-output-template.md` (disambiguates from the prompt one)? Leaning the former and renaming the prompt one to `bugfix-prompt-template.md` is already its name — so `bugfix-template.md` is free.
 - **Where does `louie-import` produce per-feature folders?** The new layout becomes the default for cold imports too. v1-docs imports should also produce the new layout, not preserve v1's flat shape.
 - **Multi-repo / monorepo interaction.** The scaling layout doesn't address monorepo by itself. That remains a separate backlog item — but the per-feature folder model is at least friendly to it (each subproject can have its own `_LOUIE-output/`).
