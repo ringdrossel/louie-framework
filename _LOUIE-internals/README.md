@@ -18,6 +18,7 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 | `recipes.md` | Recipe system design — dispatcher rules, folder layout, name resolution |
 | `runbook.md` | Runbook system design — operational doc separate from architecture |
 | `import.md` | Import system design — cold + v1-docs modes, init-script detection, agent reuse |
+| `scaling.md` | Artifact-layout scaling design — per-feature folders, bugfix home, migration path |
 | `BACKLOG.md` | Open ideas, gaps, and feature suggestions for the framework |
 | `CHANGELOG.md` | Framework version log |
 

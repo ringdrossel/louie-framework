@@ -55,23 +55,11 @@ Read-only command. No agent. Pure aggregation.
 
 ### Scaling the artifact layout for large projects
 
-Current layout puts every feature under `_LOUIE-output/implementations/` as a flat folder, and bug fixes have no first-class home (they're tracked in feature-doc Change History + runbook gotchas only). At ~100 features and hundreds of bug fixes, this stops working:
+**Status: designed, awaiting implementation approval.** See `_LOUIE-internals/scaling.md` for the full design.
 
-- `implementations/` becomes a wall of files
-- `overview.md` becomes too long to read end-to-end
-- Bug fixes are scattered across feature-doc tails — no central index
-- Cross-cutting bug patterns are invisible
+Direction locked in: **universal per-feature folders** (`implementations/<feature>/feature.md` + `requirements.md` + `decisions.md` + `bugfixes/<date>-<slug>.md`), top-level `_LOUIE-output/bugfixes/overview.md` for cross-cutting search, and a one-way migration path triggered from `louie-update-framework` (or a new `louie-migrate` command).
 
-Possible directions (need to pick one before designing):
-
-- **Per-feature folders.** `implementations/<feature>/feature.md`, `requirements.md`, `bugfixes/<date>-<slug>.md`, `decisions.md`. Co-locates everything for a feature; predictable scale.
-- **Domain grouping.** `implementations/<domain>/<feature>.md` — auth, billing, etc. Requires the user to maintain a domain taxonomy.
-- **Bug-fix index only.** Add `_LOUIE-output/bugfixes/overview.md` + per-fix files, leave features as-is.
-- **Hybrid.** Per-feature folders for new projects above a feature-count threshold; flat layout stays the small-project default.
-
-Open design questions: when does the layout switch happen (manual, automatic at threshold, on-demand)? How does `louie-import` decide which layout to produce? Can the existing flat layout migrate forward without breaking existing artifacts? Where do truly cross-cutting bugfixes (touching multiple features) live?
-
-This is the largest open item — implementing it is a structural change touching templates, all commands that write to `_LOUIE-output/`, the overview format, and `louie-update-framework`.
+Largest structural change since the framework was built. Touches templates, every command that writes to `_LOUIE-output/`, all agents, the overview format, `louie-update-framework`, and adds `louie-migrate`. Best done on its own feature branch.
 
 ## Smaller / nice-to-have
 
