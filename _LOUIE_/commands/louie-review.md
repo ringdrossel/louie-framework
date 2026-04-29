@@ -28,9 +28,14 @@ When the user says **`louie-review`**, invoke Max (Reviewer) to review code.
    - Max also calls out good code
 
 5. **If issues are found:**
-   - Present Max's review to the user
+   - Present Max's review to the user **in chat** — do not write a separate review file anywhere in `_LOUIE-output/`. The review is session-time output (see `_LOUIE_/agents/reviewer.md` Storage convention).
    - If the user wants fixes applied, invoke Nina (Coder) to address the findings
    - Re-review if critical issues were found
+
+6. **Record the outcome:**
+   - Append a single entry to `_LOUIE-output/implementations/[feature-name]/feature.md` Change History: `YYYY-MM-DD: Max review — addressed N critical, N should-fix; suggestions deferred.`
+   - If the review accepted a non-trivial decision, append an ADR to `[feature-name]/decisions.md` (create from `_LOUIE_/templates/decisions-template.md` if absent).
+   - If the review surfaced a real bug (not a code-quality issue), drop into the `louie-bugfix` flow — don't try to capture the bug fix in the review record.
 
 ## Usage
 

@@ -23,7 +23,8 @@ This combines `louie-review` and `louie-doc` into a single command. Max reviews 
 4. **Invoke Max (Reviewer):**
    - Read and follow `_LOUIE_/agents/reviewer.md`
    - Max reviews against architecture, guidelines, and the feature document
-   - Max produces findings: Critical / Should Fix / Suggestions
+   - Max produces findings **in chat**: Critical / Should Fix / Suggestions
+   - Do **not** write a standalone review file anywhere in `_LOUIE-output/`. Review outcomes get folded into Change History on `feature.md` (see Phase 2 below) and into `decisions.md` if a non-trivial decision is accepted.
 
 5. **Fix issues:**
    - If Max found Critical or Should Fix issues, invoke Nina (Coder) to address them

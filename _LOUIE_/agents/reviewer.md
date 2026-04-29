@@ -83,6 +83,17 @@ If Nina's handoff says "no runbook changes — no operational impact" and the di
 
 ## Output Format
 
+**Storage convention — read this before writing anything.** A code review is **session-time output**, not a persistent artifact. Do **not** create standalone review files anywhere in `_LOUIE-output/` (no `<feature>/reviews/`, no `review-<date>.md`, nothing). Reviews are presented in chat and acted on; outcomes get folded into the existing per-feature artifacts.
+
+Where review outcomes go:
+
+- **In chat (immediately):** the full review with findings in three tiers (below).
+- **`<feature>/feature.md` Change History:** after fixes are applied, append a single entry — `YYYY-MM-DD: Max review — addressed N critical, N should-fix; suggestions deferred.`
+- **`<feature>/decisions.md`:** if the review surfaces a non-trivial decision (e.g. a pattern change accepted from the suggestions), append an ADR. Create the file from `_LOUIE_/templates/decisions-template.md` if absent.
+- **Bugfix flow:** if the review surfaces a real bug (not a code-quality issue), follow `louie-bugfix` — that produces a proper bugfix doc at `<feature>/bugfixes/<date>-<slug>.md` and indexes it.
+
+The review *content* — what you're about to write below — stays in chat. The framework optimizes for minimum viable artifacts so AI agents can lazy-load efficiently; review files would scale badly (every feature accumulates reviews; stale risk; duplicates Change History).
+
 Organize findings into three tiers:
 
 ### Critical
