@@ -2,7 +2,7 @@
 
 When the user says **`louie-update`**, follow this procedure for small, contained changes that don't warrant the full feature chain.
 
-This is the fast lane — no Tom interview, no Sophie architecture eval, no Max review. Just implement, verify, and document.
+This is the fast lane — no Tom interview, no Sophie architecture eval, no Ava test pass. Implementation runs straight through, followed by a **slim Max review** and a focused spec sync.
 
 ## When to Use
 
@@ -41,11 +41,23 @@ This command is for changes that are:
    - Verify no file exceeds 800 lines
    - If quality check fails, fix before proceeding
 
-6. **Update the feature document:**
-   - Add to Change History in `_LOUIE-output/implementations/[feature-name]/feature.md`: `YYYY-MM-DD: [Brief change description]`
-   - Update code snippets or structure sections if relevant
+6. **Slim Max review:**
+   - Read and follow `_LOUIE_/agents/reviewer.md` — invoke Max in **Slim Mode**
+   - Scope is intentionally narrow: file-size limit (800 lines), security baseline (no secrets, input validation at boundaries), and "does the diff actually match what the user asked for?"
+   - Max produces a single flat list of findings in chat — no three-tier structure
+   - If Max flags anything critical, fix it and re-run the quality check before proceeding to spec sync
+   - If Max finds nothing actionable, say so explicitly and move on
 
-7. **Generate a commit message:**
+7. **Sync the specs:**
+   Only touch what the change actually affected. Don't write spec updates that aren't needed.
+   - **Always:** append a Change History entry to `_LOUIE-output/implementations/[feature-name]/feature.md`: `YYYY-MM-DD: [Brief change description] (louie-update, slim review)`
+   - **If code snippets or the structure section in `feature.md` reference the changed code:** update them to match
+   - **If observable behavior shifted** (new validation, changed default, new field exposed, error message wording that other docs/tests reference): append a short "Update: <date>" note to `_LOUIE-output/implementations/[feature-name]/requirements.md`
+   - **If the change touched env vars, ports, external services, operator commands, or surfaced a gotcha worth remembering:** update `_LOUIE-output/runbook.md`
+   - **If a non-trivial decision was made** (e.g. picked one approach over another for a real reason): append an ADR to `_LOUIE-output/implementations/[feature-name]/decisions.md` (create from `_LOUIE_/templates/decisions-template.md` if absent)
+   - **If feature status changed** (e.g. moved from In Development to Implemented): update `_LOUIE-output/implementations/overview.md`
+
+8. **Generate a commit message:**
    ```
    fix: <brief description of the change>
    ```
@@ -56,9 +68,11 @@ This command is for changes that are:
 
 Tell the user:
 
-> "This change is bigger than expected — it's touching [X lines / Y files]. I'd recommend switching to `louie-extend` so we get proper requirements, a review from Max, and tests from Ava. Want me to switch?"
+> "This change is bigger than expected — it's touching [X lines / Y files]. I'd recommend switching to `louie-extend` so we get proper requirements, a full review from Max, and tests from Ava. Want me to switch?"
 
 Do not continue a simple update that has grown complex. The 50-line limit exists to catch scope creep early.
+
+**If the slim review surfaces a real bug** (not a code-quality issue), drop into `louie-bugfix` — don't try to patch it inside the update flow.
 
 ## Usage
 
