@@ -2,7 +2,7 @@
 
 Last Updated: YYYY-MM-DD
 
-> **Layout:** every feature lives in its own folder under `_LOUIE-output/implementations/<feature>/` containing `feature.md`, `requirements.md`, `decisions.md`, and `bugfixes/`. This file is a **slim index only** — one-line descriptions, status, and a link. Feature detail belongs in the feature's own `feature.md`. The cross-project bug-fix index lives in `_LOUIE-output/bugfixes/overview.md`.
+> **Layout:** every feature lives in its own folder under `_LOUIE-output/implementations/<feature>/` containing `feature.md`, `requirements.md`, `decisions.md`, and `bugfixes/`. This file is a **slim index only** — one-line descriptions, status, and a link. Feature detail belongs in the feature's own `feature.md`. The cross-project bug-fix index lives in `_LOUIE-output/bugfixes/overview.md`. Pre-feature-folder ideas (captured but not yet committed) live in `_LOUIE-output/roadmap.md`.
 
 ## Project Context
 

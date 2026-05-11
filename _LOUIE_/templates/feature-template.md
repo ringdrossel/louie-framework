@@ -1,6 +1,6 @@
 # Feature: [Name]
 
-> **Layout:** this file lives at `_LOUIE-output/implementations/<feature>/feature.md`. Sibling files in the same folder: `requirements.md` (Tom's output), `decisions.md` (feature-scoped ADRs), and `bugfixes/<YYYY-MM-DD>-<slug>.md` (one per fix).
+> **Layout:** this file lives at `_LOUIE-output/implementations/<feature>/feature.md`. Sibling files in the same folder: `requirements.md` (Tom's output), `decisions.md` (feature-scoped ADRs), and `bugfixes/<YYYY-MM-DD>-<slug>.md` (one per fix). Pre-feature-folder ideas live in `_LOUIE-output/roadmap.md`; promote one via `louie-feature --from-roadmap <id>`.
 
 ## Status
 

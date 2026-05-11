@@ -18,9 +18,12 @@ When the user says **`louie-ideate`**, invoke Ivy (Muse) for product brainstormi
    - Ivy brainstorms ideas across categories: quick wins, enhancements, new features, UX improvements
    - Each idea includes: what, why, effort estimate, what it builds on, and architecture fit
 
-4. **After Ivy presents ideas:**
-   - Ask the user which ideas they'd like to pursue
-   - For any idea the user picks, suggest running `louie-feature` to turn it into proper requirements and kick off the full development chain
+4. **After Ivy presents ideas, sort each one into a bucket:**
+   - **Pursue now** — for any idea the user picks to act on immediately, suggest running `louie-feature` to turn it into proper requirements and kick off the full development chain.
+   - **Save to roadmap** — for any idea the user wants to keep around but not pursue now, capture it via `louie-roadmap add` so it persists in `_LOUIE-output/roadmap.md`. Pass `Source: ideate` and use Ivy's full idea card (what / why / effort / builds on / fits architecture) as the Notes verbatim.
+   - **Drop** — for any idea the user doesn't want, do nothing.
+
+   Ask once, in one prompt: "Of these, which would you like to pursue now, save to the roadmap for later, or drop?" Don't force the user to triage every idea — silence on an idea means drop.
 
 ## Usage
 

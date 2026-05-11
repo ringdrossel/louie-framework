@@ -197,7 +197,27 @@ louie-ideate
 I think the dashboard could be more useful. What ideas do you have?
 ```
 
-Ivy suggests ideas. If you like one, run `louie-feature` to build it.
+Ivy suggests ideas. At the end she'll offer to sort each one: **pursue now** (run `louie-feature` to build it), **save to the roadmap** (capture in `_LOUIE-output/roadmap.md` for later), or **drop**.
+
+---
+
+## Scenario 8: Capture an Idea Without Committing
+
+Use `louie-roadmap` when you want to write an idea down without kicking off a full feature chain. Captured ideas live in `_LOUIE-output/roadmap.md` (lazy-created on first `add`) — pre-feature-folder, no requirements, no architecture eval.
+
+```
+louie-roadmap add "CSV import for recipes"
+```
+
+When you're ready to build a captured idea, promote it:
+
+```
+louie-roadmap promote R-007
+```
+
+Promotion delegates to `louie-feature --from-roadmap R-007`, which seeds Tom with the captured notes and runs the full chain. The roadmap entry moves from `## Captured` to `## Promoted` with a back-link to the new feature folder.
+
+This is distinct from `implementations/overview.md` — "Planned" features there already have a folder, requirements, and architecture evaluation. Roadmap entries earn that during promotion.
 
 ---
 
@@ -217,6 +237,7 @@ Ivy suggests ideas. If you like one, run `louie-feature` to build it.
 | `louie-test` | Write or improve tests with Ava |
 | `louie-doc` | Update documentation and generate a commit message |
 | `louie-ideate` | Brainstorm ideas with Ivy |
+| `louie-roadmap` | Capture pre-feature ideas in `_LOUIE-output/roadmap.md`; promote one to a full feature when ready |
 | `louie-recipe` | Browse or load a reusable recipe (settings, auth, Docker, etc.) |
 | `louie-update-framework` | Update LOUIE to the latest version |
 
@@ -284,6 +305,7 @@ _LOUIE-output/                    ← Agent-produced artifacts
 ├── architecture.md               ← Sophie's output (design)
 ├── tech-stack.md                 ← Sophie's output (build-time)
 ├── runbook.md                    ← Sophie's output (run-time); Nina appends
+├── roadmap.md                    ← pre-feature idea list; lazy-created on first `louie-roadmap add`
 ├── implementations/              ← One folder per feature + slim overview
 │   ├── overview.md               ← slim index of all features
 │   └── [feature]/
