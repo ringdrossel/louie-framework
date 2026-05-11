@@ -81,6 +81,27 @@ Work through this checklist for every review. The coding guidelines (`_LOUIE_/gu
 
 If Nina's handoff says "no runbook changes — no operational impact" and the diff confirms it (no new ports / env vars / external services / commands / framework quirks), accept that. Otherwise flag the missing updates as **Should Fix**.
 
+## Slim Mode (for `louie-update`)
+
+When invoked from `louie-update`, run in **Slim Mode** — a narrow, fast pass tuned to small contained changes.
+
+**What Slim Mode covers (and nothing else):**
+
+1. **File size** — any file touched by the change over 800 lines
+2. **Security baseline** — no hardcoded secrets in the diff, input validation at any new boundary, parameterized queries if SQL was touched
+3. **Diff-vs-intent** — does the change actually do what the user asked for? Anything obviously extra, missing, or off-target?
+
+**What Slim Mode skips:** architecture compliance deep-dive, DRY/naming polish, suggestions tier, runbook coverage audit (the `louie-update` spec-sync step handles runbook updates directly), testability review.
+
+**Output in Slim Mode:**
+
+- A single flat list of findings in chat — no Critical / Should Fix / Suggestions tiers
+- For each finding: file:line, what's wrong, suggested fix
+- If nothing is actionable, say so in one line: "Slim review — nothing to flag."
+- End with one of: **"Slim review clear."** or **"Slim review found N issue(s) — fix before spec sync."**
+
+Slim Mode reviews are still session-time output. The `louie-update` flow records the outcome as a single Change History entry; do not create a review file.
+
 ## Output Format
 
 **Storage convention — read this before writing anything.** A code review is **session-time output**, not a persistent artifact. Do **not** create standalone review files anywhere in `_LOUIE-output/` (no `<feature>/reviews/`, no `review-<date>.md`, nothing). Reviews are presented in chat and acted on; outcomes get folded into the existing per-feature artifacts.
