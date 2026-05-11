@@ -55,6 +55,7 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 | `/louie-test` | Write or improve tests with Ava |
 | `/louie-doc` | Update documentation + commit message |
 | `/louie-ideate` | Brainstorm ideas with Ivy |
+| `/louie-roadmap` | Capture pre-feature ideas in `_LOUIE-output/roadmap.md`; promote one to a full feature |
 | `/louie-recipe` | Browse or load a reusable recipe |
 
 ### Critical Rules
@@ -72,6 +73,7 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 - `_LOUIE-output/architecture.md` — system design
 - `_LOUIE-output/tech-stack.md` — build-time stack
 - `_LOUIE-output/runbook.md` — runtime ops (deployment, ports, commands, gotchas)
+- `_LOUIE-output/roadmap.md` — pre-feature idea list (lazy-created on first `/louie-roadmap add`)
 - `_LOUIE-output/implementations/<feature>/` — per-feature folder (`feature.md`, `requirements.md`, `decisions.md`, `bugfixes/`)
 - `_LOUIE-output/bugfixes/overview.md` — cross-project bug-fix index
 <!-- /LOUIE-FRAMEWORK -->

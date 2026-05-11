@@ -22,6 +22,7 @@ All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
 | `louie-test` | Write or improve tests with Ava |
 | `louie-doc` | Update documentation and generate a commit message |
 | `louie-ideate` | Brainstorm ideas with Ivy |
+| `louie-roadmap` | Capture pre-feature ideas in `_LOUIE-output/roadmap.md`; promote one to a full feature when ready |
 | `louie-recipe` | Browse or load a reusable recipe (settings, auth, Docker, etc.) |
 | `louie-update-framework` | Update LOUIE to the latest version |
 
@@ -128,6 +129,7 @@ _LOUIE-output/
 ├── architecture.md                       (Sophie's design output)
 ├── tech-stack.md                         (Sophie's build-time stack)
 ├── runbook.md                            (Sophie creates; Nina appends)
+├── roadmap.md                            (pre-feature idea list; lazy-created on first `louie-roadmap add`)
 ├── implementations/
 │   ├── overview.md                       (slim index of all features)
 │   └── <feature>/                        (one folder per feature)

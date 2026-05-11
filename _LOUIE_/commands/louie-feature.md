@@ -14,9 +14,11 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
    - Do not proceed without architecture and tech stack in place.
    - If `_LOUIE-output/runbook.md` is missing on a project that has architecture (legacy LOUIE project), suggest the user generate it via Sophie before proceeding — or proceed and ask Sophie to bootstrap one based on the existing architecture.
 
-3. **Ask for the feature idea:**
-   - If the user already provided a description alongside the command, proceed directly
-   - If not, ask: "What feature would you like to add? A brief description is fine — Tom will dig into the details."
+3. **Resolve the feature seed:**
+   - If invoked with `--from-roadmap <id>` (or via `louie-roadmap promote <id>`): read `_LOUIE-output/roadmap.md`, locate the entry under `## Captured`, and use its Notes (plus Title) as the seed for Tom. If the ID doesn't exist or is already under `## Promoted`, stop and tell the user. Skip the "what feature?" question — the entry *is* the description.
+   - Otherwise, if the user already provided a description alongside the command, proceed directly.
+   - Otherwise, if `_LOUIE-output/roadmap.md` exists and has Captured entries, offer them: "There are N captured ideas in the roadmap — want to promote one? Run `louie-roadmap promote <id>`. Otherwise, what feature would you like to add?"
+   - Otherwise, ask: "What feature would you like to add? A brief description is fine — Tom will dig into the details."
 
 4. **Invoke Tom (Analyst):**
    - Read and follow `_LOUIE_/agents/analyst.md`
@@ -34,6 +36,7 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
    - Create `_LOUIE-output/implementations/[feature-name]/feature.md` using `_LOUIE_/templates/feature-template.md`
    - Fill in all sections based on `[feature-name]/requirements.md` and the architecture
    - Update `_LOUIE-output/implementations/overview.md` with the new feature entry — Document column links to `implementations/[feature-name]/feature.md`
+   - **If this run was seeded `--from-roadmap <id>`:** move the entry from `## Captured` to `## Promoted` in `_LOUIE-output/roadmap.md`. Preserve the original `Created` and `Notes`. Add `Promoted: YYYY-MM-DD → _LOUIE-output/implementations/[feature-name]/`. If the `## Promoted` section is showing the placeholder `_No ideas promoted yet._`, remove that line first. Update the `Last Updated:` line at the top of the roadmap file.
 
 7. **Confirmation gate:**
    - Show the user the feature document and implementation plan
@@ -67,4 +70,10 @@ or with a description upfront:
 louie-feature
 Add user authentication with email/password login, session management,
 and a password reset flow.
+```
+
+or seeded from a roadmap entry:
+
+```
+louie-feature --from-roadmap R-007
 ```

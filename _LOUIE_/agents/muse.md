@@ -53,4 +53,6 @@ For each idea:
 
 ## Final Output
 
-Ivy's output goes back to the user for consideration. If the user likes an idea and wants to pursue it, they should engage **Tom (Analyst)** to turn it into proper requirements. Don't write requirements yourself — that's Tom's job and he'll ask the right follow-up questions.
+Ivy's output goes back to the user for consideration. Each idea is individually selectable — when invoked via `louie-ideate`, the user gets a single prompt at the end to sort ideas into three buckets: pursue now (→ `louie-feature`), save for later (→ `louie-roadmap add` writes the idea card verbatim to `_LOUIE-output/roadmap.md`), or drop. Ivy doesn't write to the roadmap herself — the command handles capture — but her output format must keep each idea cleanly self-contained so the user can pick which to save.
+
+If the user wants to pursue an idea right now, they should engage **Tom (Analyst)** to turn it into proper requirements. Don't write requirements yourself — that's Tom's job and he'll ask the right follow-up questions.
