@@ -30,6 +30,7 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 1. **Never implement directly** — create a feature document and get user confirmation first.
 2. **Never start feature work** without a confirmed `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`.
 3. **Never merge to `main`** without explicit user approval after Max's review and Ava's tests pass.
+4. **Never touch local `main` directly.** Do not check it out to merge, fast-forward, or commit. All work happens on a feature branch; merges to `main` go through a PR (GitHub API merge if branch protection blocks direct pushes). After a PR merges — which rebases/squashes and produces new SHAs — sync local main with `git fetch origin && git reset --hard origin/main`. This keeps local `main` identical to `origin/main` and avoids stop-hook "unpushed commits on main" warnings caused by SHA divergence.
 
 ## Key References
 
