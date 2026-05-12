@@ -17,12 +17,21 @@ When the user says **`louie-bugfix`**, follow this procedure to diagnose and fix
      - "Which feature is affected? (Or is this cross-cutting — touching multiple features?)"
      - "What's the problem? (What happens vs. what should happen)"
 
-3. **Read the affected feature folder:**
+3. **Scope check — is this actually a bug?**
+   A bug is **unintended behavior that diverges from the feature's documented or implied intent**. One issue, one fix, one regression test. If the work in front of you doesn't match that shape, stop and route it correctly:
+   - **Multiple unrelated issues bundled under one umbrella** (e.g. "Chat UX Fixes" covering an icon change, a layout tweak, and an error message): STOP. Each issue is its own bugfix doc, or — if any of them adds new behavior — its own `louie-update` / `louie-extend`. Do not create a single "Fixes" doc that aggregates them; bugfix docs are not feature buckets.
+   - **The work adds new functionality, controls, fields, or surfaces** rather than restoring intended behavior: this is not a bugfix. Suggest `louie-update` (under 50 lines, contained) or `louie-extend` (larger or touches requirements).
+   - **The "bug" is actually a missing feature**: route to `louie-feature`.
+   - **Cosmetic polish requested by the user** that wasn't broken (e.g. "make the spacing nicer"): route to `louie-update`, not `louie-bugfix`.
+
+   When in doubt, ask the user: "This looks more like [update/extend/feature] than a bugfix because [reason]. Want me to switch?" Mislabeled bugfix docs cause real downstream confusion — a future `louie-extend` against the affected area cannot tell whether the "bugfix" is a feature or a fix.
+
+4. **Read the affected feature folder:**
    - Read `_LOUIE-output/implementations/[feature-name]/feature.md`
    - Skim `_LOUIE-output/implementations/[feature-name]/bugfixes/` for related prior fixes
    - For cross-cutting bugs, do this for every affected feature
 
-4. **Invoke Nina (Coder) — diagnosis and fix:**
+5. **Invoke Nina (Coder) — diagnosis and fix:**
    - Read and follow `_LOUIE_/agents/coder.md`
    - Nina analyzes the problem in the context of the feature document and architecture
    - Nina implements the fix following coding guidelines
@@ -34,12 +43,12 @@ When the user says **`louie-bugfix`**, follow this procedure to diagnose and fix
    - Nina updates `feature.md` Change History: `YYYY-MM-DD: Bug fix — [description] (see bugfixes/<file>.md)`
    - **Nina appends a Common Gotchas entry to `runbook.md`** capturing what went wrong, how to detect it, and how to avoid it. Bugfixes are the highest-value runbook entries — this is mandatory.
 
-5. **Invoke Max (Reviewer) — review the fix:**
+6. **Invoke Max (Reviewer) — review the fix:**
    - Read and follow `_LOUIE_/agents/reviewer.md`
    - Max reviews the fix for correctness, side effects, and guideline compliance
    - If changes are needed, Nina fixes them
 
-6. **Invoke Ava (Tester) — verify and cover:**
+7. **Invoke Ava (Tester) — verify and cover:**
    - Read and follow `_LOUIE_/agents/tester.md`
    - Ava verifies the fix with a targeted test
    - Ava adds a regression test to prevent the bug from returning
