@@ -12,9 +12,12 @@ When the user says **`louie-update-framework`**, follow this procedure to update
    - Read the current `_LOUIE_/` directory to understand what's installed
 
 2. **Pull the latest framework:**
-   - If the project has a git remote for louie-framework, pull the latest `_LOUIE_/` and `_LOUIE-output/` structure
-   - If not, ask the user: "Where should I pull the latest LOUIE from? (e.g., a GitHub repo URL or a local path)"
-   - **Never overwrite `_LOUIE-output/`** — that's the user's work. Only update files that ship with the framework (overview.md skeleton is safe to skip if it already has content)
+   - **Default source:** `https://github.com/ringdrossel/louie-framework` (branch `main`). Use this unless the user explicitly specified a different source alongside the command.
+   - Clone shallow into a temp directory: `git clone --depth 1 https://github.com/ringdrossel/louie-framework /tmp/louie-framework-update`
+   - If the clone fails (network, auth, rate limit), report the error and ask the user for an alternative source — do **not** silently fall back to a stale local copy.
+   - If the project itself has a git remote pointing at the framework, you can pull there instead (faster, no temp dir). Otherwise the temp clone is canonical.
+   - **Never overwrite `_LOUIE-output/`** — that's the user's work. Only update files that ship with the framework (overview.md skeleton is safe to skip if it already has content).
+   - After step 4, delete the temp clone (`rm -rf /tmp/louie-framework-update`).
 
 3. **Update the framework files:**
    - Replace `_LOUIE_/agents/` with the latest versions
