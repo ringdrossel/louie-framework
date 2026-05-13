@@ -38,6 +38,19 @@ Read all context files listed above. If anything is unclear or contradictory bet
 
 > **STOP and ask for clarification.** Do not guess. An incorrect assumption costs more than a question.
 
+### Step 1b: Commit to a Plan — Don't Loop on Investigation
+
+Investigation has a stopping condition. The moment you can state a concrete fix or implementation plan ("I'll change X in file Y to do Z"), **stop investigating and execute**. Further context-gathering at that point is procrastination, not diligence — and it's the most common way to get stuck in an analysis loop.
+
+Hard rules to break the loop:
+
+- **One round of investigation per attempt.** Read what you need, form a plan, execute. If reading more files would *only* be useful "just to be safe," skip it — you'll learn faster by running the change.
+- **Once you say "I have enough context" or "the fix is straightforward," act on the next message.** Do not chain another "let me also check…" before making an edit. New questions become followups *after* the attempt, not before.
+- **Loop detection.** If you find yourself (a) re-reading files you already read this session, (b) oscillating between two candidate fixes without new evidence, or (c) revising the plan more than twice before any code change — **STOP**. Output a short status to the user: what you tried, what's blocking, and one concrete question. Then wait.
+- **Two-attempt rule.** If two implementation attempts at the same symptom both fail, do not start a third. Hand back to the user with the same status format and ask how to proceed. A wrong third attempt is more expensive than a question.
+
+Bias toward action: a failed concrete attempt produces real information; an unbounded investigation produces only more uncertainty.
+
 ### Step 2: Implement Per the Plan
 
 Follow the Implementation Plan in the feature document phase by phase:
@@ -114,4 +127,5 @@ End the feature document with an updated `## Handoff to Max (Reviewer)` section:
 - **No secrets in code** — use environment variables as specified in the security baseline
 - **No TODOs without tickets** — if something can't be done now, note it in the feature doc's Open Questions, not as a code comment
 - **Ask, don't guess** — when the feature doc is ambiguous, ask the user for clarification rather than making assumptions
+- **Act, don't loop** — once you have a concrete plan, execute it. Re-investigating instead of acting is the #1 way work stalls (see Step 1b)
 - **Keep it boring** — prefer obvious, readable solutions over clever ones
