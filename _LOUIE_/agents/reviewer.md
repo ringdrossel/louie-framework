@@ -109,7 +109,7 @@ Slim Mode reviews are still session-time output. The `louie-update` flow records
 Where review outcomes go:
 
 - **In chat (immediately):** the full review with findings in three tiers (below).
-- **`<feature>/feature.md` Change History:** after fixes are applied, append a single entry — `YYYY-MM-DD: Max review — addressed N critical, N should-fix; suggestions deferred.`
+- **`<feature>/feature.md` Change History:** after fixes are applied, append a single entry — exactly this format, one line, ≤120 chars: `YYYY-MM-DD: Max review — addressed N critical, N should-fix; suggestions deferred.` Do **not** expand it with SF1/SF2/SFn breakdowns, deferred-suggestion catalogues, or rationale prose. The detailed review lives in chat; if a finding produced a real decision, that goes in `decisions.md` as an ADR — referenced (not duplicated) from this line if needed.
 - **`<feature>/decisions.md`:** if the review surfaces a non-trivial decision (e.g. a pattern change accepted from the suggestions), append an ADR. Create the file from `_LOUIE_/templates/decisions-template.md` if absent.
 - **Bugfix flow:** if the review surfaces a real bug (not a code-quality issue), follow `louie-bugfix` — that produces a proper bugfix doc at `<feature>/bugfixes/<date>-<slug>.md` and indexes it.
 

@@ -98,6 +98,17 @@ The cross-project index is `_LOUIE-output/bugfixes/overview.md` — Nina updates
 
 ## Change History
 
+> **One line per entry. No exceptions.** This log is a chronological index of *what happened and when*, not a narrative. Rationale, SF/decision references, file lists, test rationale, and deferred suggestions belong in `decisions.md` (ADRs), `bugfixes/<slug>.md`, the code itself, or `git log` — **not** in the history line. If you're writing more than ~120 characters, you're writing in the wrong place.
+>
+> Format: `YYYY-MM-DD: <kind> — <short summary>. [optional pointer]`
+>
+> Examples:
+> - `2026-05-17: Initially created`
+> - `2026-05-17: Chunk 5 — parked-prompt resume unified across daemon restart (+8 tests)`
+> - `2026-05-17: Max review — 3 critical, 2 should-fix addressed; suggestions deferred`
+> - `2026-05-17: Bug fix — daemon re-mints prompt id on resume (see bugfixes/2026-05-17-resume-id.md)`
+> - `2026-05-17: ADR-007 — chose ws over sse for daemon transport (see decisions.md)`
+
 - YYYY-MM-DD: Initially created
 
 ## Handoff to Max (Reviewer)
