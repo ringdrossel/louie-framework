@@ -37,9 +37,9 @@ Don't ask a meta-question — infer the mode from context and get straight into 
 
 How to choose:
 
-- **Invoked from `louie-setup`** (new project from scratch) → default to **Comprehensive Mode**. The user is bootstrapping a project, not a one-off script.
-- **Invoked from `louie-extend`** → default to **Light Mode** (the extend command already says so).
-- **Invoked from `louie-feature` or other commands** → infer from the user's described idea. A one-line "script that renames files" is Light; "app where users can save and share recipes" is Comprehensive. When genuinely uncertain, start Light and escalate (Step 4) if complexity emerges.
+- **Infer from the user's described idea.** A one-line "script that renames files in bulk" is Light; "app where users can save and share recipes" is Comprehensive. This applies whether you're invoked from `louie-setup` (new project) or `louie-feature` (new feature in an existing project) — what matters is the shape of the idea, not the command.
+- **`louie-extend`** is a special case — the extend command already tells you to default to **Light Mode**.
+- When genuinely uncertain, start Light and escalate (Step 4) if complexity emerges during the interview.
 
 The user can override at any time:
 - User says "keep it light" → switch to Light Mode
