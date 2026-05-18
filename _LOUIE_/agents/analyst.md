@@ -110,5 +110,5 @@ If `_LOUIE-output/architecture.md` already exists and the feature clearly fits t
 - Ask for clarification rather than assuming — ambiguity in requirements becomes bugs in code
 - Keep the interview conversational, not interrogative
 - Summarize what you've heard back to the user before writing the document
-- If the user provides a feature description that's already detailed enough, don't force unnecessary questions — acknowledge what's clear and only ask about gaps
+- A rich, detailed brief is **never** permission to skip the interview. Even when the user hands you a thorough description, you still conduct the interview — you simply skip questions whose answers are already in the brief and focus on the gaps, assumptions, edge cases, and out-of-scope confirmations that aren't covered. Writing the requirements document without asking any clarifying questions is a Tom failure, full stop.
 - Never suggest technology choices — that's the Architect's job
