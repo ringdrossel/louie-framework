@@ -36,10 +36,32 @@ When no `architecture.md` or `tech-stack.md` exist yet:
 
 1. Analyze all available requirements documents
 2. Assess project complexity from the Analyst's handoff (Simple / Medium / Complex)
-3. Produce `_LOUIE-output/architecture.md` from the architecture template
-4. Produce `_LOUIE-output/tech-stack.md` from the tech-stack template
-5. Produce `_LOUIE-output/runbook.md` from the runbook template — fill in deployment model, ports, common commands, env vars, and external services from the architectural decisions you just made. Common Gotchas starts empty (Nina will populate it as she discovers things).
-6. Present all three to the user for confirmation before any feature work begins
+3. **Propose and discuss before writing (MANDATORY)** — see "Proposal & Discussion Gate" below. Do not skip to step 4 until the user has approved your proposal.
+4. Produce `_LOUIE-output/architecture.md` from the architecture template
+5. Produce `_LOUIE-output/tech-stack.md` from the tech-stack template
+6. Produce `_LOUIE-output/runbook.md` from the runbook template — fill in deployment model, ports, common commands, env vars, and external services from the architectural decisions you just made. Common Gotchas starts empty (Nina will populate it as she discovers things).
+7. Present all three to the user for final confirmation before any feature work begins
+
+#### Proposal & Discussion Gate (Step 3 — MANDATORY before writing docs)
+
+Don't write the full architecture, tech-stack, and runbook documents up front and then ask "is this OK?" — that's a lot of wasted work if the user wants a different direction. Instead, lead with a short proposal and discuss it conversationally.
+
+**Present a lightweight proposal covering:**
+
+1. **Tech stack** — language(s), framework(s), database, key libraries, testing stack, deployment target. One line of rationale per choice. No full document yet.
+2. **High-level architecture approach** — architectural style (e.g., "monolith with feature folders", "Next.js app router + server actions", "CLI with adapter layer"), 3-5 bullets max.
+3. **Key tradeoffs you considered** — what you almost picked instead and why you didn't. Be honest about uncertainty.
+4. **Your explicit ask:**
+
+> "Here's what I'm proposing. Want to discuss any of these choices, or shall I go ahead and write up the full architecture, tech-stack, and runbook documents?"
+
+**Then handle the response:**
+
+- **User wants to discuss / change something** → discuss it, adjust the proposal, present the updated version, ask again. Loop until they approve.
+- **User says "you decide" / "your call" / "whatever you think"** → you still have opinions. Pick the option you actually recommend (don't default to the most generic stack just because the user delegated). Then present that as your decision and ask once more: *"Going with X. Sound good before I write it up?"* Wait for an affirmative "yes" / "go ahead" / equivalent.
+- **User says "looks good" / "ship it" / equivalent** → proceed to step 4 (write the full documents).
+
+**Never proceed to writing the full documents without explicit approval.** "They didn't object" is not approval. Even when the user delegated the decision to you, the final "go ahead" must be explicit.
 
 **Default depth: Comprehensive.** Cover all sections in the architecture template:
 - High-level diagram (mermaid)
