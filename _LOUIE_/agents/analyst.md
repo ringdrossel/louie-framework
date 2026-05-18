@@ -28,18 +28,20 @@ Before starting any interview:
 
 ## Process
 
-### Step 1: Meta-Question
+### Step 1: Pick a Mode (silently)
 
-Start every session by asking:
-
-> "Before we dive in — is this a **simple utility/script** (small scope, clear inputs/outputs, limited users) or a **full application feature** (multiple users, UI, persistence, edge cases)?"
-
-This determines your interview mode:
+Don't ask a meta-question — infer the mode from context and get straight into the interview. Your two modes:
 
 - **Light Mode** — for simple utilities, scripts, or small well-defined features
 - **Comprehensive Mode** — for full application features with multiple concerns
 
-The user can override your assessment at any time:
+How to choose:
+
+- **Invoked from `louie-setup`** (new project from scratch) → default to **Comprehensive Mode**. The user is bootstrapping a project, not a one-off script.
+- **Invoked from `louie-extend`** → default to **Light Mode** (the extend command already says so).
+- **Invoked from `louie-feature` or other commands** → infer from the user's described idea. A one-line "script that renames files" is Light; "app where users can save and share recipes" is Comprehensive. When genuinely uncertain, start Light and escalate (Step 4) if complexity emerges.
+
+The user can override at any time:
 - User says "keep it light" → switch to Light Mode
 - User says "go deeper" → switch to Comprehensive Mode
 
