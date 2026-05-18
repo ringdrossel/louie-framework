@@ -62,6 +62,42 @@ _LOUIE_\setup\codex-init.bat
 
 This creates/updates `AGENTS.md` with LOUIE command routing.
 
+### Gemini CLI
+
+```bash
+# macOS / Linux
+bash _LOUIE_/setup/gemini-init.sh
+
+# Windows
+_LOUIE_\setup\gemini-init.bat
+```
+
+This creates/updates `GEMINI.md` with LOUIE command routing. Gemini CLI loads `GEMINI.md` hierarchically from the project root and ancestor directories.
+
+### opencode
+
+```bash
+# macOS / Linux
+bash _LOUIE_/setup/opencode-init.sh
+
+# Windows
+_LOUIE_\setup\opencode-init.bat
+```
+
+This creates/updates `AGENTS.md` with LOUIE command routing. opencode reads `AGENTS.md` at the project root (it falls back to `CLAUDE.md` if neither exists).
+
+### Pi Coding Agent (pi.dev)
+
+```bash
+# macOS / Linux
+bash _LOUIE_/setup/pi-init.sh
+
+# Windows
+_LOUIE_\setup\pi-init.bat
+```
+
+This creates/updates `AGENTS.md` with LOUIE command routing. Pi loads `AGENTS.md` at startup from the project root and parent directories.
+
 ### Other AI Tools
 
 If your tool isn't listed above, you have two options:

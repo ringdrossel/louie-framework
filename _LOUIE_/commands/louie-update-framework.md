@@ -33,6 +33,9 @@ When the user says **`louie-update-framework`**, follow this procedure to update
    - Claude Code → run `bash _LOUIE_/setup/claude-init.sh` (idempotent — skips CLAUDE.md if marker exists, overwrites command files)
    - Cursor → run `bash _LOUIE_/setup/cursor-init.sh`
    - Codex → run `bash _LOUIE_/setup/codex-init.sh`
+   - Gemini CLI → run `bash _LOUIE_/setup/gemini-init.sh`
+   - opencode → run `bash _LOUIE_/setup/opencode-init.sh`
+   - Pi Coding Agent → run `bash _LOUIE_/setup/pi-init.sh`
 
 5. **Show what changed:**
    - List new/updated/removed commands

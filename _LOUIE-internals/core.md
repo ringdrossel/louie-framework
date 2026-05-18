@@ -40,6 +40,9 @@ What the init scripts do:
 - `claude-init.sh/.bat` → copies `_LOUIE_/commands/louie-*.md` into `.claude/commands/` and appends a LOUIE section to the downstream `CLAUDE.md`.
 - `cursor-init.sh/.bat` → appends a LOUIE section to the downstream `.cursorrules`.
 - `codex-init.sh/.bat` → appends a LOUIE section to the downstream `AGENTS.md`.
+- `gemini-init.sh/.bat` → appends a LOUIE section to the downstream `GEMINI.md`.
+- `opencode-init.sh/.bat` → appends a LOUIE section to the downstream `AGENTS.md` (opencode's native convention; functionally equivalent to the Codex script but kept separate for discoverability).
+- `pi-init.sh/.bat` → appends a LOUIE section to the downstream `AGENTS.md` (pi.dev's native convention; functionally equivalent to the Codex script but kept separate for discoverability).
 
 **None of the init scripts do a blanket copy of `_LOUIE_/`.** They operate on specific paths. Anything outside those paths (e.g. `_LOUIE-internals/`) is automatically not-distributed as long as the user follows the Step 1 copy instruction.
 
