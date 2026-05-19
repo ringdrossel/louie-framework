@@ -18,6 +18,7 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 | `louie-bugfix` | `_LOUIE_/commands/louie-bugfix.md` | Diagnose and fix a bug |
 | `louie-review` | `_LOUIE_/commands/louie-review.md` | Code review by Max |
 | `louie-review-doc` | `_LOUIE_/commands/louie-review-doc.md` | Review + fix + update docs |
+| `louie-review-mode` | `_LOUIE_/commands/louie-review-mode.md` | View or change the project review mode (manual / auto-fix-critical / auto-fix-all) |
 | `louie-test` | `_LOUIE_/commands/louie-test.md` | Write or improve tests with Ava |
 | `louie-doc` | `_LOUIE_/commands/louie-doc.md` | Update documentation + commit message |
 | `louie-ideate` | `_LOUIE_/commands/louie-ideate.md` | Brainstorm ideas with Ivy |

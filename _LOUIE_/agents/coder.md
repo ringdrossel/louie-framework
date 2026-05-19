@@ -109,6 +109,18 @@ If this work is a bug fix (you arrived here via `louie-bugfix`), in addition to 
 - The Common Gotchas entry in `runbook.md` is still mandatory — bugfixes are the highest-value runbook content
 - Reference the bug-fix doc from the feature's `feature.md` Change History entry
 
+### Step 5c: When Addressing Review Findings (auto-fix modes)
+
+If you arrived here from Max in an auto-fix loop (the project's review mode is `auto-fix-critical` or `auto-fix-all`, or the user passed a per-call override), the handoff from Max is a compact "address these findings" block listing items by identifier (C1, C2, S1, ...). Your job is narrow and well-defined:
+
+- **Apply the listed fixes in the order Max gave them.** Do not pull in unrelated cleanup, do not re-architect, do not add features. The loop relies on focused diffs.
+- **Run typecheck / tests / build per `_LOUIE-output/tech-stack.md`** before handing back. This is non-negotiable — Max's regression guard depends on you running the suite honestly.
+- **Do not attempt to self-repair test failures.** If a test fails after your fix, hand back to Max with the failure noted plainly ("Applied C1, C2; `auth.spec.ts > login returns 401` now red — Max, your call"). Max will surface the regression and stop the loop if needed. A silent self-repair attempt undermines the regression guard.
+- **Skip steps 4 and 5 of the normal flow** — no feature.md status changes, no Change History line, no runbook updates. The single Change History entry is written once by Max when the loop completes (see `_LOUIE_/agents/reviewer.md` § Auto-Fix Loop). The runbook update step still runs if the fixes genuinely changed operational surface (new env var, new port) — but for most review-driven fixes, there is nothing operational to update.
+- **Commit discipline still applies** — one focused commit per round is the norm, with a Conventional Commits message that names the round and the items addressed (e.g. `fix(review): address C1+C2 from round 2`).
+
+This step is invoked **by Max**, not by the user directly. The user has already consented to the loop by setting the project mode or passing the override.
+
 ### Step 6: Handoff to Max (Reviewer)
 
 End the feature document with an updated `## Handoff to Max (Reviewer)` section:

@@ -83,6 +83,16 @@ curl http://localhost:[port]/[health-path]
 - **[Name]** — [endpoint], [purpose], [auth method]
 - [...]
 
+## Review Mode
+
+Controls how `louie-review` behaves. See `_LOUIE_/commands/louie-review-mode.md` for full details.
+
+**Mode:** [unset — defaults to `manual` until configured via `louie-setup` or `louie-review-mode`]
+**Loop cap:** 3
+**Set:** YYYY-MM-DD
+
+Valid values: `manual` (default, asks before fixing), `auto-fix-critical` (auto-applies Critical + Should Fix in a loop), `auto-fix-all` (also auto-applies Suggestions). Per-call overrides: `louie-review manual` / `louie-review auto` / `louie-review auto-fix-all`.
+
 ## Common Gotchas
 
 [Accumulated pitfalls discovered during development and operation. **Append, don't rewrite** — old gotchas stay (they may resurface). New entries go on top with a date.]

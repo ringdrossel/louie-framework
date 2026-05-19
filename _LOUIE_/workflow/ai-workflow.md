@@ -234,6 +234,7 @@ This is distinct from `implementations/overview.md` — "Planned" features there
 | `louie-bugfix` | Diagnose and fix a bug |
 | `louie-review` | Code review by Max |
 | `louie-review-doc` | Review + fix + update docs in one flow |
+| `louie-review-mode` | View or change the project review mode (manual / auto-fix-critical / auto-fix-all) |
 | `louie-test` | Write or improve tests with Ava |
 | `louie-doc` | Update documentation and generate a commit message |
 | `louie-ideate` | Brainstorm ideas with Ivy |

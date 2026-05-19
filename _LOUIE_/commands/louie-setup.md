@@ -34,6 +34,18 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
      - `_LOUIE-output/runbook.md` — deployment model, ports, common commands, env vars, external services (Common Gotchas starts empty)
    - Use templates from `_LOUIE_/templates/architecture-template.md`, `_LOUIE_/templates/tech-stack-template.md`, and `_LOUIE_/templates/runbook-template.md`
 
+5b. **Ask the user to choose a review mode:**
+   - This controls how `louie-review` behaves project-wide. See `_LOUIE_/commands/louie-review-mode.md` for the full description.
+   - Ask the user:
+     > "One quick setup question — how should code reviews behave on this project?
+     > 1. `manual` — Max presents findings and asks before fixing anything. Safe default.
+     > 2. `auto-fix-critical` — Max auto-hands Critical + Should-Fix items to Nina in a loop, surfaces Suggestions at the end for approval. Less friction on trusted projects.
+     > 3. `auto-fix-all` — same loop, but Suggestions are also auto-applied. Heavy-handed; solo or throwaway projects only.
+     >
+     > You can change this anytime with `louie-review-mode`, or override per-call with `louie-review manual` / `louie-review auto`. Default if you skip: `manual`."
+   - Wait for the answer. Accept `1`/`2`/`3`, the mode name, or "skip" / "default" (→ `manual`).
+   - Update `_LOUIE-output/runbook.md` § Review Mode in place: set `Mode:` to the chosen value, `Set:` to today's date, leave `Loop cap:` at the default `3`.
+
 6. **Confirmation gate (architecture):**
    - Present the requirements, architecture, tech stack, and runbook to the user
    - Walk through the key decisions and their rationale

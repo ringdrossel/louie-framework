@@ -86,6 +86,18 @@ After it completes, the project is indistinguishable from one that went through 
 10. **Bootstrap the bugfix index:**
     - Create `_LOUIE-output/bugfixes/overview.md` from `_LOUIE_/templates/bugfixes-overview-template.md` if it doesn't exist. Leave the tables empty — there are no recorded fixes yet (we don't backfill from existing source).
 
+10b. **Ask the user to choose a review mode:**
+    - This controls how `louie-review` behaves project-wide on the imported codebase. See `_LOUIE_/commands/louie-review-mode.md` for the full description.
+    - Imported projects are higher-risk than greenfield ones (existing code, unknown invariants), so frame the question conservatively:
+      > "How should code reviews behave on this project? On imported projects I recommend `manual` until you've built confidence in the review/fix loop on this codebase.
+      > 1. `manual` (recommended for imports) — Max presents findings and asks before fixing
+      > 2. `auto-fix-critical` — Max auto-hands Critical + Should-Fix to Nina in a loop
+      > 3. `auto-fix-all` — also auto-applies Suggestions
+      >
+      > Change anytime with `louie-review-mode`. Default if you skip: `manual`."
+    - Wait for the answer. Accept `1`/`2`/`3`, the mode name, or "skip" / "default" (→ `manual`).
+    - Update `_LOUIE-output/runbook.md` § Review Mode in place: set `Mode:` to the chosen value, `Set:` to today's date, leave `Loop cap:` at `3`.
+
 11. **Confirmation gate (architecture):**
     - Present `architecture.md`, `tech-stack.md`, `runbook.md`, the per-feature folders (with their `feature.md` and `requirements.md`), and the overviews (`implementations/overview.md` + `bugfixes/overview.md`).
     - Walk the user through Sophie's key inferences and any Open Questions.

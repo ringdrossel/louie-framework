@@ -81,6 +81,54 @@ Work through this checklist for every review. The coding guidelines (`_LOUIE_/gu
 
 If Nina's handoff says "no runbook changes — no operational impact" and the diff confirms it (no new ports / env vars / external services / commands / framework quirks), accept that. Otherwise flag the missing updates as **Should Fix**.
 
+## Auto-Fix Loop (for `auto-fix-critical` and `auto-fix-all` modes)
+
+When `louie-review` runs in an auto mode, you don't stop after the verdict — you drive a review→fix→review loop with Nina. This is opt-in per project (set via `louie-setup` or `louie-review-mode`, or overridden per-call), so the user has already consented to letting you act without per-round approval.
+
+### Protocol
+
+1. **Round 1: produce the verdict normally** (Critical / Should Fix / Suggestions, with calling out good code). Present it in chat as a status update — same format as `manual` mode, just don't ask "want me to apply the fixes?" at the end.
+2. **Decide the in-scope severity buckets:**
+   - `auto-fix-critical` → in scope: `Critical` + `Should Fix`. Suggestions surface at the end and need approval.
+   - `auto-fix-all` → in scope: `Critical` + `Should Fix` + `Suggestions`.
+3. **If the in-scope buckets are empty → done.** Record the outcome (see Change History format in `_LOUIE_/commands/louie-review.md` Step 6) and exit. If there are out-of-scope Suggestions remaining (auto-fix-critical mode only), present them and ask the user whether to apply.
+4. **Otherwise, hand off to Nina** with a compact "address these findings" block: list each in-scope item by its identifier (C1, C2, S1, ...), the file:line, what's wrong, and your suggested fix. Nina applies them in the order you list. Nina also runs typecheck / tests / build per `_LOUIE-output/tech-stack.md` before handing back.
+5. **Re-review the diff Nina produced.** Goto step 2.
+
+### Loop cap
+
+The default cap is **3 rounds** (review → fix → review → fix → review → fix). The cap value lives in `_LOUIE-output/runbook.md` under `## Review Mode` → `Loop cap:`. Read it once at the start of the loop.
+
+When the cap is hit and findings still remain:
+- **Stop the loop.** Do not run another round.
+- **Fall back to `manual` for the remainder** — present the unresolved findings to the user in the standard verdict format and ask how they want to proceed.
+- **Record the outcome with the cap-hit suffix:** `YYYY-MM-DD: Max review (<mode>) — cap hit at N rounds, N critical + N should-fix unresolved, fell back to manual.`
+
+### Regression guard
+
+After each round, compare the new verdict to the previous round's verdict. If Round N+1 introduces a **Critical that was not present in Round N**, stop the loop immediately:
+- Do not run another fix round — Nina is making things worse.
+- Surface the new Critical along with what was fixed and what regressed.
+- Record the outcome with the regression suffix: `YYYY-MM-DD: Max review (<mode>) — regression detected at round N, stopped; N critical introduced.`
+
+This guard does **not** trigger on Should Fix or Suggestions regressions — only new Criticals. The cost of pausing on a transient Should Fix churn is higher than the cost of letting the loop run a few more rounds.
+
+### Test failures mid-loop
+
+If Nina hands back saying "typecheck failed" or "tests failed":
+- Do **not** absorb the failure silently.
+- Treat the test/typecheck failure as a new Critical for the next round (e.g., "C-new: test `auth.spec.ts > login returns 401` now failing — Nina's fix to `auth.ts:42` likely introduced a regression").
+- The regression guard above will catch it — the loop stops on the next iteration because a new Critical appeared.
+
+Nina does **not** attempt to self-repair test failures. The boundary stays clean: she applies what you asked for, runs the suite, and reports honestly. You decide what to do with the result.
+
+### What auto modes do **not** change
+
+- Output format is unchanged — three tiers, file:line, what / why / fix, call out good code.
+- Storage convention is unchanged — reviews are session-time output, never written to standalone files in `_LOUIE-output/`. Outcomes still fold into the feature's `Change History` and (if applicable) `decisions.md`.
+- Slim Mode is unaffected — `louie-update` invokes Slim Mode regardless of project review mode, because the spec-sync step there already handles its own loop.
+- Bugfix flow is unaffected — a real bug surfaced during review still drops into `louie-bugfix`, not into the auto-fix loop.
+
 ## Slim Mode (for `louie-update`)
 
 When invoked from `louie-update`, run in **Slim Mode** — a narrow, fast pass tuned to small contained changes.

@@ -40,6 +40,7 @@ echo - `louie-update` → `_LOUIE_/commands/louie-update.md`
 echo - `louie-bugfix` → `_LOUIE_/commands/louie-bugfix.md`
 echo - `louie-review` → `_LOUIE_/commands/louie-review.md`
 echo - `louie-review-doc` → `_LOUIE_/commands/louie-review-doc.md`
+echo - `louie-review-mode` → `_LOUIE_/commands/louie-review-mode.md`
 echo - `louie-test` → `_LOUIE_/commands/louie-test.md`
 echo - `louie-doc` → `_LOUIE_/commands/louie-doc.md`
 echo - `louie-ideate` → `_LOUIE_/commands/louie-ideate.md`

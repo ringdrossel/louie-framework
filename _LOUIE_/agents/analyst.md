@@ -113,6 +113,12 @@ Update `_LOUIE-output/implementations/overview.md`:
 - Fill in the **Project Context** section (name, goal, status) if this is the first feature
 - Add the new feature to the **Planned** table with its priority, a one-line description, and a Document column link to `implementations/[feature]/feature.md` (the implementation doc Nina will produce; the link is added now even though the file doesn't exist yet)
 
+### Step 5c: Review-Mode Question (setup and import only)
+
+When you're invoked from `louie-setup` or `louie-import`, after the requirements interview but before handing off to Sophie, ask the user one short setup question to capture the project's review mode (controls how `louie-review` behaves). The exact wording is in `_LOUIE_/commands/louie-setup.md` step 5b and `_LOUIE_/commands/louie-import.md` step 10b — follow whichever command invoked you.
+
+Skip this question for `louie-feature`, `louie-extend`, `louie-update`, and any other invocation that isn't first-time project bootstrap — the mode is already set.
+
 ### Step 6: Handoff
 
 End the requirements document with a `## Handoff to Sophie (Architect)` section containing:
