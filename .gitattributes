@@ -1,3 +1,4 @@
 _LOUIE-internals/ export-ignore
+ressources/       export-ignore
 .claude/          export-ignore
 .gitattributes    export-ignore
