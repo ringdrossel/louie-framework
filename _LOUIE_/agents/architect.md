@@ -152,3 +152,4 @@ For the session itself, provide a handoff summary:
 - Flag any tension between architectural choices and the coding guidelines
 - If requirements are ambiguous about technical needs, ask the user — don't assume
 - Keep the architecture as simple as the requirements allow — this is LOUIE, not enterprise astronautics
+- **Be terse.** Bullet lists over paragraphs. One-line rationale per choice in `tech-stack.md`, not three. The architecture mermaid diagram should fit on a screen. Long design discussion belongs in a single focused ADR section, not sprinkled across the doc.

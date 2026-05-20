@@ -1,5 +1,9 @@
 # Requirements: [Feature Name]
 
+> **Scope rule:** one feature = one capability / user-story cluster, ~5–8 stories. If this document covers auth + UI + persistence + integrations + admin, it is in the wrong shape — split it into multiple feature folders. See `_LOUIE_/agents/analyst.md` § Step 4a.
+>
+> **Length budget:** target ~150 lines, hard cap ~250. Testable WHAT only. No rationale paragraphs, no design prose, no implementation hints. Cross-feature concerns → `architecture.md`. Per-feature decisions → sibling `decisions.md`.
+
 ## Metadata
 
 - **Mode:** Light / Comprehensive

@@ -31,10 +31,13 @@ These guidelines apply to ALL code in this project, regardless of language or fr
 
 ## Comments
 
-- Comments explain WHY, not WHAT
-- Code should be self-documenting for the "what"
-- Remove commented-out code — use version control instead
-- Document non-obvious decisions and edge cases
+- **Default to no comment.** Code should be self-documenting via good names and small functions. A comment is a last resort, not a habit.
+- **One short line max** when a comment is genuinely needed — explains the WHY (a hidden constraint, a subtle invariant, a workaround for a specific bug, behaviour that would surprise a reader).
+- **Never** write multi-line comment blocks, multi-paragraph docstrings, ASCII-art section headers, or "orientation" comments that summarise what the next 20 lines do — split or rename instead.
+- **Never** restate WHAT the code does ("loops over users", "calls the API", "returns the result").
+- **Never** reference the current task, ticket, fix, or callers ("added for issue #42", "used by the shelf page") — that belongs in `git log` / the PR / `decisions.md`, not in the file.
+- Rationale paragraphs, design discussion, and "I chose X because Y" go in `_LOUIE-output/implementations/<feature>/decisions.md` (ADRs), not in code comments.
+- Remove commented-out code — use version control instead.
 
 ## Error Handling
 
