@@ -4,6 +4,8 @@
 
 LOUIE is a lightweight framework for feature-based AI-assisted development. It gives your AI assistant a structured workflow with specialized agents, so you go from idea to tested code without skipping steps or losing context.
 
+> 🚀 **New here?** Read the [Quick Start](QUICKSTART.md) (🇬🇧 English / 🇩🇪 Deutsch) for a one-minute tour.
+
 ## Commands
 
 All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
