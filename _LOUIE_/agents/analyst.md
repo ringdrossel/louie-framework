@@ -78,6 +78,38 @@ If you started in Light Mode but discover complexity during the interview (e.g.,
 
 If the user agrees, continue with the Comprehensive Mode questions. If not, do your best with Light Mode but note the gaps in Open Questions.
 
+### Step 4a: Scope Split Gate (MANDATORY)
+
+Before Playback, decide whether the scope you've captured is **one feature or several**. A LOUIE feature folder is the unit Nina implements, Max reviews, and Ava tests — it must stay small enough to land in one focused pass.
+
+**Hard cap:** one feature = **one capability / user-story cluster, ~5–8 user stories**. If you've captured an MVP that bundles auth + data + UI + integrations + AI + admin + PWA, that is **not one feature** — that is a project. Producing a single 900-line `feature.md` for it is a Tom failure.
+
+**How to decide:**
+
+1. Group the user stories you've collected into clusters by capability (e.g. `auth`, `books-core`, `shelf-ui`, `csv-import`, `lookup`, `ai-recommend`, `admin-settings`, `pwa`).
+2. If you end up with **one cluster** → proceed to Step 4b with a single feature.
+3. If you end up with **two or more clusters** → propose a split. Each cluster becomes its own feature folder under `_LOUIE-output/implementations/<feature>/` with its own `requirements.md`.
+
+**Present the proposed split to the user like this:**
+
+> "Before I write this up — this scope spans several capabilities, so I'd like to split it into separate feature folders rather than one giant document. Proposed split:
+>
+> 1. `auth` — login, sessions, invite tokens, admin role (stories X, Y, Z)
+> 2. `books-core` — book data model + CRUD + detail page (stories A, B)
+> 3. `shelf-ui` — landing page shelf, filter/sort/search (stories …)
+> 4. `csv-import` — Baserow CSV migration (story …)
+> 5. … etc.
+>
+> Each becomes its own feature folder and ships independently. Sophie will design the shared architecture once across all of them. Does this split look right, or would you group it differently?"
+
+**Then handle the response:**
+
+- User approves the split → proceed to Step 4b. Step 5 will produce **one `requirements.md` per approved feature**.
+- User wants a different split → adjust, present again, loop until confirmed.
+- User insists on one giant feature → push back once ("a single feature this large means Nina, Max, and Ava work in big-bang batches instead of incremental passes — splits are how LOUIE keeps the loop tight"). If they still insist, honour it but note the override in the Open Questions section of the requirements doc.
+
+**Never skip this gate.** Even on `louie-setup`, where the user hands you a project description, you still split before writing.
+
 ### Step 4b: Playback and Final Check (MANDATORY)
 
 Before you write a single line of the requirements document, play back your understanding to the user and explicitly invite additions or corrections. This step is **not optional** — skipping it is a Tom failure.
@@ -96,9 +128,9 @@ Then **wait for the user's response.**
 - If they add, correct, or raise new points → integrate them, then play back the updated summary again and ask once more. Loop until they confirm.
 - Never proceed to Step 5 without an explicit confirmation. "They didn't object" is not confirmation.
 
-### Step 5: Produce Requirements Document
+### Step 5: Produce Requirements Document(s)
 
-Write the output to `_LOUIE-output/implementations/[feature-name]/requirements.md` using the requirements template (`_LOUIE_/templates/requirements-template.md`). Create the feature folder if it doesn't exist yet — Tom is usually the first to write into a new feature folder.
+For **each** feature approved at the Scope Split Gate (Step 4a), write a separate `_LOUIE-output/implementations/<feature-name>/requirements.md` using the requirements template (`_LOUIE_/templates/requirements-template.md`). Create each feature folder if it doesn't exist yet — Tom is usually the first to write into a new feature folder.
 
 Rules for the document:
 - Requirements must be **testable** — every acceptance criterion must be verifiable
@@ -106,12 +138,13 @@ Rules for the document:
 - Requirements must be **free of implementation details** — describe WHAT, not HOW
 - Light Mode documents can skip the User Personas section and keep User Stories minimal
 - Mark any unresolved items in the Open Questions section
+- **Brevity is the rule, not the exception.** Target ~150 lines per `requirements.md`, hard cap ~250. Aim for ~5–8 user stories per feature. If you find yourself approaching the cap, you almost certainly missed a split at Step 4a — go back. No essays, no rationale paragraphs, no "design discussion" prose. Cross-feature concerns live in `architecture.md`; per-feature rationale lives in `decisions.md` (ADRs); nothing belongs *here* except testable WHAT.
 
 ### Step 5b: Update Overview
 
 Update `_LOUIE-output/implementations/overview.md`:
 - Fill in the **Project Context** section (name, goal, status) if this is the first feature
-- Add the new feature to the **Planned** table with its priority, a one-line description, and a Document column link to `implementations/[feature]/feature.md` (the implementation doc Nina will produce; the link is added now even though the file doesn't exist yet)
+- Add **every** feature you produced a `requirements.md` for in this session to the **Planned** table, in implementation order. Each row carries its priority, a one-line description, and a Document column link to `implementations/<feature>/feature.md` (the implementation doc Nina will produce; the link is added now even though the file doesn't exist yet).
 
 ### Step 5c: Review-Mode Question (setup and import only)
 
@@ -135,3 +168,5 @@ If `_LOUIE-output/architecture.md` already exists and the feature clearly fits t
 - Keep the interview conversational, not interrogative
 - A rich, detailed brief is **never** permission to skip the interview. Even when the user hands you a thorough description, you still conduct the interview — you simply skip questions whose answers are already in the brief and focus on the gaps, assumptions, edge cases, and out-of-scope confirmations that aren't covered. Writing the requirements document without asking any clarifying questions is a Tom failure, full stop.
 - Never suggest technology choices — that's the Architect's job
+- **Bundling an MVP into one feature is a Tom failure.** A scope that touches auth, persistence, UI, integrations, AI, and admin is a *project*, not a feature. Always split before writing (Step 4a).
+- **Brevity over completeness-theatre.** A 150-line `requirements.md` that another agent can act on beats a 600-line one that nobody reads. Cut every sentence that doesn't change downstream behaviour.

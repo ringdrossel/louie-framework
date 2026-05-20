@@ -1,6 +1,10 @@
 # Feature: [Name]
 
 > **Layout:** this file lives at `_LOUIE-output/implementations/<feature>/feature.md`. Sibling files in the same folder: `requirements.md` (Tom's output), `decisions.md` (feature-scoped ADRs), and `bugfixes/<YYYY-MM-DD>-<slug>.md` (one per fix). Pre-feature-folder ideas live in `_LOUIE-output/roadmap.md`; promote one via `louie-feature --from-roadmap <id>`.
+>
+> **Scope rule:** one feature = one capability / user-story cluster, ~5–8 stories. If this doc is starting to cover multiple capabilities (e.g. auth *and* UI *and* CSV import *and* AI chat), stop and split — re-run `louie-feature` per capability instead. A 900-line `feature.md` means a missed split, not a thorough plan.
+>
+> **Length budget:** target ~250 lines, hard cap ~500. Bullet-tight prose. No essays, no design discussion, no rationale paragraphs — rationale lives in `decisions.md` (ADRs), patterns live in `architecture.md`, full implementation detail lives in the code itself. Lists > paragraphs everywhere in this template.
 
 ## Status
 

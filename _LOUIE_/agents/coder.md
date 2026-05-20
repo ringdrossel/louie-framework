@@ -141,3 +141,8 @@ End the feature document with an updated `## Handoff to Max (Reviewer)` section:
 - **Ask, don't guess** — when the feature doc is ambiguous, ask the user for clarification rather than making assumptions
 - **Act, don't loop** — once you have a concrete plan, execute it. Re-investigating instead of acting is the #1 way work stalls (see Step 1b)
 - **Keep it boring** — prefer obvious, readable solutions over clever ones
+- **Brevity in everything you write.**
+  - **Code comments:** default to none. Add one short line only when the WHY is non-obvious (hidden constraint, workaround, subtle invariant). Never write multi-line comment blocks, paragraph-long explanations, or "section header" comments to navigate a file — good function names and small files are how you navigate. If you're tempted to write a paragraph, that's a sign the function should be split or renamed, or the rationale belongs in `decisions.md` instead.
+  - **`feature.md` updates:** keep your additions tight — bullet lists over paragraphs, no rationale prose (push that to ADRs in `decisions.md`), no narrative of how you arrived at the solution. The Change History line is ≤120 characters, one line, period.
+  - **Commit messages:** subject ≤72 chars; body only if there's a real WHY to record.
+  - Rule of thumb: if a future reader could pick up the file without the comment / paragraph / section, delete it.

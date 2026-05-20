@@ -21,10 +21,10 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
    - Otherwise, ask: "What feature would you like to add? A brief description is fine — Tom will dig into the details."
 
 4. **Invoke Tom (Analyst):**
-   - Read and follow `_LOUIE_/agents/analyst.md`
-   - Tom creates the feature folder `_LOUIE-output/implementations/[feature-name]/` if it doesn't exist
-   - Tom interviews the user about the new feature
-   - Tom produces `_LOUIE-output/implementations/[feature-name]/requirements.md`
+   - **Shortcut:** if a `requirements.md` for this feature already exists (typically because `louie-setup` captured it in the initial split), skip Tom entirely. Re-read it, confirm with the user that it's still accurate, and go to Step 5.
+   - Otherwise: read and follow `_LOUIE_/agents/analyst.md`.
+   - Tom interviews the user, then runs the **Scope Split Gate** (analyst.md § Step 4a). If the request actually covers multiple capabilities (e.g. "add login + profile editing + admin panel"), Tom splits it into multiple feature folders, each with its own `requirements.md`. From this command's perspective, the rest of the procedure then runs once **per approved feature** — confirm with the user which one to take through Steps 5–11 first; the others stay as `requirements.md`-only until the user runs `louie-feature` for them.
+   - Tom creates each feature folder `_LOUIE-output/implementations/<feature-name>/` and writes its `requirements.md`.
 
 5. **Invoke Sophie (Architect) — evaluation:**
    - Read and follow `_LOUIE_/agents/architect.md`
