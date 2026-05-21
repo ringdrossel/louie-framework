@@ -133,6 +133,5 @@ Bump the `Last Updated` line at the top of `runbook.md` to today.
   added.
 - Commit on `chore/runbook-drop-gotchas` with one focused commit per
   logical step (reclassify-to-A, reclassify-to-B, reclassify-to-C,
-  delete-D-and-section, prune-debugging). Push the branch. Do NOT
-  open a PR or merge — I'll review the diff first.
+  delete-D-and-section, prune-debugging). Push and merge the branch.
 ```
