@@ -73,7 +73,7 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 - `_LOUIE_/agents/` — agent definitions
 - `_LOUIE-output/architecture.md` — system design
 - `_LOUIE-output/tech-stack.md` — build-time stack
-- `_LOUIE-output/runbook.md` — runtime ops (deployment, ports, commands, gotchas)
+- `_LOUIE-output/runbook.md` — runtime ops (deployment, ports, commands, env, first-check debugging)
 - `_LOUIE-output/roadmap.md` — pre-feature idea list (lazy-created on first `/louie-roadmap add`)
 - `_LOUIE-output/implementations/<feature>/` — per-feature folder (`feature.md`, `requirements.md`, `decisions.md`, `bugfixes/`)
 - `_LOUIE-output/bugfixes/overview.md` — cross-project bug-fix index

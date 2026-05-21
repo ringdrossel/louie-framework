@@ -22,13 +22,17 @@
 
 [What was changed. Reference files and line ranges where helpful. Keep it concise — the diff is the source of truth, this is the narrative.]
 
+## Detect / Avoid
+
+[One short paragraph: how a future reader spots this bite (the observable symptom or the code shape that produces it) and how to avoid it next time. This is the canonical home for that knowledge — the runbook does not carry a gotchas list. Mandatory; do not leave empty.]
+
 ## Regression Test
 
 [Reference the regression test that prevents this bug from returning. Include the test file path and the test name. If no regression test was added, say why explicitly.]
 
 ## Runbook Update
 
-[If this fix produced a Common Gotchas entry in `_LOUIE-output/runbook.md`, link to or quote the entry. Bugfixes are the highest-value runbook content — this section should rarely be empty.]
+[Only fill in if this fix changed operational surface — a new env var the deploy now needs, a port behaviour change, a new first-check row in the Debugging table. Most bugfixes leave this empty; that is expected. Implementation-level detect/avoid wording lives in the section above, not here.]
 
 ## Related
 

@@ -2,6 +2,8 @@
 
 Design notes for `_LOUIE-output/runbook.md` — the operational/runtime reference produced alongside `architecture.md` and `tech-stack.md`. Read this before changing the runbook template, the agents that touch it, or the workflow steps that produce it.
 
+> **Update 2026-05-21:** The accumulating `Common Gotchas` section was removed (LLM dilution: long flat lists are write-only sinks; the right fact is rarely in the relevant top-K). Operational caveats now live inline as Notes-column parentheticals next to the entry they affect. Implementation learnings moved to per-feature `bugfixes/<slug>.md` (mandatory Detect/Avoid section) plus code-local `// WHY` comments. This file's narrative below predates that change — keep it for design history, but the current template no longer carries Common Gotchas as a section.
+
 ## Why It Exists
 
 LOUIE projects accumulate operational content with no canonical home: deployment commands, port assignments, gotchas discovered during implementation, "how do I restart this thing" knowledge. Without a slot, AI sessions invent ad-hoc files (e.g. `project-context.md`) that drift from the canonical docs. The runbook fills this gap.

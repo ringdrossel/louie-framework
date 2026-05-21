@@ -24,7 +24,7 @@ When the user says **`louie-review`**, invoke Max (Reviewer) to review code.
      - The architecture (does it follow the patterns?)
      - The coding guidelines (800-line limit, SRP, naming, etc.)
      - Security baseline (no secrets, input validation, etc.)
-     - Runbook coverage (new ports / commands / env vars / gotchas reflected in `runbook.md`?)
+     - Runbook coverage (new ports / commands / env vars / external services reflected in `runbook.md`? Implementation learnings landed as code-local `// WHY` + per-feature `bugfixes/` / `decisions.md` rather than dumped into the runbook?)
    - Max produces findings in three tiers: Critical / Should Fix / Suggestions
    - Max also calls out good code
 

@@ -32,7 +32,7 @@ The setting is **project-wide**, stored in `_LOUIE-output/runbook.md` under the 
 
 3. **Update the runbook:**
    - If the user picks a new mode, update the `## Review Mode` section of `_LOUIE-output/runbook.md` in place. Bump the `Set:` date to today.
-   - If the section does not exist yet, create it (place it after `## Common Gotchas`, before `## Debugging`).
+   - If the section does not exist yet, create it (place it after `## Environment & Dependencies`, before `## Debugging`).
    - Do not touch any other part of the runbook.
    - If the user picks "keep current," do nothing — print a one-line confirmation and exit.
 
