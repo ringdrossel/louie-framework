@@ -125,7 +125,7 @@ organize them by tags, and plan weekly meals.
 This kicks off the full setup sequence automatically:
 
 1. **Tom (Analyst)** interviews you and produces requirements
-2. **Sophie (Architect)** defines architecture, tech stack, and runbook (deployment model, ports, common commands, env vars, gotchas)
+2. **Sophie (Architect)** defines architecture, tech stack, and runbook (deployment model, ports, common commands, env vars, first-check debugging)
 3. All three are shown for your **confirmation** before any code is written
 
 See `_LOUIE_/commands/louie-setup.md` for the full command reference.

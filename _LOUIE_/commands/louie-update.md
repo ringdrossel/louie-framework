@@ -53,7 +53,7 @@ This command is for changes that are:
    - **Always:** append a Change History entry to `_LOUIE-output/implementations/[feature-name]/feature.md`: `YYYY-MM-DD: [Brief change description] (louie-update, slim review)`
    - **If code snippets or the structure section in `feature.md` reference the changed code:** update them to match
    - **If observable behavior shifted** (new validation, changed default, new field exposed, error message wording that other docs/tests reference): append a short "Update: <date>" note to `_LOUIE-output/implementations/[feature-name]/requirements.md`
-   - **If the change touched env vars, ports, external services, operator commands, or surfaced a gotcha worth remembering:** update `_LOUIE-output/runbook.md`
+   - **If the change touched env vars, ports, external services, or operator commands:** update `_LOUIE-output/runbook.md`. Implementation learnings (framework quirks, cache rules) go in a code-local `// WHY` comment instead — the runbook does not carry a gotchas list.
    - **If a non-trivial decision was made** (e.g. picked one approach over another for a real reason): append an ADR to `_LOUIE-output/implementations/[feature-name]/decisions.md` (create from `_LOUIE_/templates/decisions-template.md` if absent)
    - **If feature status changed** (e.g. moved from In Development to Implemented): update `_LOUIE-output/implementations/overview.md`
 

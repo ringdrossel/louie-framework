@@ -24,7 +24,7 @@ Before writing any code:
 
 1. Read `_LOUIE-output/tech-stack.md` — know the stack, frameworks, and tools
 2. Read `_LOUIE-output/architecture.md` — know the patterns, layers, and folder structure
-3. Read `_LOUIE-output/runbook.md` — know how the system runs, what ports are bound, and what gotchas to avoid (especially "Common Gotchas" — they're there to save you from rediscovering past pain)
+3. Read `_LOUIE-output/runbook.md` — know how the system runs, what ports are bound, what env vars are required, and what the first-line debugging steps are. Operational caveats live inline as Notes-column / bullet sub-notes next to the entry they affect. (There is no flat "Common Gotchas" list; implementation learnings live in code-local WHY comments and per-feature `bugfixes/` / `decisions.md` instead.)
 4. Read `_LOUIE_/guidelines/coding-guidelines.md` — know the rules you must follow
 5. Read the feature folder for the current task: `_LOUIE-output/implementations/<feature>/feature.md`, `requirements.md`, and `decisions.md` (if present)
 6. Skim recent fixes in `_LOUIE-output/implementations/<feature>/bugfixes/` and `_LOUIE-output/bugfixes/overview.md` — past pain you don't want to recreate
@@ -85,18 +85,25 @@ Update `_LOUIE-output/implementations/[feature-name]/feature.md` with:
 
 If you made any architectural decisions specific to this feature (a pattern choice, a tradeoff worth recording), add an ADR to `_LOUIE-output/implementations/[feature-name]/decisions.md` (create from `_LOUIE_/templates/decisions-template.md` if it doesn't exist).
 
-### Step 5: Update Runbook
+### Step 5: Update Runbook (only when operational surface actually changed)
 
-Append to `_LOUIE-output/runbook.md` anything operational the feature introduced or revealed:
+The runbook is the operational reference — how to run, deploy, and first-pass-debug the system. Touch it **only** when this feature genuinely altered that surface:
 
 - **New ports / endpoints** added by this feature → Ports & Endpoints table
 - **New env vars** required at runtime → Environment & Dependencies
 - **New external services** the system calls → Environment & Dependencies
 - **New commands** developers/operators will run (e.g. a new migration, a new admin script) → Common Commands
-- **Gotchas discovered during implementation** → Common Gotchas, dated entry. Examples: "this framework caches X — must invalidate after Y", "running locally requires Z env var or it silently uses defaults". Bugfixes especially: write what went wrong, how to detect it, how to avoid it. Future-you and future-Nina will read this.
-- **Debugging tips** for things you had to figure out the hard way → Debugging table
+- **New runtime symptom worth a first-check row** → Debugging table (keep that table to ~10 rows; prune older rows whose symptoms are now caught by tests or monitoring)
+- **Operational caveats** about any of the above (a port collision, an env var that silently defaults, a service that only accepts HTTP) → go **inline** as a parenthetical in the Notes column / bullet next to the entry — not a separate section.
 
-If the feature introduced no operational changes and you discovered no gotchas, say so explicitly in your handoff — don't silently skip the step.
+**Do not write implementation learnings to the runbook.** Things like "this framework caches X — must invalidate after Y", "running locally needs Z env var or it silently uses defaults" are dev-time knowledge, not operational. They belong in one or both of:
+
+- A one-line `// WHY` comment next to the code that bites — that's where future-Nina is actually looking when she edits.
+- The relevant `bugfixes/<slug>.md` (or `decisions.md` ADR for pattern-level learnings) — already linked from the feature's Change History.
+
+A long flat gotchas list is a write-only sink: every entry takes a slot, only a few are relevant to any task, and the irrelevant ones dilute the prompt. Code-local + bugfix-doc placement makes the right fact retrievable when it matters.
+
+If the feature introduced no operational changes, say so explicitly in your handoff (`no runbook changes — no operational impact`). That's a normal outcome, not a failure.
 
 ### Step 5b: When Fixing a Bug
 
@@ -106,7 +113,8 @@ If this work is a bug fix (you arrived here via `louie-bugfix`), in addition to 
   - `_LOUIE-output/implementations/<feature>/bugfixes/<YYYY-MM-DD>-<slug>.md` for fixes scoped to one feature
   - `_LOUIE-output/bugfixes/<YYYY-MM-DD>-<slug>.md` for cross-cutting fixes touching multiple features
 - Append a row at the top of the appropriate table in `_LOUIE-output/bugfixes/overview.md` (Recent Fixes for per-feature, Cross-Cutting Fixes for multi-feature)
-- The Common Gotchas entry in `runbook.md` is still mandatory — bugfixes are the highest-value runbook content
+- Capture the **detect / avoid** wording in the bugfix doc itself — that's the canonical home for "how this bites and how to spot it next time". If the bite is something a future reader would need to know while editing the affected file, add a one-line `// WHY` comment next to the relevant code as well.
+- Only update `runbook.md` if the fix changed actual operational surface (a new env var the deploy now needs, a port behaviour change, a new first-check Debugging symptom). Most bugfixes don't — that's expected and fine.
 - Reference the bug-fix doc from the feature's `feature.md` Change History entry
 
 ### Step 5c: When Addressing Review Findings (auto-fix modes)
@@ -129,7 +137,7 @@ End the feature document with an updated `## Handoff to Max (Reviewer)` section:
 - Note key decisions made during implementation (especially any deviations from the plan)
 - Flag areas of concern (complex logic, performance-sensitive code, security-relevant sections)
 - Describe what testing was done (linter, build, existing test suite)
-- **Runbook updates** — list every section you appended to (e.g. "Added 1 port, 2 gotchas, 1 debugging row") or state "no runbook changes — no operational impact." Max will verify.
+- **Runbook updates** — list every section you appended to (e.g. "Added 1 port, 1 env var, 1 debugging row") or state "no runbook changes — no operational impact." Max will verify. Implementation learnings handled outside the runbook (which is the default) → mention where: `// WHY` comment in `path/to/file.ts`, or `bugfixes/<slug>.md`.
 
 ## Guidelines
 

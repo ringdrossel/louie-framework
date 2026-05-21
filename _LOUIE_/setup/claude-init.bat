@@ -77,7 +77,7 @@ echo - `_LOUIE_/guidelines/coding-guidelines.md` — coding rules
 echo - `_LOUIE_/agents/` — agent definitions
 echo - `_LOUIE-output/architecture.md` — system design
 echo - `_LOUIE-output/tech-stack.md` — build-time stack
-echo - `_LOUIE-output/runbook.md` — runtime ops ^(deployment, ports, commands, gotchas^)
+echo - `_LOUIE-output/runbook.md` — runtime ops ^(deployment, ports, commands, env, first-check debugging^)
 echo - `_LOUIE-output/roadmap.md` — pre-feature idea list ^(lazy-created on first `/louie-roadmap add`^)
 echo - `_LOUIE-output/implementations/^<feature^>/` — per-feature folder ^(feature.md, requirements.md, decisions.md, bugfixes/^)
 echo - `_LOUIE-output/bugfixes/overview.md` — cross-project bug-fix index

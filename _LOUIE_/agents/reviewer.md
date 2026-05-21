@@ -73,13 +73,16 @@ Work through this checklist for every review. The coding guidelines (`_LOUIE_/gu
 
 ### 7. Runbook Coverage
 
+The runbook is operational reference only — ports, env vars, external services, common commands, debugging-first-checks. Implementation learnings ("framework caches X", "API silently defaults Y") do **not** belong in the runbook; they belong in code-local `// WHY` comments + the per-feature `bugfixes/<slug>.md` / `decisions.md`. There is no "Common Gotchas" section any more.
+
 - Did the change add new ports, endpoints, env vars, or external services? If so, are they reflected in `_LOUIE-output/runbook.md`?
 - Did the change introduce new operator/dev commands (migrations, scripts, restart steps)? If so, are they in Common Commands?
-- Did Nina flag any gotchas in the handoff? Did the gotchas land in `runbook.md` with a date and clear "detect / avoid" wording?
-- For bugfixes: is there a Common Gotchas entry capturing what went wrong and how to detect it next time?
-- For bugfixes: was the per-fix document created (`<feature>/bugfixes/<date>-<slug>.md` or `_LOUIE-output/bugfixes/<date>-<slug>.md` for cross-cutting), and is the row in `_LOUIE-output/bugfixes/overview.md`?
+- Did the change introduce operational caveats (a port collision, a service that only accepts HTTP, an env var that silently defaults)? If so, are they captured **inline** in the Notes column / bullet next to the entry they affect?
+- Are runtime symptoms worth a Debugging row actually new? (Don't accept padding — the Debugging table caps at ~10 rows; prune older rows whose symptoms are now caught by tests or monitoring.)
+- For bugfixes: was the per-fix document created (`<feature>/bugfixes/<date>-<slug>.md` or `_LOUIE-output/bugfixes/<date>-<slug>.md` for cross-cutting), is the row in `_LOUIE-output/bugfixes/overview.md`, and does the bugfix doc itself carry the **detect / avoid** wording? A runbook update is only required if the fix changed operational surface.
+- If Nina updated the runbook, flag (Should Fix) any entry that is really an implementation learning instead of operational reference — those need to move to a code-local `// WHY` comment or the bugfix doc.
 
-If Nina's handoff says "no runbook changes — no operational impact" and the diff confirms it (no new ports / env vars / external services / commands / framework quirks), accept that. Otherwise flag the missing updates as **Should Fix**.
+If Nina's handoff says "no runbook changes — no operational impact" and the diff confirms it (no new ports / env vars / external services / commands), accept that. Otherwise flag the missing updates as **Should Fix**.
 
 ## Auto-Fix Loop (for `auto-fix-critical` and `auto-fix-all` modes)
 

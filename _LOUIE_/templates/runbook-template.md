@@ -20,6 +20,8 @@ Last Updated: YYYY-MM-DD
 
 [List every port the system or its dependencies bind. Note any port collisions handled (e.g. host 5433 → container 5432). Include external endpoints the system *calls* — LLM APIs, third-party services — with their URLs.]
 
+[**Operational caveats live inline as a parenthetical in the Notes column** — e.g. "host 5433 → container 5432; binding to host 5432 collides with Postgres.app", or "Ollama endpoint must be `http://` only, TLS unsupported". Don't accumulate a separate gotchas section.]
+
 ## Common Commands
 
 [The commands a developer or operator actually types. Group by purpose. Use real, working commands — not placeholders.]
@@ -83,6 +85,8 @@ curl http://localhost:[port]/[health-path]
 - **[Name]** — [endpoint], [purpose], [auth method]
 - [...]
 
+[**Operational caveats go inline in the bullet** — e.g. "expects HTTP, not HTTPS", "rate-limited to 1k req/day on anonymous tier". Implementation learnings (cache invalidation rules, framework quirks) belong in a code-local `// WHY` comment + the relevant `bugfixes/<slug>.md`, **not here**.]
+
 ## Review Mode
 
 Controls how `louie-review` behaves. See `_LOUIE_/commands/louie-review-mode.md` for full details.
@@ -92,16 +96,6 @@ Controls how `louie-review` behaves. See `_LOUIE_/commands/louie-review-mode.md`
 **Set:** YYYY-MM-DD
 
 Valid values: `manual` (default, asks before fixing), `auto-fix-critical` (auto-applies Critical + Should Fix in a loop), `auto-fix-all` (also auto-applies Suggestions). Per-call overrides: `louie-review manual` / `louie-review auto` / `louie-review auto-fix-all`.
-
-## Common Gotchas
-
-[Accumulated pitfalls discovered during development and operation. **Append, don't rewrite** — old gotchas stay (they may resurface). New entries go on top with a date.]
-
-> Format: `**[YYYY-MM-DD] [Short title]** — [What goes wrong, how to detect, how to avoid/fix]`
-
-- **[YYYY-MM-DD] [Example: Cache-bust ?v= after frontend changes]** — [Browser caches index.html aggressively; bump the `?v=` query param on script tags after every frontend change or the user sees stale UI.]
-
-[Add new gotchas as Nina (Coder) discovers them during feature work or bugfixes.]
 
 ## Debugging
 
@@ -116,6 +110,11 @@ Valid values: `manual` (default, asks before fixing), `auto-fix-critical` (auto-
 
 ## Notes for Maintainers
 
-- This file grows over time. **Don't delete old gotchas** — they may resurface. Move stale ones to a "Resolved" subsection at the bottom of *Common Gotchas* if they no longer apply, but keep them visible for context.
+- **Keep this file operational and short.** It exists to answer "how do I run, deploy, or first-pass-debug this system?" — nothing else. Implementation learnings (framework quirks, cache invalidation rules, "I learned X during Phase 4") belong in three places that already exist and serve the LLM better:
+  - a one-line `// WHY` comment next to the code that bites,
+  - the relevant `_LOUIE-output/implementations/<feature>/bugfixes/<slug>.md`,
+  - and/or an ADR in the feature's `decisions.md`.
+- Operational caveats (a port collision, an env var that silently defaults, a service that only accepts HTTP) go **inline** as a parenthetical Note column entry or bullet sub-note next to the port / env var / command they affect — not in a flat list.
+- The Debugging table is for symptoms an operator hits at runtime, not for accumulated dev-time learnings. Cap at ~10 rows; prune older rows whose symptoms are now caught by tests, monitoring, or a code-comment WHY.
 - Cross-reference: detailed architecture is in `_LOUIE-output/architecture.md`. Tech stack is in `_LOUIE-output/tech-stack.md`. Per-feature details are in `_LOUIE-output/implementations/[feature]/feature.md`. Bug-fix history is in each feature's `bugfixes/` folder and the cross-project index at `_LOUIE-output/bugfixes/overview.md`.
-- Sophie creates this file at project setup. Nina appends after every implementation or bugfix. Max checks during review that new ports / commands / gotchas from the change made it in.
+- Sophie creates this file at project setup. Nina updates it only when a change genuinely altered operational surface (new port, new env var, new command, new external service). Max verifies during review.

@@ -85,13 +85,13 @@ Sophie should add (or update) a **Container Registry** subsection under the exis
 - Tag strategy (per this recipe — `:vX.Y.Z` / `:vX.Y.Z-sha<short>` / `:sha-<short>`, with `:latest` always pushed).
 - Base image policy (pinned version vs. floating major, e.g. `node:20.11-alpine` vs. `node:20-alpine`).
 
-Operational details — the actual `docker login` command for the chosen registry, the build/push/deploy commands the team types, the env-var contract the deployed container expects, the container user, the port mapping, the restart policy, and accumulating gotchas — go in `_LOUIE-output/runbook.md`:
+Operational details — the actual `docker login` command for the chosen registry, the build/push/deploy commands the team types, the env-var contract the deployed container expects, the container user, the port mapping, and the restart policy — go in `_LOUIE-output/runbook.md`:
 
 - **Deployment Model:** call out that the app ships as a Docker image and is deployed by `docker run` with `--restart unless-stopped`.
-- **Ports & Endpoints:** the host port → container port mapping.
-- **Common Commands:** the `docker login`, `./buildpush.sh`, `./update.sh`, and tail-the-logs commands.
+- **Ports & Endpoints:** the host port → container port mapping. Inline Note column entries carry operational caveats (e.g. "without `--restart unless-stopped` the container won't survive a reboot").
+- **Common Commands:** the `docker login`, `./buildpush.sh`, `./update.sh`, and tail-the-logs commands. Note "401 on push usually means registry token expired — re-run `docker login`" inline next to the push command.
 - **Environment & Dependencies:** the `.env.production` contract (variable names, what each is for) — values stay on the server, not in the doc.
-- **Common Gotchas:** seed with two — "registry token expired (401 on push)" and "container stopped without `--restart unless-stopped` won't survive a reboot."
+- **Debugging:** add a row for "push fails with 401" → "re-run `docker login <registry>`". Keep the table to ~10 rows total.
 
 ### Things Sophie should validate
 

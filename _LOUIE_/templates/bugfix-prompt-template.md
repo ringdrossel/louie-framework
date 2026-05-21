@@ -24,6 +24,10 @@ PROCEDURE:
    Recent Fixes table)
 8. Update change history in feature.md:
    - YYYY-MM-DD: Bug fix — [Description] (link to bugfixes/<YYYY-MM-DD>-<slug>.md)
-9. Append a Common Gotchas entry to _LOUIE-output/runbook.md
+9. Fill in the Detect / Avoid section of the bugfix doc (mandatory). Add a
+   one-line `// WHY` comment next to the affected code if a future editor
+   would need to know. Only update _LOUIE-output/runbook.md if the fix
+   genuinely changed operational surface (new env var, port behaviour,
+   new first-check Debugging symptom) — most fixes don't.
 10. Have Max (Reviewer) review the fix
 ```

@@ -39,7 +39,7 @@ This combines `louie-review` and `louie-doc` into a single command. Max reviews 
    - Overview (`_LOUIE-output/implementations/overview.md`) — update feature table if status changed
    - Bug fixes overview (`_LOUIE-output/bugfixes/overview.md`) — confirm any bug fixes are indexed
    - Architecture / tech stack — update if new patterns or libraries were introduced
-   - Runbook (`_LOUIE-output/runbook.md`) — update if new ports / commands / env vars / external services were added, or if Max found gotchas Nina missed
+   - Runbook (`_LOUIE-output/runbook.md`) — update only if new ports / commands / env vars / external services were added. Implementation learnings Max flagged → land them as code-local `// WHY` comments or per-feature `bugfixes/` / `decisions.md` entries, not the runbook.
 
 7. **Update the documentation:**
    - Add Change History entries with today's date

@@ -7,7 +7,7 @@ When the user says **`louie-bugfix`**, follow this procedure to diagnose and fix
 1. **Read project context:**
    - Read `_LOUIE_/templates/bugfix-prompt-template.md` — follow this structure
    - Read `_LOUIE_/templates/bugfix-template.md` — this is the output format for the bug-fix doc
-   - Read `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, and `_LOUIE-output/runbook.md` (Common Gotchas may already document this issue or a related one)
+   - Read `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, and `_LOUIE-output/runbook.md`. Then read `_LOUIE-output/bugfixes/overview.md` and the relevant feature's `bugfixes/` folder — that's where prior detect/avoid knowledge lives (the runbook no longer carries a gotchas list).
    - Read `_LOUIE_/guidelines/coding-guidelines.md`
    - Read `_LOUIE-output/implementations/overview.md` and `_LOUIE-output/bugfixes/overview.md` — understand the feature landscape and prior bug history
 
@@ -41,7 +41,8 @@ When the user says **`louie-bugfix`**, follow this procedure to diagnose and fix
      - **Cross-cutting fix:** `_LOUIE-output/bugfixes/<YYYY-MM-DD>-<slug>.md` (top-level)
    - Nina appends a row at the top of the appropriate table in `_LOUIE-output/bugfixes/overview.md` (Recent Fixes for per-feature; Cross-Cutting Fixes for multi-feature)
    - Nina updates `feature.md` Change History: `YYYY-MM-DD: Bug fix — [description] (see bugfixes/<file>.md)`
-   - **Nina appends a Common Gotchas entry to `runbook.md`** capturing what went wrong, how to detect it, and how to avoid it. Bugfixes are the highest-value runbook entries — this is mandatory.
+   - **Detect / avoid wording lives in the bugfix doc itself** (mandatory section — see `_LOUIE_/templates/bugfix-template.md`). If a future reader would need this knowledge while editing the affected code, also add a one-line `// WHY` comment next to it.
+   - **Only update `runbook.md` if the fix changed operational surface** (a new env var the deploy now needs, a port behaviour change, a new first-check Debugging symptom). Most bugfixes don't — that's expected.
 
 6. **Invoke Max (Reviewer) — review the fix:**
    - Read and follow `_LOUIE_/agents/reviewer.md`

@@ -39,7 +39,7 @@ When no `architecture.md` or `tech-stack.md` exist yet:
 3. **Propose and discuss before writing (MANDATORY)** — see "Proposal & Discussion Gate" below. Do not skip to step 4 until the user has approved your proposal.
 4. Produce `_LOUIE-output/architecture.md` from the architecture template
 5. Produce `_LOUIE-output/tech-stack.md` from the tech-stack template
-6. Produce `_LOUIE-output/runbook.md` from the runbook template — fill in deployment model, ports, common commands, env vars, and external services from the architectural decisions you just made. Common Gotchas starts empty (Nina will populate it as she discovers things).
+6. Produce `_LOUIE-output/runbook.md` from the runbook template — fill in deployment model, ports, common commands, env vars, and external services from the architectural decisions you just made. Keep it operational and short; the runbook is **not** a learnings log.
 7. Present all three to the user for final confirmation before any feature work begins
 
 #### Proposal & Discussion Gate (Step 3 — MANDATORY before writing docs)
@@ -92,7 +92,7 @@ When `architecture.md` and `tech-stack.md` already exist:
    - Show the specific diffs to the existing documents
    - Get user confirmation before updating
 5. Update the `Last Updated` date in any modified documents
-6. If the feature introduces new ports, env vars, or external services, update `runbook.md` directly (Ports & Endpoints, Environment & Dependencies). Operational gotchas remain Nina's domain — she'll append those during implementation.
+6. If the feature introduces new ports, env vars, or external services, update `runbook.md` directly (Ports & Endpoints, Environment & Dependencies). Operational caveats go inline in the Notes column / bullet next to the entry they affect — not in a flat gotchas list (there is no such section any more).
 
 ### Architecture Document Requirements
 
@@ -121,8 +121,7 @@ The `_LOUIE-output/runbook.md` (initial version) must include:
 - **Ports & Endpoints** — every port the system or its dependencies bind, plus external services it calls
 - **Common Commands** — start, stop, restart, status, logs, DB connect/migrate. Use real working commands, not placeholders.
 - **Environment & Dependencies** — required env vars and external services with endpoints
-- **Common Gotchas** — start empty; Nina populates during implementation
-- **Debugging** — at minimum, a row for "app won't start" with the first thing to check
+- **Debugging** — at minimum, a row for "app won't start" with the first thing to check. Cap at ~10 rows; this is a symptom lookup, not a learnings log.
 
 ### Confirmation Gate
 
