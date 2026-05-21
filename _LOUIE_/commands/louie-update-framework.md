@@ -5,10 +5,14 @@ When the user says **`louie-update-framework`**, follow this procedure to update
 ## Procedure
 
 1. **Detect the current setup:**
-   - Check which AI tool integration exists:
+   - Check which AI tool integration exists (any combination is possible — multiple may co-exist on one project):
      - `.claude/commands/` → Claude Code
+     - `.opencode/command/` → opencode
+     - `.codex/skills/` → Codex CLI
+     - `.pi/prompts/` → Pi Coding Agent
+     - `.gemini/` or `GEMINI.md` → Gemini CLI
      - `.cursorrules` → Cursor
-     - `AGENTS.md` with LOUIE section → Codex
+     - `AGENTS.md` with LOUIE section → Codex / opencode / Pi (shared context file)
    - Read the current `_LOUIE_/` directory to understand what's installed
 
 2. **Pull the latest framework:**
@@ -29,13 +33,13 @@ When the user says **`louie-update-framework`**, follow this procedure to update
    - Replace `_LOUIE_/recipes/` with the latest versions (recipe library)
    - Update `CLAUDE.md` at project root (replace the LOUIE-FRAMEWORK section, preserve any user-added sections)
 
-4. **Re-run the appropriate init script:**
-   - Claude Code → run `bash _LOUIE_/setup/claude-init.sh` (idempotent — skips CLAUDE.md if marker exists, overwrites command files)
-   - Cursor → run `bash _LOUIE_/setup/cursor-init.sh`
-   - Codex → run `bash _LOUIE_/setup/codex-init.sh`
-   - Gemini CLI → run `bash _LOUIE_/setup/gemini-init.sh`
-   - opencode → run `bash _LOUIE_/setup/opencode-init.sh`
-   - Pi Coding Agent → run `bash _LOUIE_/setup/pi-init.sh`
+4. **Re-run the appropriate init script(s)** — each is idempotent (skips the context-file section if the LOUIE marker is present; always overwrites the installed slash-command / skill / prompt-template files so they pick up framework updates). Run every script whose integration the project uses (multiple may apply):
+   - Claude Code → `bash _LOUIE_/setup/claude-init.sh` — refreshes `.claude/commands/louie-*.md`
+   - opencode → `bash _LOUIE_/setup/opencode-init.sh` — refreshes `.opencode/command/louie-*.md`
+   - Codex CLI → `bash _LOUIE_/setup/codex-init.sh` — refreshes `.codex/skills/louie-*/SKILL.md`
+   - Pi Coding Agent → `bash _LOUIE_/setup/pi-init.sh` — refreshes `.pi/prompts/louie-*.md`
+   - Gemini CLI → `bash _LOUIE_/setup/gemini-init.sh` (text-routing via `GEMINI.md` only — Gemini's slash-command convention is `.gemini/commands/*.toml`; LOUIE doesn't auto-generate those yet)
+   - Cursor → `bash _LOUIE_/setup/cursor-init.sh` (text-routing via `.cursorrules` only — Cursor doesn't expose a markdown drop-in slash-command path)
 
 5. **Show what changed:**
    - List new/updated/removed commands
