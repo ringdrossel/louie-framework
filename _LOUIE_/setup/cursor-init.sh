@@ -47,6 +47,7 @@ Available commands:
 1. **Never implement directly** — create a feature document and get user confirmation first.
 2. **Never start feature work** without a confirmed `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`.
 3. **Never merge to `main`** without explicit user approval after Max's review and Ava's tests pass.
+4. **Never write implementation learnings to `_LOUIE-output/runbook.md`.** The runbook is operational reference only (ports, env vars, external services, commands, first-check debugging). Framework quirks, cache rules, "I learned X" → code-local `// WHY` comments + per-feature `bugfixes/<slug>.md` § Detect / Avoid. There is no `## Common Gotchas` section; do not create one. Applies to every edit path, including ad-hoc "update the specs" requests that don't route through a `louie-*` command.
 
 ### Key Files
 
