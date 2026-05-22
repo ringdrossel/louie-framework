@@ -68,6 +68,7 @@ echo.
 echo 1. **Never implement directly** — create a feature document and get user confirmation first.
 echo 2. **Never start feature work** without a confirmed `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`.
 echo 3. **Never merge to `main`** without explicit user approval after Max's review and Ava's tests pass.
+echo 4. **Never write implementation learnings to `_LOUIE-output/runbook.md`.** Operational reference only ^(ports, env vars, services, commands, first-check debugging^). Framework quirks / cache rules / "I learned X" go in code-local `// WHY` comments + per-feature `bugfixes/^<slug^>.md` ^Detect / Avoid^. There is no `## Common Gotchas` section. Applies on every edit path, including ad-hoc "update the specs" requests.
 echo.
 echo ### Key Files
 echo.

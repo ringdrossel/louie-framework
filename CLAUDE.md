@@ -32,6 +32,7 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 2. **Never start feature work** without a confirmed `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`.
 3. **Never merge to `main`** without explicit user approval after Max's review and Ava's tests pass.
 4. **Never commit directly to local `main`.** All work happens on a feature branch. When the user approves a merge, publish it via whichever workflow fits the project: fast-forward the branch into `main` locally and push, or open a PR and merge via the GitHub API (required if branch protection blocks direct pushes). After a PR squashes/rebases — which produces new SHAs — sync local main with `git fetch origin && git reset --hard origin/main` to keep it identical to `origin/main` and avoid stop-hook "unpushed commits on main" warnings.
+5. **Never write implementation learnings to `_LOUIE-output/runbook.md`.** The runbook is operational reference only (ports, env vars, external services, commands, first-check debugging). Framework quirks, cache rules, "I learned X during Phase 4" → code-local `// WHY` comments + per-feature `bugfixes/<slug>.md` § Detect / Avoid. There is no `## Common Gotchas` section; do not create one. This applies on every edit path, including ad-hoc "update the specs" requests that don't route through a `louie-*` command.
 
 ## Key References
 

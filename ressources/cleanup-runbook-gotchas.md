@@ -118,6 +118,21 @@ prune list before deleting rows.
 Update `runbook.md`'s Maintainers section to match the current
 template's wording (the rule about not deleting old gotchas is gone).
 
+**Install the editing-policy banner** at the top of `runbook.md`,
+immediately under the existing "What this is" blockquote (or right
+under the `# Runbook` heading if no intro blockquote exists). Use this
+exact wording — it has to match what `_LOUIE_/templates/runbook-template.md`
+ships so it survives template diffs cleanly:
+
+```
+> **Editing policy — READ BEFORE EDITING.** This file is operational reference only: ports, env vars, external services, common commands, first-check debugging. **Implementation learnings** (framework quirks, cache rules, "this API silently defaults", "I discovered X during Phase 4") belong in code-local `// WHY` comments + the per-feature `_LOUIE-output/implementations/<feature>/bugfixes/<slug>.md` § Detect / Avoid — **not here**. There is no `## Common Gotchas` section; do not create one. Operational caveats go **inline** as parentheticals in the Notes column / bullet next to the entry they affect. This rule applies to every agent and every edit path, including ad-hoc "update the specs" requests that don't route through a `louie-*` command.
+```
+
+The banner is the primary enforcement mechanism — any agent that opens
+the file (even one that wasn't routed through a `louie-*` command and
+hasn't loaded the framework's agent prompts) reads the rule before
+editing.
+
 Bump the `Last Updated` line at the top of `runbook.md` to today.
 
 ## Step 4 — Verify and hand back

@@ -4,6 +4,8 @@ Last Updated: YYYY-MM-DD
 
 > **What this is:** the operational reference for running, debugging, and maintaining this project. Read this when you need to *run* the system or figure out why it's broken — not when you're designing it. For design-time concerns, see `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`.
 
+> **Editing policy — READ BEFORE EDITING.** This file is operational reference only: ports, env vars, external services, common commands, first-check debugging. **Implementation learnings** (framework quirks, cache rules, "this API silently defaults", "I discovered X during Phase 4") belong in code-local `// WHY` comments + the per-feature `_LOUIE-output/implementations/<feature>/bugfixes/<slug>.md` § Detect / Avoid — **not here**. There is no `## Common Gotchas` section; do not create one. Operational caveats go **inline** as parentheticals in the Notes column / bullet next to the entry they affect. This rule applies to every agent and every edit path, including ad-hoc "update the specs" requests that don't route through a `louie-*` command.
+
 ## Deployment Model
 
 [How the system actually runs in this environment. Examples: "App on host via systemd, PostgreSQL in Docker", "Containerized — docker-compose with 3 services", "Serverless — AWS Lambda + API Gateway", "Bare process via npm start during development".]
