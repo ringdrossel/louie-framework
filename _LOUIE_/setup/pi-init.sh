@@ -53,6 +53,7 @@ LOUIE commands are installed as Pi prompt templates under `.pi/prompts/`. Invoke
 | `/louie-bugfix` | Diagnose and fix a bug |
 | `/louie-review` | Code review by Max |
 | `/louie-review-doc` | Review + fix + update docs |
+| `/louie-evaluate` | Whole-codebase standards assessment + step-by-step apply loop |
 | `/louie-review-mode` | View or change the project review mode (manual / auto-fix-critical / auto-fix-all) |
 | `/louie-test` | Write or improve tests with Ava |
 | `/louie-doc` | Update documentation + commit message |

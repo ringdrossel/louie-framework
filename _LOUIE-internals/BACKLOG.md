@@ -61,6 +61,14 @@ Direction locked in: **universal per-feature folders** (`implementations/<featur
 
 Largest structural change since the framework was built. Touches templates, every command that writes to `_LOUIE-output/`, all agents, the overview format, `louie-update-framework`, and adds `louie-migrate`. Best done on its own feature branch.
 
+### Smart merge for `louie-evaluate` rescan
+
+`louie-evaluate` v1 overwrites all findings on rescan — the `archive` option preserves the prior run as a folder, but the live findings lose their `applied`/`skipped`/`modified`/`deferred` status (IDs are reassigned fresh). On a large codebase that's re-evaluated periodically, that means re-triaging things the user already decided on.
+
+Proposed: a smart merge that carries status forward when a new finding matches a prior one by **file:line + signature**. New findings start `pending`; findings no longer present move to `resolved`. Needs a stable signature scheme that survives line-number drift (e.g. a normalized hash of the offending construct + nearest stable anchor like the enclosing function name), otherwise every edit above a finding invalidates the match.
+
+Defer until users actually feel the re-triage pain — premature signature schemes are easy to get wrong and hard to change once findings files exist in the wild.
+
 ## Smaller / nice-to-have
 
 - **No deprecation path for retired features.** Their docs just sit in `implementations/`. Could be a `louie-retire` command or a status flag.

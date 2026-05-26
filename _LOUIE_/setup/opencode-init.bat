@@ -53,6 +53,7 @@ echo ^| `/louie-update` ^| Quick change ^(^< 50 lines^) ^|
 echo ^| `/louie-bugfix` ^| Diagnose and fix a bug ^|
 echo ^| `/louie-review` ^| Code review by Max ^|
 echo ^| `/louie-review-doc` ^| Review + fix + update docs ^|
+echo ^| `/louie-evaluate` ^| Whole-codebase standards assessment + step-by-step apply loop ^|
 echo ^| `/louie-review-mode` ^| View or change the project review mode ^(manual / auto-fix-critical / auto-fix-all^) ^|
 echo ^| `/louie-test` ^| Write or improve tests with Ava ^|
 echo ^| `/louie-doc` ^| Update documentation + commit message ^|

@@ -1,0 +1,228 @@
+# louie-evaluate
+
+When the user says **`louie-evaluate`**, follow this procedure to assess an existing codebase against LOUIE's coding standards (code quality, dead code, DRY violations, over-engineering, security baseline) and produce persistent markdown findings that can drive a step-by-step correction loop.
+
+This is a **read-only assessment** by default. Source code is only modified during the optional Phase 2 apply loop, and only when the user approves each change (or chooses apply-all upfront).
+
+## When to Use
+
+- You're handed a codebase from another developer or AI and want to know if it meets LOUIE's standards before adopting it.
+- You suspect a project has accumulated dead code, duplication, or needless abstractions.
+- You want a triaged list of issues you can work through later (the findings persist across sessions).
+
+`louie-evaluate` is **not** the same as `louie-review`:
+
+| | `louie-review` | `louie-evaluate` |
+|---|---|---|
+| Scope | one feature in a LOUIE project | whole codebase (or a specified subpath) |
+| Output | session-time chat findings | persistent files in `_LOUIE-output/evaluation/` |
+| Apply loop | no | yes (optional) |
+| Works on non-LOUIE projects | no | yes |
+
+## Procedure
+
+### 1. Detect mode
+
+- **LOUIE project** if `_LOUIE-output/architecture.md` exists. Use the project's own `architecture.md`, `tech-stack.md`, `runbook.md`, and `_LOUIE_/guidelines/coding-guidelines.md` as the standards lens.
+- **Non-LOUIE project** otherwise. Use `_LOUIE_/guidelines/coding-guidelines.md` as the standards lens. Sophie does a light structural pass first (next step).
+
+Tell the user which mode was detected and continue.
+
+### 2. Handle existing evaluation
+
+If `_LOUIE-output/evaluation/summary.md` already exists:
+
+- Read it and tally findings by status (`pending`, `applied`, `skipped`, `deferred`, `modified`).
+- Ask the user:
+  ```
+  Existing evaluation found at _LOUIE-output/evaluation/ (from <date>).
+    <N> findings: <X> applied, <Y> skipped, <Z> deferred, <P> pending.
+
+  What would you like to do?
+    [c]ontinue   skip scan, resume apply phase using existing findings
+    [r]escan     re-analyze codebase, overwrite existing findings
+    [a]rchive    move existing to evaluation/archive/<YYYY-MM-DD>/, then rescan
+    [q]uit
+  ```
+- Default = `continue` if there are `pending` or `deferred` findings, otherwise `rescan`.
+- If the user picks `archive`, move the existing files (excluding any prior `archive/` folder) into `_LOUIE-output/evaluation/archive/<YYYY-MM-DD>/` then proceed to scan.
+- If the user picks `continue`, jump to Step 6.
+
+### 3. Determine scope
+
+- If the user passed a path (e.g. `louie-evaluate src/api`), evaluate only that path. Record it in `summary.md` so future runs can detect a scope mismatch.
+- If a previous evaluation existed with a different scope and the user picked `rescan`/`archive`, warn explicitly before proceeding — don't silently mix scopes.
+- Otherwise evaluate the whole repo, excluding obvious ignore paths (`node_modules/`, `.git/`, `dist/`, `build/`, `target/`, `vendor/`, `.next/`, `__pycache__/`, etc.).
+
+### 4. Sophie pass (structural — non-LOUIE mode only)
+
+Skip this step in LOUIE mode (the project's own `architecture.md` already covers structure).
+
+In non-LOUIE mode:
+
+- Read and follow `_LOUIE_/agents/architect.md`. Tell Sophie this is **evaluate mode** — she is NOT producing a full architecture document. She is producing a lightweight `_LOUIE-output/evaluation/codebase-map.md` covering:
+  - Detected stack (manifest files, framework signatures)
+  - Top-level module/folder layout
+  - Entry points
+  - Rough size signals (LOC per top-level area, file counts, largest files)
+  - External dependencies surfaced from manifests
+- This file gives Max enough context to evaluate without re-scanning.
+
+### 5. Max pass (standards)
+
+Read and follow `_LOUIE_/agents/reviewer.md`. Tell Max this is **evaluate mode**. The standard Max review is the lens; evaluate-mode adds:
+
+- **Cross-codebase categories** (not just per-feature): code quality, dead code, DRY, over-engineering — produced as separate output files (Step 6).
+- **No feature-doc context** (in non-LOUIE mode) — Max evaluates against the codebase as-is using `_LOUIE_/guidelines/coding-guidelines.md`.
+- **No chat-only constraint** — findings go to files (the storage convention in `reviewer.md` is for `louie-review`; this command produces persistent artifacts on purpose).
+
+Max produces findings in three tiers — **Critical**, **Should Fix**, **Suggestions** — across these categories:
+
+- **Code quality** — naming clarity, function size (>30 lines), file size (>800 lines), magic numbers, comment hygiene, error-handling patterns, readability, complexity hotspots
+- **Dead code** — unreferenced exports, unused files, unused dependencies, commented-out code blocks, unreachable branches
+- **DRY violations** — duplication clusters with file:line evidence
+- **Over-engineering** — needless abstractions, premature flexibility, single-implementation interfaces, unused configuration knobs, speculative generality
+- **Security baseline** — hardcoded secrets, missing input validation, unparameterized queries, weak auth flows
+- **Architecture compliance** — LOUIE mode only: deviations from `architecture.md`
+- **Runbook coverage** — LOUIE mode only: drift between code and `runbook.md` (new ports/env/services not reflected)
+
+For each finding, Max records:
+- **Category** (one of the above)
+- **Tier** (Critical / Should Fix / Suggestion)
+- **File and line(s)**
+- **What's wrong** (specific)
+- **Why it matters** (impact)
+- **Suggested fix** (actionable)
+- **Status** — initialized as `pending`
+
+### 6. Write evaluation files
+
+Write to `_LOUIE-output/evaluation/`:
+
+- **`summary.md`** — verdict, tally by tier and category, scope (whole repo or subpath), mode (LOUIE / non-LOUIE), prioritized next-step list. Includes a Status section that survives across runs (counts of pending/applied/skipped/deferred/modified).
+- **`findings.md`** — every finding with full detail, sorted by tier then category. Each finding has a stable ID (e.g. `F001`, `F002`) used by the apply loop.
+- **`code-quality.md`** — code-quality findings only.
+- **`dead-code.md`** — dead-code findings only.
+- **`dry-violations.md`** — duplication clusters.
+- **`over-engineering.md`** — over-engineering findings only.
+- **`codebase-map.md`** — non-LOUIE mode only (from Sophie's pass).
+
+**Per-category file rule:** the four high-volume categories (**code quality**, **dead code**, **DRY violations**, **over-engineering**) get dedicated files because they're the categories that typically accumulate dozens of findings on a real codebase, and lazy-loading one of them in a follow-up session is genuinely useful. The lower-volume categories (**security**, **architecture compliance**, **runbook coverage**) live only in `findings.md` — splitting them out tends to produce near-empty files. If a real project ever generates 30+ findings in one of those low-volume categories, split that file out at evaluation time; don't write a stub file by default.
+
+**Small-project collapse:** if total findings are below ~15, write a single `evaluation.md` instead of the split files. `summary.md` still exists pointing at it.
+
+**File size cap:** if any of the per-category files would exceed 800 lines, split by directory or feature within that file (don't violate Max's own checklist).
+
+### 7. Phase 2 prompt — choose apply mode
+
+Once files are written, present the count and ask:
+
+```
+Findings written to _LOUIE-output/evaluation/.
+  <N> findings: <C> Critical, <S> Should Fix, <U> Suggestions.
+
+Apply now?
+  [w]alkthrough  step-by-step approval (default)
+  [a]pply-all    apply every finding without per-finding prompts (Critical + Should Fix + Suggestions)
+  [n]o           exit — files saved, decide later
+```
+
+Default = `walkthrough`. If the user picks `no`, exit cleanly — they can resume later by running `louie-evaluate` again and choosing `continue`.
+
+### 8a. Walkthrough loop
+
+For each finding in `pending` or `deferred` status, sorted by tier (Critical → Should Fix → Suggestions) then by file:
+
+- Show the finding:
+  ```
+  [<i>/<N>] <Tier> · <Category> · <file:line>
+    Issue: <what's wrong>
+    Why:   <impact>
+    Fix:   <suggested fix>
+
+    [a]pply  [m]odify  [s]kip  [d]efer  [q]uit
+  ```
+- **apply** → route per the "Routing applied changes" section below. On success, set status to `applied` and update `summary.md`.
+- **modify** → ask "What variation?" Re-present the proposed fix, then re-prompt. Once accepted, route as apply, but record status as `modified` with a one-line note of the variation in `findings.md`.
+- **skip** → set status to `skipped`. Decision is final unless rescan.
+- **defer** → leave status as `pending` or move to `deferred`. Picked up on the next run.
+- **quit** → save progress (status updates already persisted), exit.
+
+Persist status changes to `findings.md` and the per-category file as you go (so a crash or quit doesn't lose progress).
+
+After the loop ends, update `summary.md` with the latest status tally and append a "Run history" entry: `<date>: walkthrough — <X> applied, <Y> skipped, <Z> deferred, <M> modified`.
+
+### 8b. Apply-all loop
+
+Same iteration order, but no per-finding prompt. For each `pending`/`deferred` finding:
+
+- Route per the "Routing applied changes" section below.
+- On success, mark `applied`.
+- On failure (build break, test failure, cannot-determine fix), pause and ask:
+  ```
+  Apply failed for finding <id>: <error>.
+    [r]etry with modification  [s]kip  [q]uit
+  ```
+
+After the loop, update `summary.md` with the run-history entry and a single end-of-run report.
+
+### 9. Routing applied changes
+
+The apply step does NOT bypass LOUIE's gates. Route by mode:
+
+**LOUIE mode:**
+
+- **Real bug** (code is incorrect, not just stylistically poor) → drop into `louie-bugfix`. Nina creates the per-fix doc, updates the runbook (gotcha), updates `bugfixes/overview.md`, and adds the Change History entry on `feature.md`. Reference the evaluation finding ID in the bugfix doc's Symptoms section.
+- **Code-quality cleanup** under 50 lines and contained in one feature → drop into `louie-update`. Nina implements, runs lint/build, appends a Change History entry referencing the evaluation finding ID.
+- **Code-quality cleanup over 50 lines** or touching multiple features → escalate per `louie-update`'s rules: stop and recommend `louie-extend` (or split the finding into smaller ones the user can apply separately). In **apply-all** mode there is no stop — apply directly, run lint/build, and append a Change History entry to every affected `feature.md` referencing the evaluation finding ID.
+- **Cross-cutting refactor** (rename, dependency removal, structural change touching multiple features) → apply directly, run lint/build, and append a Change History entry to every affected `feature.md`. No per-finding confirmation in either walkthrough or apply-all (walkthrough already gates per-finding; apply-all is opted-in unattended).
+
+**Non-LOUIE mode:**
+
+- Warn once at the start of the apply phase:
+  > "This project isn't a LOUIE project, so applied changes won't produce feature docs / bugfix records. For full tracking, run `louie-import` first to onboard the project. Continue without import?"
+- If the user continues, apply changes directly (lint and build after each apply if available). No LOUIE artifact updates because there are no LOUIE artifacts.
+- After the apply phase, recommend `louie-import` again as a follow-up so future work is tracked.
+
+### 10. Wrap up
+
+- Tell the user where the evaluation lives and what's next.
+- If any findings remain `pending` or `deferred`, remind the user they can resume with `louie-evaluate` (`continue` mode).
+- If LOUIE-mode and all Critical findings are resolved, mention they can now run `louie-review` per-feature for a deeper feature-by-feature pass.
+- If non-LOUIE-mode and findings were applied without import, surface the import recommendation again.
+
+## Constraints
+
+- **No source code modifications outside the apply loop.** Phase 1 is pure analysis.
+- **No silent overwrite of existing evaluation files.** Always ask (`continue` / `rescan` / `archive`).
+- **No new agent.** Sophie + Max + Nina (apply-time only) are reused.
+- **No new LOUIE-output category outside `evaluation/`.** All artifacts live there.
+- **Every applied finding routes through an existing flow** (`louie-bugfix`, `louie-update`, or direct edit in non-LOUIE mode). The Three Critical Rules stay intact.
+- **Apply-all does not skip routing.** It only skips the per-finding prompt — Nina, the lint/build step, and the gate routing all still happen. Failures still pause for `[r]etry / [s]kip / [q]uit`.
+
+## Usage
+
+```
+louie-evaluate
+```
+
+Restrict scope to a subpath:
+
+```
+louie-evaluate src/api
+louie-evaluate packages/core/src
+```
+
+Resume an in-progress evaluation:
+
+```
+louie-evaluate
+# (existing files detected — pick [c]ontinue at the prompt)
+```
+
+Force a fresh scan and archive the prior run:
+
+```
+louie-evaluate
+# (existing files detected — pick [a]rchive at the prompt)
+```
