@@ -188,7 +188,34 @@ The init scripts (`_LOUIE_/setup/<tool>-init.{sh,bat}`) detect existing projects
 
 ---
 
-## Scenario 7: Product Ideation
+## Scenario 7: Evaluating a Codebase Against LOUIE Standards
+
+Use `louie-evaluate` when you want a whole-codebase quality assessment — handed a project from another dev or AI, or auditing your own for accumulated dead code, duplication, and needless abstractions:
+
+```
+louie-evaluate
+```
+
+Restrict scope to a subpath:
+
+```
+louie-evaluate src/api
+```
+
+The command auto-detects mode on `_LOUIE-output/architecture.md` presence:
+
+- **LOUIE mode** — uses the project's own `architecture.md` / `runbook.md` / `tech-stack.md` plus `coding-guidelines.md` as the lens. Sophie's structural pass is skipped.
+- **Non-LOUIE mode** — Sophie does a light structural pass into `_LOUIE-output/evaluation/codebase-map.md`; Max evaluates against `coding-guidelines.md` only, then recommends `louie-import` for full tracking.
+
+Max produces persistent findings in `_LOUIE-output/evaluation/` (`summary.md`, `findings.md`, plus `code-quality.md` / `dead-code.md` / `dry-violations.md` / `over-engineering.md`), tiered Critical / Should Fix / Suggestions with stable IDs. The findings survive across sessions.
+
+Phase 2 is an optional apply loop — **walkthrough** (default, per-finding apply/modify/skip/defer/quit), **apply-all** (every finding, all tiers, unattended with a failure pause), or **no** (exit, files saved). Applied changes route through the existing gated flows (`louie-bugfix` for real bugs, `louie-update` for small cleanups), so the Three Critical Rules stay intact.
+
+It reuses Sophie + Max + Nina (apply-time only) — no Leo, Ava, Tom, or Ivy. See `_LOUIE_/commands/louie-evaluate.md` for the full procedure.
+
+---
+
+## Scenario 8: Product Ideation
 
 Use `louie-ideate`:
 
@@ -201,7 +228,7 @@ Ivy suggests ideas. At the end she'll offer to sort each one: **pursue now** (ru
 
 ---
 
-## Scenario 8: Capture an Idea Without Committing
+## Scenario 9: Capture an Idea Without Committing
 
 Use `louie-roadmap` when you want to write an idea down without kicking off a full feature chain. Captured ideas live in `_LOUIE-output/roadmap.md` (lazy-created on first `add`) — pre-feature-folder, no requirements, no architecture eval.
 
@@ -234,6 +261,7 @@ This is distinct from `implementations/overview.md` — "Planned" features there
 | `louie-bugfix` | Diagnose and fix a bug |
 | `louie-review` | Code review by Max |
 | `louie-review-doc` | Review + fix + update docs in one flow |
+| `louie-evaluate` | Assess a whole codebase against LOUIE standards; persistent findings + optional step-by-step apply loop |
 | `louie-review-mode` | View or change the project review mode (manual / auto-fix-critical / auto-fix-all) |
 | `louie-test` | Write or improve tests with Ava |
 | `louie-doc` | Update documentation and generate a commit message |

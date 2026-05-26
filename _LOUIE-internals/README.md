@@ -18,6 +18,7 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 | `recipes.md` | Recipe system design — dispatcher rules, folder layout, name resolution |
 | `runbook.md` | Runbook system design — operational doc separate from architecture |
 | `import.md` | Import system design — cold + v1-docs modes, init-script detection, agent reuse |
+| `evaluate.md` | Evaluate system design — LOUIE/non-LOUIE modes, output schema, apply-loop routing, distinction from `louie-review` |
 | `scaling.md` | Artifact-layout scaling design — per-feature folders, bugfix home, migration path |
 | `BACKLOG.md` | Open ideas, gaps, and feature suggestions for the framework |
 | `CHANGELOG.md` | Framework version log |
@@ -27,6 +28,7 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 - **Adding a `louie-*` command** → `core.md` (naming, lazy-loading)
 - **Adding an agent** → `core.md` (handoff conventions)
 - **Adding a recipe or changing the recipe system** → `recipes.md`
+- **Changing `louie-evaluate` or its output schema** → `evaluate.md`
 - **Changing anything that ships downstream** → `core.md` (distribution model)
 
 ## Authoring Rules For This Folder
