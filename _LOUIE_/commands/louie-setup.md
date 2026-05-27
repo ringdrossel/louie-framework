@@ -30,7 +30,7 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
    - Sophie reads **all** of Tom's `requirements.md` files (one per feature folder) and produces a single set of project-wide foundation docs:
      - `_LOUIE-output/architecture.md` — system architecture with mermaid diagram, layers, patterns, folder structure, security model
      - `_LOUIE-output/tech-stack.md` — every technology choice with rationale
-     - `_LOUIE-output/runbook.md` — deployment model, ports, common commands, env vars, external services (Common Gotchas starts empty)
+     - `_LOUIE-output/runbook.md` — deployment model, ports, common commands, env vars, external services (operational reference only; no gotchas/learnings section)
    - These three docs cover the **whole project**, not per-feature. Per-feature design lives in each feature folder's `feature.md` (Step 7).
    - Use templates from `_LOUIE_/templates/architecture-template.md`, `_LOUIE_/templates/tech-stack-template.md`, and `_LOUIE_/templates/runbook-template.md`
 
