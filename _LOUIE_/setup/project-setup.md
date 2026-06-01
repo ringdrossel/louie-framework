@@ -208,3 +208,4 @@ Review the changelog for any changes to agent behavior or templates.
 | Capture a bigger change / epic; promote one to a full feature | `louie-roadmap` |
 | Change a roadmap entry (status / notes / effort; defer / drop) | `louie-roadmap-change` |
 | Update LOUIE to the latest version | `louie-update-framework` |
+| Fetch a task from a source adapter and route it to the right command | `louie-from-source` |

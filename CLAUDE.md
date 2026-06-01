@@ -29,6 +29,7 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 | `louie-roadmap-change` | `_LOUIE_/commands/louie-roadmap-change.md` | Change a roadmap entry (status / notes / effort; defer / drop) |
 | `louie-recipe` | `_LOUIE_/commands/louie-recipe.md` | Browse or load a reusable recipe |
 | `louie-update-framework` | `_LOUIE_/commands/louie-update-framework.md` | Update LOUIE to the latest version |
+| `louie-from-source` | `_LOUIE_/commands/louie-from-source.md` | Fetch a task from a source adapter and route it to the right command |
 
 ## Critical Rules
 

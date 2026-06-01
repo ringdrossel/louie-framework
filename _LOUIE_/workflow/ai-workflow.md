@@ -284,6 +284,7 @@ It reconstructs *where you stopped* from artifacts on disk + git, **not** from c
 | `louie-roadmap-change` | Change a roadmap entry (status / notes / effort; defer / drop) |
 | `louie-recipe` | Browse or load a reusable recipe (settings, auth, Docker, etc.) |
 | `louie-update-framework` | Update LOUIE to the latest version |
+| `louie-from-source` | Fetch a task from a source adapter and route it to the right command |
 
 Command definitions live in `_LOUIE_/commands/`.
 

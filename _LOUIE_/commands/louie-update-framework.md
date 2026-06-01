@@ -31,6 +31,7 @@ When the user says **`louie-update-framework`**, follow this procedure to update
    - Replace `_LOUIE_/workflow/` with the latest versions
    - Replace `_LOUIE_/setup/` with the latest versions
    - Replace `_LOUIE_/recipes/` with the latest versions (recipe library)
+   - Replace `_LOUIE_/adapters/` with the latest versions (public source-adapter interface). **Never touch `louie-adapters/`** at the project root — that's the user's private, source-specific adapters; it is gitignored and outside `_LOUIE_/`.
    - Update `CLAUDE.md` at project root (replace the LOUIE-FRAMEWORK section, preserve any user-added sections)
 
 4. **Re-run the appropriate init script(s)** — each is idempotent (skips the context-file section if the LOUIE marker is present; always overwrites the installed slash-command / skill / prompt-template files so they pick up framework updates). Run every script whose integration the project uses (multiple may apply):
