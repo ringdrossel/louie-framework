@@ -51,6 +51,7 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
 
 9. **Invoke Leo (Designer) — if the feature has UI:**
    - Read and follow `_LOUIE_/agents/designer.md`
+   - Leo first presents a lightweight UI proposal and discusses it with the user (Proposal & Discussion Gate, same as Sophie). He only writes the design into `feature.md` after explicit approval.
    - Skip this step for backend-only features
 
 10. **Invoke Nina (Coder):**

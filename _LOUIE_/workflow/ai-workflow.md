@@ -82,7 +82,7 @@ Invoke _LOUIE_/agents/designer.md
 Feature folder: _LOUIE-output/implementations/[feature]/
 ```
 
-Leo designs the component structure and UX. Skip this step for backend-only features.
+Leo first proposes a UI direction and discusses it with you (a Proposal & Discussion Gate, same as Sophie's), then writes the finalized component structure and UX into `feature.md` after you approve. Skip this step for backend-only features.
 
 ### Step 5: Talk to Nina (Coder)
 
