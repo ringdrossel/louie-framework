@@ -98,6 +98,9 @@ After it completes, the project is indistinguishable from one that went through 
     - Wait for the answer. Accept `1`/`2`/`3`, the mode name, or "skip" / "default" (→ `manual`).
     - Update `_LOUIE-output/runbook.md` § Review Mode in place: set `Mode:` to the chosen value, `Set:` to today's date, leave `Loop cap:` at `3`.
 
+10c. **Create the roadmap file:**
+    - Copy `_LOUIE_/templates/roadmap-template.md` to `_LOUIE-output/roadmap.md` if it doesn't already exist. Set `Last Updated` to today; leave the Captured / Promoted placeholders. Don't backfill — the roadmap is for bigger changes / epics going forward, not a record of already-built features (those live in `implementations/overview.md`).
+
 11. **Confirmation gate (architecture):**
     - Present `architecture.md`, `tech-stack.md`, `runbook.md`, the per-feature folders (with their `feature.md` and `requirements.md`), and the overviews (`implementations/overview.md` + `bugfixes/overview.md`).
     - Walk the user through Sophie's key inferences and any Open Questions.

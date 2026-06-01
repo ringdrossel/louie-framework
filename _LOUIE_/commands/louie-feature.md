@@ -36,7 +36,7 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
    - Create `_LOUIE-output/implementations/[feature-name]/feature.md` using `_LOUIE_/templates/feature-template.md`
    - Fill in all sections based on `[feature-name]/requirements.md` and the architecture
    - Update `_LOUIE-output/implementations/overview.md` with the new feature entry — Document column links to `implementations/[feature-name]/feature.md`
-   - **If this run was seeded `--from-roadmap <id>`:** move the entry from `## Captured` to `## Promoted` in `_LOUIE-output/roadmap.md`. Preserve the original `Created` and `Notes`. Add `Promoted: YYYY-MM-DD → _LOUIE-output/implementations/[feature-name]/`. If the `## Promoted` section is showing the placeholder `_No ideas promoted yet._`, remove that line first. Update the `Last Updated:` line at the top of the roadmap file.
+   - **If this run was seeded `--from-roadmap <id>`:** move the entry from `## Captured` to `## Promoted` in `_LOUIE-output/roadmap.md`. Preserve the original `Created` and `Notes`. Set `Status: In Progress` and add `Promoted: YYYY-MM-DD → _LOUIE-output/implementations/[feature-name]/`. If the `## Promoted` section is showing the placeholder `_No ideas promoted yet._`, remove that line first. Update the `Last Updated:` line at the top of the roadmap file. (Equivalent to `louie-roadmap-change <id> status "In Progress"`.)
 
 7. **Confirmation gate:**
    - Show the user the feature document and implementation plan
@@ -65,6 +65,11 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
 12. **Invoke Ava (Tester):**
     - Read and follow `_LOUIE_/agents/tester.md`
     - Ava writes tests and gives a ship recommendation
+
+13. **Roadmap sync (only if this feature came from a roadmap entry):**
+    - If this run was seeded `--from-roadmap <id>` and Ava gave a ship recommendation, the epic may now be complete — but an epic can span several features. **Ask, don't assume:** "This feature is done. Is the roadmap epic `<id>` complete, or are there more features under it?"
+    - If the user says it's complete, run `louie-roadmap-change <id> status Done`. Otherwise leave it `In Progress`.
+    - Skip this step entirely for features not linked to a roadmap entry.
 
 ## Usage
 

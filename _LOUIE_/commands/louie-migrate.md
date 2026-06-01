@@ -104,6 +104,13 @@ If `_LOUIE-output/bugfixes/overview.md` doesn't exist:
 - Copy `_LOUIE_/templates/bugfixes-overview-template.md` to `_LOUIE-output/bugfixes/overview.md`. Leave the tables empty — we do **not** backfill from feature-doc Change History (heuristic, noisy).
 - Tell the user: "I created an empty bugfix index. Past bugs remain readable in each feature's Change History. Going forward, `louie-bugfix` will create per-fix docs that land in this index."
 
+### 8c. Bootstrap the roadmap
+
+If `_LOUIE-output/roadmap.md` doesn't exist:
+
+- Copy `_LOUIE_/templates/roadmap-template.md` to `_LOUIE-output/roadmap.md`. Set `Last Updated` to today; leave the Captured / Promoted placeholders. Don't backfill — the roadmap is for bigger changes / epics going forward, not already-built features.
+- Tell the user: "I created an empty roadmap. Capture bigger changes / epics with `louie-roadmap add`, restatus them with `louie-roadmap-change`."
+
 ### 9. Cleanup
 
 - Delete the now-empty `_LOUIE-output/requirements/` directory: `git rm -r _LOUIE-output/requirements/`. Only do this if it's actually empty after the orphan step.

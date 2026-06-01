@@ -62,7 +62,8 @@ echo ^| `/louie-branch-mode` ^| View or change the project branch mode ^(current
 echo ^| `/louie-test` ^| Write or improve tests with Ava ^|
 echo ^| `/louie-doc` ^| Update documentation + commit message ^|
 echo ^| `/louie-ideate` ^| Brainstorm ideas with Ivy ^|
-echo ^| `/louie-roadmap` ^| Capture pre-feature ideas in `_LOUIE-output/roadmap.md`; promote one to a full feature ^|
+echo ^| `/louie-roadmap` ^| Capture bigger changes (epics) in `_LOUIE-output/roadmap.md`; promote one to a full feature ^|
+echo ^| `/louie-roadmap-change` ^| Change a roadmap entry ^(status / notes / effort; defer / drop^) ^|
 echo ^| `/louie-recipe` ^| Browse or load a reusable recipe ^|
 echo.
 echo ### Critical Rules
@@ -81,7 +82,7 @@ echo - `_LOUIE_/agents/` — agent definitions
 echo - `_LOUIE-output/architecture.md` — system design
 echo - `_LOUIE-output/tech-stack.md` — build-time stack
 echo - `_LOUIE-output/runbook.md` — runtime ops ^(deployment, ports, commands, env, first-check debugging^)
-echo - `_LOUIE-output/roadmap.md` — pre-feature idea list ^(lazy-created on first `/louie-roadmap add`^)
+echo - `_LOUIE-output/roadmap.md` — bigger changes / epics list ^(created at setup^)
 echo - `_LOUIE-output/implementations/^<feature^>/` — per-feature folder ^(feature.md, requirements.md, decisions.md, bugfixes/^)
 echo - `_LOUIE-output/bugfixes/overview.md` — cross-project bug-fix index
 echo ^<!-- /LOUIE-FRAMEWORK --^>
