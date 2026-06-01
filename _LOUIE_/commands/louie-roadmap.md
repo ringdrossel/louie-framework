@@ -1,23 +1,24 @@
 # louie-roadmap
 
-When the user says **`louie-roadmap`**, dispatch by subcommand. The roadmap is the project's pre-feature-folder idea list — see `_LOUIE-output/roadmap.md` (lazy-created on first `add`).
+When the user says **`louie-roadmap`**, dispatch by subcommand. The roadmap is the project's list of **bigger changes / epics**, pre-feature-folder — see `_LOUIE-output/roadmap.md`. It is for larger pieces of work, not every feature (per-feature status lives in `_LOUIE-output/implementations/overview.md`). The file is created at `louie-setup` (and on `louie-import` / `louie-migrate`), so it normally already exists.
 
 ## Subcommands
 
 | Form | What it does |
 |------|--------------|
-| `louie-roadmap` | Print the current roadmap (Captured + Promoted). If `roadmap.md` doesn't exist, say so and suggest `louie-roadmap add`. |
+| `louie-roadmap` | Print the current roadmap (Captured + Promoted). |
 | `louie-roadmap add "<title>"` | Capture a new idea. |
 | `louie-roadmap promote <id>` | Hand off to `louie-feature --from-roadmap <id>`. |
+| `louie-roadmap-change <id> …` | Edit an entry (status / notes / effort / title; defer / drop). Its own command — see `_LOUIE_/commands/louie-roadmap-change.md`. |
 
-Match the subcommand case-insensitively. If the user types something else (e.g. `louie-roadmap drop R-003`), tell them v1 supports only `add` and `promote` and that direct file edits cover other operations.
+Match the subcommand case-insensitively. To edit or restatus an entry, use `louie-roadmap-change`. For anything else not covered, direct file edits are fine — it's plain markdown.
 
 ## Procedure
 
 ### Resolve `_LOUIE-output/roadmap.md`
 
-- If the file does not exist and the subcommand is `add`: lazy-create it by copying `_LOUIE_/templates/roadmap-template.md` to `_LOUIE-output/roadmap.md`. Set the `Last Updated` line to today.
-- If the file does not exist and the subcommand is `promote` or bare: tell the user the roadmap is empty and suggest `louie-roadmap add` first.
+- The file is normally created at `louie-setup` / `louie-import` / `louie-migrate`.
+- If it does not exist (e.g. a legacy project predating roadmap creation at setup): create it by copying `_LOUIE_/templates/roadmap-template.md` to `_LOUIE-output/roadmap.md`, setting the `Last Updated` line to today, then continue. Do this for any subcommand — never report "not found" to the user.
 
 ### `add`
 
@@ -43,6 +44,7 @@ Match the subcommand case-insensitively. If the user types something else (e.g. 
    ### R-NNN: <Title>
 
    - Created: YYYY-MM-DD
+   - Status: Captured
    - Source: <source>
    - Effort: <S|M|L>         (omit the line if the user didn't supply one)
    - Notes:
@@ -66,10 +68,10 @@ Match the subcommand case-insensitively. If the user types something else (e.g. 
 
 ### Bare call (no subcommand)
 
-1. If `roadmap.md` doesn't exist, say "No roadmap yet — `louie-roadmap add \"<title>\"` to capture the first idea."
-2. Otherwise, print:
-   - The current `## Captured` entries (ID, Title, Created, Effort if set).
-   - A count of `## Promoted` entries with a one-line link list.
+1. Resolve `roadmap.md` as above (create from template if somehow missing).
+2. Print:
+   - The current `## Captured` entries (ID, Title, Status, Created, Effort if set). If the only content is the `_No ideas captured yet._` placeholder, say the roadmap is empty and suggest `louie-roadmap add "<title>"`.
+   - A count of `## Promoted` entries with a one-line link list, each showing its Status.
    - The total count.
 
 Keep the printout terse. Don't dump Notes inline — they live in the file, not in chat output.
@@ -78,7 +80,8 @@ Keep the printout terse. Don't dump Notes inline — they live in the file, not 
 
 - **No agent involved.** This command writes the file directly. Ivy doesn't own the roadmap; she only feeds it through `louie-ideate`.
 - **No architecture or runbook gate.** The roadmap is pre-commitment. `add` works on a fresh repo with no `architecture.md`. `promote` triggers `louie-feature`, which enforces the standard gates.
-- **Lazy creation.** Don't bootstrap `roadmap.md` from any other command (setup, import, migrate, update-framework). First `add` creates it.
+- **Created at setup.** `louie-setup` / `louie-import` / `louie-migrate` bootstrap `roadmap.md` from the template so it always exists. `add` and `louie-roadmap-change` recreate it defensively if a legacy project is missing it — but no command should ever surface "roadmap not found" to the user.
+- **Epics, not features.** Keep entries at the epic / bigger-change level. Routine features go straight through `louie-feature` and are tracked in `implementations/overview.md`, not here.
 - **One-way audit trail.** Promoted entries stay in `roadmap.md` forever as a record of what was once a captured idea. They're not deleted, even if the resulting feature is later retired.
 
 ## Usage

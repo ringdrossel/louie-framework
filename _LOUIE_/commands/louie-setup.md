@@ -51,6 +51,10 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
    - Update `_LOUIE-output/runbook.md` § Branch Mode in place: set `Mode:` to `current`, `Set:` to today's date.
    - Add a one-line note: "Branch mode is `current` (work on the current branch). Switch to `ask` anytime with `louie-branch-mode` if you'd rather be prompted to branch per feature."
 
+5d. **Create the roadmap file:**
+   - Copy `_LOUIE_/templates/roadmap-template.md` to `_LOUIE-output/roadmap.md` if it doesn't already exist. Set the `Last Updated` line to today; leave the Captured / Promoted placeholders in place.
+   - The roadmap holds **bigger changes / epics** (not every feature — that's `implementations/overview.md`). Creating it here means it always exists, so `louie-roadmap`, `louie-roadmap-change`, and `louie-feature --from-roadmap` never hit "not found."
+
 6. **Confirmation gate (architecture):**
    - Present the requirements, architecture, tech stack, and runbook to the user
    - Walk through the key decisions and their rationale

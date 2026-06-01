@@ -48,11 +48,13 @@ They never overlap, so the name collision (`BACKLOG.md` vs `roadmap.md`) is fine
 
 | Trigger | Who writes | What happens |
 |---------|-----------|--------------|
-| `louie-roadmap add "<title>"` | The command directly | Lazy-create `roadmap.md` from template if missing; append entry under `## Captured` with next ID. |
+| `louie-setup` / `louie-import` / `louie-migrate` | The command directly | Create `roadmap.md` from template if missing, so it always exists. |
+| `louie-roadmap add "<title>"` | The command directly | Append entry under `## Captured` with next ID and `Status: Captured`. Recreates the file from template if a legacy project is missing it. |
 | `louie-ideate` (end of Ivy's pass) | The command, on user pick | Ask user which of Ivy's ideas to save; append each as a `Source: ideate` entry. |
-| `louie-feature --from-roadmap <id>` | `louie-feature` | Seed Tom's interview with the entry's Notes; after the feature folder is created, move the entry to `## Promoted` with a back-link. |
+| `louie-feature --from-roadmap <id>` | `louie-feature` | Seed Tom's interview with the entry's Notes; after the feature folder is created, move the entry to `## Promoted` with a back-link and set `Status: In Progress`. On finish, offer `Status: Done` (epics can span multiple features — ask, don't force). |
 | `louie-roadmap promote <id>` | The command | Delegate to `louie-feature --from-roadmap <id>`. |
-| Manual edit | User | Re-order, drop, defer, retag freely. The roadmap is a plain markdown file; v1 ships no commands for these. |
+| `louie-roadmap-change <id> …` | The command directly | Edit an entry: `status` / `note` / `effort` / `title`; `Deferred` / `Dropped`. Does not move between sections. |
+| Manual edit | User | Re-order or retag freely. The roadmap is plain markdown. |
 
 No agent owns the roadmap, matching the `runbook.md` precedent. The roadmap is a *surface*, not a *voice*.
 
@@ -74,7 +76,7 @@ Folder-per-idea (one file per entry) would impose feature-folder weight on items
 | Title | Yes | One line. |
 | Created | Yes | ISO date. |
 | Source | Yes | `ideate` / `manual` / `feature-work` / `bugfix`. Free text fallback. |
-| Status | Yes | `Captured` / `Promoted` / `Dropped`. Section heading implies it (`## Captured`, `## Promoted`, `## Dropped`). |
+| Status | Yes | `Captured` / `In Progress` / `Done` / `Deferred` / `Dropped`. Explicit `Status:` field (epic lifecycle). The section (`## Captured` / `## Promoted`) reflects whether a feature folder exists; `Status` tracks the finer state within it. Set on `add`, synced by `louie-feature`, edited by `louie-roadmap-change`. |
 | Effort | No | `S` / `M` / `L`. Only if the user supplied it. Never auto-generated. |
 | Notes | No | Free text. When the entry was captured from Ivy, her full idea card (what/why/effort/builds-on/fits-arch) goes here verbatim. |
 
@@ -98,20 +100,22 @@ When an idea becomes a real feature, three options exist for what happens to the
 
 Promoted entries carry a `Promoted: YYYY-MM-DD → _LOUIE-output/implementations/<feature>/` line back to the feature folder. The feature.md doesn't need to back-link to the roadmap entry — the audit trail flows one way.
 
-### Lazy Creation, No Init-Script Bootstrap
+### Created at Setup (reversal of the original lazy-creation decision)
 
-`roadmap.md` is created on first `louie-roadmap add`, not by the init scripts. Reasons:
+`roadmap.md` is now created by `louie-setup` (and `louie-import` / `louie-migrate`), **not** lazy-created on first `louie-roadmap add`.
 
-- The lazy-loading principle (`_LOUIE-internals/core.md`) — only `CLAUDE.md` is always-present; everything else is created when needed.
-- Existing LOUIE projects automatically gain the feature without migration. No `louie-migrate` work, no `louie-update-framework` bootstrap step.
-- An empty `roadmap.md` would just be visual noise in the project tree.
+The original v1 decision was lazy creation (cite: lazy-loading principle, zero migration cost, no empty-file noise). In practice that produced a bug: several commands and agent flows reference `roadmap.md` (`louie-feature` checks for captured entries, `louie-roadmap promote`, the bare `louie-roadmap` print) and on a project that never ran `add`, those references hit "not found." The fix is to guarantee the file exists from project start.
 
-### Subcommands at v1: `add` and `promote` Only
+- The Resolve step in `louie-roadmap` / `louie-roadmap-change` still recreates the file from template defensively, so legacy projects (and any that predate setup creation) never surface "not found" either.
+- The empty-file-noise concern is outweighed by the correctness win; an empty roadmap with placeholders is clearer than a missing one.
 
-`drop` / `defer` / `reorder` / `retag` / `query` would all be reasonable. None ships at v1. Reasoning:
+### Scope: epics / bigger changes, not every feature
 
-- Direct file edit covers all of them, since the schema is plain markdown.
-- Each subcommand we add now is one we can't easily remove. Let real usage tell us which are worth tool support.
+The roadmap tracks *bigger changes / epics* — larger pieces of work worth shepherding from idea to done. Per-feature status stays in `implementations/overview.md`; duplicating every feature here would recreate exactly the overlap the "Why Not Absorb Into overview.md" section argues against. The `Status` lifecycle (`In Progress` / `Done`) is therefore epic-level: `louie-feature` only touches the roadmap for roadmap-linked work, and because one epic can span several features it *offers* `Done` rather than forcing it.
+
+### Subcommands: `add`, `promote`, and `change`
+
+v1 shipped `add` and `promote` only, deferring `drop` / `defer` / `edit`. The `change` operation now ships as its own command (`louie-roadmap-change`) because the epic lifecycle needs status transitions that `louie-feature` can call programmatically and the user can drive manually (status / notes / effort / title; defer / drop). `reorder` / `query` remain direct-file-edit only — real usage hasn't shown they need tool support.
 
 ### `louie-feature --from-roadmap <id>` (Not a Separate Command)
 

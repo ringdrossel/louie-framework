@@ -24,7 +24,8 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 | `louie-test` | `_LOUIE_/commands/louie-test.md` | Write or improve tests with Ava |
 | `louie-doc` | `_LOUIE_/commands/louie-doc.md` | Update documentation + commit message |
 | `louie-ideate` | `_LOUIE_/commands/louie-ideate.md` | Brainstorm ideas with Ivy |
-| `louie-roadmap` | `_LOUIE_/commands/louie-roadmap.md` | Capture / promote pre-feature ideas in `_LOUIE-output/roadmap.md` |
+| `louie-roadmap` | `_LOUIE_/commands/louie-roadmap.md` | Capture / promote bigger changes (epics) in `_LOUIE-output/roadmap.md` |
+| `louie-roadmap-change` | `_LOUIE_/commands/louie-roadmap-change.md` | Change a roadmap entry (status / notes / effort; defer / drop) |
 | `louie-recipe` | `_LOUIE_/commands/louie-recipe.md` | Browse or load a reusable recipe |
 | `louie-update-framework` | `_LOUIE_/commands/louie-update-framework.md` | Update LOUIE to the latest version |
 

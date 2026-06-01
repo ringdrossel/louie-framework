@@ -58,7 +58,8 @@ LOUIE commands are available as opencode slash commands (`/louie-*`). Type `/lou
 | `/louie-test` | Write or improve tests with Ava |
 | `/louie-doc` | Update documentation + commit message |
 | `/louie-ideate` | Brainstorm ideas with Ivy |
-| `/louie-roadmap` | Capture pre-feature ideas in `_LOUIE-output/roadmap.md`; promote one to a full feature |
+| `/louie-roadmap` | Capture bigger changes (epics) in `_LOUIE-output/roadmap.md`; promote one to a full feature |
+| `/louie-roadmap-change` | Change a roadmap entry (status / notes / effort; defer / drop) |
 | `/louie-recipe` | Browse or load a reusable recipe |
 
 Slash-command files live in `.opencode/command/` and are kept in sync with `_LOUIE_/commands/` by `bash _LOUIE_/setup/opencode-init.sh` (also re-run by `louie-update-framework`).
@@ -79,7 +80,7 @@ Slash-command files live in `.opencode/command/` and are kept in sync with `_LOU
 - `_LOUIE-output/architecture.md` — system design
 - `_LOUIE-output/tech-stack.md` — build-time stack
 - `_LOUIE-output/runbook.md` — runtime ops (deployment, ports, commands, env, first-check debugging)
-- `_LOUIE-output/roadmap.md` — pre-feature idea list (lazy-created on first `/louie-roadmap add`)
+- `_LOUIE-output/roadmap.md` — bigger changes / epics list (created at setup)
 - `_LOUIE-output/implementations/<feature>/` — per-feature folder (`feature.md`, `requirements.md`, `decisions.md`, `bugfixes/`)
 - `_LOUIE-output/bugfixes/overview.md` — cross-project bug-fix index
 <!-- /LOUIE-FRAMEWORK -->

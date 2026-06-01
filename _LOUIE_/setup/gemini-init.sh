@@ -42,6 +42,7 @@ Available commands:
 - `louie-doc` → `_LOUIE_/commands/louie-doc.md`
 - `louie-ideate` → `_LOUIE_/commands/louie-ideate.md`
 - `louie-roadmap` → `_LOUIE_/commands/louie-roadmap.md`
+- `louie-roadmap-change` → `_LOUIE_/commands/louie-roadmap-change.md`
 - `louie-recipe` → `_LOUIE_/commands/louie-recipe.md`
 
 ### Critical Rules
@@ -60,7 +61,7 @@ Available commands:
 - `_LOUIE-output/architecture.md` — system design
 - `_LOUIE-output/tech-stack.md` — build-time stack
 - `_LOUIE-output/runbook.md` — runtime ops (deployment, ports, commands, env, first-check debugging)
-- `_LOUIE-output/roadmap.md` — pre-feature idea list (lazy-created on first `louie-roadmap add`)
+- `_LOUIE-output/roadmap.md` — bigger changes / epics list (created at setup)
 - `_LOUIE-output/implementations/<feature>/` — per-feature folder (`feature.md`, `requirements.md`, `decisions.md`, `bugfixes/`)
 - `_LOUIE-output/bugfixes/overview.md` — cross-project bug-fix index
 <!-- /LOUIE-FRAMEWORK -->

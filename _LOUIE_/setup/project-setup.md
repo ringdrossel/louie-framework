@@ -204,5 +204,6 @@ Review the changelog for any changes to agent behavior or templates.
 | Write or improve tests with Ava | `louie-test` |
 | Update documentation and generate a commit message | `louie-doc` |
 | Brainstorm ideas with Ivy | `louie-ideate` |
-| Capture a pre-feature idea / promote one to a full feature | `louie-roadmap` |
+| Capture a bigger change / epic; promote one to a full feature | `louie-roadmap` |
+| Change a roadmap entry (status / notes / effort; defer / drop) | `louie-roadmap-change` |
 | Update LOUIE to the latest version | `louie-update-framework` |
