@@ -200,6 +200,7 @@ Review the changelog for any changes to agent behavior or templates.
 | Code review by Max | `louie-review` |
 | Review + fix + update docs in one flow | `louie-review-doc` |
 | View or change the project review mode (manual / auto-fix-critical / auto-fix-all) | `louie-review-mode` |
+| View or change the project branch mode (current / ask) | `louie-branch-mode` |
 | Write or improve tests with Ava | `louie-test` |
 | Update documentation and generate a commit message | `louie-doc` |
 | Brainstorm ideas with Ivy | `louie-ideate` |

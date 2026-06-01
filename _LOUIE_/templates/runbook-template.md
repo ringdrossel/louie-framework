@@ -99,6 +99,15 @@ Controls how `louie-review` behaves. See `_LOUIE_/commands/louie-review-mode.md`
 
 Valid values: `manual` (default, asks before fixing), `auto-fix-critical` (auto-applies Critical + Should Fix in a loop), `auto-fix-all` (also auto-applies Suggestions). Per-call overrides: `louie-review manual` / `louie-review auto` / `louie-review auto-fix-all`.
 
+## Branch Mode
+
+Controls whether `louie-feature` creates a branch per feature. See `_LOUIE_/commands/louie-branch-mode.md` for full details.
+
+**Mode:** [unset — defaults to `current`]
+**Set:** YYYY-MM-DD
+
+Valid values: `current` (default — work on the current branch, including `main`; never auto-branch, never prompt), `ask` (ask before each new feature whether to create a `feature/<name>` branch). A branch is never created automatically; in either mode you can ask for one on demand. Affects `louie-feature` only.
+
 ## Debugging
 
 [Where to look first when specific symptoms appear. One row per common symptom.]
