@@ -80,7 +80,7 @@ Update `_LOUIE-output/implementations/[feature-name]/feature.md` with:
 
 - **Actual files created/modified** — update the Code Structure / Files section
 - **Key interfaces/types** — add the real signatures, not placeholders
-- **Status change** — move from "Planned" or "In Development" to the appropriate state
+- **Status change** — tick the appropriate `feature.md` checkbox (Planned → In Development → Implemented → Tested), and mirror it in the **Status** column of that feature's row in `_LOUIE-output/implementations/overview.md` so the index stays current
 - **Change History** — append ONE LINE. Format: `YYYY-MM-DD: <kind> — <short summary>. [optional pointer]`. ≤120 chars. The history is a chronological index, not a narrative. Rationale, SF references, full file lists, deferred-suggestion catalogues, and test reasoning belong in `decisions.md`, the bugfix doc, the code, or `git log` — not in the line. If you're tempted to write a paragraph, you're writing in the wrong place; move the prose to an ADR or bugfix doc and reference it from the line.
 
 If you made any architectural decisions specific to this feature (a pattern choice, a tradeoff worth recording), add an ADR to `_LOUIE-output/implementations/[feature-name]/decisions.md` (create from `_LOUIE_/templates/decisions-template.md` if it doesn't exist).

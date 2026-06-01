@@ -144,7 +144,7 @@ Rules for the document:
 
 Update `_LOUIE-output/implementations/overview.md`:
 - Fill in the **Project Context** section (name, goal, status) if this is the first feature
-- Add **every** feature you produced a `requirements.md` for in this session to the **Planned** table, in implementation order. Each row carries its priority, a one-line description, and a Document column link to `implementations/<feature>/feature.md` (the implementation doc Nina will produce; the link is added now even though the file doesn't exist yet).
+- Add **every** feature you produced a `requirements.md` for in this session to the **Features** table with `Status: Planned`, in implementation order. Each row carries its Status (`Planned`), priority, a one-line description, and a Document column link to `implementations/<feature>/feature.md` (the implementation doc Nina will produce; the link is added now even though the file doesn't exist yet). `louie-feature` advances the Status column as each feature is built — you only set the initial `Planned`.
 
 ### Step 5c: Review-Mode Question (setup and import only)
 

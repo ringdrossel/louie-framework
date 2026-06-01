@@ -13,23 +13,10 @@ Last Updated: YYYY-MM-DD
 
 ## Features
 
-### Implemented
+| Feature | Status | Priority | Document | Description |
+|---------|--------|----------|----------|-------------|
+| — | — | — | — | No features yet |
 
-| Feature | Priority | Document | Description |
-|---------|----------|----------|-------------|
-| — | — | — | No features implemented yet |
-
-### In Development
-
-| Feature | Priority | Document | Description |
-|---------|----------|----------|-------------|
-| — | — | — | No features in development yet |
-
-### Planned
-
-| Feature | Priority | Document | Description |
-|---------|----------|----------|-------------|
-| — | — | — | Features will be added here |
-
+> **Status values:** `Planned` → `In Development` → `Implemented` → `Tested`. This column **mirrors the feature's own `feature.md` checkboxes** — `louie-feature` advances it as work moves through the chain (`Planned` on add → `In Development` when coding starts → `Implemented`/`Tested` when it ships), and `louie-doc` reconciles any drift back to the `feature.md` truth.
 > **Document column convention:** link to `implementations/<feature>/feature.md`.
 > **Description column convention:** one short line. Don't write paragraphs here — the per-feature `feature.md` is the canonical home for detail.

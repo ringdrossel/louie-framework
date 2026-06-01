@@ -35,7 +35,7 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
 6. **Create feature document:**
    - Create `_LOUIE-output/implementations/[feature-name]/feature.md` using `_LOUIE_/templates/feature-template.md`
    - Fill in all sections based on `[feature-name]/requirements.md` and the architecture
-   - Update `_LOUIE-output/implementations/overview.md` with the new feature entry — Document column links to `implementations/[feature-name]/feature.md`
+   - Update `_LOUIE-output/implementations/overview.md` — add the feature to the **Features** table with `Status: Planned`. Document column links to `implementations/[feature-name]/feature.md`. (Tom may already have added it during setup; if so, leave it as `Planned`.)
    - **If this run was seeded `--from-roadmap <id>`:** move the entry from `## Captured` to `## Promoted` in `_LOUIE-output/roadmap.md`. Preserve the original `Created` and `Notes`. Set `Status: In Progress` and add `Promoted: YYYY-MM-DD → _LOUIE-output/implementations/[feature-name]/`. If the `## Promoted` section is showing the placeholder `_No ideas promoted yet._`, remove that line first. Update the `Last Updated:` line at the top of the roadmap file. (Equivalent to `louie-roadmap-change <id> status "In Progress"`.)
 
 7. **Confirmation gate:**
@@ -55,8 +55,9 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
    - Skip this step for backend-only features
 
 10. **Invoke Nina (Coder):**
+    - Set the feature's row in `_LOUIE-output/implementations/overview.md` to `Status: In Development` before coding starts.
     - Read and follow `_LOUIE_/agents/coder.md`
-    - Nina implements the feature and updates the feature document
+    - Nina implements the feature and updates the feature document (including its `feature.md` Status checkboxes)
 
 11. **Invoke Max (Reviewer):**
     - Read and follow `_LOUIE_/agents/reviewer.md`
@@ -66,10 +67,9 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
     - Read and follow `_LOUIE_/agents/tester.md`
     - Ava writes tests and gives a ship recommendation
 
-13. **Roadmap sync (only if this feature came from a roadmap entry):**
-    - If this run was seeded `--from-roadmap <id>` and Ava gave a ship recommendation, the epic may now be complete — but an epic can span several features. **Ask, don't assume:** "This feature is done. Is the roadmap epic `<id>` complete, or are there more features under it?"
-    - If the user says it's complete, run `louie-roadmap-change <id> status Done`. Otherwise leave it `In Progress`.
-    - Skip this step entirely for features not linked to a roadmap entry.
+13. **Sync overview + roadmap status:**
+    - **Overview:** set the feature's row in `_LOUIE-output/implementations/overview.md` to `Status: Tested` if Ava wrote tests and they pass, otherwise `Status: Implemented`. This must match the `feature.md` checkboxes Nina/Ava ticked — they are the source of truth; the overview Status mirrors them. Update the `Last Updated:` line.
+    - **Roadmap (only if this feature came from a roadmap entry):** if this run was seeded `--from-roadmap <id>`, the epic may now be complete — but an epic can span several features. **Ask, don't assume:** "This feature is done. Is the roadmap epic `<id>` complete, or are there more features under it?" If the user says it's complete, run `louie-roadmap-change <id> status Done`; otherwise leave it `In Progress`. Skip this bullet for features not linked to a roadmap entry.
 
 ## Usage
 

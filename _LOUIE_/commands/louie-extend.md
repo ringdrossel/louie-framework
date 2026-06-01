@@ -48,7 +48,7 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
    - Add a new implementation phase to `_LOUIE-output/implementations/[feature-name]/feature.md`
    - Add a Change History entry
    - If a new ADR was made for the extension, append it to `_LOUIE-output/implementations/[feature-name]/decisions.md` (create from template if absent)
-   - Update `overview.md` if the feature status changes
+   - Update the feature's `Status` column in `_LOUIE-output/implementations/overview.md` if the status changed (mirror the `feature.md` checkboxes)
 
 9. **Confirmation gate:**
    - Show the user the updated feature document and extension plan
