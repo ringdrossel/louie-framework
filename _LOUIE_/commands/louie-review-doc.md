@@ -36,7 +36,7 @@ This combines `louie-review` and `louie-doc` into a single command. Max reviews 
 6. **Determine which documents need updating:**
    - Feature document (`_LOUIE-output/implementations/[feature]/feature.md`) — update status, code structure, change history
    - Decisions (`_LOUIE-output/implementations/[feature]/decisions.md`) — append ADR if a non-trivial decision was made
-   - Overview (`_LOUIE-output/implementations/overview.md`) — update feature table if status changed
+   - Overview (`_LOUIE-output/implementations/overview.md`) — update the feature's `Status` column if status changed (mirror the `feature.md` checkboxes)
    - Bug fixes overview (`_LOUIE-output/bugfixes/overview.md`) — confirm any bug fixes are indexed
    - Architecture / tech stack — update if new patterns or libraries were introduced
    - Runbook (`_LOUIE-output/runbook.md`) — update only if new ports / commands / env vars / external services were added. Implementation learnings Max flagged → land them as code-local `// WHY` comments or per-feature `bugfixes/` / `decisions.md` entries, not the runbook.

@@ -23,7 +23,7 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
    - Read and follow `_LOUIE_/agents/analyst.md`
    - Tom interviews the user, then runs the **Scope Split Gate** (analyst.md § Step 4a). For a project-from-scratch this almost always produces multiple features (e.g. `auth`, `books-core`, `shelf-ui`, `csv-import`, …) — not one giant `mvp` folder.
    - For **each** approved feature, Tom creates `_LOUIE-output/implementations/<feature-name>/` and writes its own `requirements.md` using `_LOUIE_/templates/requirements-template.md`.
-   - Tom also updates `_LOUIE-output/implementations/overview.md` with the project context (name, goal, status) and adds **every** new feature to the Planned table in implementation order — Document column links to `implementations/<feature-name>/feature.md`.
+   - Tom also updates `_LOUIE-output/implementations/overview.md` with the project context (name, goal, status) and adds **every** new feature to the Features table with `Status: Planned`, in implementation order — Document column links to `implementations/<feature-name>/feature.md`.
 
 5. **Invoke Sophie (Architect):**
    - Read and follow `_LOUIE_/agents/architect.md`
@@ -62,7 +62,7 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
    - If the user wants changes, update the documents and re-present
 
 7. **Create feature document for the FIRST feature only:**
-   - Tom typically produced multiple feature folders in Step 4. Pick the **first** one in the Planned table (the foundational feature — usually `auth` or whichever has no dependencies) and create just its `feature.md` using `_LOUIE_/templates/feature-template.md`.
+   - Tom typically produced multiple feature folders in Step 4. Pick the **first** `Planned` feature in the Features table (the foundational feature — usually `auth` or whichever has no dependencies) and create just its `feature.md` using `_LOUIE_/templates/feature-template.md`.
    - Fill in all sections based on that feature's `requirements.md` and Sophie's architecture.
    - The remaining feature folders stay as `requirements.md`-only until the user runs `louie-feature` for each one in turn (Steps 8–12 below cover only the first feature). This keeps the per-feature loop tight and prevents the bundle-everything-up-front anti-pattern.
 
@@ -87,7 +87,7 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
     - Ava writes tests and gives a ship recommendation
 
 13. **Hand off to the next feature:**
-    - Tell the user which features remain in the Planned table and that the next one ships by running `louie-feature` (which will go straight to creating the `feature.md` from the already-captured `requirements.md`).
+    - Tell the user which features remain `Planned` in the Features table and that the next one ships by running `louie-feature` (which will go straight to creating the `feature.md` from the already-captured `requirements.md`).
 
 ## Usage
 

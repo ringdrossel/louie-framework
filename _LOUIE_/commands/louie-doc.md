@@ -18,7 +18,7 @@ When the user says **`louie-doc`**, follow this procedure to update project docu
    - **Feature document** (`_LOUIE-output/implementations/[feature]/feature.md`) — update status, code structure, change history
    - **Decisions** (`_LOUIE-output/implementations/[feature]/decisions.md`) — append a new ADR if a non-trivial decision was made (create from `_LOUIE_/templates/decisions-template.md` if absent)
    - **Bug fixes overview** (`_LOUIE-output/bugfixes/overview.md`) — if any bug fixes landed, ensure the index is current
-   - **Overview** (`_LOUIE-output/implementations/overview.md`) — update feature table if status changed
+   - **Overview** (`_LOUIE-output/implementations/overview.md`) — update the feature's `Status` column if status changed (see the reconcile pass in step 4a)
    - **Architecture** (`_LOUIE-output/architecture.md`) — update if new patterns, layers, or integration points were introduced
    - **Tech stack** (`_LOUIE-output/tech-stack.md`) — update if new libraries or tools were added
 
@@ -29,6 +29,12 @@ When the user says **`louie-doc`**, follow this procedure to update project docu
    - Update code structure sections with actual files created/modified
    - Add key interfaces/types if they were implemented
    - Keep updates factual and concise — document what IS, not what might be
+
+4a. **Reconcile the overview Status column (drift-healing pass):**
+   - The `Status` column in `_LOUIE-output/implementations/overview.md` mirrors each feature's own `feature.md` checkboxes — those checkboxes are the source of truth. Drift happens when a chain step was skipped.
+   - For every row in the Features table, read the linked `implementations/<feature>/feature.md`, take the highest ticked checkbox (`Planned` < `In Development` < `Implemented` < `Tested`), and set the row's `Status` to match. Report any rows you corrected.
+   - **Legacy layout:** if the overview still uses the old three-table layout (`### Implemented` / `### In Development` / `### Planned`), convert it to the single **Features** table with a `Status` column as part of this pass — derive each row's Status from which table it was in (and refine from `feature.md`).
+   - Update the `Last Updated:` line.
 
 5. **Show a summary:**
    - List each file that was updated and what changed

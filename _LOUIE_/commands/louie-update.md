@@ -55,7 +55,7 @@ This command is for changes that are:
    - **If observable behavior shifted** (new validation, changed default, new field exposed, error message wording that other docs/tests reference): append a short "Update: <date>" note to `_LOUIE-output/implementations/[feature-name]/requirements.md`
    - **If the change touched env vars, ports, external services, or operator commands:** update `_LOUIE-output/runbook.md`. Implementation learnings (framework quirks, cache rules) go in a code-local `// WHY` comment instead — the runbook does not carry a gotchas list.
    - **If a non-trivial decision was made** (e.g. picked one approach over another for a real reason): append an ADR to `_LOUIE-output/implementations/[feature-name]/decisions.md` (create from `_LOUIE_/templates/decisions-template.md` if absent)
-   - **If feature status changed** (e.g. moved from In Development to Implemented): update `_LOUIE-output/implementations/overview.md`
+   - **If feature status changed** (e.g. moved from In Development to Implemented): update the feature's `Status` column in `_LOUIE-output/implementations/overview.md` to mirror the `feature.md` checkboxes
 
 8. **Generate a commit message:**
    ```
