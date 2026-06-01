@@ -50,8 +50,8 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 | `/louie-extend` | Extend an existing feature |
 | `/louie-update` | Quick change (< 50 lines) |
 | `/louie-bugfix` | Diagnose and fix a bug |
-
-| `/louie-continue` | Resume in-progress work after a break || `/louie-review` | Code review by Max |
+| `/louie-continue` | Resume in-progress work after a break |
+| `/louie-review` | Code review by Max |
 | `/louie-review-doc` | Review + fix + update docs |
 | `/louie-evaluate` | Whole-codebase standards assessment + step-by-step apply loop |
 | `/louie-review-mode` | View or change the project review mode (manual / auto-fix-critical / auto-fix-all) |
@@ -62,6 +62,7 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 | `/louie-roadmap` | Capture bigger changes (epics) in `_LOUIE-output/roadmap.md`; promote one to a full feature |
 | `/louie-roadmap-change` | Change a roadmap entry (status / notes / effort; defer / drop) |
 | `/louie-recipe` | Browse or load a reusable recipe |
+| `/louie-from-source` | Fetch a task from a source adapter and route it |
 
 ### Critical Rules
 

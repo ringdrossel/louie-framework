@@ -32,6 +32,7 @@ All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
 | `louie-roadmap-change` | Change a roadmap entry (status / notes / effort; defer / drop) |
 | `louie-recipe` | Browse or load a reusable recipe (settings, auth, Docker, etc.) |
 | `louie-update-framework` | Update LOUIE to the latest version |
+| `louie-from-source` | Fetch a task from a source adapter (e.g. a task tracker) and route it to the right command |
 
 Command definitions live in [`_LOUIE_/commands/`](_LOUIE_/commands/).
 

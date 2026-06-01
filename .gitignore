@@ -1,0 +1,6 @@
+# Private LOUIE source adapters (concrete, source-system-specific).
+# The public framework in _LOUIE_/ stays tool-agnostic; concrete adapters
+# (endpoints, tokens) live here and must never be committed to the public repo.
+# Keep them in a separate private repo. config.example documents the shape there;
+# the real config (with credentials) is always ignored.
+louie-adapters/

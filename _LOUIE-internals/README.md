@@ -20,6 +20,7 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 | `review-mode.md` | Review-mode setting design — manual / auto-fix modes, storage, loop |
 | `branch-mode.md` | Branch-mode setting design — current / ask modes, default flip away from branch-per-feature |
 | `continue.md` | `louie-continue` design — artifact+git resume, no stored progress, why not chat-recovery |
+| `adapters.md` | Source-adapter layer — public interface + `louie-from-source`, public/private split, concept handoff |
 | `import.md` | Import system design — cold + v1-docs modes, init-script detection, agent reuse |
 | `evaluate.md` | Evaluate system design — LOUIE/non-LOUIE modes, output schema, apply-loop routing, distinction from `louie-review` |
 | `scaling.md` | Artifact-layout scaling design — per-feature folders, bugfix home, migration path |

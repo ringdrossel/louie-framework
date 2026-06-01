@@ -38,8 +38,8 @@ echo - `louie-feature` → `_LOUIE_/commands/louie-feature.md`
 echo - `louie-extend` → `_LOUIE_/commands/louie-extend.md`
 echo - `louie-update` → `_LOUIE_/commands/louie-update.md`
 echo - `louie-bugfix` → `_LOUIE_/commands/louie-bugfix.md`
-
-echo - `louie-continue` → `_LOUIE_/commands/louie-continue.md`echo - `louie-review` → `_LOUIE_/commands/louie-review.md`
+echo - `louie-continue` → `_LOUIE_/commands/louie-continue.md`
+echo - `louie-review` → `_LOUIE_/commands/louie-review.md`
 echo - `louie-review-doc` → `_LOUIE_/commands/louie-review-doc.md`
 echo - `louie-evaluate` → `_LOUIE_/commands/louie-evaluate.md`
 echo - `louie-review-mode` → `_LOUIE_/commands/louie-review-mode.md`
@@ -50,6 +50,7 @@ echo - `louie-ideate` → `_LOUIE_/commands/louie-ideate.md`
 echo - `louie-roadmap` → `_LOUIE_/commands/louie-roadmap.md`
 echo - `louie-roadmap-change` → `_LOUIE_/commands/louie-roadmap-change.md`
 echo - `louie-recipe` → `_LOUIE_/commands/louie-recipe.md`
+echo - `louie-from-source` → `_LOUIE_/commands/louie-from-source.md`
 echo.
 echo ### Critical Rules
 echo.
