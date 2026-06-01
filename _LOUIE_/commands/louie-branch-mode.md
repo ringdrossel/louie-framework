@@ -25,10 +25,9 @@ The setting is **project-wide**, stored in `_LOUIE-output/runbook.md` under the 
    - If absent or unset, treat the mode as `current` (the default) and tell the user it has not been set explicitly yet.
 
 2. **Show the current state and ask:**
-   - Present the current mode (and when it was set, if recorded) in chat. Example:
-     > "Current branch mode: `current` (work on the current branch, no prompt). What would you like to change it to?"
-   - Offer the two options plus "keep current":
-     - `current` — work on the current branch; never auto-branch, never prompt (default)
+   - Present the current mode (and when it was set, if recorded), e.g. "Current branch mode: `current` (work on the current branch, no prompt)."
+   - **Present the change as a structured choice** — use your runtime's structured-choice tool if it has one, otherwise a lettered list (see `_LOUIE_/guidelines/interaction-guidelines.md`). Question: "What would you like the branch mode to be?" Options:
+     - `current` — work on the current branch; never auto-branch, never prompt *(default)*
      - `ask` — ask before each new feature whether to create a branch
      - keep current — no change
 

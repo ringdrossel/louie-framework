@@ -69,7 +69,7 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
 
 13. **Sync overview + roadmap status:**
     - **Overview:** set the feature's row in `_LOUIE-output/implementations/overview.md` to `Status: Tested` if Ava wrote tests and they pass, otherwise `Status: Implemented`. This must match the `feature.md` checkboxes Nina/Ava ticked — they are the source of truth; the overview Status mirrors them. Update the `Last Updated:` line.
-    - **Roadmap (only if this feature came from a roadmap entry):** if this run was seeded `--from-roadmap <id>`, the epic may now be complete — but an epic can span several features. **Ask, don't assume:** "This feature is done. Is the roadmap epic `<id>` complete, or are there more features under it?" If the user says it's complete, run `louie-roadmap-change <id> status Done`; otherwise leave it `In Progress`. Skip this bullet for features not linked to a roadmap entry.
+    - **Roadmap (only if this feature came from a roadmap entry):** if this run was seeded `--from-roadmap <id>`, the epic may now be complete — but an epic can span several features. **Ask, don't assume** — present as a structured choice (structured-choice tool if available, else a lettered list; see `_LOUIE_/guidelines/interaction-guidelines.md`): "This feature is done. Is the roadmap epic `<id>` complete?" Options: "Complete — mark it Done" / "More features to come — keep it In Progress". On "complete," run `louie-roadmap-change <id> status Done`; otherwise leave it `In Progress`. Skip this bullet for features not linked to a roadmap entry.
 
 ## Usage
 

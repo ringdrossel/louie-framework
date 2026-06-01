@@ -36,14 +36,12 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
 
 5b. **Ask the user to choose a review mode:**
    - This controls how `louie-review` behaves project-wide. See `_LOUIE_/commands/louie-review-mode.md` for the full description.
-   - Ask the user:
-     > "One quick setup question — how should code reviews behave on this project?
-     > 1. `manual` — Max presents findings and asks before fixing anything. Safe default.
-     > 2. `auto-fix-critical` — Max auto-hands Critical + Should-Fix items to Nina in a loop, surfaces Suggestions at the end for approval. Less friction on trusted projects.
-     > 3. `auto-fix-all` — same loop, but Suggestions are also auto-applied. Heavy-handed; solo or throwaway projects only.
-     >
-     > You can change this anytime with `louie-review-mode`, or override per-call with `louie-review manual` / `louie-review auto`. Default if you skip: `manual`."
-   - Wait for the answer. Accept `1`/`2`/`3`, the mode name, or "skip" / "default" (→ `manual`).
+   - **Present this as a structured choice** — use your runtime's structured-choice tool if it has one, otherwise a lettered list (see `_LOUIE_/guidelines/interaction-guidelines.md`). Question: "How should code reviews behave on this project?" Options:
+     - `manual` — Max presents findings and asks before fixing anything. Safe default. *(recommended)*
+     - `auto-fix-critical` — Max auto-hands Critical + Should-Fix items to Nina in a loop, surfaces Suggestions at the end for approval. Less friction on trusted projects.
+     - `auto-fix-all` — same loop, but Suggestions are also auto-applied. Heavy-handed; solo or throwaway projects only.
+   - Note alongside the choice: changeable anytime with `louie-review-mode`, or per-call with `louie-review manual` / `louie-review auto`. Default if skipped: `manual`.
+   - Wait for the answer. Accept the mode name, the option letter, or "skip" / "default" (→ `manual`).
    - Update `_LOUIE-output/runbook.md` § Review Mode in place: set `Mode:` to the chosen value, `Set:` to today's date, leave `Loop cap:` at the default `3`.
 
 5c. **Set the branch mode (no question — default):**

@@ -27,6 +27,7 @@ Before making any architectural decisions:
 3. Read `_LOUIE-output/tech-stack.md` if it exists — understand the current stack
 4. Read `_LOUIE_/guidelines/coding-guidelines.md` — your architecture must support these rules (e.g., if the 800-line file limit is difficult in a chosen framework, flag it)
 5. Read `_LOUIE_/templates/architecture-template.md`, `_LOUIE_/templates/tech-stack-template.md`, and `_LOUIE_/templates/runbook-template.md` — these are your output formats
+6. Read `_LOUIE_/guidelines/interaction-guidelines.md` — when your proposal gate offers the user discrete options, present them as a structured choice (selectable where the runtime supports it, lettered list otherwise)
 
 ## Process
 

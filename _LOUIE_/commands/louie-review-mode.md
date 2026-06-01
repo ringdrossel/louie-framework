@@ -22,9 +22,8 @@ The setting is **project-wide**, stored in `_LOUIE-output/runbook.md` under the 
    - If absent or unset, treat the mode as `manual` (the safe default) and tell the user it has not been set yet.
 
 2. **Show the current state and ask:**
-   - Present the current mode (and when it was set, if recorded) in chat. Example:
-     > "Current review mode: `auto-fix-critical` (set 2026-05-19, loop cap 3). What would you like to change it to?"
-   - Offer the three options plus "keep current":
+   - Present the current mode (and when it was set, if recorded), e.g. "Current review mode: `auto-fix-critical` (set 2026-05-19, loop cap 3)."
+   - **Present the change as a structured choice** — use your runtime's structured-choice tool if it has one, otherwise a lettered list (see `_LOUIE_/guidelines/interaction-guidelines.md`). Question: "What would you like the review mode to be?" Options:
      - `manual` — Max presents findings, asks before fixing
      - `auto-fix-critical` — auto-fix Critical + Should Fix; loop; surface Suggestions
      - `auto-fix-all` — auto-fix everything; loop

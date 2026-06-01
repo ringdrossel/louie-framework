@@ -57,7 +57,8 @@ Available commands:
 - `README.md` — framework overview (project root)
 - `_LOUIE_/workflow/ai-workflow.md` — full workflow
 - `_LOUIE_/guidelines/coding-guidelines.md` — coding rules
-- `_LOUIE_/agents/` — agent definitions
+
+- `_LOUIE_/guidelines/interaction-guidelines.md` — how to ask the user to choose- `_LOUIE_/agents/` — agent definitions
 - `_LOUIE-output/architecture.md` — system design
 - `_LOUIE-output/tech-stack.md` — build-time stack
 - `_LOUIE-output/runbook.md` — runtime ops (deployment, ports, commands, env, first-check debugging)
