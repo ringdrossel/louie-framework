@@ -33,7 +33,8 @@ Available commands:
 - `louie-extend` → `_LOUIE_/commands/louie-extend.md`
 - `louie-update` → `_LOUIE_/commands/louie-update.md`
 - `louie-bugfix` → `_LOUIE_/commands/louie-bugfix.md`
-- `louie-review` → `_LOUIE_/commands/louie-review.md`
+
+- `louie-continue` → `_LOUIE_/commands/louie-continue.md`- `louie-review` → `_LOUIE_/commands/louie-review.md`
 - `louie-review-doc` → `_LOUIE_/commands/louie-review-doc.md`
 - `louie-evaluate` → `_LOUIE_/commands/louie-evaluate.md`
 - `louie-review-mode` → `_LOUIE_/commands/louie-review-mode.md`

@@ -197,6 +197,7 @@ Review the changelog for any changes to agent behavior or templates.
 | Extend an existing feature | `louie-extend` |
 | Quick change (< 50 lines, auto-escalates to `louie-extend`) | `louie-update` |
 | Diagnose and fix a bug | `louie-bugfix` |
+| Resume in-progress work after a break (reconstruct from artifacts + git) | `louie-continue` |
 | Code review by Max | `louie-review` |
 | Review + fix + update docs in one flow | `louie-review-doc` |
 | View or change the project review mode (manual / auto-fix-critical / auto-fix-all) | `louie-review-mode` |

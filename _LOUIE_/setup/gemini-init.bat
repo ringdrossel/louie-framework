@@ -38,7 +38,8 @@ echo - `louie-feature` → `_LOUIE_/commands/louie-feature.md`
 echo - `louie-extend` → `_LOUIE_/commands/louie-extend.md`
 echo - `louie-update` → `_LOUIE_/commands/louie-update.md`
 echo - `louie-bugfix` → `_LOUIE_/commands/louie-bugfix.md`
-echo - `louie-review` → `_LOUIE_/commands/louie-review.md`
+
+echo - `louie-continue` → `_LOUIE_/commands/louie-continue.md`echo - `louie-review` → `_LOUIE_/commands/louie-review.md`
 echo - `louie-review-doc` → `_LOUIE_/commands/louie-review-doc.md`
 echo - `louie-evaluate` → `_LOUIE_/commands/louie-evaluate.md`
 echo - `louie-review-mode` → `_LOUIE_/commands/louie-review-mode.md`

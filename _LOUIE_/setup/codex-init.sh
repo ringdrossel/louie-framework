@@ -62,7 +62,8 @@ LOUIE commands are installed as Codex CLI skills under `.codex/skills/<name>/SKI
 | `/louie-extend` | Extend an existing feature |
 | `/louie-update` | Quick change (< 50 lines) |
 | `/louie-bugfix` | Diagnose and fix a bug |
-| `/louie-review` | Code review by Max |
+
+| `/louie-continue` | Resume in-progress work after a break || `/louie-review` | Code review by Max |
 | `/louie-review-doc` | Review + fix + update docs |
 | `/louie-evaluate` | Whole-codebase standards assessment + step-by-step apply loop |
 | `/louie-review-mode` | View or change the project review mode (manual / auto-fix-critical / auto-fix-all) |
