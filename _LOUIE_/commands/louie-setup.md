@@ -46,6 +46,11 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
    - Wait for the answer. Accept `1`/`2`/`3`, the mode name, or "skip" / "default" (→ `manual`).
    - Update `_LOUIE-output/runbook.md` § Review Mode in place: set `Mode:` to the chosen value, `Set:` to today's date, leave `Loop cap:` at the default `3`.
 
+5c. **Set the branch mode (no question — default):**
+   - Branch mode controls whether `louie-feature` creates a branch per feature. The default is `current` (work on the current branch, including `main`; never auto-branch, never prompt) — do **not** ask the user about this at setup.
+   - Update `_LOUIE-output/runbook.md` § Branch Mode in place: set `Mode:` to `current`, `Set:` to today's date.
+   - Add a one-line note: "Branch mode is `current` (work on the current branch). Switch to `ask` anytime with `louie-branch-mode` if you'd rather be prompted to branch per feature."
+
 6. **Confirmation gate (architecture):**
    - Present the requirements, architecture, tech stack, and runbook to the user
    - Walk through the key decisions and their rationale

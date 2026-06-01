@@ -20,6 +20,7 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 | `louie-review-doc` | `_LOUIE_/commands/louie-review-doc.md` | Review + fix + update docs |
 | `louie-evaluate` | `_LOUIE_/commands/louie-evaluate.md` | Whole-codebase standards assessment with persistent findings + optional step-by-step apply loop |
 | `louie-review-mode` | `_LOUIE_/commands/louie-review-mode.md` | View or change the project review mode (manual / auto-fix-critical / auto-fix-all) |
+| `louie-branch-mode` | `_LOUIE_/commands/louie-branch-mode.md` | View or change the project branch mode (current / ask) |
 | `louie-test` | `_LOUIE_/commands/louie-test.md` | Write or improve tests with Ava |
 | `louie-doc` | `_LOUIE_/commands/louie-doc.md` | Update documentation + commit message |
 | `louie-ideate` | `_LOUIE_/commands/louie-ideate.md` | Brainstorm ideas with Ivy |
@@ -31,8 +32,8 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 
 1. **Never implement directly** — create a feature document and get user confirmation first.
 2. **Never start feature work** without a confirmed `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md`.
-3. **Never merge to `main`** without explicit user approval after Max's review and Ava's tests pass.
-4. **Never commit directly to local `main`.** All work happens on a feature branch. When the user approves a merge, publish it via whichever workflow fits the project: fast-forward the branch into `main` locally and push, or open a PR and merge via the GitHub API (required if branch protection blocks direct pushes). After a PR squashes/rebases — which produces new SHAs — sync local main with `git fetch origin && git reset --hard origin/main` to keep it identical to `origin/main` and avoid stop-hook "unpushed commits on main" warnings.
+3. **Never merge to `main`** without explicit user approval after Max's review and Ava's tests pass. (This gate applies when work is on a feature branch; see Branch Mode below.)
+4. **Branching is governed by Branch Mode** (`_LOUIE-output/runbook.md` § Branch Mode, `_LOUIE_/commands/louie-branch-mode.md`). Default `current` — work on the current branch, including `main`; LOUIE never creates a branch on its own and only branches when you ask or under `ask` mode. There is no "never commit to `main`" rule. When a merge from a branch produces new SHAs (e.g. a squashed PR), sync local main with `git fetch origin && git reset --hard origin/main` to avoid stop-hook "unpushed commits on main" warnings.
 5. **Never write implementation learnings to `_LOUIE-output/runbook.md`.** The runbook is operational reference only (ports, env vars, external services, commands, first-check debugging). Framework quirks, cache rules, "I learned X during Phase 4" → code-local `// WHY` comments + per-feature `bugfixes/<slug>.md` § Detect / Avoid. There is no `## Common Gotchas` section; do not create one. This applies on every edit path, including ad-hoc "update the specs" requests that don't route through a `louie-*` command.
 
 ## Key References

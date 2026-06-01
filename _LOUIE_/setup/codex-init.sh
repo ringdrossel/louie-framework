@@ -66,6 +66,7 @@ LOUIE commands are installed as Codex CLI skills under `.codex/skills/<name>/SKI
 | `/louie-review-doc` | Review + fix + update docs |
 | `/louie-evaluate` | Whole-codebase standards assessment + step-by-step apply loop |
 | `/louie-review-mode` | View or change the project review mode (manual / auto-fix-critical / auto-fix-all) |
+| `/louie-branch-mode` | View or change the project branch mode (current / ask) |
 | `/louie-test` | Write or improve tests with Ava |
 | `/louie-doc` | Update documentation + commit message |
 | `/louie-ideate` | Brainstorm ideas with Ivy |

@@ -42,19 +42,26 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
    - Show the user the feature document and implementation plan
    - Wait for explicit confirmation before coding
 
-8. **Invoke Leo (Designer) — if the feature has UI:**
+8. **Branch handling (branch mode):**
+   - Read the `## Branch Mode` section of `_LOUIE-output/runbook.md`. If absent or unset, treat the mode as `current`.
+   - `current` (default): stay on the current branch (including `main`). Do not create a branch and do not prompt.
+   - `ask`: ask the user "Create a new `feature/<feature-name>` branch for this feature, or work on the current branch (`<current-branch>`)?" If they choose a branch, create and switch to `feature/<feature-name>`; otherwise continue on the current branch.
+   - In **either** mode, if the user already asked for a branch (in their command or earlier in the conversation), create and switch to `feature/<feature-name>` without re-asking.
+   - See `_LOUIE_/commands/louie-branch-mode.md` to change the project-wide setting.
+
+9. **Invoke Leo (Designer) — if the feature has UI:**
    - Read and follow `_LOUIE_/agents/designer.md`
    - Skip this step for backend-only features
 
-9. **Invoke Nina (Coder):**
-   - Read and follow `_LOUIE_/agents/coder.md`
-   - Nina implements the feature and updates the feature document
+10. **Invoke Nina (Coder):**
+    - Read and follow `_LOUIE_/agents/coder.md`
+    - Nina implements the feature and updates the feature document
 
-10. **Invoke Max (Reviewer):**
+11. **Invoke Max (Reviewer):**
     - Read and follow `_LOUIE_/agents/reviewer.md`
     - If changes are needed, Nina fixes them before proceeding
 
-11. **Invoke Ava (Tester):**
+12. **Invoke Ava (Tester):**
     - Read and follow `_LOUIE_/agents/tester.md`
     - Ava writes tests and gives a ship recommendation
 

@@ -73,9 +73,9 @@ These guidelines apply to ALL code in this project, regardless of language or fr
 ## Git Discipline
 
 - Conventional Commits: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`
-- Branch naming: `feature/[name]`, `bugfix/[name]`, `refactor/[name]`
 - Commit messages explain the WHY
-- **Merge to `main` after review, with user confirmation.** Once Max's review passes and Ava's tests are green on a feature branch, ask the user for explicit permission to merge. On approval, fast-forward the branch into `main` and push. Never merge without asking; never skip the ask because the change "looks safe".
+- **Branching is governed by Branch Mode** (`_LOUIE-output/runbook.md` § Branch Mode). Default is `current` — work on the branch you're already on, including `main`; LOUIE never creates a branch on its own. When a branch is used, name it `feature/[name]`, `bugfix/[name]`, or `refactor/[name]`. See `_LOUIE_/commands/louie-branch-mode.md`.
+- **When work is on a feature branch, merge to `main` after review, with user confirmation.** Once Max's review passes and Ava's tests are green, ask the user for explicit permission to merge. On approval, fast-forward the branch into `main` and push. Never merge without asking; never skip the ask because the change "looks safe". (This gate is inert when you're already committing on `main` under `current` mode.)
 
 ## Security Baseline
 

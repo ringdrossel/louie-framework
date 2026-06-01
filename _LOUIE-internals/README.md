@@ -17,6 +17,8 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 | `core.md` | Core mechanics — lazy loading, directory split, gates, naming, cross-platform |
 | `recipes.md` | Recipe system design — dispatcher rules, folder layout, name resolution |
 | `runbook.md` | Runbook system design — operational doc separate from architecture |
+| `review-mode.md` | Review-mode setting design — manual / auto-fix modes, storage, loop |
+| `branch-mode.md` | Branch-mode setting design — current / ask modes, default flip away from branch-per-feature |
 | `import.md` | Import system design — cold + v1-docs modes, init-script detection, agent reuse |
 | `evaluate.md` | Evaluate system design — LOUIE/non-LOUIE modes, output schema, apply-loop routing, distinction from `louie-review` |
 | `scaling.md` | Artifact-layout scaling design — per-feature folders, bugfix home, migration path |
