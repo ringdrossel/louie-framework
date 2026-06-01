@@ -248,6 +248,18 @@ This is distinct from `implementations/overview.md` — "Planned" features there
 
 ---
 
+## Scenario 10: Resuming After a Break
+
+Use `louie-continue` when you stopped mid-feature — closed the laptop, restarted the machine, opened a fresh session — and want to pick up where you left off:
+
+```
+louie-continue
+```
+
+It reconstructs *where you stopped* from artifacts on disk + git, **not** from chat history (a command can't recover past conversations). It finds in-progress work via the overview's `Status: In Development` rows (features) and git's uncommitted diff / branch (bugfix + extend), reads the feature's `feature.md` breadcrumbs (Status, Implementation Plan phases, Open Questions, last Change History line) and the git state, infers which chain step is next, and proposes the single next action before continuing through the normal gates. If several things are in flight, it asks you to pick (structured choice). On runtimes with native session-resume (e.g. Claude Code's `claude --resume`), it also *suggests* that as an optional way to restore the original conversation — but it has already rebuilt the state from your files.
+
+---
+
 ## All Commands
 
 | Command | What it does |
@@ -259,6 +271,7 @@ This is distinct from `implementations/overview.md` — "Planned" features there
 | `louie-extend` | Extend an existing feature |
 | `louie-update` | Quick change (< 50 lines, auto-escalates to `louie-extend`) |
 | `louie-bugfix` | Diagnose and fix a bug |
+| `louie-continue` | Resume in-progress work after a break (reconstruct from artifacts + git) |
 | `louie-review` | Code review by Max |
 | `louie-review-doc` | Review + fix + update docs in one flow |
 | `louie-evaluate` | Assess a whole codebase against LOUIE standards; persistent findings + optional step-by-step apply loop |
