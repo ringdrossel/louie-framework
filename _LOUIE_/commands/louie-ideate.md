@@ -23,7 +23,7 @@ When the user says **`louie-ideate`**, invoke Ivy (Muse) for product brainstormi
    - **Save to roadmap** — for any idea the user wants to keep around but not pursue now, capture it via `louie-roadmap add` so it persists in `_LOUIE-output/roadmap.md`. Pass `Source: ideate` and use Ivy's full idea card (what / why / effort / builds on / fits architecture) as the Notes verbatim.
    - **Drop** — for any idea the user doesn't want, do nothing.
 
-   Ask once, in one prompt: "Of these, which would you like to pursue now, save to the roadmap for later, or drop?" Don't force the user to triage every idea — silence on an idea means drop.
+   Ask once, in one prompt: "Of these, which would you like to pursue now, save to the roadmap for later, or drop?" **Present the per-idea sort as a structured choice** (pursue now / save to roadmap / drop) — use your runtime's structured-choice tool if it has one, otherwise a lettered list (see `_LOUIE_/guidelines/interaction-guidelines.md`). Don't force the user to triage every idea — silence on an idea means drop.
 
 ## Usage
 

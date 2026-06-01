@@ -115,17 +115,11 @@ Write to `_LOUIE-output/evaluation/`:
 
 ### 7. Phase 2 prompt — choose apply mode
 
-Once files are written, present the count and ask:
+Once files are written, report the count (`<N> findings: <C> Critical, <S> Should Fix, <U> Suggestions`), then **ask as a structured choice** — use your runtime's structured-choice tool if it has one, otherwise a lettered list (see `_LOUIE_/guidelines/interaction-guidelines.md`). Question: "Apply now?" Options:
 
-```
-Findings written to _LOUIE-output/evaluation/.
-  <N> findings: <C> Critical, <S> Should Fix, <U> Suggestions.
-
-Apply now?
-  [w]alkthrough  step-by-step approval (default)
-  [a]pply-all    apply every finding without per-finding prompts (Critical + Should Fix + Suggestions)
-  [n]o           exit — files saved, decide later
-```
+- `walkthrough` — step-by-step approval *(default)*
+- `apply-all` — apply every finding without per-finding prompts (Critical + Should Fix + Suggestions)
+- `no` — exit, files saved, decide later
 
 Default = `walkthrough`. If the user picks `no`, exit cleanly — they can resume later by running `louie-evaluate` again and choosing `continue`.
 
@@ -133,15 +127,14 @@ Default = `walkthrough`. If the user picks `no`, exit cleanly — they can resum
 
 For each finding in `pending` or `deferred` status, sorted by tier (Critical → Should Fix → Suggestions) then by file:
 
-- Show the finding:
+- Show the finding, then **ask as a structured choice** (structured-choice tool if available, else a lettered list — see `_LOUIE_/guidelines/interaction-guidelines.md`):
   ```
   [<i>/<N>] <Tier> · <Category> · <file:line>
     Issue: <what's wrong>
     Why:   <impact>
     Fix:   <suggested fix>
-
-    [a]pply  [m]odify  [s]kip  [d]efer  [q]uit
   ```
+  Options: `apply` / `modify` / `skip` / `defer` / `quit`.
 - **apply** → route per the "Routing applied changes" section below. On success, set status to `applied` and update `summary.md`.
 - **modify** → ask "What variation?" Re-present the proposed fix, then re-prompt. Once accepted, route as apply, but record status as `modified` with a one-line note of the variation in `findings.md`.
 - **skip** → set status to `skipped`. Decision is final unless rescan.

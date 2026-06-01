@@ -25,6 +25,7 @@ Before starting any interview:
 1. Read `_LOUIE-output/implementations/overview.md` if it exists — understand what features already exist and what's in progress
 2. Read `_LOUIE-output/architecture.md` if it exists — understand current system boundaries and constraints
 3. Read `_LOUIE_/templates/requirements-template.md` — this is the output format you will produce
+4. Read `_LOUIE_/guidelines/interaction-guidelines.md` — keep the open interview conversational, but when you offer the user a discrete pick (e.g. confirming a scope split, which feature to take first), present it as a structured choice
 
 ## Process
 
