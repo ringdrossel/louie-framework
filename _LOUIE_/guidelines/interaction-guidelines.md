@@ -28,6 +28,21 @@ Use the most structured mechanism your runtime supports, and always degrade grac
 
 Pick the structured tool if there's any doubt it exists — it falls back to text naturally; the reverse doesn't.
 
+## Content first, choice second (approval gates)
+
+A structured choice renders as a compact dialog — on most runtimes it takes over the screen and shows **only** the question and its options. Anything you "presented" some other way is invisible at decision time:
+
+- **A file you just wrote is not a presentation.** File-write results render collapsed in the transcript; the user has *not* read `feature.md` because you wrote it.
+- **Long prose streamed in the same response as the choice call can get pushed out of view** by the dialog. Don't rely on it for anything the user must read to decide.
+
+So every approval gate (playback, proposal, document confirmation) follows this order:
+
+1. **Present the content in chat as a normal message** — the playback summary, the design proposal, the document digest. Compact: 5–15 bullets or a short section, not a full document dump. Name the file where the full version lives ("full doc: `_LOUIE-output/implementations/<feature>/feature.md`"), but never *rely* on the user opening it.
+2. **Then ask.** Keep the structured choice short and self-contained — one line naming *what* is being approved (e.g. "Approve the preview-panel feature doc (summary above)?"). The dialog must make sense even if the user saw nothing else.
+3. **If the user asks to "see it again"** or has clearly decided blind: re-present the summary as plain message text **without any tool call in the same response**, let them read it, and only then re-ask.
+
+Never chain *write file → ask approval* with no chat presentation in between.
+
 ## Authoring rules (regardless of rendering)
 
 - **2–4 options.** More than four means the question is really several questions — split it.

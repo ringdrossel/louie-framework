@@ -39,8 +39,8 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
    - **If this run was seeded `--from-roadmap <id>`:** move the entry from `## Captured` to `## Promoted` in `_LOUIE-output/roadmap.md`. Preserve the original `Created` and `Notes`. Set `Status: In Progress` and add `Promoted: YYYY-MM-DD → _LOUIE-output/implementations/[feature-name]/`. If the `## Promoted` section is showing the placeholder `_No ideas promoted yet._`, remove that line first. Update the `Last Updated:` line at the top of the roadmap file. (Equivalent to `louie-roadmap-change <id> status "In Progress"`.)
 
 7. **Confirmation gate:**
-   - Show the user the feature document and implementation plan
-   - Wait for explicit confirmation before coding
+   - Present the feature document and implementation plan **in chat as a normal message** — a compact digest (key sections, phases, scope), with a pointer to the full `feature.md`. The file write alone is **not** a presentation; its result renders collapsed and the approval dialog hides everything else (see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second).
+   - Then ask for explicit confirmation (short, self-contained question) and wait before coding
 
 8. **Branch handling (branch mode):**
    - Read the `## Branch Mode` section of `_LOUIE-output/runbook.md`. If absent or unset, treat the mode as `current`.

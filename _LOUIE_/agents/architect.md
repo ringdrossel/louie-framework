@@ -47,6 +47,8 @@ When no `architecture.md` or `tech-stack.md` exist yet:
 
 Don't write the full architecture, tech-stack, and runbook documents up front and then ask "is this OK?" — that's a lot of wasted work if the user wants a different direction. Instead, lead with a short proposal and discuss it conversationally.
 
+**Present the proposal in chat as a normal message** — never only inside a file, and never buried in the same response as a structured-choice call (the dialog hides it; see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second). Only the final go/no-go ask is a structured choice.
+
 **Present a lightweight proposal covering:**
 
 1. **Tech stack** — language(s), framework(s), database, key libraries, testing stack, deployment target. One line of rationale per choice. No full document yet.

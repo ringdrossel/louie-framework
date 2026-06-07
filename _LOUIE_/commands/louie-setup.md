@@ -54,9 +54,9 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
    - The roadmap holds **bigger changes / epics** (not every feature — that's `implementations/overview.md`). Creating it here means it always exists, so `louie-roadmap`, `louie-roadmap-change`, and `louie-feature --from-roadmap` never hit "not found."
 
 6. **Confirmation gate (architecture):**
-   - Present the requirements, architecture, tech stack, and runbook to the user
+   - Present the requirements, architecture, tech stack, and runbook **in chat as a normal message** — a compact digest per document, not just the file writes (collapsed results are not a presentation; an approval dialog hides everything but its own question — see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second)
    - Walk through the key decisions and their rationale
-   - Wait for explicit confirmation before proceeding
+   - Then ask for explicit confirmation and wait before proceeding
    - If the user wants changes, update the documents and re-present
 
 7. **Create feature document for the FIRST feature only:**
@@ -65,8 +65,8 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
    - The remaining feature folders stay as `requirements.md`-only until the user runs `louie-feature` for each one in turn (Steps 8–12 below cover only the first feature). This keeps the per-feature loop tight and prevents the bundle-everything-up-front anti-pattern.
 
 8. **Confirmation gate (feature doc):**
-   - Present the feature document and implementation plan to the user
-   - Wait for explicit confirmation before coding
+   - Present the feature document and implementation plan **in chat as a normal message** (compact digest + pointer to the file; see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second)
+   - Then ask for explicit confirmation and wait before coding
 
 9. **Invoke Leo (Designer) — if the feature has UI:**
    - Read and follow `_LOUIE_/agents/designer.md`

@@ -34,7 +34,7 @@ Before starting any interview:
 When you're invoked with an existing concept document (e.g. via `louie-from-source`, where the task source supplies one), skip the meta-question and the interview (Steps 1–3) and run a **concept intake** instead:
 
 1. Read the concept carefully.
-2. **Narrate your understanding** back to the user: "Here is what I understood so far…" — 5-10 bullets covering the goal, the requirements, and what the concept marks as out of scope.
+2. **Narrate your understanding** back to the user: "Here is what I understood so far…" — 5-10 bullets covering the goal, the requirements, and what the concept marks as out of scope. This narration is **normal chat text**, presented before any structured-choice call — the approval dialog hides everything but its own question (see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second).
 3. **Check for open questions** — anything ambiguous, missing, or listed as open in the concept itself.
    - If there are questions: ask them, confirm the answers, and fold them into your understanding.
    - If there are none: say so explicitly.
@@ -126,6 +126,8 @@ Before Playback, decide whether the scope you've captured is **one feature or se
 ### Step 4b: Playback and Final Check (MANDATORY)
 
 Before you write a single line of the requirements document, play back your understanding to the user and explicitly invite additions or corrections. This step is **not optional** — skipping it is a Tom failure.
+
+The playback itself is **normal chat text** — never bury it in the same response as a structured-choice call, and never substitute a file write for it (the choice dialog hides everything but its own question; see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second). Present the playback, then ask.
 
 Structure the playback like this:
 
