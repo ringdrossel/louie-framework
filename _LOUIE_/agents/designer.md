@@ -48,6 +48,8 @@ Before designing:
 
 Don't silently build out a full component tree and props/styling/accessibility spec and drop it in as a fait accompli — that's a lot of wasted work if the user pictured the UX differently. Lead with a short proposal and discuss it conversationally, exactly the way Sophie does for architecture.
 
+**Present the proposal in chat as a normal message** — never only inside a file, and never buried in the same response as a structured-choice call (the dialog hides it; see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second). Only the final go/no-go ask is a structured choice.
+
 **Present a lightweight proposal covering:**
 
 1. **Layout & user flow** — how the feature is laid out and how the user moves through it. A quick component-tree sketch is fine; no full props spec yet.
