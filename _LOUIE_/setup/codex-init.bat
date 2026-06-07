@@ -107,6 +107,42 @@ echo.
 echo Done! !count! commands installed.
 echo.
 
+:: Source adapters (louie-from-source) - keep private adapters out of version control
+findstr /b /c:"louie-adapters/" "%LOUIE_DIR%\.gitignore" >nul 2>&1
+if errorlevel 1 (
+    echo.>> "%LOUIE_DIR%\.gitignore"
+    echo # Private LOUIE source adapters - credentials, never commit>> "%LOUIE_DIR%\.gitignore"
+    echo louie-adapters/>> "%LOUIE_DIR%\.gitignore"
+    echo   Added louie-adapters/ to .gitignore
+)
+
+:: Report source-adapter availability - project-local louie-adapters\ overrides %USERPROFILE%\.louie\adapters
+set "ADAPTER_SCOPE="
+set "ADAPTER_LIST="
+if exist "%LOUIE_DIR%\louie-adapters\" (
+    for /d %%a in ("%LOUIE_DIR%\louie-adapters\*") do (
+        if exist "%%a\adapter.md" (
+            set "ADAPTER_SCOPE=project"
+            set "ADAPTER_LIST=!ADAPTER_LIST!%%~nxa "
+        )
+    )
+)
+if not defined ADAPTER_SCOPE if exist "%USERPROFILE%\.louie\adapters\" (
+    for /d %%a in ("%USERPROFILE%\.louie\adapters\*") do (
+        if exist "%%a\adapter.md" (
+            set "ADAPTER_SCOPE=global"
+            set "ADAPTER_LIST=!ADAPTER_LIST!%%~nxa "
+        )
+    )
+)
+if defined ADAPTER_SCOPE (
+    echo   Source adapters ^(!ADAPTER_SCOPE!^): !ADAPTER_LIST!
+) else (
+    echo   No source adapters found - louie-from-source will be unavailable.
+    echo   Install one to %%USERPROFILE%%\.louie\adapters\^<name^>\adapter.md to enable it for all projects.
+)
+echo.
+
 set "EXISTING_PROJECT=0"
 set "HAS_V1_DOCS=0"
 if exist "%LOUIE_DIR%\docs\implementations\overview.md" (

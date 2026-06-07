@@ -94,6 +94,28 @@ echo ""
 echo "Done! $count commands installed."
 echo ""
 
+# Source adapters (louie-from-source) — keep private adapters out of version control
+if ! grep -qs '^louie-adapters/' "$LOUIE_DIR/.gitignore"; then
+  {
+    echo ""
+    echo "# Private LOUIE source adapters (credentials) — never commit"
+    echo "louie-adapters/"
+  } >> "$LOUIE_DIR/.gitignore"
+  echo "  Added louie-adapters/ to .gitignore"
+fi
+
+# Report source-adapter availability (project-local louie-adapters/ overrides ~/.louie/adapters)
+GLOBAL_ADAPTERS="$HOME/.louie/adapters"
+if ls "$LOUIE_DIR/louie-adapters"/*/adapter.md > /dev/null 2>&1; then
+  echo "  Source adapters (project): $(cd "$LOUIE_DIR/louie-adapters" && ls -d */ | tr -d '/' | tr '\n' ' ')"
+elif ls "$GLOBAL_ADAPTERS"/*/adapter.md > /dev/null 2>&1; then
+  echo "  Source adapters (global): $(cd "$GLOBAL_ADAPTERS" && ls -d */ | tr -d '/' | tr '\n' ' ')"
+else
+  echo "  No source adapters found — louie-from-source will be unavailable."
+  echo "  Install one to ~/.louie/adapters/<name>/adapter.md to enable it for all projects."
+fi
+echo ""
+
 # Detect existing project — recommend louie-import if so
 EXISTING_PROJECT=0
 HAS_V1_DOCS=0

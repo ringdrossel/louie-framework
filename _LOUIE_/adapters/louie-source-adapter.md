@@ -4,10 +4,18 @@ A LOUIE source adapter connects an external task or project management system
 to the LOUIE workflow. Any system can serve as a task source by implementing
 this interface.
 
-Concrete adapters live **outside** `_LOUIE_/`, in a sibling `louie-adapters/<name>/`
-directory (private — gitignored in the public framework, or kept in a separate
-private repo). `_LOUIE_/` itself stays fully tool-agnostic: it defines this
-interface and the `louie-from-source` command, and names no specific source system.
+Concrete adapters live **outside** `_LOUIE_/`, in one of two places:
+
+1. `louie-adapters/<name>/` at the project root (sibling of `_LOUIE_/`) — a
+   per-project override, always gitignored (the init scripts ensure this)
+2. `~/.louie/adapters/<name>/` (`%USERPROFILE%\.louie\adapters\` on Windows) —
+   a machine-global install shared by every LOUIE project; the recommended
+   default (install once, works everywhere, credentials never sit in a
+   project tree)
+
+A project-local `louie-adapters/` takes precedence over the global directory.
+`_LOUIE_/` itself stays fully tool-agnostic: it defines this interface and the
+`louie-from-source` command, and names no specific source system.
 
 ## Required Operations
 
