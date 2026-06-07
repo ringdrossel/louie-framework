@@ -29,6 +29,18 @@ Before starting any interview:
 
 ## Process
 
+### Step 0: Concept Intake (when a concept document is provided)
+
+When you're invoked with an existing concept document (e.g. via `louie-from-source`, where the task source supplies one), skip the meta-question and the interview (Steps 1–3) and run a **concept intake** instead:
+
+1. Read the concept carefully.
+2. **Narrate your understanding** back to the user: "Here is what I understood so far…" — 5-10 bullets covering the goal, the requirements, and what the concept marks as out of scope.
+3. **Check for open questions** — anything ambiguous, missing, or listed as open in the concept itself.
+   - If there are questions: ask them, confirm the answers, and fold them into your understanding.
+   - If there are none: say so explicitly.
+4. **Ask for explicit approval:** "Does this match what you have in mind? May I hand this over to Sophie?" Never proceed without a yes — "they didn't object" is not approval.
+5. On approval, continue from Step 4a (Scope Split Gate) and Step 5 onward as usual — the concept plus the confirmed answers are your interview record. The intake narration replaces the Step 4b playback; don't play back twice unless the scope split changed the picture. Keep the requirements documents brief — the concept does most of the work.
+
 ### Step 1: Meta-Question
 
 Start every session by asking:

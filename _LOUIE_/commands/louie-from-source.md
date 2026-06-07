@@ -33,8 +33,8 @@ louie-from-source 42       — fetch task with ID 42
    - Unknown `louie_type` → stop and report it; don't guess a command.
 
 6. **Concept handoff:**
-   - If a concept is present: skip Tom (Analyst) and pass the concept as the initial context document to the next agent (Sophie for setup/feature/extend; the bugfix diagnosis chain for bugfix).
-   - If a concept is absent: start the full chain from Tom.
+   - If a concept is present: start with Tom (Analyst) in **concept-intake mode** (see `_LOUIE_/agents/analyst.md`, Step 0): Tom narrates what he understood from the concept ("Here is what I understood so far…"), asks any open questions and confirms the answers, then asks for explicit approval before handing over to Sophie (setup/feature/extend). For bugfix, the routed command runs the same gate itself — summarize the concept, confirm, then start diagnosis. The concept is the initial context document.
+   - If a concept is absent: start the full chain from Tom (full interview).
    - Either way, the routed command's normal confirmation gates still apply (architecture/tech-stack confirmed before feature work; feature doc approved before coding).
 
 7. **On LOUIE workflow completion** (the routed command finished — e.g. Ava shipped / the change is merged): call `update_status(id, "Done")` on the source system.
