@@ -42,13 +42,19 @@ The adapter must map louie_type to a LOUIE command:
 ## Concept Handoff
 
 If a concept document is present when a task is fetched:
-- Tom (Analyst) is skipped
-- For setup / feature / extend: hand off directly to Sophie (Architect)
-- For bugfix: hand off directly to the bugfix diagnosis chain
+
+- For setup / feature / extend: Tom (Analyst) runs a **concept intake** instead
+  of his full interview — he narrates what he understood from the concept,
+  asks any open questions and confirms the answers, then asks for explicit
+  approval before handing over to Sophie (Architect). No handoff without that
+  approval.
+- For bugfix: the bugfix chain starts with the same gate — summarize the
+  understanding from the concept, confirm with the user, then proceed to
+  diagnosis.
 
 The concept is passed as the initial context document.
 
 The routed command still runs its own confirmation gates — architecture and
 tech-stack must be confirmed before feature work, and the feature document must
-be approved before coding. A concept replaces Tom's interview; it does not
-bypass the Three Critical Rules.
+be approved before coding. A concept replaces Tom's interview questions, not
+his playback-and-approval gate, and it does not bypass the Three Critical Rules.
