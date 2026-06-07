@@ -12,10 +12,14 @@ louie-from-source 42       — fetch task with ID 42
 ## Steps
 
 1. **Determine which adapter is active:**
-   Read `louie-adapters/` (a sibling of `_LOUIE_/`, at the project root). Use the first directory found, or — if multiple exist — ask the user which to use (present as a structured choice; see `_LOUIE_/guidelines/interaction-guidelines.md`). If `louie-adapters/` is absent or empty, tell the user no source adapter is configured and stop.
+   Look for adapters in this order — the first location that contains at least one `<name>/adapter.md` wins:
+   1. `louie-adapters/` at the project root (a sibling of `_LOUIE_/`) — per-project override
+   2. `~/.louie/adapters/` — machine-global install, shared by all projects
+
+   Use the first adapter directory found in the winning location, or — if multiple exist — ask the user which to use (present as a structured choice; see `_LOUIE_/guidelines/interaction-guidelines.md`). If neither location has an adapter, tell the user no source adapter is configured (install one to `~/.louie/adapters/<name>/adapter.md`) and stop.
 
 2. **Read the adapter instructions:**
-   Load `louie-adapters/{adapter}/adapter.md` and follow its operation definitions (endpoints, auth, request/response shapes).
+   Load `{adapters-dir}/{adapter}/adapter.md` (from the location resolved in step 1) and follow its operation definitions (endpoints, auth, request/response shapes).
 
 3. **Fetch the task:**
    - If an ID was provided: call `fetch_task(id)`
@@ -41,5 +45,5 @@ louie-from-source 42       — fetch task with ID 42
 
 ## Notes
 
-- This command is the public, tool-agnostic entry point. All source-specific behaviour (endpoints, auth, payloads) lives in the private `louie-adapters/<name>/adapter.md`, never in `_LOUIE_/`.
+- This command is the public, tool-agnostic entry point. All source-specific behaviour (endpoints, auth, payloads) lives in a private adapter (`louie-adapters/<name>/adapter.md` in the project, or `~/.louie/adapters/<name>/adapter.md` machine-global), never in `_LOUIE_/`.
 - If any adapter call fails (auth, network, unexpected shape), surface the error and stop — don't silently continue or fabricate a task.

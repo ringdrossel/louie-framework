@@ -186,6 +186,29 @@ To update the framework, run `louie-update-framework` in your AI tool:
 
 Review the changelog for any changes to agent behavior or templates.
 
+## Source Adapters (optional)
+
+`louie-from-source` pulls tasks from an external system (a task tracker or project management tool) and routes them to the right `louie-*` command. It needs a **source adapter** — a small instruction set implementing `_LOUIE_/adapters/louie-source-adapter.md` for your specific tool.
+
+Adapters are private (they carry endpoints and credentials) and live outside `_LOUIE_/`, in one of two places:
+
+| Location | Scope | When to use |
+|----------|-------|-------------|
+| `~/.louie/adapters/<name>/` | Machine-global — all projects | **Recommended default.** Install once; every LOUIE project on this machine can pull tasks. Credentials never sit in a project tree. |
+| `louie-adapters/<name>/` (project root) | This project only | Override when one project needs a different source or config. Always gitignored — the init scripts add the entry automatically. |
+
+A project-local `louie-adapters/` takes precedence over the global directory.
+
+To install an adapter globally:
+
+```bash
+mkdir -p ~/.louie/adapters
+cp -r /path/to/your-adapter ~/.louie/adapters/<name>
+# <name>/ must contain adapter.md; credentials typically go in <name>/config
+```
+
+The init scripts (Step 2) report adapter availability at the end of their output, so you can see immediately whether `louie-from-source` will work. Without any adapter, all other LOUIE commands work normally — only `louie-from-source` is unavailable.
+
 ## Quick Reference
 
 | What you want | Command |
