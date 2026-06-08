@@ -115,7 +115,7 @@ Write to `_LOUIE-output/evaluation/`:
 
 ### 7. Phase 2 prompt — choose apply mode
 
-Once files are written, report the count (`<N> findings: <C> Critical, <S> Should Fix, <U> Suggestions`), then **ask as a structured choice** — use your runtime's structured-choice tool if it has one, otherwise a lettered list (see `_LOUIE_/guidelines/interaction-guidelines.md`). Question: "Apply now?" Options:
+Once files are written, **ask as a structured choice** — use your runtime's structured-choice tool if it has one, otherwise a lettered list (see `_LOUIE_/guidelines/interaction-guidelines.md`). Put the count **inside the question itself** — a dialog hides any text sharing its response, so a count reported "before" the ask is never seen. Question: "Apply now? (`<N>` findings: `<C>` Critical, `<S>` Should Fix, `<U>` Suggestions)" Options:
 
 - `walkthrough` — step-by-step approval *(default)*
 - `apply-all` — apply every finding without per-finding prompts (Critical + Should Fix + Suggestions)
@@ -127,7 +127,7 @@ Default = `walkthrough`. If the user picks `no`, exit cleanly — they can resum
 
 For each finding in `pending` or `deferred` status, sorted by tier (Critical → Should Fix → Suggestions) then by file:
 
-- Show the finding, then **ask as a structured choice** (structured-choice tool if available, else a lettered list — see `_LOUIE_/guidelines/interaction-guidelines.md`):
+- Show the finding and ask in **one plain-text message with a lettered list** — in this loop, prefer the lettered fallback even on runtimes with a structured-choice tool: a dialog would hide the finding it asks about, and a two-turn gate per finding doubles every round-trip (see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second — plain text hides nothing). Only use the structured-choice tool if the finding was presented in a *previous* response:
   ```
   [<i>/<N>] <Tier> · <Category> · <file:line>
     Issue: <what's wrong>

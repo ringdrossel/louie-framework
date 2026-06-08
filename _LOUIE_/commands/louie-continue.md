@@ -40,6 +40,7 @@ It does **not** read or recover past chat transcripts — a LOUIE command can't 
 
 6. **Summarize and propose the next step:**
    - Give a tight recap: target, kind, where it stands (phase X of Y, N files uncommitted, what's done, open questions), and the **single recommended next action**.
+   - **End the turn after the recap** — if you ask for the go-ahead with a structured choice, it goes alone in the next response, and is skipped if the user's reply already decides (two-turn gate; a dialog hides the recap it asks about — see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second). A plain-text "Shall I pick up from there?" may close the recap message instead.
    - Wait for the user's go-ahead, then continue by reading and following the relevant agent/command (`_LOUIE_/agents/coder.md`, `_LOUIE_/commands/louie-bugfix.md`, etc.). All normal gates and review/branch modes still apply.
    - If the runtime has native chat-resume, add one optional line: "To also restore the original conversation, you can run `claude --resume` and pick the session from <date> — optional; I've already reconstructed the state from your files."
 

@@ -21,7 +21,7 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
    - Otherwise, ask: "What feature would you like to add? A brief description is fine — Tom will dig into the details."
 
 4. **Invoke Tom (Analyst):**
-   - **Shortcut:** if a `requirements.md` for this feature already exists (typically because `louie-setup` captured it in the initial split), skip Tom entirely. Re-read it, confirm with the user that it's still accurate, and go to Step 5.
+   - **Shortcut:** if a `requirements.md` for this feature already exists (typically because `louie-setup` captured it in the initial split), skip Tom entirely. Re-read it and confirm with the user that it's still accurate — this is a content-carrying gate: first present a compact digest of the requirements **in chat as a normal message** and end the turn; ask for confirmation only in the next response, skipping the dialog if the user's reply already decides (two-turn gate — see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second). Never ask "still accurate?" about a document the user hasn't just seen. Then go to Step 5.
    - Otherwise: read and follow `_LOUIE_/agents/analyst.md`.
    - Tom interviews the user, then runs the **Scope Split Gate** (analyst.md § Step 4a). If the request actually covers multiple capabilities (e.g. "add login + profile editing + admin panel"), Tom splits it into multiple feature folders, each with its own `requirements.md`. From this command's perspective, the rest of the procedure then runs once **per approved feature** — confirm with the user which one to take through Steps 5–11 first; the others stay as `requirements.md`-only until the user runs `louie-feature` for them.
    - Tom creates each feature folder `_LOUIE-output/implementations/<feature-name>/` and writes its `requirements.md`.
@@ -39,8 +39,8 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
    - **If this run was seeded `--from-roadmap <id>`:** move the entry from `## Captured` to `## Promoted` in `_LOUIE-output/roadmap.md`. Preserve the original `Created` and `Notes`. Set `Status: In Progress` and add `Promoted: YYYY-MM-DD → _LOUIE-output/implementations/[feature-name]/`. If the `## Promoted` section is showing the placeholder `_No ideas promoted yet._`, remove that line first. Update the `Last Updated:` line at the top of the roadmap file. (Equivalent to `louie-roadmap-change <id> status "In Progress"`.)
 
 7. **Confirmation gate:**
-   - Present the feature document and implementation plan **in chat as a normal message** — a compact digest (key sections, phases, scope), with a pointer to the full `feature.md`. The file write alone is **not** a presentation; its result renders collapsed and the approval dialog hides everything else (see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second).
-   - Then ask for explicit confirmation (short, self-contained question) and wait before coding
+   - Present the feature document and implementation plan **in chat as a normal message** — a compact digest (key sections, phases, scope), with a pointer to the full `feature.md`. The file write alone is **not** a presentation; its result renders collapsed.
+   - **End the turn after presenting.** Ask for explicit confirmation (short, self-contained question) only in the next response — a structured-choice dialog hides anything sharing its response, even a short summary. Skip the dialog if the user's reply already decides (two-turn gate — see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second). Wait before coding.
 
 8. **Branch handling (branch mode):**
    - Read the `## Branch Mode` section of `_LOUIE-output/runbook.md`. If absent or unset, treat the mode as `current`.

@@ -28,20 +28,22 @@ Use the most structured mechanism your runtime supports, and always degrade grac
 
 Pick the structured tool if there's any doubt it exists — it falls back to text naturally; the reverse doesn't.
 
-## Content first, choice second (approval gates)
+## Content first, choice second (approval gates — two-turn gate)
 
-A structured choice renders as a compact dialog — on most runtimes it takes over the screen and shows **only** the question and its options. Anything you "presented" some other way is invisible at decision time:
+A structured choice renders as a compact dialog — on most runtimes it takes over the screen and shows **only** the question and its options. Anything else in the same response is invisible at decision time:
 
 - **A file you just wrote is not a presentation.** File-write results render collapsed in the transcript; the user has *not* read `feature.md` because you wrote it.
-- **Long prose streamed in the same response as the choice call can get pushed out of view** by the dialog. Don't rely on it for anything the user must read to decide.
+- **Text streamed in the same response as the choice call is hidden by the dialog** — even a short summary. This is not a length problem; it's a same-response problem. "Present, then ask" inside one response is presenting to nobody.
 
-So every approval gate (playback, proposal, document confirmation) follows this order:
+So every content-carrying approval gate (playback, proposal, document confirmation) is a **two-turn gate**:
 
-1. **Present the content in chat as a normal message** — the playback summary, the design proposal, the document digest. Compact: 5–15 bullets or a short section, not a full document dump. Name the file where the full version lives ("full doc: `_LOUIE-output/implementations/<feature>/feature.md`"), but never *rely* on the user opening it.
-2. **Then ask.** Keep the structured choice short and self-contained — one line naming *what* is being approved (e.g. "Approve the preview-panel feature doc (summary above)?"). The dialog must make sense even if the user saw nothing else.
-3. **If the user asks to "see it again"** or has clearly decided blind: re-present the summary as plain message text **without any tool call in the same response**, let them read it, and only then re-ask.
+1. **Turn one — present, then stop.** Send the content as a normal chat message: the playback summary, the design proposal, the document digest. Compact: 5–15 bullets or a short section, not a full document dump. Name the file where the full version lives ("full doc: `_LOUIE-output/implementations/<feature>/feature.md`"), but never *rely* on the user opening it. End the message with a one-line handoff — e.g. "Take a look — I'll ask for the go/no-go next." — and **end the turn. No structured-choice call in this response.**
+2. **Turn two — read the reply before reaching for the dialog.** If the user's reply already decides ("looks good", "approved", "change X first"), **treat it as the gate answer and skip the structured choice entirely** — re-asking what they just answered is noise. Only if the reply doesn't decide (a bare "ok", a question, a tangent) do you raise the structured choice — **alone in its own response**, short and self-contained, one line naming *what* is being approved (e.g. "Approve the preview-panel feature doc (summary above)?").
+3. **If the user asks to "see it again" or for a summary mid-gate**, that request supersedes the pending choice. Respond with the content as plain message text and **nothing else** — no structured-choice call in the same response — and only re-ask after they've replied.
 
-Never chain *write file → ask approval* with no chat presentation in between.
+This rule targets **structured-choice tool calls** (the dialog is what hides things). A conversational, free-form ask ("Does this match what you have in mind?") may share the response with the content — plain text hides nothing. The same goes for the lettered pick-list fallback: it *is* plain text, so content + lettered question in one message is fine.
+
+Never chain *write file → ask approval* with no chat presentation in between, and never put a structured-choice call in the same response as the content it asks about.
 
 ## Authoring rules (regardless of rendering)
 

@@ -51,8 +51,8 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
    - Update the feature's `Status` column in `_LOUIE-output/implementations/overview.md` if the status changed (mirror the `feature.md` checkboxes)
 
 9. **Confirmation gate:**
-   - Present the updated feature document and extension plan **in chat as a normal message** (compact digest + pointer to the file) — the file write alone is not a presentation, and an approval dialog hides everything but its own question (see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second)
-   - Then ask for explicit confirmation and wait before coding
+   - Present the updated feature document and extension plan **in chat as a normal message** (compact digest + pointer to the file) — the file write alone is not a presentation
+   - **End the turn after presenting.** Ask for explicit confirmation only in the next response — a structured-choice dialog hides anything sharing its response. Skip the dialog if the user's reply already decides (two-turn gate — see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second). Wait before coding.
 
 10. **Continue the chain:**
    - Leo (Designer) if the extension has UI changes

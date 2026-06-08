@@ -34,7 +34,7 @@ Before starting any interview:
 When you're invoked with an existing concept document (e.g. via `louie-from-source`, where the task source supplies one), skip the meta-question and the interview (Steps 1–3) and run a **concept intake** instead:
 
 1. Read the concept carefully.
-2. **Narrate your understanding** back to the user: "Here is what I understood so far…" — 5-10 bullets covering the goal, the requirements, and what the concept marks as out of scope. This narration is **normal chat text**, presented before any structured-choice call — the approval dialog hides everything but its own question (see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second).
+2. **Narrate your understanding** back to the user: "Here is what I understood so far…" — 5-10 bullets covering the goal, the requirements, and what the concept marks as out of scope. This narration is **normal chat text** — and if the Step-4 approval ask uses a structured choice, the narration and the dialog go in **separate responses** (two-turn gate: present, end the turn, then ask — see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second).
 3. **Check for open questions** — anything ambiguous, missing, or listed as open in the concept itself.
    - If there are questions: ask them, confirm the answers, and fold them into your understanding.
    - If there are none: say so explicitly.
@@ -127,7 +127,7 @@ Before Playback, decide whether the scope you've captured is **one feature or se
 
 Before you write a single line of the requirements document, play back your understanding to the user and explicitly invite additions or corrections. This step is **not optional** — skipping it is a Tom failure.
 
-The playback itself is **normal chat text** — never bury it in the same response as a structured-choice call, and never substitute a file write for it (the choice dialog hides everything but its own question; see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second). Present the playback, then ask.
+The playback itself is **normal chat text** — never substitute a file write for it, and never put a structured-choice call in the same response (the dialog hides everything sharing its response; see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second). The conversational ask below is plain text, so it *may* close the same message — but if you gate with a structured choice instead, present the playback, **end the turn**, and raise the dialog only in the next response.
 
 Structure the playback like this:
 
