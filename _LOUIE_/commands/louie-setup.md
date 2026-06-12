@@ -53,6 +53,11 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
    - Copy `_LOUIE_/templates/roadmap-template.md` to `_LOUIE-output/roadmap.md` if it doesn't already exist. Set the `Last Updated` line to today; leave the Captured / Promoted placeholders in place.
    - The roadmap holds **bigger changes / epics** (not every feature — that's `implementations/overview.md`). Creating it here means it always exists, so `louie-roadmap`, `louie-roadmap-change`, and `louie-feature --from-roadmap` never hit "not found."
 
+5e. **Set the auto-pilot mode (no question — default):**
+   - Auto-pilot controls how far each command runs unattended after the plan is approved. The default is `off` for every command (`feature` / `extend` / `update` / `bugfix`) — do **not** ask the user about this at setup.
+   - Update `_LOUIE-output/runbook.md` § Auto-Pilot in place: set all four commands to `off`, `Set:` to today's date.
+   - Add a one-line note: "Auto-pilot is `off` for all commands (every gate stops for you). Turn it on per command anytime with `louie-autopilot-mode`, or per run with `louie-feature --auto`."
+
 6. **Confirmation gate (architecture):**
    - Present the requirements, architecture, tech stack, and runbook **in chat as a normal message** — a compact digest per document, not just the file writes (collapsed results are not a presentation)
    - Walk through the key decisions and their rationale

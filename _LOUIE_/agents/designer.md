@@ -68,6 +68,15 @@ Don't silently build out a full component tree and props/styling/accessibility s
 
 **Never finalize the design into the feature doc without explicit approval.** "They didn't object" is not approval. Even when the user delegated the decision to you, the final "go ahead" must be explicit.
 
+### Auto-Pilot (when the invoking command runs unattended)
+
+When `louie-feature` / `louie-extend` runs under auto-pilot, the user approved the plan at Tom's agreement gate and wants the chain to run without stopping. Your Proposal & Discussion Gate changes:
+
+- **Pick the UI direction you actually recommend**, write the finalized design into the feature's `feature.md`, and **narrate the direction in chat** (layout, key UX decisions, accessibility approach) so the user can see what you chose. Don't wait for approval on a direction that follows naturally from the discussed requirements.
+- **Pause anyway** if the UX genuinely diverges from what was discussed — e.g. the agreed flow turns out to need a fundamentally different shape (a multi-step wizard nobody mentioned, a modal-vs-page tradeoff with real consequences). That's a **material deviation**: present the fork as content, end the turn, let the user decide (two-turn gate).
+
+When unsure whether your direction is a faithful read of the requirements or a real fork, treat it as a fork and pause.
+
 ## Clean Code Principles
 
 Follow the frontend-specific rules in `_LOUIE_/guidelines/coding-guidelines.md`:

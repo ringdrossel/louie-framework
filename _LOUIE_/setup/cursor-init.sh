@@ -39,6 +39,7 @@ Available commands:
 - `louie-evaluate` → `_LOUIE_/commands/louie-evaluate.md`
 - `louie-review-mode` → `_LOUIE_/commands/louie-review-mode.md`
 - `louie-branch-mode` → `_LOUIE_/commands/louie-branch-mode.md`
+- `louie-autopilot-mode` → `_LOUIE_/commands/louie-autopilot-mode.md`
 - `louie-test` → `_LOUIE_/commands/louie-test.md`
 - `louie-doc` → `_LOUIE_/commands/louie-doc.md`
 - `louie-ideate` → `_LOUIE_/commands/louie-ideate.md`

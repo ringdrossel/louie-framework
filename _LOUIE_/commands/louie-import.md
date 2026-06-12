@@ -99,6 +99,11 @@ After it completes, the project is indistinguishable from one that went through 
 10c. **Create the roadmap file:**
     - Copy `_LOUIE_/templates/roadmap-template.md` to `_LOUIE-output/roadmap.md` if it doesn't already exist. Set `Last Updated` to today; leave the Captured / Promoted placeholders. Don't backfill — the roadmap is for bigger changes / epics going forward, not a record of already-built features (those live in `implementations/overview.md`).
 
+10d. **Set the auto-pilot mode (no question — default):**
+    - Auto-pilot controls how far each command runs unattended after the plan is approved. The default is `off` for every command — do **not** ask at import. Imported projects are higher-risk; leaving auto-pilot off keeps every gate in place until the user opts in.
+    - Update `_LOUIE-output/runbook.md` § Auto-Pilot in place: set `feature` / `extend` / `update` / `bugfix` all to `off`, `Set:` to today's date.
+    - Note alongside: "Auto-pilot is `off` for all commands. Enable it per command anytime with `louie-autopilot-mode` once you trust the chain on this codebase."
+
 11. **Confirmation gate (architecture):**
     - Present `architecture.md`, `tech-stack.md`, `runbook.md`, the per-feature folders (with their `feature.md` and `requirements.md`), and the overviews (`implementations/overview.md` + `bugfixes/overview.md`) — **in chat as a normal message** (compact digest per document; file writes alone are not a presentation).
     - Walk the user through Sophie's key inferences and any Open Questions.

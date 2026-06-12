@@ -108,6 +108,18 @@ Controls whether `louie-feature` creates a branch per feature. See `_LOUIE_/comm
 
 Valid values: `current` (default — work on the current branch, including `main`; never auto-branch, never prompt), `ask` (ask before each new feature whether to create a `feature/<name>` branch). A branch is never created automatically; in either mode you can ask for one on demand. Affects `louie-feature` only.
 
+## Auto-Pilot
+
+Controls how far each command runs unattended after the plan is approved. See `_LOUIE_/commands/louie-autopilot-mode.md` for full details.
+
+**feature:** off
+**extend:** off
+**update:** off
+**bugfix:** off
+**Set:** YYYY-MM-DD
+
+Valid values per command: `on` / `off` (default `off`). When `on`, the command runs the chain unattended after the plan-agreement gate (for `feature`/`extend`, that's Tom's playback confirmation, before `feature.md` is written) through to a final pre-merge summary. Auto-pilot stops before merge, never auto-creates a branch, runs Max at an `auto-fix-critical` floor, and pauses anyway if the written plan materially diverges from what was agreed. Per-call override: `louie-<command> --auto` / `--manual` (does not change this setting). `update`/`bugfix` have thin leverage (no pre-code gates).
+
 ## Debugging
 
 [Where to look first when specific symptoms appear. One row per common symptom.]

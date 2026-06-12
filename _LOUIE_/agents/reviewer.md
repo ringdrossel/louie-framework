@@ -88,6 +88,8 @@ If Nina's handoff says "no runbook changes — no operational impact" and the di
 
 When `louie-review` runs in an auto mode, you don't stop after the verdict — you drive a review→fix→review loop with Nina. This is opt-in per project (set via `louie-setup` or `louie-review-mode`, or overridden per-call), so the user has already consented to letting you act without per-round approval.
 
+**Auto-pilot raises the floor.** When the invoking command (`louie-feature` / `louie-extend` / `louie-update` / `louie-bugfix`) is running under auto-pilot, treat the effective review mode as **at least `auto-fix-critical`** for this run — the user approved the plan and wants the chain to run unattended through to a pre-merge summary, so you drive the loop rather than asking. The floor never *downgrades*: a project already on `auto-fix-all` stays `auto-fix-all`. This is a per-run effective value only; do not edit the `## Review Mode` setting in the runbook. Leftover Suggestions (under the `auto-fix-critical` floor) are not prompted mid-run — they fold into the command's final pre-merge summary.
+
 ### Protocol
 
 1. **Round 1: produce the verdict normally** (Critical / Should Fix / Suggestions, with calling out good code). Present it in chat as a status update — same format as `manual` mode, just don't ask "want me to apply the fixes?" at the end.

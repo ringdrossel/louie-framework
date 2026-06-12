@@ -56,6 +56,7 @@ echo ^| `/louie-review-doc` ^| Review + fix + update docs ^|
 echo ^| `/louie-evaluate` ^| Whole-codebase standards assessment + step-by-step apply loop ^|
 echo ^| `/louie-review-mode` ^| View or change the project review mode ^|
 echo ^| `/louie-branch-mode` ^| View or change the project branch mode ^|
+echo ^| `/louie-autopilot-mode` ^| Per-command auto-pilot — run the chain unattended after plan approval ^|
 echo ^| `/louie-test` ^| Write or improve tests with Ava ^|
 echo ^| `/louie-doc` ^| Update documentation + commit message ^|
 echo ^| `/louie-ideate` ^| Brainstorm ideas with Ivy ^|

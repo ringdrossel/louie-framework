@@ -62,6 +62,16 @@ This command is for changes that are:
    fix: <brief description of the change>
    ```
 
+## Auto-Pilot
+
+Auto-pilot has **thin leverage here** — `louie-update` is already the fast lane with no Tom/Sophie/Leo gates and no plan-approval step. There is nothing to make unattended that isn't already. See `_LOUIE_/commands/louie-autopilot-mode.md`.
+
+What the `update:` toggle (or a `--auto`/`--manual` flag) does:
+- The slim Max review (Step 6) runs as a **loop** — flag criticals, hand to Nina, re-run the quality check, re-review — rather than a single pass, matching the `auto-fix-critical` floor. (Slim review already auto-fixes criticals before spec sync; auto-pilot just makes the re-review explicit.)
+- **The 50-line escalation rule below still fires** under auto-pilot — it's the deviation tripwire for this command. Auto-pilot does not let an update that has grown into an extension run silently.
+
+Resolution order is the same as the other commands: `--auto`/`--manual` flag > `runbook.md` `## Auto-Pilot` `update:` value (default `off`).
+
 ## Escalation Rule
 
 **If the change grows beyond 50 lines during implementation → STOP.**

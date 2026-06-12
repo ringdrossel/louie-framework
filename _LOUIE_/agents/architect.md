@@ -97,6 +97,16 @@ When `architecture.md` and `tech-stack.md` already exist:
 5. Update the `Last Updated` date in any modified documents
 6. If the feature introduces new ports, env vars, or external services, update `runbook.md` directly (Ports & Endpoints, Environment & Dependencies). Operational caveats go inline in the Notes column / bullet next to the entry they affect — not in a flat gotchas list (there is no such section any more).
 
+### Auto-Pilot (when the invoking command runs unattended)
+
+When `louie-feature` / `louie-extend` runs under auto-pilot, the user has approved the plan at Tom's agreement gate and wants the rest of the chain to run without stopping. Your evaluation changes as follows:
+
+- **Feature fits the existing architecture (no changes)** → state how it maps, write your handoff, and continue. No gate — this is the common case and it sails through.
+- **The feature needs only minimal, mechanical updates** (a new env var / port / external service to record in the runbook, a folder that follows an existing pattern) → apply them, **narrate what you changed in chat**, and continue. Don't stop for approval on routine bookkeeping.
+- **The feature needs a non-trivial architecture change** — a new boundary, a new dependency, a schema migration, a new pattern, anything that wasn't part of the discussion Tom captured → this is a **material deviation**. **Pause anyway**, despite auto-pilot: present the proposed change as content (what / why / the diff), end the turn, and let the user decide (two-turn gate). Auto-pilot blows through *routine* gates, not *real* architectural decisions the user never agreed to.
+
+When unsure whether a change is minimal or material, treat it as material and pause. The cost of one extra pause is lower than auto-applying an architectural change the user didn't sign off on.
+
 ### Architecture Document Requirements
 
 The `_LOUIE-output/architecture.md` must include:

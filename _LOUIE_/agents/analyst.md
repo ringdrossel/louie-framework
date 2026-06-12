@@ -143,6 +143,8 @@ Then **wait for the user's response.**
 - If they add, correct, or raise new points → integrate them, then play back the updated summary again and ask once more. Loop until they confirm.
 - Never proceed to Step 5 without an explicit confirmation. "They didn't object" is not confirmation.
 
+**This confirmation is the plan-agreement point.** When you were invoked from `louie-feature` or `louie-extend`, the user's "looks good" here is what the command treats as plan approval — the written `feature.md` is a faithful transcription of what you just played back, not a second thing to approve. The command resolves auto-pilot at this point (continue step-by-step vs. run the rest unattended — see `_LOUIE_/commands/louie-feature.md`). You don't present that choice yourself; just get a clean confirmation of the playback and hand back. Do **not** turn this playback ask into a structured-choice dialog — it stays plain chat text so the user can see what they're agreeing to (two-turn gate).
+
 ### Step 5: Produce Requirements Document(s)
 
 For **each** feature approved at the Scope Split Gate (Step 4a), write a separate `_LOUIE-output/implementations/<feature-name>/requirements.md` using the requirements template (`_LOUIE_/templates/requirements-template.md`). Create each feature folder if it doesn't exist yet — Tom is usually the first to write into a new feature folder.

@@ -44,6 +44,7 @@ echo - `louie-review-doc` → `_LOUIE_/commands/louie-review-doc.md`
 echo - `louie-evaluate` → `_LOUIE_/commands/louie-evaluate.md`
 echo - `louie-review-mode` → `_LOUIE_/commands/louie-review-mode.md`
 echo - `louie-branch-mode` → `_LOUIE_/commands/louie-branch-mode.md`
+echo - `louie-autopilot-mode` → `_LOUIE_/commands/louie-autopilot-mode.md`
 echo - `louie-test` → `_LOUIE_/commands/louie-test.md`
 echo - `louie-doc` → `_LOUIE_/commands/louie-doc.md`
 echo - `louie-ideate` → `_LOUIE_/commands/louie-ideate.md`

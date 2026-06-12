@@ -225,6 +225,7 @@ The init scripts (Step 2) report adapter availability at the end of their output
 | Review + fix + update docs in one flow | `louie-review-doc` |
 | View or change the project review mode (manual / auto-fix-critical / auto-fix-all) | `louie-review-mode` |
 | View or change the project branch mode (current / ask) | `louie-branch-mode` |
+| View or change the per-command auto-pilot mode (run the chain unattended after plan approval) | `louie-autopilot-mode` |
 | Write or improve tests with Ava | `louie-test` |
 | Update documentation and generate a commit message | `louie-doc` |
 | Brainstorm ideas with Ivy | `louie-ideate` |

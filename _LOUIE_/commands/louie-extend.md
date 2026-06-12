@@ -4,6 +4,8 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
 
 > **Reset context before you start.** Ignore any framing from prior work in this session (bugfix mode, update mode, etc.). You are extending a feature. Verify the target against the steps below — don't trust your prior mental model of what the target is.
 
+> **Auto-pilot:** before Step 6, resolve whether this run is unattended (see `## Auto-Pilot` at the bottom). It moves the approval gate to Tom's playback and lets Steps 7–10 run without stopping. The Procedure below is the **step-by-step (manual)** flow.
+
 ## Procedure
 
 1. **Read project context:**
@@ -53,6 +55,7 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
 9. **Confirmation gate:**
    - Present the updated feature document and extension plan **in chat as a normal message** (compact digest + pointer to the file) — the file write alone is not a presentation
    - **End the turn after presenting.** Ask for explicit confirmation only in the next response — a structured-choice dialog hides anything sharing its response. Skip the dialog if the user's reply already decides (two-turn gate — see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second). Wait before coding.
+   - **Under auto-pilot this gate is already satisfied** at the plan-agreement gate (see `## Auto-Pilot`): the user approved the extension at Tom's playback (Step 6). Narrate that the plan was written and continue.
 
 10. **Continue the chain:**
    - Leo (Designer) if the extension has UI changes
@@ -60,10 +63,30 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
    - Max (Reviewer) reviews
    - Ava (Tester) tests
 
+## Auto-Pilot
+
+Auto-pilot lets the extension chain run unattended after the user approves the plan, stopping only at a final pre-merge summary. See `_LOUIE_/commands/louie-autopilot-mode.md`.
+
+**Resolve the mode** (order): `--auto`/`--manual` flag > `runbook.md` `## Auto-Pilot` `extend:` value (default `off`) > inline choice at the gate.
+
+**Plan-agreement gate** — sits at **Tom's playback in Step 6** (the moment the user confirms the extension scope, before Step 8 writes the new phase into `feature.md`):
+- *Off (default):* after Tom's playback is confirmed, present a structured choice in its own response — **Continue step-by-step** / **Auto-pilot the rest**. On auto-pilot, engage the unattended run.
+- *On:* the confirmed playback proceeds straight into the unattended run — no second confirmation.
+
+**Unattended run** (Steps 7–10): Sophie auto-applies minimal changes + narrates (pauses on material arch change); the feature-doc update + Step 9 gate are pre-approved (narrate, don't re-ask); Leo auto-applies the recommended UI direction + narrates (pauses on a fundamentally different UX); Nina implements; Max runs the `auto-fix-critical` loop; Ava tests. Each agent narrates as it goes.
+
+**Hard stops that survive auto-pilot:** the **deviation tripwire** (pause if the write-up / Sophie's eval materially diverges from what was agreed — non-trivial arch change, undiscussed scope) and the **merge-to-main gate** (always stop before merge with a final summary; never auto-merge, never auto-branch). See `_LOUIE-internals/autopilot.md` for the full model.
+
 ## Usage
 
 ```
 louie-extend
+```
+
+or unattended after the plan is agreed:
+
+```
+louie-extend --auto user-authentication
 ```
 
 or with context upfront:

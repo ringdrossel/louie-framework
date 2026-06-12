@@ -54,6 +54,17 @@ When the user says **`louie-bugfix`**, follow this procedure to diagnose and fix
    - Ava verifies the fix with a targeted test
    - Ava adds a regression test to prevent the bug from returning
 
+## Auto-Pilot
+
+Auto-pilot has **thin leverage here** — `louie-bugfix` has no plan-approval gate; Nina diagnoses and fixes, Max reviews, Ava covers. See `_LOUIE_/commands/louie-autopilot-mode.md`.
+
+What the `bugfix:` toggle (or a `--auto`/`--manual` flag) does:
+- Max's review (Step 6) runs the **`auto-fix-critical` loop** rather than stopping to ask — matching the auto-pilot review floor.
+- **The Step 3 scope check still applies** as the deviation tripwire: if the work turns out not to be a bug (new functionality, bundled unrelated issues, a missing feature), pause and route it correctly even under auto-pilot. Don't let a mislabeled bugfix run unattended.
+- The terminal **merge-to-main gate is unchanged** — auto-pilot never auto-merges.
+
+Resolution order is the same as the other commands: `--auto`/`--manual` flag > `runbook.md` `## Auto-Pilot` `bugfix:` value (default `off`).
+
 ## Usage
 
 ```
