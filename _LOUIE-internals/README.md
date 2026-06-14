@@ -20,6 +20,7 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 | `review-mode.md` | Review-mode setting design — manual / auto-fix modes, storage, loop |
 | `branch-mode.md` | Branch-mode setting design — current / ask modes, default flip away from branch-per-feature |
 | `autopilot.md` | Auto-pilot setting design — gate-at-agreement, per-command modes, deviation tripwire, review-mode composition |
+| `language.md` | Language setting design — Conversation/Documents keys, auto-detect-and-persist, BMAD prior art, single-source-of-truth placement |
 | `continue.md` | `louie-continue` design — artifact+git resume, no stored progress, why not chat-recovery |
 | `adapters.md` | Source-adapter layer — public interface + `louie-from-source`, public/private split, concept handoff |
 | `import.md` | Import system design — cold + v1-docs modes, init-script detection, agent reuse |

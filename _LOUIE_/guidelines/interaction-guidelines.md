@@ -54,6 +54,21 @@ Never chain *write file → ask approval* with no chat presentation in between, 
 - **Single-select by default.** Say so explicitly when multiple selections are allowed.
 - Keep the **question itself to one line** above the options.
 
+## Language
+
+Which natural language LOUIE uses is a **project setting**, stored in `_LOUIE-output/runbook.md` § Language with two keys: **Conversation** (how agents talk to the user) and **Documents** (the language generated artifacts are written in). This section is the **single source of truth** for the behavior — every agent reads it rather than each carrying its own copy, so the rule can't drift out of sync. Read the runbook's `## Language` section at the start of any work; if there is none, the defaults are Conversation `auto` and Documents `English`.
+
+**Conversation:**
+
+- **A specific language is set** (e.g. `German`) → talk to the user in that language in *every* message: greetings, questions, playbacks, summaries, structured-choice labels and options.
+- **`auto` (the default)** → reply in whatever language the user writes in. On a **clear signal** — a full message in another language — switch to it *and persist it*: write that language into runbook § Language as `Conversation:` and bump `Set:` to today, so the choice survives across agents and sessions. On an **ambiguous signal** — a short or mixed-language message, a one-off quoted term, or you're genuinely unsure — don't guess: raise a structured choice ("Which language should we work in?") offering the language you detected and English, then persist the answer the same way. This is the auto-pilot pattern applied to language: detect, confirm if unclear, remember.
+
+**Documents:** the `Documents` key governs the language of generated artifacts (`requirements.md`, `feature.md`, `architecture.md`, `tech-stack.md`, `runbook.md`, ADRs, etc.). Default `English` — keep deliverables English even when the conversation is in another language (portable for mixed teams and reviewers, and LOUIE's own templates are English). `follow` means write artifacts in the conversation language; a specific language name forces that one. Changing this does **not** retranslate existing documents — only newly written or updated ones.
+
+**Always English, never localized:** code, identifiers, file and folder names, `// WHY` comments, and commit messages. These follow `coding-guidelines.md` § Naming regardless of the Conversation or Documents setting.
+
+The user changes any of this with `louie-language` (see `_LOUIE_/commands/louie-language.md`).
+
 ## Optional upgrade (tool-agnostic)
 
 On runtimes without a built-in tool (Gemini CLI, Codex CLI, opencode, pi), users can install a portable structured-choice add-on to get a selectable UI instead of the lettered fallback:

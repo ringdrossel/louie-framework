@@ -23,6 +23,7 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 | `louie-review-mode` | `_LOUIE_/commands/louie-review-mode.md` | View or change the project review mode (manual / auto-fix-critical / auto-fix-all) |
 | `louie-branch-mode` | `_LOUIE_/commands/louie-branch-mode.md` | View or change the project branch mode (current / ask) |
 | `louie-autopilot-mode` | `_LOUIE_/commands/louie-autopilot-mode.md` | View or change the per-command auto-pilot mode (run the chain unattended after plan approval) |
+| `louie-language` | `_LOUIE_/commands/louie-language.md` | View or change the project language (conversation language + document language) |
 | `louie-test` | `_LOUIE_/commands/louie-test.md` | Write or improve tests with Ava |
 | `louie-doc` | `_LOUIE_/commands/louie-doc.md` | Update documentation + commit message |
 | `louie-ideate` | `_LOUIE_/commands/louie-ideate.md` | Brainstorm ideas with Ivy |

@@ -58,6 +58,11 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
    - Update `_LOUIE-output/runbook.md` § Auto-Pilot in place: set all four commands to `off`, `Set:` to today's date.
    - Add a one-line note: "Auto-pilot is `off` for all commands (every gate stops for you). Turn it on per command anytime with `louie-autopilot-mode`, or per run with `louie-feature --auto`."
 
+5f. **Set the language (no question — defaults):**
+   - Language controls which natural language LOUIE talks in (Conversation) and writes documents in (Documents). The defaults are Conversation `auto` (reply in whatever language the user writes in; ask and remember if ambiguous) and Documents `English` — do **not** ask the user about this at setup.
+   - Update `_LOUIE-output/runbook.md` § Language in place: set `Conversation:` to `auto`, `Documents:` to `English`, `Set:` to today's date.
+   - Add a one-line note: "Language is `auto` for conversation (I'll match the language you write in) and `English` for documents. Change either anytime with `louie-language`."
+
 6. **Confirmation gate (architecture):**
    - Present the requirements, architecture, tech stack, and runbook **in chat as a normal message** — a compact digest per document, not just the file writes (collapsed results are not a presentation)
    - Walk through the key decisions and their rationale

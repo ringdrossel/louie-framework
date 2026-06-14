@@ -26,6 +26,7 @@ All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
 | `louie-review-mode` | View or change the project review mode (manual / auto-fix-critical / auto-fix-all) |
 | `louie-branch-mode` | View or change the project branch mode (current / ask) |
 | `louie-autopilot-mode` | View or change the per-command auto-pilot mode (run the chain unattended after you approve the plan, stopping before merge) |
+| `louie-language` | View or change the project language (conversation language + document language) |
 | `louie-test` | Write or improve tests with Ava |
 | `louie-doc` | Update documentation and generate a commit message |
 | `louie-ideate` | Brainstorm ideas with Ivy |

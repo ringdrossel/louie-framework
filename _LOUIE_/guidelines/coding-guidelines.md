@@ -22,6 +22,7 @@ These guidelines apply to ALL code in this project, regardless of language or fr
 - **Booleans**: `is/has/can/should` prefixes
 - **Constants**: UPPER_SNAKE_CASE
 - **No abbreviations** except industry standards (URL, API, ID)
+- **English code, always** — identifiers, file/folder names, `// WHY` comments, and commit messages stay English even when the project's conversation/document language is set to something else (see `_LOUIE_/guidelines/interaction-guidelines.md` § Language)
 
 ## DRY (Don't Repeat Yourself)
 

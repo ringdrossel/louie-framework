@@ -120,6 +120,16 @@ Controls how far each command runs unattended after the plan is approved. See `_
 
 Valid values per command: `on` / `off` (default `off`). When `on`, the command runs the chain unattended after the plan-agreement gate (for `feature`/`extend`, that's Tom's playback confirmation, before `feature.md` is written) through to a final pre-merge summary. Auto-pilot stops before merge, never auto-creates a branch, runs Max at an `auto-fix-critical` floor, and pauses anyway if the written plan materially diverges from what was agreed. Per-call override: `louie-<command> --auto` / `--manual` (does not change this setting). `update`/`bugfix` have thin leverage (no pre-code gates).
 
+## Language
+
+Controls which natural language LOUIE talks in and writes documents in. See `_LOUIE_/commands/louie-language.md` for full details.
+
+**Conversation:** [unset — defaults to `auto`: detect the language you write in, ask if ambiguous]
+**Documents:** English
+**Set:** YYYY-MM-DD
+
+Valid values — **Conversation:** `auto` (default — reply in whatever language you write in; ask and save your pick if ambiguous) or a specific language (e.g. `German`). **Documents:** `English` (default — generated artifacts stay English for portability) or `follow` (write artifacts in the conversation language) or a specific language. Code, identifiers, `// WHY` comments, and commit messages are **always English** regardless of this setting. Change anytime with `louie-language`, or just start writing in another language and LOUIE picks it up when Conversation is `auto`.
+
 ## Debugging
 
 [Where to look first when specific symptoms appear. One row per common symptom.]

@@ -79,6 +79,19 @@ Three modes available:
 
 Per-call override: `louie-review auto`, `louie-review manual`, `louie-review auto-fix-all`.
 
+### 7. Work in your language
+
+Just start writing to LOUIE in your own language — the agents reply in it and remember the choice for the project. To set it explicitly (or control the language of generated documents):
+
+```
+louie-language
+```
+
+- **Conversation** — the language agents talk to you in. Default `auto`: LOUIE matches the language you write in, and asks if it's unclear.
+- **Documents** — the language generated artifacts are written in. Default `English` (keeps deliverables portable); set to `follow` to match the conversation.
+
+Code, identifiers, comments, and commit messages always stay English.
+
 ### That's it
 
 You now know enough to use LOUIE end-to-end. The framework will guide you through the rest — confirmation gates catch mistakes early, agents hand off cleanly, and every artifact lives in `_LOUIE-output/`.
@@ -157,6 +170,19 @@ Drei Modi:
 - `auto-fix-all` — wendet alles automatisch an
 
 Override pro Aufruf: `louie-review auto`, `louie-review manual`, `louie-review auto-fix-all`.
+
+### 7. In deiner Sprache arbeiten
+
+Schreib LOUIE einfach in deiner eigenen Sprache — die Agenten antworten darin und merken sich die Wahl für das Projekt. Um sie explizit zu setzen (oder die Sprache der erzeugten Dokumente zu steuern):
+
+```
+louie-language
+```
+
+- **Conversation** — die Sprache, in der die Agenten mit dir reden. Standard `auto`: LOUIE übernimmt die Sprache, in der du schreibst, und fragt nach, wenn es unklar ist.
+- **Documents** — die Sprache der erzeugten Artefakte. Standard `English` (hält Ergebnisse portabel); setze `follow`, um die Konversationssprache zu übernehmen.
+
+Code, Bezeichner, Kommentare und Commit-Messages bleiben immer Englisch.
 
 ### Das war's
 

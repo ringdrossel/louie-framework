@@ -104,6 +104,11 @@ After it completes, the project is indistinguishable from one that went through 
     - Update `_LOUIE-output/runbook.md` § Auto-Pilot in place: set `feature` / `extend` / `update` / `bugfix` all to `off`, `Set:` to today's date.
     - Note alongside: "Auto-pilot is `off` for all commands. Enable it per command anytime with `louie-autopilot-mode` once you trust the chain on this codebase."
 
+10e. **Set the language (no question — defaults):**
+    - Language controls which natural language LOUIE talks in (Conversation) and writes documents in (Documents). The defaults are Conversation `auto` (reply in whatever language the user writes in; ask and remember if ambiguous) and Documents `English` — do **not** ask at import.
+    - Update `_LOUIE-output/runbook.md` § Language in place: set `Conversation:` to `auto`, `Documents:` to `English`, `Set:` to today's date.
+    - Note alongside: "Language is `auto` for conversation (I'll match the language you write in) and `English` for documents. Change either anytime with `louie-language`."
+
 11. **Confirmation gate (architecture):**
     - Present `architecture.md`, `tech-stack.md`, `runbook.md`, the per-feature folders (with their `feature.md` and `requirements.md`), and the overviews (`implementations/overview.md` + `bugfixes/overview.md`) — **in chat as a normal message** (compact digest per document; file writes alone are not a presentation).
     - Walk the user through Sophie's key inferences and any Open Questions.
