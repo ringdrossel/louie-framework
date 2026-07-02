@@ -28,6 +28,7 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 | `scaling.md` | Artifact-layout scaling design — per-feature folders, bugfix home, migration path |
 | `BACKLOG.md` | Open ideas, gaps, and feature suggestions for the framework |
 | `CHANGELOG.md` | Framework version log |
+| `framework-evaluation/` | Evaluate-style self-assessment of the framework — persistent findings (parallelism, scaling, efficiency) with statuses; start at `framework-evaluation/summary.md` |
 
 ## When to Read What
 
