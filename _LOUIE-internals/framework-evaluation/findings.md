@@ -177,3 +177,12 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 - **Recommendation:** default to *inherit* (drop the `model:` key). If tiering is wanted, do it deliberately and document it in `core.md` (e.g. keep a cheaper tier for mechanical stages only), and revisit on every framework release (E-03 gives the hook).
 - **Detail:** `efficiency.md` § E-04
 - **Touches:** all seven `_LOUIE_/agents/*.md` frontmatter, `core.md` internals
+
+### E-05 — Downstream migration path: propagate shape-changing findings through the existing update channels
+
+- **Tier:** Should Fix · **Status:** pending
+- **Gap:** the scaling/parallelism findings change artifact shapes (annotated plans, split architecture, new codebase map, new overview column), but nothing specifies how *existing* downstream projects get there. `louie-update-framework` never touches `_LOUIE-output/` by design, so without an explicit path, updated framework behavior meets un-migrated project artifacts.
+- **Why it matters:** the framework already has the right propagation channels — wholesale `_LOUIE_/` replace, the step-5 new-canonical-output bootstrap (runbook precedent), the step-6 detect-and-offer-migration hook (`louie-migrate`), and `louie-doc`'s reconcile pass (legacy-overview precedent). Each shape-changing finding must name its channel, or implementers will improvise per-finding and existing projects will drift.
+- **Recommendation:** codify the channel mapping and the two rules: (1) **lazy backfill for P-01** — absent annotations degrade to sequential execution (today's exact behavior); completed features are never annotated retroactively, in-flight ones get annotated on next touch (same "no heuristic backfill" principle as the layout migration); (2) **version-gated migrations via E-03** — extend `louie-update-framework` step 6's detection list (architecture.md over threshold → offer split), add the architecture-split case to `louie-migrate`, add the `Depends on` column to `louie-doc`'s reconcile, and bootstrap `codebase-map.md` through step 5.
+- **Detail:** `efficiency.md` § E-05
+- **Touches:** `louie-update-framework.md` (steps 5–6), `louie-migrate.md`, `louie-doc.md` (reconcile), the P-01 spec (degradation rule), E-03 (version gating)

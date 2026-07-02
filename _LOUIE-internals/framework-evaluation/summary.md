@@ -22,9 +22,9 @@ One live bug was found in passing (all six `.sh` init scripts emit a malformed K
 | Tier | Parallelism | Scaling | Efficiency | Total |
 |------|:-:|:-:|:-:|:-:|
 | Critical | 1 | 2 | 1 | **4** |
-| Should Fix | 4 | 3 | 2 | **9** |
+| Should Fix | 4 | 3 | 3 | **10** |
 | Suggestion | 2 | 2 | 1 | **5** |
-| **Total** | **7** | **7** | **4** | **18** |
+| **Total** | **7** | **7** | **5** | **19** |
 
 "Critical" here means *structural gap that blocks the stated goals*, not "broken today."
 
@@ -50,6 +50,7 @@ One live bug was found in passing (all six `.sh` init scripts emit a malformed K
 | E-02 | Should Fix | Single-source generation / consistency lint for init scripts + command tables (live bug) | pending |
 | E-03 | Should Fix | Framework versioning: VERSION stamp, cut releases, update-framework delta | pending |
 | E-04 | Suggestion | Remove or justify the `model: sonnet` pin in agent frontmatter | pending |
+| E-05 | Should Fix | Downstream migration path for shape-changing findings (update channels + lazy backfill) | pending |
 
 Full detail: compact entries in `findings.md`; deep design per theme in `parallelism.md`, `scaling.md`, `efficiency.md`.
 
@@ -58,7 +59,7 @@ Full detail: compact entries in `findings.md`; deep design per theme in `paralle
 Dependencies between findings dictate an order that differs from pure tier order:
 
 1. **E-02** (consistency lint/generator) — fixes a live bug and makes every later change to 12 scripts + 5 tables safe.
-2. **E-03** (versioning) — cheap, and each subsequent finding lands as a versioned release.
+2. **E-03** (versioning) — cheap, and each subsequent finding lands as a versioned release. Prerequisite for E-05's version-gated migrations.
 3. **P-01** (work-package annotations) — pure template + agent-instruction change; the foundation everything parallel builds on. Ships value even with zero concurrency (better ordering, better `louie-continue` resume points).
 4. **E-01 + P-02** (subagent installation + capability convention) — the runtime layer. E-04 folds into this naturally.
 5. **P-03, P-06** (within-feature parallel run under auto-pilot) — first real concurrency.
@@ -66,6 +67,8 @@ Dependencies between findings dictate an order that differs from pure tier order
 7. **P-04** (across-feature) — builds on P-01+P-03 and S-03's overview changes.
 8. **S-03, S-04, S-07** — index scaling, chunked evaluate, status command.
 9. **P-05, P-07, S-06** — opportunistic.
+
+**E-05 (downstream migration path) is not a step of its own** — it's the rule that every shape-changing finding above (P-01, P-04, S-01, S-02, S-03) ships its migration hook in the same release: template/behavior changes via the `_LOUIE_/` replace, new outputs via the step-5 bootstrap, layout changes via step-6 → `louie-migrate`, index columns via `louie-doc` reconcile, and lazy backfill (never heuristic rewriting) for plan annotations. See `efficiency.md` § E-05 for the channel mapping.
 
 ## Status Lifecycle & How to Apply
 
@@ -78,3 +81,4 @@ When a finding is applied, move its design content into the appropriate permanen
 ## Run History
 
 - 2026-07-02: initial evaluation — 18 findings (4 Critical, 9 Should Fix, 5 Suggestions), all pending.
+- 2026-07-02: added E-05 (downstream migration path — propagation channels, lazy backfill, version gating) after maintainer discussion; now 19 findings (4 / 10 / 5).

@@ -1,4 +1,4 @@
-# Efficiency & Mechanics — Deep Design (E-01 … E-04)
+# Efficiency & Mechanics — Deep Design (E-01 … E-05)
 
 Framework-mechanics findings that don't belong to the parallelism or scaling themes but make everything else cheaper, safer, or faster.
 
@@ -99,6 +99,46 @@ All seven agents pin `model: sonnet`. Today it's inert (E-01); the moment agents
 2. **Staleness.** Model names age; a pinned name in seven files is a drift liability with no owner (E-03's release process is the natural review hook, but inheriting avoids the problem entirely).
 
 **Recommendation:** drop the `model:` key from all seven agents — subagents then inherit the session model, which matches user expectation. If cost-tiering is ever wanted, do it deliberately: document in `core.md` which stages tolerate a cheaper tier (mechanical apply-loops, maybe Ava's boilerplate) and which never should (Sophie, Max), and revisit each release. Land together with E-01 so the frontmatter is touched once.
+
+## E-05 — Downstream migration path for the shape-changing findings
+
+### The question this answers
+
+"If we change the framework per the scaling and parallelism findings, how do *existing* downstream projects' artifacts get updated — does `louie-update-framework` handle it?" Mostly yes — because the framework already has the right propagation channels. This finding pins each shape-changing finding to its channel so implementers don't improvise per-finding.
+
+### The four propagation channels (all existing)
+
+`louie-update-framework` deliberately never overwrites `_LOUIE-output/`. Changes reach downstream projects through:
+
+1. **Wholesale `_LOUIE_/` replace** — agents, commands, guidelines, templates. Behavior changes apply automatically on the next run.
+2. **Step-5 new-canonical-output bootstrap** — "offer to bootstrap, never silently create." Precedent: `runbook.md` retrofit.
+3. **Step-6 detect-and-offer-migration** — filesystem detection handing off to `louie-migrate`. Precedent: the flat→per-feature layout migration.
+4. **`louie-doc` reconcile pass** — self-heals mechanical index formats. Precedent: legacy three-table overview → single-table conversion.
+
+### Channel mapping
+
+| Finding | Channel | Existing-project impact |
+|---|---|---|
+| P-02, P-03, P-05, P-06, S-05 | 1 | None — behavior applies on next run |
+| E-01 (subagent install) | 1 (step 4 re-runs init scripts) | None |
+| P-01 (plan annotations) | 1 (template) + **lazy backfill rule** | Old docs stay unannotated; absent annotations = sequential |
+| P-04 (`Depends on` column) | 4 | One reconcile run adds the column |
+| S-02 (codebase map) | 2 | Bootstrap offered for large projects (Sophie generates) |
+| S-01 (architecture split), S-03 stage 3 | 3 — new detection case: `architecture.md` over threshold → offer split | Offered, user-gated, one-way |
+| S-04 (chunked evaluate + smart-merge) | 1 | Smart-merge protects existing `evaluation/` statuses on first rescan |
+
+### The two rules to codify
+
+1. **Lazy backfill for P-01 — never heuristic rewriting.** Completed features are never annotated retroactively (nothing will re-execute them); in-flight features get annotated the next time Nina or `louie-extend` touches them. A missing annotation degrades to sequential execution — today's exact behavior — so un-migrated docs are *safe*, not broken. This follows the layout migration's own precedent: no backfill of bugfixes from Change History, because "noisy data is worse than incomplete data." The degradation rule ("absent annotations = sequential, always") must be written into the P-01 spec itself, not just here.
+2. **Version-gated migrations via E-03.** Step 6's filesystem heuristics happened to work for the layout change but can't express "your feature docs predate the annotation format." With `_LOUIE_/VERSION` shipped, update-framework compares local vs. pulled version and knows exactly which migrations apply — another reason E-03 sits early in the application order, before any shape-changing finding lands.
+
+### Implementation checklist (small by design)
+
+- `louie-update-framework.md`: add the architecture-size case to step 6's detection list; add `codebase-map.md` to step 5's new-canonical-output check.
+- `louie-migrate.md`: add the architecture-split migration case (content moves, cross-reference rewrite per the existing migrate algorithm).
+- `louie-doc.md`: reconcile pass adds/repairs the `Depends on` column.
+- P-01 spec: the sequential-degradation rule.
+- Each shape-changing finding, when applied, ships its migration hook in the same release (E-03 version bump ties them together).
 
 ## Not Findings (checked and fine)
 
