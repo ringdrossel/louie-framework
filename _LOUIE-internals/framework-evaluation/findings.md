@@ -159,6 +159,7 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 - **Recommendation:** a framework-dev-only generator: `_LOUIE-internals/tools/` script that renders the init scripts' command tables + Key Files blocks and the doc command-tables from one manifest (or parses `_LOUIE_/commands/*.md` headers directly). Minimum viable alternative: a `check-consistency.sh` lint that diffs command lists across all 17 surfaces and validates referenced paths exist. Fix the merged-bullet bug either way (check `.bat` variants when fixing — the grep only confirmed `.sh`).
 - **Detail:** `efficiency.md` § E-02
 - **Touches:** new internals tool, all 12 init scripts (bug fix), `_LOUIE-internals/README.md` (authoring rule: run the lint before committing)
+- **Progress:** the live merged-bullet bug was fixed in all 12 scripts on 2026-07-02 (`.sh`: heredoc newline restored; `.bat`: glued `echo` split; stray blank line removed; `claude-init.sh` functionally verified). The finding stays `pending` for its core deliverable — the generator / consistency lint.
 
 ### E-03 — Framework versioning: VERSION stamp, cut releases, update-framework delta
 

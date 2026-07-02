@@ -82,3 +82,4 @@ When a finding is applied, move its design content into the appropriate permanen
 
 - 2026-07-02: initial evaluation — 18 findings (4 Critical, 9 Should Fix, 5 Suggestions), all pending.
 - 2026-07-02: added E-05 (downstream migration path — propagation channels, lazy backfill, version gating) after maintainer discussion; now 19 findings (4 / 10 / 5).
+- 2026-07-02: fixed E-02's live merged-bullet bug in all 12 init scripts (verified via test run of `claude-init.sh`). E-02 remains `pending` — the generator / consistency lint is still open.
