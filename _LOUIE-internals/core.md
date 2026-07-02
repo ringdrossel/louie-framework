@@ -132,6 +132,15 @@ Historical note: releases before 1.0.0 (2026-07-02) were tagged `v05.x` with no 
 
 Agents hand off by ending their response with a structured handoff block (see `_LOUIE_/workflow/agent-handoffs.md`). When adding a new agent, follow the same shape: a summary, what was produced, and the next agent to invoke.
 
+## Agents as Subagents
+
+Every `_LOUIE_/agents/*.md` file carries Claude Code subagent frontmatter (`name`, `description`, `tools`). `claude-init.sh/.bat` installs them to `.claude/agents/`, making them natively dispatchable; on every other runtime (and in manual mode everywhere) agents run via inline "read and follow" — the universal fallback. Which stage may run as a subagent is defined in `_LOUIE_/guidelines/execution-guidelines.md` (interactive stages never; work stages during unattended stretches).
+
+Frontmatter rules:
+
+- **No `model:` key — deliberate.** Subagents inherit the session model. A pinned model silently downgrades users running a stronger model on the most judgment-heavy stages (Sophie, Max), and a hardcoded model name ages with no owner. If cost-tiering is ever wanted, do it deliberately: document here which stages tolerate a cheaper tier, and revisit at every release cut.
+- **`tools:` reflects what the agent does when dispatched.** Nina and Ava have `Edit, Write, Bash` (they write code/tests and run commands). Tom, Sophie, Leo, Max, Ivy stay read-only: conversational stages run in the main loop anyway, and read-only subagents (Sophie's eval, Max's review) *return* their doc changes/verdicts for the orchestrator to apply — see the dispatch table in `execution-guidelines.md`.
+
 ## What To Read When
 
 | You're adding... | Read first |

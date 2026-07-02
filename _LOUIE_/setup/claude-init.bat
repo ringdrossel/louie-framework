@@ -9,6 +9,7 @@ echo.
 set "SCRIPT_DIR=%~dp0"
 set "LOUIE_DIR=%SCRIPT_DIR%..\.."
 set "COMMANDS_SRC=%SCRIPT_DIR%..\commands"
+set "AGENTS_SRC=%SCRIPT_DIR%..\agents"
 
 :: Create .claude\commands\ directory
 if not exist "%LOUIE_DIR%\.claude\commands" mkdir "%LOUIE_DIR%\.claude\commands"
@@ -20,6 +21,15 @@ for %%f in ("%COMMANDS_SRC%\louie-*.md") do (
     set /a count+=1
     echo   Installed /%%~nf
 )
+
+:: Install the LOUIE agents as native Claude Code subagents
+if not exist "%LOUIE_DIR%\.claude\agents" mkdir "%LOUIE_DIR%\.claude\agents"
+set agent_count=0
+for %%f in ("%AGENTS_SRC%\*.md") do (
+    copy /Y "%%f" "%LOUIE_DIR%\.claude\agents\" > nul
+    set /a agent_count+=1
+)
+echo   Installed !agent_count! agents to .claude\agents\ (Tom, Sophie, Leo, Nina, Max, Ava, Ivy)
 
 :: Create or update CLAUDE.md
 set "CLAUDE_MD=%LOUIE_DIR%\CLAUDE.md"
@@ -84,6 +94,7 @@ echo - `README.md` — framework overview ^(project root^)
 echo - `_LOUIE_/workflow/ai-workflow.md` — full workflow
 echo - `_LOUIE_/guidelines/coding-guidelines.md` — coding rules
 echo - `_LOUIE_/guidelines/interaction-guidelines.md` — how to ask the user to choose
+echo - `_LOUIE_/guidelines/execution-guidelines.md` — how work runs ^(sequential baseline, work packages, subagent dispatch^)
 echo - `_LOUIE_/agents/` — agent definitions
 echo - `_LOUIE-output/architecture.md` — system design
 echo - `_LOUIE-output/tech-stack.md` — build-time stack

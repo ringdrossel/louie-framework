@@ -4,6 +4,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 LOUIE_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 COMMANDS_SRC="$SCRIPT_DIR/../commands"
+AGENTS_SRC="$SCRIPT_DIR/../agents"
 
 echo "LOUIE — Claude Code Setup"
 echo "========================="
@@ -21,6 +22,17 @@ for cmd in "$COMMANDS_SRC"/louie-*.md; do
     echo "  Installed /$(basename "$cmd" .md)"
   fi
 done
+
+# Install the LOUIE agents as native Claude Code subagents
+mkdir -p "$LOUIE_DIR/.claude/agents"
+agent_count=0
+for agent in "$AGENTS_SRC"/*.md; do
+  if [ -f "$agent" ]; then
+    cp "$agent" "$LOUIE_DIR/.claude/agents/"
+    agent_count=$((agent_count + 1))
+  fi
+done
+echo "  Installed $agent_count agents to .claude/agents/ (Tom, Sophie, Leo, Nina, Max, Ava, Ivy)"
 
 # Create CLAUDE.md if it doesn't exist, or append LOUIE section
 CLAUDE_MD="$LOUIE_DIR/CLAUDE.md"
@@ -80,6 +92,7 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 - `_LOUIE_/workflow/ai-workflow.md` — full workflow
 - `_LOUIE_/guidelines/coding-guidelines.md` — coding rules
 - `_LOUIE_/guidelines/interaction-guidelines.md` — how to ask the user to choose
+- `_LOUIE_/guidelines/execution-guidelines.md` — how work runs (sequential baseline, work packages, subagent dispatch)
 - `_LOUIE_/agents/` — agent definitions
 - `_LOUIE-output/architecture.md` — system design
 - `_LOUIE-output/tech-stack.md` — build-time stack

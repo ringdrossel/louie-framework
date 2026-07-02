@@ -33,7 +33,7 @@ One live bug was found in passing (all six `.sh` init scripts emit a malformed K
 | ID | Tier | Title | Status |
 |----|------|-------|--------|
 | P-01 | Critical | Dependency + file-scope annotations on plan phases (work-package model) | applied |
-| P-02 | Should Fix | Runtime execution-capability convention (detect concurrency, degrade to sequential) | pending |
+| P-02 | Should Fix | Runtime execution-capability convention (detect concurrency, degrade to sequential) | applied |
 | P-03 | Should Fix | Within-feature parallel implementation (concurrent Nina work packages) | pending |
 | P-04 | Should Fix | Across-feature parallelism via a feature dependency graph | pending |
 | P-05 | Suggestion | Parallel read/analysis fan-out (batched context reads, fanned scans) | pending |
@@ -46,10 +46,10 @@ One live bug was found in passing (all six `.sh` init scripts emit a malformed K
 | S-05 | Should Fix | Context-read discipline for agents at scale | pending |
 | S-06 | Suggestion | Monorepo / multi-package story | pending |
 | S-07 | Suggestion | `louie-status` aggregation command (backlog promotion) | pending |
-| E-01 | Critical | Agents ship subagent frontmatter but are never installed or used as subagents | pending |
+| E-01 | Critical | Agents ship subagent frontmatter but are never installed or used as subagents | applied |
 | E-02 | Should Fix | Single-source generation / consistency lint for init scripts + command tables (live bug) | applied |
 | E-03 | Should Fix | Framework versioning: VERSION stamp, cut releases, update-framework delta | applied |
-| E-04 | Suggestion | Remove or justify the `model: sonnet` pin in agent frontmatter | pending |
+| E-04 | Suggestion | Remove or justify the `model: sonnet` pin in agent frontmatter | applied |
 | E-05 | Should Fix | Downstream migration path for shape-changing findings (update channels + lazy backfill) | pending |
 
 Full detail: compact entries in `findings.md`; deep design per theme in `parallelism.md`, `scaling.md`, `efficiency.md`.
@@ -86,3 +86,4 @@ When a finding is applied, move its design content into the appropriate permanen
 - 2026-07-02: **E-02 applied** — consistency lint shipped as `_LOUIE-internals/tools/check-consistency.sh` (command-set diff on listing lines across 16 surfaces, merged-bullet pattern, `_LOUIE_/` path existence, sh/bat pairing; all four checks mutation-tested). The lint chosen over the generator (per maintainer decision; generator parked in `BACKLOG.md`). It immediately caught more live drift, fixed in the same batch: `/louie-update-framework` missing from all 12 init-script tables, `louie-evaluate` + `louie-recipe` missing from `project-setup.md` Quick Reference. Run the lint before every commit (rule in `_LOUIE-internals/README.md`).
 - 2026-07-02: **E-03 applied** — `_LOUIE_/VERSION` created at `1.0.0` (semver adopted per maintainer decision; pre-existing `v05.x` tags remain history, play no role in gating). CHANGELOG cut into its first release section; `louie-update-framework` is version-aware (delta report from the pulled clone's changelog, version-gated migration rule, pre-VERSION fallback = old behavior); lint check 5 enforces bump discipline; release process documented in `core.md` § Versioning & Release Process. Tag `v1.0.0` on `main` when this merges.
 - 2026-07-02: **P-01 applied** — `[Depends: … | Files: …]` phase annotations landed as pure markdown convention: template (§ Implementation Plan, with the E-05 degradation rule written into the spec — absent annotations = sequential in written order, never retro-annotate), `louie-feature` step 6 authors them, Nina validates write scope before implementing (deviation → fix annotation / tripwire), `louie-extend` annotates only the phase it adds on legacy plans, `louie-continue` resumes at any unblocked phase, `agent-handoffs.md` documents the Nina/Max contract. No execution change yet — dispatch lands with P-02/P-03.
+- 2026-07-02: **E-01 + P-02 + E-04 applied** (the runtime layer, one batch). New `_LOUIE_/guidelines/execution-guidelines.md`: behavioral capability check, sequential baseline ("not a degraded mode"), hard rules (gates serialize / disjoint write scopes / integration alone / pause-don't-improvise / absent annotations = sequential), the stage dispatch table, and subagent seeding via the existing handoff artifacts. `claude-init.sh/.bat` now install `_LOUIE_/agents/*.md` to `.claude/agents/` (verified by temp-dir execution). Frontmatter pass: `model: sonnet` dropped from all seven agents (inherit session model; rationale + tiering policy in `core.md` § Agents as Subagents); Ava's `tools:` expanded to `Edit, Write, Bash` (she writes tests and runs suites); Sophie/Max stay read-only — their doc writes are applied by the orchestrator. Registered in Key Files of all 12 init scripts, root `CLAUDE.md`, `README.md`; Nina's Context list points at the guideline.

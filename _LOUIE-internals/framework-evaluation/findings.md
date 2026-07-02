@@ -20,12 +20,13 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### P-02 — Runtime execution-capability convention
 
-- **Tier:** Should Fix · **Status:** pending
+- **Tier:** Should Fix · **Status:** applied
 - **Gap:** LOUIE already has a platform-adaptive pattern for structured choices (`interaction-guidelines.md`: use the runtime's tool if present, degrade to a lettered list). There is no equivalent convention for *execution*: nothing tells an agent "if your runtime can dispatch subagents/background tasks, you may run independent work packages concurrently; otherwise run them sequentially in dependency order."
 - **Why it matters:** without a written convention, per-runtime behavior will be improvised and inconsistent — the exact drift the structured-choice guideline was created to prevent.
 - **Recommendation:** new `_LOUIE_/guidelines/execution-guidelines.md` (or a section in `interaction-guidelines.md`): capability detection per runtime, dispatch rules, the sequential fallback, and the hard rules (gates serialize; disjoint file sets; integration phases never parallel).
 - **Detail:** `parallelism.md` § Capability Detection and Degradation
 - **Touches:** new guideline file, `CLAUDE.md`/`README.md` key refs, init scripts (Key Files), agents' Context sections
+- **Progress:** applied 2026-07-02 as `_LOUIE_/guidelines/execution-guidelines.md` (new file chosen over an `interaction-guidelines.md` section — S-05's Context Discipline and P-06's gate composition will share it). Contains the E-01 dispatch table. Registered in all Key Files blocks + `CLAUDE.md`/`README.md`; Context pointer added to Nina only for now (the all-agents Context touch ships with P-05/S-05).
 
 ### P-03 — Within-feature parallel implementation
 
@@ -145,12 +146,13 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### E-01 — Agents ship subagent frontmatter but are never installed or used as subagents
 
-- **Tier:** Critical · **Status:** pending
+- **Tier:** Critical · **Status:** applied
 - **Gap:** every agent file carries Claude Code subagent frontmatter (`name: nina-the-coder`, `tools: …`, `model: sonnet`), but `claude-init.sh` only installs commands to `.claude/commands/` — agents are read inline ("read and follow `coder.md`"), so the entire chain runs in one ever-growing main context.
 - **Why it matters:** double loss today. (1) *Context:* by the time Ava runs, the main session carries Tom's interview + Sophie's eval + Nina's whole implementation trail — the top scaling constraint in practice. Subagents give each stage a fresh context seeded by exactly the artifacts LOUIE already produces (the handoff-file design is *already* subagent-shaped). (2) *Capability:* subagent installation is the mechanical prerequisite for every parallel finding (P-03/P-04/P-07).
 - **Recommendation:** `claude-init.sh/.bat` additionally copies `_LOUIE_/agents/*.md` to `.claude/agents/`. Dispatch rule (in the P-02 guideline): interactive stages (Tom's interview; Sophie's/Leo's proposal gates in manual mode) stay in the main loop; work stages (Nina, Max, Ava — and Sophie/Leo in auto-pilot no-change/minimal mode) run as subagents during unattended stretches. Inline read-and-follow remains the universal fallback and the manual-mode default, so nothing changes on other runtimes.
 - **Detail:** `efficiency.md` § E-01 (and `parallelism.md` § Runtime Layer)
 - **Touches:** `claude-init.sh/.bat`, `louie-update-framework.md` (step 4), execution guideline, agent frontmatter review (E-04)
+- **Progress:** applied 2026-07-02. `claude-init.sh/.bat` install `_LOUIE_/agents/*.md` → `.claude/agents/` (idempotent; step-4 re-run refreshes automatically; temp-dir verified). Frontmatter review done: Ava gains `Edit, Write, Bash`; Max stays read-only with the orchestrating command owning the fix loop (the design's recommended option); Sophie stays read-only (eval-mode subagent returns changes, orchestrator applies — the flagged watch item, resolved in the dispatch table). Dispatch rules live in `execution-guidelines.md`.
 
 ### E-02 — Single-source generation / consistency lint for init scripts + command tables (live bug)
 
@@ -174,12 +176,13 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### E-04 — Remove or justify the `model: sonnet` pin in agent frontmatter
 
-- **Tier:** Suggestion · **Status:** pending
+- **Tier:** Suggestion · **Status:** applied
 - **Gap:** all seven agents pin `model: sonnet`. Today it's dead metadata (E-01); the moment agents install as subagents it becomes live — and silently downgrades users running stronger session models, while hardcoding a model name that will age.
 - **Why it matters:** a user on a top-tier model would get sonnet-quality architecture decisions from Sophie without ever being told.
 - **Recommendation:** default to *inherit* (drop the `model:` key). If tiering is wanted, do it deliberately and document it in `core.md` (e.g. keep a cheaper tier for mechanical stages only), and revisit on every framework release (E-03 gives the hook).
 - **Detail:** `efficiency.md` § E-04
 - **Touches:** all seven `_LOUIE_/agents/*.md` frontmatter, `core.md` internals
+- **Progress:** applied 2026-07-02 with E-01 (frontmatter touched once, per the design). `model:` key dropped from all seven agents — inherit the session model; the deliberate-tiering escape hatch and per-release review hook are documented in `core.md` § Agents as Subagents.
 
 ### E-05 — Downstream migration path: propagate shape-changing findings through the existing update channels
 

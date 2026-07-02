@@ -38,7 +38,7 @@ When the user says **`louie-update-framework`**, follow this procedure to update
    - Update `CLAUDE.md` at project root (replace the LOUIE-FRAMEWORK section, preserve any user-added sections)
 
 4. **Re-run the appropriate init script(s)** — each is idempotent (skips the context-file section if the LOUIE marker is present; always overwrites the installed slash-command / skill / prompt-template files so they pick up framework updates). Run every script whose integration the project uses (multiple may apply):
-   - Claude Code → `bash _LOUIE_/setup/claude-init.sh` — refreshes `.claude/commands/louie-*.md`
+   - Claude Code → `bash _LOUIE_/setup/claude-init.sh` — refreshes `.claude/commands/louie-*.md` and the subagent definitions in `.claude/agents/`
    - opencode → `bash _LOUIE_/setup/opencode-init.sh` — refreshes `.opencode/command/louie-*.md`
    - Codex CLI → `bash _LOUIE_/setup/codex-init.sh` — refreshes `.codex/skills/louie-*/SKILL.md`
    - Pi Coding Agent → `bash _LOUIE_/setup/pi-init.sh` — refreshes `.pi/prompts/louie-*.md`

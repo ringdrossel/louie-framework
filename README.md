@@ -200,6 +200,7 @@ This layout scales — projects with hundreds of features and thousands of bug f
 | [`_LOUIE_/workflow/agent-handoffs.md`](_LOUIE_/workflow/agent-handoffs.md) | How agents pass work to each other |
 | [`_LOUIE_/guidelines/coding-guidelines.md`](_LOUIE_/guidelines/coding-guidelines.md) | Language-agnostic clean code rules |
 | [`_LOUIE_/guidelines/interaction-guidelines.md`](_LOUIE_/guidelines/interaction-guidelines.md) | How agents ask the user to choose (structured choice, lettered fallback) |
+| [`_LOUIE_/guidelines/execution-guidelines.md`](_LOUIE_/guidelines/execution-guidelines.md) | How work runs — sequential baseline, work packages, subagent dispatch on capable runtimes |
 | [`_LOUIE_/setup/project-setup.md`](_LOUIE_/setup/project-setup.md) | How to deploy LOUIE into a project |
 
 ## Design Principles

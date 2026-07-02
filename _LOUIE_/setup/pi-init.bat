@@ -82,6 +82,7 @@ echo - `README.md` — framework overview ^(project root^)
 echo - `_LOUIE_/workflow/ai-workflow.md` — full workflow
 echo - `_LOUIE_/guidelines/coding-guidelines.md` — coding rules
 echo - `_LOUIE_/guidelines/interaction-guidelines.md` — how to ask the user to choose
+echo - `_LOUIE_/guidelines/execution-guidelines.md` — how work runs ^(sequential baseline, work packages, subagent dispatch^)
 echo - `_LOUIE_/agents/` — agent definitions
 echo - `_LOUIE-output/architecture.md` — system design
 echo - `_LOUIE-output/tech-stack.md` — build-time stack

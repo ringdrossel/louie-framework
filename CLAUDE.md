@@ -47,6 +47,7 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 - `_LOUIE_/workflow/ai-workflow.md` — full workflow with scenarios
 - `_LOUIE_/guidelines/coding-guidelines.md` — coding rules all agents follow
 - `_LOUIE_/guidelines/interaction-guidelines.md` — how to ask the user to choose (structured choice / lettered fallback)
+- `_LOUIE_/guidelines/execution-guidelines.md` — how work runs (sequential baseline, work packages, subagent dispatch on capable runtimes)
 - `_LOUIE_/agents/` — agent definitions (read when invoking an agent)
 - `_LOUIE-output/` — agent-produced artifacts (requirements, architecture, tech stack, runbook, feature docs)
 
