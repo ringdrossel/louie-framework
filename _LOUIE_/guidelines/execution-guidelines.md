@@ -58,6 +58,17 @@ At the implementation step of `louie-feature` / `louie-extend`, on a capable run
 
 **Failure handling:** a package that errors or returns incomplete does not poison its siblings — they were independent by construction. Let the in-flight set drain, then surface the failure; the fix round (or tripwire pause) happens sequentially. The two-attempt rule (`coder.md` § Step 1b) applies per package.
 
+### Across-feature parallel runs
+
+When a scope split (Tom's Scope Split Gate) produced several features, the same machinery applies one level up — the unit is a **feature chain segment** (Sophie eval → feature doc → Nina package run → Max → Ava) instead of a single phase.
+
+- **The dependency graph is the data.** Tom records inter-feature edges at the split; they live in each `feature.md` Metadata `Dependencies:` and the overview's `Depends on` column. A feature is *ready* when its dependencies are `Tested`/`Implemented` or it has none.
+- **Batch agreement, then dispatch.** The plan-agreement gate can approve the whole batch in one sitting (Tom plays back the split; the user approves or trims). Under auto-pilot that approval starts the batch run; without it, features run one at a time exactly as today.
+- **Dispatch ready features concurrently**, each as its own chain segment (the P-03 within-feature loop nests inside each). Cross-feature disjointness is checked from each feature's **aggregate `Files:` scope** — overlap (usually shared wiring) serializes those two features; that's expected, not a failure.
+- **Cap concurrent feature chains low (3–4).** The limit isn't the runtime — it's reviewability: the user still reads every pre-merge summary. One summary per feature, presented as each chain finishes (batch-style at the end for whatever finished together).
+- **Branch/merge:** under `current` branch mode all features land on the current branch and the orchestrator owns commit ordering. Under `ask`-mode-with-branches, one branch per feature and **sequential merges** at the end — merge stays a per-feature user gate (Critical Rule #3), never parallel.
+- **Sequential fallback:** a dependency-ordered queue — build the ready features in order, one at a time. Exactly today's behavior; no feature waits on an unrelated one.
+
 ## Gate Composition
 
 Parallelism and gates compose by **containment**: concurrency lives strictly inside the unattended stretches auto-pilot already defines. This adds no new mode and no new setting — parallel execution is an execution strategy inside existing modes. (If it ever needs a kill switch, a `parallel: on/off` line under the runbook's `## Auto-Pilot` is the natural slot — deliberately deferred until someone actually asks.)

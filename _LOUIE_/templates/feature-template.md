@@ -17,7 +17,7 @@
 
 - **Type:** API / Client / Integration
 - **Priority:** High / Medium / Low
-- **Dependencies:** [other features or "None"]
+- **Dependencies:** [other feature slugs this one must be built after, or "None". Load-bearing — Tom sets it at a scope split; it mirrors the overview's `Depends on` column and drives across-feature run ordering (`_LOUIE_/guidelines/execution-guidelines.md` § Across-feature parallel runs). Real build-order needs only, not "both touch auth".]
 - **Affected Entities:** [from architecture diagram]
 - **Created:** YYYY-MM-DD
 - **Last Updated:** YYYY-MM-DD

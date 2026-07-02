@@ -33,6 +33,7 @@ When the user says **`louie-doc`**, follow this procedure to update project docu
 4a. **Reconcile the overview Status column (drift-healing pass):**
    - The `Status` column in `_LOUIE-output/implementations/overview.md` mirrors each feature's own `feature.md` checkboxes — those checkboxes are the source of truth. Drift happens when a chain step was skipped.
    - For every row in the Features table, read the linked `implementations/<feature>/feature.md`, take the highest ticked checkbox (`Planned` < `In Development` < `Implemented` < `Tested`), and set the row's `Status` to match. Report any rows you corrected.
+   - **`Depends on` column:** if the Features table predates the column (legacy overview), add it — populate each row from that feature's `feature.md` Metadata `Dependencies:` (feature slugs, or `—` for none). Where present, reconcile it back to the `feature.md` truth. This is the P-04 shape migration: one reconcile run brings an existing overview up to the current layout.
    - **Legacy layout:** if the overview still uses the old three-table layout (`### Implemented` / `### In Development` / `### Planned`), convert it to the single **Features** table with a `Status` column as part of this pass — derive each row's Status from which table it was in (and refine from `feature.md`).
    - Update the `Last Updated:` line.
 

@@ -82,7 +82,7 @@ After it completes, the project is indistinguishable from one that went through 
 9. **Produce overview:**
    - Create or update `_LOUIE-output/implementations/overview.md` from the existing skeleton.
    - Fill Project Context (name, goal, status) from Tom's answers and v1 docs (if any).
-   - List every discovered feature in the **Features** table with a one-line description and a link to `implementations/<feature>/feature.md`. Set each row's `Status` to `Tested` if test files exist for that feature, otherwise `Implemented` (trust-as-truth — the running code is the source of authority). Match the `feature.md` checkboxes you ticked in Step 8.
+   - List every discovered feature in the **Features** table with a one-line description and a link to `implementations/<feature>/feature.md`. Set each row's `Status` to `Tested` if test files exist for that feature, otherwise `Implemented` (trust-as-truth — the running code is the source of authority). Match the `feature.md` checkboxes you ticked in Step 8. Fill the `Depends on` column from any inter-feature dependencies visible in the code (imports/calls between feature modules); use `—` when none is evident — don't over-infer.
 
 10. **Bootstrap the bugfix index:**
     - Create `_LOUIE-output/bugfixes/overview.md` from `_LOUIE_/templates/bugfixes-overview-template.md` if it doesn't exist. Leave the tables empty — there are no recorded fixes yet (we don't backfill from existing source).

@@ -103,6 +103,8 @@ Before Playback, decide whether the scope you've captured is **one feature or se
 2. If you end up with **one cluster** → proceed to Step 4b with a single feature.
 3. If you end up with **two or more clusters** → propose a split. Each cluster becomes its own feature folder under `_LOUIE-output/implementations/<feature>/` with its own `requirements.md`.
 
+**Record the dependency edges between the clusters.** The clustering already tells you which features need which — state it explicitly ("`shelf-ui` needs `books-core`; `auth` is independent"). This costs nothing extra and becomes load-bearing data: it goes in each `requirements.md` handoff, the split playback the user approves, each `feature.md` Metadata `Dependencies:` field, and the `Depends on` column of the overview. Independent features can later be built concurrently; dependent ones are ordered (see `_LOUIE_/guidelines/execution-guidelines.md` § Across-feature parallel runs). Keep edges to real build-order needs — "both touch auth" is not a dependency unless one genuinely can't be built until the other exists.
+
 **Present the proposed split to the user like this:**
 
 > "Before I write this up — this scope spans several capabilities, so I'd like to split it into separate feature folders rather than one giant document. Proposed split:
@@ -161,7 +163,7 @@ Rules for the document:
 
 Update `_LOUIE-output/implementations/overview.md`:
 - Fill in the **Project Context** section (name, goal, status) if this is the first feature
-- Add **every** feature you produced a `requirements.md` for in this session to the **Features** table with `Status: Planned`, in implementation order. Each row carries its Status (`Planned`), priority, a one-line description, and a Document column link to `implementations/<feature>/feature.md` (the implementation doc Nina will produce; the link is added now even though the file doesn't exist yet). `louie-feature` advances the Status column as each feature is built — you only set the initial `Planned`.
+- Add **every** feature you produced a `requirements.md` for in this session to the **Features** table with `Status: Planned`, in implementation order. Each row carries its Status (`Planned`), priority, the **Depends on** column (the dependency edges you recorded at Step 4a — other feature slugs, or `—` for none), a one-line description, and a Document column link to `implementations/<feature>/feature.md` (the implementation doc Nina will produce; the link is added now even though the file doesn't exist yet). `louie-feature` advances the Status column as each feature is built — you only set the initial `Planned`.
 
 ### Step 5c: Review-Mode Question (setup and import only)
 

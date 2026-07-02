@@ -22,7 +22,7 @@ It does **not** read or recover past chat transcripts — a LOUIE command can't 
 3. **Pick the target:**
    - **None:** report there's nothing obviously in progress. Show the most recent activity (latest `Change History` line across features, last commit) and offer to start something (`louie-feature` / `louie-bugfix`). Stop.
    - **One:** use it.
-   - **Several:** present a **structured choice** — use your runtime's structured-choice tool if it has one, otherwise a lettered list (see `_LOUIE_/guidelines/interaction-guidelines.md`). One option per candidate, each labelled with a one-line "where it stands."
+   - **Several:** present a **structured choice** — use your runtime's structured-choice tool if it has one, otherwise a lettered list (see `_LOUIE_/guidelines/interaction-guidelines.md`). One option per candidate, each labelled with a one-line "where it stands." **If several `In Development` features share a dependency graph** (the overview's `Depends on` column links them and they were approved together as a batch — see `louie-feature` § Batch Mode), offer a **"resume the batch"** option that continues all of them in dependency order, alongside the per-feature options.
    - If the user passed `louie-continue <feature>`, skip straight to that target.
 
 4. **Reconstruct the state** for the chosen target (read-only):

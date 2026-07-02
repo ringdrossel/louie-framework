@@ -25,7 +25,8 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
 4. **Invoke Tom (Analyst):**
    - **Shortcut:** if a `requirements.md` for this feature already exists (typically because `louie-setup` captured it in the initial split), skip Tom entirely. Re-read it and confirm with the user that it's still accurate — this is a content-carrying gate: first present a compact digest of the requirements **in chat as a normal message** and end the turn; ask for confirmation only in the next response, skipping the dialog if the user's reply already decides (two-turn gate — see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second). Never ask "still accurate?" about a document the user hasn't just seen. Then go to Step 5.
    - Otherwise: read and follow `_LOUIE_/agents/analyst.md`.
-   - Tom interviews the user, then runs the **Scope Split Gate** (analyst.md § Step 4a). If the request actually covers multiple capabilities (e.g. "add login + profile editing + admin panel"), Tom splits it into multiple feature folders, each with its own `requirements.md`. From this command's perspective, the rest of the procedure then runs once **per approved feature** — confirm with the user which one to take through Steps 5–11 first; the others stay as `requirements.md`-only until the user runs `louie-feature` for them.
+   - Tom interviews the user, then runs the **Scope Split Gate** (analyst.md § Step 4a). If the request actually covers multiple capabilities (e.g. "add login + profile editing + admin panel"), Tom splits it into multiple feature folders, each with its own `requirements.md` and its inter-feature dependency edges (recorded in the `Depends on` column + each `feature.md` Metadata `Dependencies:`).
+   - **Which features to build now:** by default, confirm which single feature to take through Steps 5–12 first; the others stay `requirements.md`-only until the user runs `louie-feature` for them (today's behavior). **Batch option:** the user may approve the whole split to build in one run — see `## Batch Mode` below. On a capable runtime under auto-pilot, independent features then run concurrently; otherwise they run as a dependency-ordered queue.
    - Tom creates each feature folder `_LOUIE-output/implementations/<feature-name>/` and writes its `requirements.md`.
 
 5. **Invoke Sophie (Architect) — evaluation:**
@@ -75,6 +76,16 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
 13. **Sync overview + roadmap status:**
     - **Overview:** set the feature's row in `_LOUIE-output/implementations/overview.md` to `Status: Tested` if Ava wrote tests and they pass, otherwise `Status: Implemented`. This must match the `feature.md` checkboxes Nina/Ava ticked — they are the source of truth; the overview Status mirrors them. Update the `Last Updated:` line.
     - **Roadmap (only if this feature came from a roadmap entry):** if this run was seeded `--from-roadmap <id>`, the epic may now be complete — but an epic can span several features. **Ask, don't assume** — present as a structured choice (structured-choice tool if available, else a lettered list; see `_LOUIE_/guidelines/interaction-guidelines.md`): "This feature is done. Is the roadmap epic `<id>` complete?" Options: "Complete — mark it Done" / "More features to come — keep it In Progress". On "complete," run `louie-roadmap-change <id> status Done`; otherwise leave it `In Progress`. Skip this bullet for features not linked to a roadmap entry.
+
+## Batch Mode
+
+When Tom's Scope Split produced several features, the user can approve the whole set to build in one run instead of re-invoking `louie-feature` per feature. Trigger: the user says so at the split (or passes `louie-feature --batch`).
+
+- **Agreement:** the split playback *is* the batch plan-agreement gate — the user approves (or trims) the set in one sitting. Under auto-pilot that approval starts the run; in manual mode each feature's own gates still apply as its chain reaches them.
+- **Ordering:** build features whose dependencies (`Depends on` column) are satisfied first. On a capable runtime under auto-pilot, independent features run **concurrently** as separate chain segments (Sophie → feature doc → Nina → Max → Ava each), per `_LOUIE_/guidelines/execution-guidelines.md` § Across-feature parallel runs; cap 3–4 in flight. Otherwise, a dependency-ordered queue — one feature at a time.
+- **Per-feature Steps 5–13** run for each feature exactly as written (including the within-feature package loop at Step 10). Overview Status advances per feature.
+- **Summaries:** one pre-merge summary per feature as its chain finishes (batch-grouped for whatever finished together). Merge stays a per-feature user gate (Critical Rule #3), never parallel — under `ask` branch mode, one branch per feature with sequential merges.
+- **Sequential-runtime / manual fallback:** the dependency-ordered queue is the baseline; no feature blocks on an unrelated one, and nothing runs unattended that wouldn't under a single-feature run.
 
 ## Auto-Pilot
 
@@ -127,4 +138,10 @@ or seeded from a roadmap entry:
 
 ```
 louie-feature --from-roadmap R-007
+```
+
+or building a whole scope split in one run (see `## Batch Mode`):
+
+```
+louie-feature --batch
 ```

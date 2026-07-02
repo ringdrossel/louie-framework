@@ -40,12 +40,13 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### P-04 — Across-feature parallelism via a feature dependency graph
 
-- **Tier:** Should Fix · **Status:** pending
+- **Tier:** Should Fix · **Status:** applied
 - **Gap:** Tom's Scope Split Gate already produces multiple features per request, but they're then built one at a time; `louie-feature` runs "once per approved feature." No artifact records inter-feature dependencies (the `Dependencies:` field exists in `feature.md` Metadata but is free-text and unused by any flow).
 - **Why it matters:** granularity (b). After a split like `auth` / `books-core` / `shelf-ui`, independent features could proceed concurrently in one session instead of serially over days.
 - **Recommendation:** Tom records dependencies at the split (they fall out of the clustering he already does); `overview.md` Features table gains a `Depends on` column; a batch mode (`louie-feature --batch` or the split-gate offering it) approves N plans at the agreement gate, then runs independent feature chains concurrently as subagent pipelines, dependency-ordered where not. Sequential fallback: dependency-ordered queue.
 - **Detail:** `parallelism.md` § Across-Feature Parallel Runs
 - **Touches:** `analyst.md` (Step 4a), `overview.md` scaffold + `feature-template.md` Metadata, `louie-feature.md`, `louie-continue.md` (multiple in-flight), branch-mode interaction
+- **Progress:** applied 2026-07-02. Dependency capture in `analyst.md` 4a/5b; `Depends on` column added to overview scaffold + written by setup/import/Tom; `feature.md` Metadata `Dependencies:` made load-bearing; `louie-feature` § Batch Mode + `--batch`; dispatch rules in `execution-guidelines.md` § Across-feature parallel runs (cap 3–4, aggregate-`Files:` disjointness, sequential merges under `ask` branch mode); `louie-continue` batch resume; E-05 hook = `louie-doc` reconcile column (channel 4).
 
 ### P-05 — Parallel read/analysis fan-out
 

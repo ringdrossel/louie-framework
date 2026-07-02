@@ -23,7 +23,7 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
    - Read and follow `_LOUIE_/agents/analyst.md`
    - Tom interviews the user, then runs the **Scope Split Gate** (analyst.md § Step 4a). For a project-from-scratch this almost always produces multiple features (e.g. `auth`, `books-core`, `shelf-ui`, `csv-import`, …) — not one giant `mvp` folder.
    - For **each** approved feature, Tom creates `_LOUIE-output/implementations/<feature-name>/` and writes its own `requirements.md` using `_LOUIE_/templates/requirements-template.md`.
-   - Tom also updates `_LOUIE-output/implementations/overview.md` with the project context (name, goal, status) and adds **every** new feature to the Features table with `Status: Planned`, in implementation order — Document column links to `implementations/<feature-name>/feature.md`.
+   - Tom also updates `_LOUIE-output/implementations/overview.md` with the project context (name, goal, status) and adds **every** new feature to the Features table with `Status: Planned`, in implementation order — the `Depends on` column carries the inter-feature edges from the scope split (feature slugs, or `—`), and the Document column links to `implementations/<feature-name>/feature.md`.
 
 5. **Invoke Sophie (Architect):**
    - Read and follow `_LOUIE_/agents/architect.md`
