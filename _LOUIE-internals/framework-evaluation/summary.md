@@ -47,7 +47,7 @@ One live bug was found in passing (all six `.sh` init scripts emit a malformed K
 | S-06 | Suggestion | Monorepo / multi-package story | pending |
 | S-07 | Suggestion | `louie-status` aggregation command (backlog promotion) | pending |
 | E-01 | Critical | Agents ship subagent frontmatter but are never installed or used as subagents | pending |
-| E-02 | Should Fix | Single-source generation / consistency lint for init scripts + command tables (live bug) | pending |
+| E-02 | Should Fix | Single-source generation / consistency lint for init scripts + command tables (live bug) | applied |
 | E-03 | Should Fix | Framework versioning: VERSION stamp, cut releases, update-framework delta | pending |
 | E-04 | Suggestion | Remove or justify the `model: sonnet` pin in agent frontmatter | pending |
 | E-05 | Should Fix | Downstream migration path for shape-changing findings (update channels + lazy backfill) | pending |
@@ -83,3 +83,4 @@ When a finding is applied, move its design content into the appropriate permanen
 - 2026-07-02: initial evaluation — 18 findings (4 Critical, 9 Should Fix, 5 Suggestions), all pending.
 - 2026-07-02: added E-05 (downstream migration path — propagation channels, lazy backfill, version gating) after maintainer discussion; now 19 findings (4 / 10 / 5).
 - 2026-07-02: fixed E-02's live merged-bullet bug in all 12 init scripts (verified via test run of `claude-init.sh`). E-02 remains `pending` — the generator / consistency lint is still open.
+- 2026-07-02: **E-02 applied** — consistency lint shipped as `_LOUIE-internals/tools/check-consistency.sh` (command-set diff on listing lines across 16 surfaces, merged-bullet pattern, `_LOUIE_/` path existence, sh/bat pairing; all four checks mutation-tested). The lint chosen over the generator (per maintainer decision; generator parked in `BACKLOG.md`). It immediately caught more live drift, fixed in the same batch: `/louie-update-framework` missing from all 12 init-script tables, `louie-evaluate` + `louie-recipe` missing from `project-setup.md` Quick Reference. Run the lint before every commit (rule in `_LOUIE-internals/README.md`).

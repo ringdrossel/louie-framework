@@ -153,13 +153,13 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### E-02 — Single-source generation / consistency lint for init scripts + command tables (live bug)
 
-- **Tier:** Should Fix · **Status:** pending
+- **Tier:** Should Fix · **Status:** applied
 - **Gap:** every command addition hand-edits ~17 surfaces (6 `.sh` + 6 `.bat` init scripts, plus command tables in `CLAUDE.md`, `README.md`, `ai-workflow.md`, `project-setup.md`, root `CLAUDE.md`). The changelog already records one drift bug (swallowed newline from the `louie-continue` rollout); a **second live instance exists right now**: all six `.sh` scripts emit a malformed Key Files bullet — `…how to ask the user to choose- `_LOUIE_/agents/` — agent definitions` (two bullets merged, plus a stray blank line above; e.g. `claude-init.sh:82`).
 - **Why it matters:** O(commands × surfaces) hand-editing is the framework's top maintenance tax and its most reliable bug generator; every finding in this evaluation that adds a command pays it again.
 - **Recommendation:** a framework-dev-only generator: `_LOUIE-internals/tools/` script that renders the init scripts' command tables + Key Files blocks and the doc command-tables from one manifest (or parses `_LOUIE_/commands/*.md` headers directly). Minimum viable alternative: a `check-consistency.sh` lint that diffs command lists across all 17 surfaces and validates referenced paths exist. Fix the merged-bullet bug either way (check `.bat` variants when fixing — the grep only confirmed `.sh`).
 - **Detail:** `efficiency.md` § E-02
 - **Touches:** new internals tool, all 12 init scripts (bug fix), `_LOUIE-internals/README.md` (authoring rule: run the lint before committing)
-- **Progress:** the live merged-bullet bug was fixed in all 12 scripts on 2026-07-02 (`.sh`: heredoc newline restored; `.bat`: glued `echo` split; stray blank line removed; `claude-init.sh` functionally verified). The finding stays `pending` for its core deliverable — the generator / consistency lint.
+- **Progress:** the live merged-bullet bug was fixed in all 12 scripts on 2026-07-02 (`.sh`: heredoc newline restored; `.bat`: glued `echo` split; stray blank line removed; `claude-init.sh` functionally verified). **Applied 2026-07-02:** consistency lint shipped (`_LOUIE-internals/tools/check-consistency.sh` — see `tools/README.md`); maintainer chose the lint over the generator (generator parked in `BACKLOG.md`). The lint's first run caught further live drift, fixed in the same batch: `/louie-update-framework` absent from all 12 embedded command tables, `louie-evaluate`/`louie-recipe` absent from `project-setup.md` Quick Reference.
 
 ### E-03 — Framework versioning: VERSION stamp, cut releases, update-framework delta
 

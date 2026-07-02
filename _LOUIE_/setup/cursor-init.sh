@@ -47,6 +47,7 @@ Available commands:
 - `louie-roadmap` → `_LOUIE_/commands/louie-roadmap.md`
 - `louie-roadmap-change` → `_LOUIE_/commands/louie-roadmap-change.md`
 - `louie-recipe` → `_LOUIE_/commands/louie-recipe.md`
+- `louie-update-framework` → `_LOUIE_/commands/louie-update-framework.md`
 - `louie-from-source` → `_LOUIE_/commands/louie-from-source.md`
 
 ### Critical Rules

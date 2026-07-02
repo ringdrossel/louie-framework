@@ -64,6 +64,7 @@ echo ^| `/louie-ideate` ^| Brainstorm ideas with Ivy ^|
 echo ^| `/louie-roadmap` ^| Capture bigger changes (epics) in `_LOUIE-output/roadmap.md` ^|
 echo ^| `/louie-roadmap-change` ^| Change a roadmap entry ^(status / notes / effort; defer / drop^) ^|
 echo ^| `/louie-recipe` ^| Browse or load a reusable recipe ^|
+echo ^| `/louie-update-framework` ^| Update LOUIE to the latest version ^|
 echo ^| `/louie-from-source` ^| Fetch a task from a source adapter and route it ^|
 echo.
 echo Prompt-template files are kept in sync with `_LOUIE_/commands/` by running the pi-init script ^(also re-run by `louie-update-framework`^).

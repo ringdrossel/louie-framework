@@ -29,10 +29,12 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 | `BACKLOG.md` | Open ideas, gaps, and feature suggestions for the framework |
 | `CHANGELOG.md` | Framework version log |
 | `framework-evaluation/` | Evaluate-style self-assessment of the framework — persistent findings (parallelism, scaling, efficiency) with statuses; start at `framework-evaluation/summary.md` |
+| `tools/` | Framework-dev tooling — `check-consistency.sh` lint; see `tools/README.md` |
 
 ## When to Read What
 
-- **Adding a `louie-*` command** → `core.md` (naming, lazy-loading)
+- **Adding a `louie-*` command** → `core.md` (naming, lazy-loading), then register it on every surface and let `tools/check-consistency.sh` verify
+- **Touching init scripts, command tables, or Key Files blocks** → `tools/README.md` (the lint covers these surfaces)
 - **Adding an agent** → `core.md` (handoff conventions)
 - **Adding a recipe or changing the recipe system** → `recipes.md`
 - **Changing `louie-evaluate` or its output schema** → `evaluate.md`
@@ -40,6 +42,7 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 
 ## Authoring Rules For This Folder
 
+- **Run `bash _LOUIE-internals/tools/check-consistency.sh` before every commit** that touches `_LOUIE_/`, root `CLAUDE.md`, or `README.md`. It catches command-table drift, merged bullets, dead path references, and sh/bat divergence.
 - Write for AI readers. Be precise about paths, names, and mechanics.
 - Keep each file focused on one topic. Split rather than append when a file grows past ~200 lines.
 - When a design decision is made, record the *why*, not just the *what* — future sessions need the reasoning to extend correctly.

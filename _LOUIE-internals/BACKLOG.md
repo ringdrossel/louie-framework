@@ -8,6 +8,10 @@ Format: short title + the gap + why it matters + tradeoff or open design questio
 
 ## Open
 
+### Init-script generator (E-02 level 2)
+
+The E-02 consistency lint (`_LOUIE-internals/tools/check-consistency.sh`) catches command-table drift across the ~16 registration surfaces, but adding a command still means hand-editing all of them. The full fix sketched in `framework-evaluation/efficiency.md` § E-02 is a generator that renders the 12 init scripts from per-tool templates plus one manifest (or parses `_LOUIE_/commands/*.md` headers directly), making the scripts build artifacts. Deferred because the scripts carry real per-tool differences (codex skill frontmatter, opencode command dir, adapter reporting) — the templates would inherit that complexity, and a generator bug corrupts 12 files at once. Revisit if the per-command editing tax keeps hurting despite the lint.
+
 ### Recipe library expansion
 
 The `louie-recipe` dispatcher is in place but only `admin:settings` ships. The system's value scales with catalogue size. Candidate next recipes (rough priority order):

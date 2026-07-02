@@ -52,6 +52,7 @@ echo - `louie-ideate` → `_LOUIE_/commands/louie-ideate.md`
 echo - `louie-roadmap` → `_LOUIE_/commands/louie-roadmap.md`
 echo - `louie-roadmap-change` → `_LOUIE_/commands/louie-roadmap-change.md`
 echo - `louie-recipe` → `_LOUIE_/commands/louie-recipe.md`
+echo - `louie-update-framework` → `_LOUIE_/commands/louie-update-framework.md`
 echo - `louie-from-source` → `_LOUIE_/commands/louie-from-source.md`
 echo.
 echo ### Critical Rules

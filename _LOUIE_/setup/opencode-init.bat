@@ -65,6 +65,7 @@ echo ^| `/louie-ideate` ^| Brainstorm ideas with Ivy ^|
 echo ^| `/louie-roadmap` ^| Capture bigger changes (epics) in `_LOUIE-output/roadmap.md`; promote one to a full feature ^|
 echo ^| `/louie-roadmap-change` ^| Change a roadmap entry ^(status / notes / effort; defer / drop^) ^|
 echo ^| `/louie-recipe` ^| Browse or load a reusable recipe ^|
+echo ^| `/louie-update-framework` ^| Update LOUIE to the latest version ^|
 echo ^| `/louie-from-source` ^| Fetch a task from a source adapter and route it ^|
 echo.
 echo Slash-command files live in `.opencode/command/` and are kept in sync with `_LOUIE_/commands/` by `bash _LOUIE_/setup/opencode-init.sh` ^(also re-run by `louie-update-framework`^).

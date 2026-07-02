@@ -223,6 +223,7 @@ The init scripts (Step 2) report adapter availability at the end of their output
 | Resume in-progress work after a break (reconstruct from artifacts + git) | `louie-continue` |
 | Code review by Max | `louie-review` |
 | Review + fix + update docs in one flow | `louie-review-doc` |
+| Whole-codebase standards assessment with persistent findings + apply loop | `louie-evaluate` |
 | View or change the project review mode (manual / auto-fix-critical / auto-fix-all) | `louie-review-mode` |
 | View or change the project branch mode (current / ask) | `louie-branch-mode` |
 | View or change the per-command auto-pilot mode (run the chain unattended after plan approval) | `louie-autopilot-mode` |
@@ -232,5 +233,6 @@ The init scripts (Step 2) report adapter availability at the end of their output
 | Brainstorm ideas with Ivy | `louie-ideate` |
 | Capture a bigger change / epic; promote one to a full feature | `louie-roadmap` |
 | Change a roadmap entry (status / notes / effort; defer / drop) | `louie-roadmap-change` |
+| Browse or load a reusable recipe | `louie-recipe` |
 | Update LOUIE to the latest version | `louie-update-framework` |
 | Fetch a task from a source adapter and route it to the right command | `louie-from-source` |
