@@ -44,6 +44,29 @@ Interactivity is the dividing line — a subagent cannot converse with the user 
 
 A dispatched agent starts with a fresh context. Seed it with exactly what the handoff protocol already produces: the feature folder path (`feature.md`, `requirements.md`, `decisions.md`), the specific phase/task and its `Files:` scope, and the standard context list from the agent's own Context section. The handoff blocks exist precisely so a fresh context can start cold — if a subagent needs something that isn't in the artifacts, that's a handoff gap to fix in the docs, not a reason to pass chat history.
 
+### Within-feature parallel runs (the orchestration loop)
+
+At the implementation step of `louie-feature` / `louie-extend`, on a capable runtime, during an unattended stretch, the orchestrating session runs this loop instead of one long Nina pass:
+
+1. **Validate + compute the ready set.** Nina (main loop, or a planning subagent) validates the plan's annotations, then collects every phase whose `Depends:` are all complete and whose `Files:` set is disjoint from every other in-flight package.
+2. **Dispatch one implementation subagent per ready package** (the Nina agent, seeded per § Seeding a subagent: feature folder, the phase, its `Files:` scope). The shared working tree is safe *because* write scopes are disjoint — that's the whole contract.
+3. **As each package returns:** tick its phase in `feature.md`, narrate the finish, recompute the ready set, dispatch newly unblocked packages.
+4. **Integration phases run last, sequentially** — main loop or a single subagent.
+5. **Validation is centralized.** Packages self-check what's cheap (their own diff compiles in isolation, spot checks); they do **not** run the project's full build/lint as a completion gate — two concurrent builds on one tree interleave confusingly. The orchestrator runs the full lint/build/test pass once after each join point and once before handoff to Max.
+6. **One review.** Max reviews the merged result exactly as a sequential run, with the package boundaries listed in Nina's handoff ("implemented as N parallel packages; integration in phase 4") so he can check the seams first — seams are where parallel work actually breaks.
+7. **The orchestrator commits, never the subagents.** One commit per package at join time (Conventional Commits, package named) or a single squashed feature commit — follow the project's existing discipline.
+
+**Failure handling:** a package that errors or returns incomplete does not poison its siblings — they were independent by construction. Let the in-flight set drain, then surface the failure; the fix round (or tripwire pause) happens sequentially. The two-attempt rule (`coder.md` § Step 1b) applies per package.
+
+## Gate Composition
+
+Parallelism and gates compose by **containment**: concurrency lives strictly inside the unattended stretches auto-pilot already defines. This adds no new mode and no new setting — parallel execution is an execution strategy inside existing modes. (If it ever needs a kill switch, a `parallel: on/off` line under the runbook's `## Auto-Pilot` is the natural slot — deliberately deferred until someone actually asks.)
+
+- **Manual mode → sequential, always.** Blocking gates punctuate the chain; there is no unattended stretch to parallelize.
+- **Auto-pilot (or the walkthrough's unattended segments) → parallel dispatch allowed** between the plan-agreement gate and the pre-merge summary.
+- **Deviation tripwire in a parallel branch:** the branch pauses *itself* — the subagent stops and returns `paused: <what diverged>` instead of a result. Sibling branches run to completion (finishing independent work wastes nothing). The orchestrator presents the pause content-first (two-turn gate) alongside the completed branches' narration, and dispatches **no new packages** while a pause is unresolved.
+- **Narration:** auto-pilot's "suppress blocking, not visibility" rule extends naturally — narrate each package's start and finish in chat as results come in.
+
 ## Hard Rules (both modes)
 
 1. **Gates serialize.** Concurrency exists only between gates, never across one. Two simultaneous dialogs is never acceptable.

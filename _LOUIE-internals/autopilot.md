@@ -138,6 +138,15 @@ Distributed framework files:
 - `_LOUIE_/setup/project-setup.md` + `_LOUIE_/workflow/ai-workflow.md` — mention
 - all six `*-init.sh/.bat` — add `louie-autopilot-mode` to the command lists
 
+## Composition with parallel execution (P-03 / P-06)
+
+Auto-pilot's unattended stretches are **the container for all parallel execution** — see `_LOUIE_/guidelines/execution-guidelines.md` § Gate Composition. The composition rules, decided in the framework evaluation (P-06):
+
+- Parallel dispatch happens only between the plan-agreement gate and the pre-merge summary, on capable runtimes. Manual mode is sequential, always — its blocking gates leave no unattended stretch.
+- The deviation tripwire keeps working per branch: a subagent that hits it returns `paused: <what diverged>`; siblings run to completion; the orchestrator surfaces the pause content-first (two-turn gate) and dispatches nothing new until it's resolved.
+- Narration extends per package (start/finish as results come in) — same "suppress blocking, not visibility" rule.
+- **Deliberately no new setting.** Parallelism is an execution strategy inside existing modes, not a mode. If a kill switch is ever demanded, a `parallel: on/off` line under `## Auto-Pilot` in the runbook is the reserved slot.
+
 ## Out of scope
 
 - **Auto-merge.** Critical Rule #3 is non-negotiable; auto-pilot always stops before merge.

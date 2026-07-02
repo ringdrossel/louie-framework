@@ -30,12 +30,13 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### P-03 — Within-feature parallel implementation
 
-- **Tier:** Should Fix · **Status:** pending
+- **Tier:** Should Fix · **Status:** applied
 - **Gap:** Nina implements phases strictly in order even when they're independent (e.g. API + UI + migration).
 - **Why it matters:** wall-clock time on multi-package features; this is granularity (a) the maintainer asked for, single-session compatible via subagent dispatch.
 - **Recommendation:** on capable runtimes, during an unattended stretch (see P-06), the orchestrating session dispatches one implementation subagent per ready work package (disjoint `Files:` sets guarantee no write conflicts in the shared working tree); integration phases run sequentially afterwards; Max reviews the merged result once. Sequential fallback: dependency-ordered phases, exactly today's behavior.
 - **Detail:** `parallelism.md` § Within-Feature Parallel Runs
 - **Touches:** `coder.md`, `louie-feature.md`/`louie-extend.md` (step 10), `reviewer.md` (review the merge, note the package boundaries), execution guideline (P-02)
+- **Progress:** applied 2026-07-02 with P-06. Orchestration loop in `execution-guidelines.md` § Within-feature parallel runs; Nina Package Mode (`coder.md` step 2b); handoff carries package boundaries; Max reviews merged result once, seams first, `Files:` scope as contract. Sequential fallback everywhere unchanged.
 
 ### P-04 — Across-feature parallelism via a feature dependency graph
 
@@ -57,12 +58,13 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### P-06 — Auto-pilot is the gate model for parallel execution
 
-- **Tier:** Should Fix · **Status:** pending
+- **Tier:** Should Fix · **Status:** applied
 - **Gap:** parallel dispatch and blocking gates are incompatible — two concurrent chains both raising a structured choice is chaos; a subagent on most runtimes can't converse with the user at all.
 - **Why it matters:** without a written composition rule, parallelism would either break the gate system (the framework's core safety mechanism) or deadlock on it.
 - **Recommendation:** codify: **parallel execution happens only inside unattended stretches** — i.e. under auto-pilot semantics, after the agreement gate, before the pre-merge summary. Gates serialize; the deviation tripwire in a parallel branch pauses *that branch* (the subagent returns a "paused: material deviation" result; the orchestrator surfaces it while sibling branches continue or finish). Manual mode = sequential, always.
 - **Detail:** `parallelism.md` § Gate Composition
 - **Touches:** execution guideline (P-02), `autopilot.md` internals, `louie-feature.md` § Auto-Pilot
+- **Progress:** applied 2026-07-02 with P-03. Containment codified in `execution-guidelines.md` § Gate Composition (manual = sequential always; per-branch tripwire pause with `paused:` return, siblings finish, no new dispatch until resolved; narration per package; no new setting — runbook `parallel:` toggle reserved but deferred). Mirrored in `autopilot.md` § Composition with parallel execution and `louie-feature.md` § Auto-Pilot.
 
 ### P-07 — Overlap Max's review and Ava's test writing
 

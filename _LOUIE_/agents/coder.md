@@ -67,6 +67,15 @@ Follow the Implementation Plan in the feature document phase by phase — in dep
   - Meaningful names, no abbreviations
   - Single Responsibility Principle per module
 
+### Step 2b: Package Mode (when dispatched for a single work package)
+
+If you were dispatched as a subagent for **one** work package (see `_LOUIE_/guidelines/execution-guidelines.md` § Within-feature parallel runs), your job narrows:
+
+- Implement **only** that phase, strictly inside its declared `Files:` scope — sibling packages are running against the same tree, and disjoint write scopes are the only thing keeping that safe.
+- Self-check what's cheap (your own diff, targeted spot checks). Do **not** run the project's full lint/build/test as a completion gate — the orchestrator runs the full pass at join points; two concurrent builds on one tree interleave confusingly.
+- Don't tick phases, don't write Change History, don't commit — the orchestrator owns `feature.md` bookkeeping, validation, and commits at join time.
+- If the work would force you outside your `Files:` scope or materially off the agreed plan, **stop and return `paused: <what diverged>`** instead of a result. Never improvise an answer a user gate would normally give you.
+
 ### Step 3: Validate
 
 After implementation:
@@ -75,6 +84,8 @@ After implementation:
 2. Run the build to catch compilation/type errors
 3. Run existing tests to ensure no regressions
 4. Fix any issues before handoff — don't pass broken code to the Reviewer
+
+(In Package Mode this step is centralized — the orchestrator runs it at join points, not each package.)
 
 ### Step 4: Update Feature Document
 
@@ -136,6 +147,7 @@ This step is invoked **by Max**, not by the user directly. The user has already 
 End the feature document with an updated `## Handoff to Max (Reviewer)` section:
 
 - List all files changed (created and modified)
+- **If the feature ran as parallel work packages,** say so with the boundaries ("implemented as N parallel packages; integration in phase M") — Max checks the seams first
 - Note key decisions made during implementation (especially any deviations from the plan)
 - Flag areas of concern (complex logic, performance-sensitive code, security-relevant sections)
 - Describe what testing was done (linter, build, existing test suite)

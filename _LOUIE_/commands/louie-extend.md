@@ -59,7 +59,7 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
 
 10. **Continue the chain:**
    - Leo (Designer) if the extension has UI changes
-   - Nina (Coder) implements
+   - Nina (Coder) implements (on a capable runtime under auto-pilot, independent work packages may run concurrently — see `_LOUIE_/guidelines/execution-guidelines.md` § Within-feature parallel runs)
    - Max (Reviewer) reviews
    - Ava (Tester) tests
 

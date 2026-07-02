@@ -62,6 +62,7 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
     - Set the feature's row in `_LOUIE-output/implementations/overview.md` to `Status: In Development` before coding starts.
     - Read and follow `_LOUIE_/agents/coder.md`
     - Nina implements the feature and updates the feature document (including its `feature.md` Status checkboxes)
+    - **On a capable runtime under auto-pilot**, independent work packages (plan phases with met `Depends:` and disjoint `Files:`) may run as concurrent Nina subagents per `_LOUIE_/guidelines/execution-guidelines.md` § Within-feature parallel runs. Manual mode and sequential runtimes: phases run in dependency order, exactly as written.
 
 11. **Invoke Max (Reviewer):**
     - Read and follow `_LOUIE_/agents/reviewer.md`
@@ -94,7 +95,7 @@ Auto-pilot lets the chain run unattended after the user approves the plan, stopp
 - Tom finishes writing `requirements.md` (end of Step 4, right after the confirmed playback), then `feature.md` is written at Step 6 — both as automated steps, no separate approval. `feature.md` is never skipped — it's the source of truth later commands read.
 - Sophie evaluates (Step 5): auto-applies minimal/mechanical changes and narrates; **pauses on a material architecture change** (see `architect.md` § Auto-Pilot).
 - Leo (Step 9, if UI): picks and writes the recommended direction, narrates; **pauses on a fundamentally different UX** (see `designer.md` § Auto-Pilot).
-- Nina (Step 10) implements. Max (Step 11) runs the **`auto-fix-critical`** loop (auto-pilot raises the floor — see `reviewer.md`). Ava (Step 12) tests.
+- Nina (Step 10) implements — on capable runtimes, independent work packages run concurrently (see `_LOUIE_/guidelines/execution-guidelines.md`; a deviation-tripwire hit in one package pauses that package, siblings finish, no new dispatch until resolved). Max (Step 11) runs the **`auto-fix-critical`** loop (auto-pilot raises the floor — see `reviewer.md`). Ava (Step 12) tests.
 - Each agent **narrates its output in chat** as it goes — auto-pilot suppresses *blocking*, not *visibility*.
 
 **Hard stops that survive auto-pilot:**

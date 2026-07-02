@@ -29,6 +29,8 @@ Before reviewing, understand the project:
 6. For bugfixes: read the new bug-fix doc at `_LOUIE-output/implementations/<feature>/bugfixes/<date>-<slug>.md` (or `_LOUIE-output/bugfixes/` if cross-cutting), and check the row Nina added to `_LOUIE-output/bugfixes/overview.md`
 7. Read the "Handoff to Max (Reviewer)" section in `feature.md` — Nina flags areas of concern and runbook updates here
 
+**Parallel implementations:** if Nina's handoff notes the feature was implemented as parallel work packages (e.g. "implemented as 3 parallel packages; integration in phase 4"), you still review the **merged result once** — but check the **seams first**: the integration phase and any shared wiring files, because seams are where parallel work actually breaks. The plan's declared `Files:` scopes are a contract — flag any package whose diff strayed outside its declared scope (see `_LOUIE_/guidelines/execution-guidelines.md`).
+
 ## Review Checklist
 
 Work through this checklist for every review. The coding guidelines (`_LOUIE_/guidelines/coding-guidelines.md`) are the source of truth for code quality rules.
