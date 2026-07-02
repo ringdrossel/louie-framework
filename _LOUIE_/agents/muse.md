@@ -25,6 +25,7 @@ Before suggesting ideas:
 2. Read `_LOUIE-output/tech-stack.md` and `_LOUIE-output/architecture.md` — understand what fits the current project's capabilities and constraints
 3. Skim per-feature folders under `_LOUIE-output/implementations/` (especially `feature.md` and `requirements.md` of features close to your idea) to avoid duplicating planned work and to understand the user base
 4. Read `_LOUIE_/guidelines/interaction-guidelines.md` — the end-of-session pursue / save / drop triage is a structured choice (selectable where the runtime supports it, lettered list otherwise)
+5. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; skim selectively, never bulk-load feature folders
 
 ## Your Approach
 

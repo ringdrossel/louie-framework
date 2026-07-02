@@ -81,21 +81,23 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### S-01 — Partition `architecture.md` into a slim index + per-domain docs
 
-- **Tier:** Critical · **Status:** pending
+- **Tier:** Critical · **Status:** applied
 - **Gap:** `architecture.md` is a single file that every chain agent reads in full on every task. On a 100k+ LOC system it becomes a multi-thousand-line brick — the same failure `implementations/overview.md` had before the per-feature split, one level up.
 - **Why it matters:** it's the most-read artifact in the framework; if it doesn't scale, nothing downstream does. Violates the lazy-loading principle at exactly the scale the maintainer targets.
 - **Recommendation:** above a trigger (~400 lines or ~6+ domains, Sophie proposes), split to `architecture.md` (slim: system diagram, domain list with one-liners, cross-cutting concerns, dependency rules between domains) + `_LOUIE-output/architecture/<domain>.md` (internal patterns, data flow, folder structure per domain). Agents read the index always, the relevant domain doc(s) only. Mirrors the proven overview.md move.
 - **Detail:** `scaling.md` § Partitioned Architecture
 - **Touches:** `architect.md`, `architecture-template.md` (+ new domain template), every agent Context section, `louie-evaluate.md` (LOUIE-mode lens), `louie-migrate.md` or a new split flow, `core.md` internals
+- **Progress:** applied 2026-07-02. Threshold rule in the template; Sophie's subsequent-run step 7 size check (always-material, pauses under auto-pilot); `architecture-domain-template.md`; split implemented as `louie-migrate architecture` (folded into migrate per the design's recommendation, not a new command); per-domain evaluate lens; reader rule lives in § Context Discipline (S-05), not per-agent.
 
 ### S-02 — First-class, maintained codebase map for large projects
 
-- **Tier:** Critical · **Status:** pending
+- **Tier:** Critical · **Status:** applied
 - **Gap:** the concept already exists — `louie-evaluate` non-LOUIE mode has Sophie produce a throwaway `codebase-map.md` — but LOUIE projects have nothing that answers "where in 100k lines is X?" without scanning. `architecture.md` describes intent, not the actual file landscape.
 - **Why it matters:** at scale, agents burn most of their context *finding* code. A maintained map (domain → paths → owning features → entry points → size signals) converts repo-wide scans into two targeted reads.
 - **Recommendation:** promote to a canonical `_LOUIE-output/codebase-map.md`: Sophie creates it at setup/import when the project is large (or on first threshold crossing), Nina appends when she adds modules/top-level paths, `louie-doc`'s reconcile pass regenerates the size signals. Strictly an index — no prose, no architecture duplication.
 - **Detail:** `scaling.md` § The Codebase Map
 - **Touches:** new template, `architect.md`, `coder.md` (step 4), `louie-doc.md`, `louie-import.md`, `louie-evaluate.md` (reuse in LOUIE mode), agent Context sections
+- **Progress:** applied 2026-07-02. `codebase-map-template.md` (strict index, no prose); Sophie creates at import-when-large / first-run-when-large / with the split proposal; Nina row-upkeep in coder step 4 (sizes are louie-doc's job); `louie-doc` 4b reconcile (regen Size, flag dead paths, check domain-name parity); evaluate LOUIE mode hands the map to Max, non-LOUIE mode's throwaway map uses the same template and is promotable on import; bootstrap via update-framework step 5 (E-05 channel 2).
 
 ### S-03 — `overview.md` index scaling: domain grouping + `Retired` status
 
@@ -117,12 +119,13 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### S-05 — Context-read discipline for agents at scale
 
-- **Tier:** Should Fix · **Status:** pending
+- **Tier:** Should Fix · **Status:** applied
 - **Gap:** every agent's Context section says "read architecture.md / runbook / feature folder" unconditionally. Fine at 5k LOC; at 100k+ those instructions order agents to flood their own context before work starts.
 - **Why it matters:** context is the scarce resource; the framework's own lazy-loading principle stops one level too high (it governs which *framework* files load, not how much *project* artifact each agent loads).
 - **Recommendation:** single-source a short "Context Discipline" ruleset (per the language-setting precedent: one home, all agents point at it — e.g. in the new execution guideline or `agent-handoffs.md`): index-first (overview / architecture index / codebase map before any full doc), read only the relevant domain doc(s), Grep before Read on source, line-range reads on big files, never bulk-load feature folders.
 - **Detail:** `scaling.md` § Read Discipline
 - **Touches:** one new guideline section + a one-line pointer in each agent's Context list
+- **Progress:** applied 2026-07-02. § Context Discipline in `execution-guidelines.md` (the P-02 home, as designed): index-first, partition reads, Grep-before-Read with line ranges, skim caps (runbook/tech-stack full, rest selective), fix-stale-indexes-don't-compensate. All seven agents point at it with one tailored line.
 
 ### S-06 — Monorepo / multi-package story
 

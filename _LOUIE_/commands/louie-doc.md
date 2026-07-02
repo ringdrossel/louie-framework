@@ -36,6 +36,12 @@ When the user says **`louie-doc`**, follow this procedure to update project docu
    - **Legacy layout:** if the overview still uses the old three-table layout (`### Implemented` / `### In Development` / `### Planned`), convert it to the single **Features** table with a `Status` column as part of this pass — derive each row's Status from which table it was in (and refine from `feature.md`).
    - Update the `Last Updated:` line.
 
+4b. **Reconcile the codebase map (if `_LOUIE-output/codebase-map.md` exists):**
+   - Regenerate the mechanical columns: `Size` per domain (LOC / file counts from the current tree) and the Largest Files table.
+   - Flag (don't silently delete) any row whose `Path roots` no longer match existing paths — the domain may have been renamed or removed; ask before dropping the row.
+   - Check that domain names still match the `architecture.md` domain list; report any divergence.
+   - Update the `Last reconciled:` line.
+
 5. **Show a summary:**
    - List each file that was updated and what changed
    - Highlight any open questions or gaps found during documentation

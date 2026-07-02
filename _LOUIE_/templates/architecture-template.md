@@ -1,5 +1,7 @@
 # Architecture
 
+> **Size rule (partitioned architecture):** this file must stay readable in one pass. When it crosses **~400 lines or ~6+ domains**, Sophie proposes splitting it (her subsequent-run size check): this file slims to an **index** — system diagram, domain list (one line each: name, responsibility, path roots, link), cross-domain dependency rules, cross-cutting concerns, deployment topology, system-level ADRs — and per-domain detail moves to `_LOUIE-output/architecture/<domain>.md` (from `architecture-domain-template.md`). The split is one-way, user-gated, and runs via `louie-migrate`. The domain names defined here are the partition vocabulary everywhere: the codebase map, overview grouping, and evaluate chunks all reuse them. Below the threshold, one file is correct — don't split early.
+
 Last Updated: YYYY-MM-DD
 
 ## Project Overview

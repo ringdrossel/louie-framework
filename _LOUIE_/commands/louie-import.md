@@ -49,6 +49,7 @@ After it completes, the project is indistinguishable from one that went through 
      - Inspect manifests, `Dockerfile`, `docker-compose.yml`, `.env.example`, and `README.md` to fill the runbook (start/build/test commands, ports, env vars, external services).
      - Identify candidate **features** from the observable surface: HTTP routes, CLI subcommands, top-level modules, exported public APIs.
    - Sophie produces draft `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, and `_LOUIE-output/runbook.md`. Anything she could not infer from code goes into the document's Open Questions section — do not invent details.
+   - **If the codebase is large** (roughly the partition threshold — ~6+ domains, or an architecture doc that would cross ~400 lines), Sophie also produces `_LOUIE-output/codebase-map.md` from `_LOUIE_/templates/codebase-map-template.md`, and may propose the partitioned-architecture shape (slim index + `_LOUIE-output/architecture/<domain>.md`) from the start rather than one oversized file. Small projects skip both.
    - Sophie also produces a **discovered-features list** for the next step.
 
 6. **Branch on import mode:**

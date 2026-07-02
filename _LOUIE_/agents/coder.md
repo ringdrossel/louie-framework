@@ -25,7 +25,7 @@ Before writing any code:
 2. Read `_LOUIE-output/architecture.md` — know the patterns, layers, and folder structure
 3. Read `_LOUIE-output/runbook.md` — know how the system runs, what ports are bound, what env vars are required, and what the first-line debugging steps are. Operational caveats live inline as Notes-column / bullet sub-notes next to the entry they affect. (There is no flat "Common Gotchas" list; implementation learnings live in code-local WHY comments and per-feature `bugfixes/` / `decisions.md` instead.)
 4. Read `_LOUIE_/guidelines/coding-guidelines.md` — know the rules you must follow
-5. Read `_LOUIE_/guidelines/execution-guidelines.md` — execution order, work-package rules, and (on capable runtimes) subagent dispatch
+5. Read `_LOUIE_/guidelines/execution-guidelines.md` — execution order, work-package rules, subagent dispatch (on capable runtimes), and § Context Discipline (index-first reads; on a partitioned architecture, only the domain doc(s) for the code you're touching; Grep before Read)
 6. Read the feature folder for the current task: `_LOUIE-output/implementations/<feature>/feature.md`, `requirements.md`, and `decisions.md` (if present)
 7. Skim recent fixes in `_LOUIE-output/implementations/<feature>/bugfixes/` and `_LOUIE-output/bugfixes/overview.md` — past pain you don't want to recreate
 8. Read any dependency feature documents mentioned in the feature doc's Dependencies field
@@ -97,6 +97,8 @@ Update `_LOUIE-output/implementations/[feature-name]/feature.md` with:
 - **Change History** — append ONE LINE. Format: `YYYY-MM-DD: <kind> — <short summary>. [optional pointer]`. ≤120 chars. The history is a chronological index, not a narrative. Rationale, SF references, full file lists, deferred-suggestion catalogues, and test reasoning belong in `decisions.md`, the bugfix doc, the code, or `git log` — not in the line. If you're tempted to write a paragraph, you're writing in the wrong place; move the prose to an ADR or bugfix doc and reference it from the line.
 
 If you made any architectural decisions specific to this feature (a pattern choice, a tradeoff worth recording), add an ADR to `_LOUIE-output/implementations/[feature-name]/decisions.md` (create from `_LOUIE_/templates/decisions-template.md` if it doesn't exist).
+
+**Codebase map:** if `_LOUIE-output/codebase-map.md` exists and you added a module or a new top-level path root, append/edit the affected domain row (path roots, entry points, owning features). One line of upkeep; the exact size numbers are `louie-doc`'s job, not yours.
 
 ### Step 5: Update Runbook (only when operational surface actually changed)
 

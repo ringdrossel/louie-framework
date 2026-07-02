@@ -27,6 +27,7 @@ Before making any architectural decisions:
 4. Read `_LOUIE_/guidelines/coding-guidelines.md` — your architecture must support these rules (e.g., if the 800-line file limit is difficult in a chosen framework, flag it)
 5. Read `_LOUIE_/templates/architecture-template.md`, `_LOUIE_/templates/tech-stack-template.md`, and `_LOUIE_/templates/runbook-template.md` — these are your output formats
 6. Read `_LOUIE_/guidelines/interaction-guidelines.md` — when your proposal gate offers the user discrete options, present them as a structured choice (selectable where the runtime supports it, lettered list otherwise)
+7. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; on a partitioned architecture, read the index plus only the relevant domain doc(s)
 
 ## Process
 
@@ -40,7 +41,8 @@ When no `architecture.md` or `tech-stack.md` exist yet:
 4. Produce `_LOUIE-output/architecture.md` from the architecture template
 5. Produce `_LOUIE-output/tech-stack.md` from the tech-stack template
 6. Produce `_LOUIE-output/runbook.md` from the runbook template — fill in deployment model, ports, common commands, env vars, and external services from the architectural decisions you just made. Keep it operational and short; the runbook is **not** a learnings log.
-7. Present all three to the user for final confirmation before any feature work begins
+7. **If the project is already large** (import of a big codebase — roughly the same ~6-domain / partition threshold), also produce `_LOUIE-output/codebase-map.md` from `_LOUIE_/templates/codebase-map-template.md` — domain rows with path roots, entry points, owning features, and size signals. Small/new projects skip this; the map arrives later with the architecture split.
+8. Present the documents to the user for final confirmation before any feature work begins
 
 #### Proposal & Discussion Gate (Step 3 — MANDATORY before writing docs)
 
@@ -95,6 +97,7 @@ When `architecture.md` and `tech-stack.md` already exist:
    - Get user confirmation before updating
 5. Update the `Last Updated` date in any modified documents
 6. If the feature introduces new ports, env vars, or external services, update `runbook.md` directly (Ports & Endpoints, Environment & Dependencies). Operational caveats go inline in the Notes column / bullet next to the entry they affect — not in a flat gotchas list (there is no such section any more).
+7. **Size check (partitioned architecture):** if `architecture.md` has crossed **~400 lines or ~6+ domains**, propose the split — slim index + `_LOUIE-output/architecture/<domain>.md` per domain (see the size rule in `architecture-template.md`; the split itself runs via `louie-migrate`). Propose the **codebase map** (`_LOUIE-output/codebase-map.md` from `_LOUIE_/templates/codebase-map-template.md`) at the same time — same threshold, sibling artifacts. The split changes artifact shape, so it is always a **material** change: even under auto-pilot, present it and wait for approval.
 
 ### Auto-Pilot (when the invoking command runs unattended)
 

@@ -52,7 +52,7 @@ When the user says **`louie-update-framework`**, follow this procedure to update
      - List new/updated agents
      - List any template changes
      - List new/updated recipes (sections and individual recipes)
-   - **Check `_LOUIE-output/` for any new canonical outputs introduced by this framework update.** If a new output is now expected (e.g. `runbook.md`) and the project doesn't have it, tell the user and offer to bootstrap it from existing artifacts (architecture, ad-hoc context files). Never silently create files in `_LOUIE-output/`.
+   - **Check `_LOUIE-output/` for any new canonical outputs introduced by this framework update.** If a new output is now expected (e.g. `runbook.md`) and the project doesn't have it, tell the user and offer to bootstrap it from existing artifacts (architecture, ad-hoc context files). Never silently create files in `_LOUIE-output/`. Current list: `runbook.md`, `roadmap.md`, and — for large projects only (~6+ domains) — `codebase-map.md` (Sophie generates it from the codebase; skip the offer for small projects).
    - Highlight breaking changes if any (e.g., renamed files, changed handoff format)
 
 6. **Run version-gated migrations, and detect the old artifact layout:**
@@ -64,6 +64,7 @@ When the user says **`louie-update-framework`**, follow this procedure to update
      > "Your `_LOUIE-output/` is on the old flat layout. The framework now uses per-feature folders (`implementations/<feature>/feature.md` + `requirements.md` + `decisions.md` + `bugfixes/`) and a top-level `bugfixes/overview.md` index. I can run `louie-migrate` for you now to restructure your artifacts (one-way; uses `git mv` so history is preserved)."
    - On user confirmation, follow `_LOUIE_/commands/louie-migrate.md` directly. Do not re-prompt for the same confirmations `louie-migrate` would ask.
    - On decline, leave the project on the old layout and warn that newly-shipped commands assume the new layout — features run via `louie-feature` etc. will produce per-feature folders alongside the old flat files until migration runs.
+   - **Oversized architecture:** if `_LOUIE-output/architecture.md` exceeds ~400 lines (or lists ~6+ domains) and no `_LOUIE-output/architecture/` folder exists, offer the architecture split (`louie-migrate architecture` — slim index + per-domain docs). Offered, user-gated, one-way; on decline, nothing changes.
 
 7. **Confirm success:**
    - "Framework updated to <pulled version>. Your `_LOUIE-output/` artifacts are [untouched / migrated to the new layout]."

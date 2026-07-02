@@ -23,7 +23,7 @@ This is a **read-only assessment** by default. Source code is only modified duri
 
 ### 1. Detect mode
 
-- **LOUIE project** if `_LOUIE-output/architecture.md` exists. Use the project's own `architecture.md`, `tech-stack.md`, `runbook.md`, and `_LOUIE_/guidelines/coding-guidelines.md` as the standards lens.
+- **LOUIE project** if `_LOUIE-output/architecture.md` exists. Use the project's own `architecture.md`, `tech-stack.md`, `runbook.md`, and `_LOUIE_/guidelines/coding-guidelines.md` as the standards lens. If the architecture is partitioned (`_LOUIE-output/architecture/` exists), architecture-compliance checks run **per domain against the domain doc**, with the index supplying the cross-domain dependency rules. If `_LOUIE-output/codebase-map.md` exists, hand it to Max as orientation — no re-scan needed for layout/size context.
 - **Non-LOUIE project** otherwise. Use `_LOUIE_/guidelines/coding-guidelines.md` as the standards lens. Sophie does a light structural pass first (next step).
 
 Tell the user which mode was detected and continue.
@@ -60,13 +60,8 @@ Skip this step in LOUIE mode (the project's own `architecture.md` already covers
 
 In non-LOUIE mode:
 
-- Read and follow `_LOUIE_/agents/architect.md`. Tell Sophie this is **evaluate mode** — she is NOT producing a full architecture document. She is producing a lightweight `_LOUIE-output/evaluation/codebase-map.md` covering:
-  - Detected stack (manifest files, framework signatures)
-  - Top-level module/folder layout
-  - Entry points
-  - Rough size signals (LOC per top-level area, file counts, largest files)
-  - External dependencies surfaced from manifests
-- This file gives Max enough context to evaluate without re-scanning.
+- Read and follow `_LOUIE_/agents/architect.md`. Tell Sophie this is **evaluate mode** — she is NOT producing a full architecture document. She is producing a lightweight `_LOUIE-output/evaluation/codebase-map.md` using `_LOUIE_/templates/codebase-map-template.md` (same shape as the canonical map a large LOUIE project maintains), plus the detected stack and external dependencies from manifests.
+- This file gives Max enough context to evaluate without re-scanning. If the user later runs `louie-import`, this map can be promoted to `_LOUIE-output/codebase-map.md` as-is.
 
 ### 5. Max pass (standards)
 

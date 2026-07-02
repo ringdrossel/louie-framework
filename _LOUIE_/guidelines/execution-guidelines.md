@@ -74,3 +74,13 @@ Parallelism and gates compose by **containment**: concurrency lives strictly ins
 3. **Integration phases always run alone** — after the packages they depend on, never in parallel with anything.
 4. **A package that needs user input pauses.** A subagent returns the question (or `paused: <what diverged>` for a deviation-tripwire hit) instead of a result; the orchestrator surfaces it. It does not improvise an answer.
 5. **Absent annotations = sequential in written order.** Unannotated plans are valid, never a blocker (see the degradation rule in `feature-template.md`).
+
+## Context Discipline
+
+Context is the scarce resource. Each agent's Context section names *what* to read; these rules govern *how much* — they matter little at 5k LOC and are the difference between working and flooding at 100k+. Single-sourced here; agents point at this section instead of carrying their own copy.
+
+1. **Index-first, always.** Read the indexes before any full document: `_LOUIE-output/implementations/overview.md`, the `architecture.md` index, and `_LOUIE-output/codebase-map.md` (if present). They tell you which partitions matter for the task.
+2. **Partition reads.** If `_LOUIE-output/architecture/` exists (partitioned architecture), read the index plus **only the domain doc(s) for the code you're touching** — never the whole folder. Same for feature folders: only the feature(s) in play, never several "for context."
+3. **Grep before Read** on source code: locate by search, then read the located region. Use line-range reads on files over ~500 lines.
+4. **Skim caps.** `runbook.md` and `tech-stack.md` are read in full — they're capped by design. Everything else is read selectively once the project is large.
+5. **Fix stale indexes, don't compensate.** When an index is missing, stale, or wrong, say so and fix or flag it — bulk-reading around a broken index rebuilds the same context every session and helps nobody after you.

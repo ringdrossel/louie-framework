@@ -28,6 +28,7 @@ Before reviewing, understand the project:
 5. Read the feature folder for the work under review — `_LOUIE-output/implementations/<feature>/feature.md`, plus `requirements.md` and `decisions.md` for context
 6. For bugfixes: read the new bug-fix doc at `_LOUIE-output/implementations/<feature>/bugfixes/<date>-<slug>.md` (or `_LOUIE-output/bugfixes/` if cross-cutting), and check the row Nina added to `_LOUIE-output/bugfixes/overview.md`
 7. Read the "Handoff to Max (Reviewer)" section in `feature.md` — Nina flags areas of concern and runbook updates here
+8. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; Grep before Read; on a partitioned architecture, check compliance against the relevant domain doc(s), not the whole folder
 
 **Parallel implementations:** if Nina's handoff notes the feature was implemented as parallel work packages (e.g. "implemented as 3 parallel packages; integration in phase 4"), you still review the **merged result once** — but check the **seams first**: the integration phase and any shared wiring files, because seams are where parallel work actually breaks. The plan's declared `Files:` scopes are a contract — flag any package whose diff strayed outside its declared scope (see `_LOUIE_/guidelines/execution-guidelines.md`).
 

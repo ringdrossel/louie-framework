@@ -87,8 +87,10 @@ Additionally, a third rule (added later): **no merge to `main` without explicit 
 - Cross-cutting bug fixes: `_LOUIE-output/bugfixes/<YYYY-MM-DD>-<slug>.md`
 - Bug-fix index: `_LOUIE-output/bugfixes/overview.md`
 - Feature index: `_LOUIE-output/implementations/overview.md` (slim — one-line description per feature)
+- Partitioned architecture (large projects, threshold-triggered): `_LOUIE-output/architecture.md` (slim index) + `_LOUIE-output/architecture/<domain>.md`
+- Codebase map (large projects): `_LOUIE-output/codebase-map.md` — descriptive index (domain → paths → entry points → owning features → size); sibling of the architecture split, same threshold
 
-See `_LOUIE-internals/scaling.md` for the design rationale (universal per-feature folders, lazy-loading-friendly, AI-efficiency criterion).
+See `_LOUIE-internals/scaling.md` for the design rationale (universal per-feature folders, lazy-loading-friendly, AI-efficiency criterion). The scale pattern is always the same move: slim index up top, partitioned detail below, lazy-load the partition you need. **Domain names are the partition vocabulary** — defined once in the architecture index, reused by the codebase map, overview grouping, and evaluate chunks. Read discipline for agents at scale is single-sourced in `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline.
 
 ## Cross-Platform Constraints
 

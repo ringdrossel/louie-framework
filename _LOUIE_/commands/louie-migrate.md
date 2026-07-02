@@ -1,8 +1,9 @@
 # louie-migrate
 
-When the user says **`louie-migrate`**, follow this procedure to migrate an existing LOUIE project from the **old flat layout** (`implementations/<feature>.md` + `requirements/<feature>-requirements.md`) to the **new per-feature folder layout** (`implementations/<feature>/feature.md` + `requirements.md` + `decisions.md` + `bugfixes/`).
+When the user says **`louie-migrate`**, migrate a LOUIE project's artifacts to a newer layout. Two migration cases exist; both are **one-way** with no built-in revert — rely on git to back out if needed.
 
-The migration is **one-way**. There is no built-in revert — rely on git to back out if needed.
+1. **Flat → per-feature folders** (the original case): `implementations/<feature>.md` + `requirements/<feature>-requirements.md` → `implementations/<feature>/feature.md` + `requirements.md` + `decisions.md` + `bugfixes/`. Auto-detected; the Procedure below.
+2. **Architecture split** (for large projects): one oversized `architecture.md` → slim index + `_LOUIE-output/architecture/<domain>.md` per domain. Runs only when Sophie proposed it (or the user asks for it directly: `louie-migrate architecture`) — see § Architecture Split at the bottom.
 
 Design background: `_LOUIE-internals/scaling.md`.
 
@@ -124,6 +125,20 @@ If `_LOUIE-output/roadmap.md` doesn't exist:
   refactor(louie): migrate to per-feature folder layout
   ```
 - Do **not** auto-commit. The user owns the commit.
+
+## Architecture Split (second migration case)
+
+Invoked as `louie-migrate architecture`, or handed off from Sophie's size-check proposal (architecture.md past ~400 lines / ~6+ domains) after the user approved. It is a **mechanical restructure** — content moves, nothing is rewritten.
+
+1. **Pre-flight:** same rules as the layout migration — git repo required, clean `_LOUIE-output/` working tree, print the plan (domain list + what moves where), wait for explicit confirmation.
+2. **Derive the domain list** from `architecture.md`'s Layers/Modules structure (confirm it with the user — these names become the partition vocabulary for the codebase map, overview grouping, and evaluate chunks).
+3. **Per domain:** create `_LOUIE-output/architecture/<domain>.md` from `_LOUIE_/templates/architecture-domain-template.md` and **move** (don't rewrite) that domain's detail into it: internal layers/patterns, data flow, folder structure, domain-scoped ADRs, integration points.
+4. **Slim the index:** `architecture.md` keeps the system diagram, the domain list (one line each: name, responsibility, path roots, link to the domain doc), cross-domain dependency rules, cross-cutting concerns, deployment topology, and system-level ADRs.
+5. **Cross-reference rewrite:** update references to moved sections in `_LOUIE-output/` docs (feature docs, runbook, tech-stack) — same algorithm as step 6 of the layout migration; never touch `_LOUIE_/` or source code.
+6. **Codebase map:** if `_LOUIE-output/codebase-map.md` doesn't exist, offer to create it now from `_LOUIE_/templates/codebase-map-template.md` (same threshold, sibling artifact — this is usually Sophie's proposal anyway).
+7. **Wrap up:** show the resulting tree, recommend the commit `refactor(louie): split architecture into per-domain docs`, never auto-commit.
+
+Idempotence: if `_LOUIE-output/architecture/` already exists with domain docs, report "already split" and stop (offer to re-check the index instead).
 
 ## Idempotence
 

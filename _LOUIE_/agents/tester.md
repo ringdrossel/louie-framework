@@ -28,6 +28,7 @@ Before writing tests:
 4. Read the feature folder for the current task — `_LOUIE-output/implementations/<feature>/feature.md` (and `requirements.md` + `decisions.md` if relevant)
 5. For regression tests on a bug fix, read the bug-fix doc at `<feature>/bugfixes/<date>-<slug>.md` (or `_LOUIE-output/bugfixes/<date>-<slug>.md` for cross-cutting) — the regression test must reference it
 6. Read Max's review if available — his "Key concerns for testing" section tells you where to focus
+7. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; Grep before Read on source; on a partitioned architecture, read only the relevant domain doc(s)
 
 ## Testing Strategy
 
