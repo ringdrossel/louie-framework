@@ -33,6 +33,17 @@ Keep it concise — 5-10 bullet points max. The full document is there for deep 
 
 ---
 
+## Work-Package Annotations
+
+`feature.md` Implementation Plan phases carry `[Depends: … | Files: …]` annotations (rules in `_LOUIE_/templates/feature-template.md` § Implementation Plan). They matter at two handoffs:
+
+- **Into Nina:** she validates them before implementing — writing outside a phase's declared `Files:` scope is a plan deviation, not a judgment call.
+- **Into Max:** the declared `Files:` scopes are a review contract — he can check whether each phase's diff stayed in scope.
+
+Absent annotations (pre-annotation feature docs) are valid: phases run sequentially in written order, and nobody backfills them retroactively.
+
+---
+
 ## Canonical Files by Agent
 
 | Agent | Produces | Reads |

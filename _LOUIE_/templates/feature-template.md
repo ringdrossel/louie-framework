@@ -54,17 +54,21 @@ Refer to `_LOUIE-output/architecture.md` for system patterns and `_LOUIE-output/
 
 ## Implementation Plan
 
-### Phase 1: Preparation
+> **Work-package annotations:** every phase heading carries `[Depends: none|<phase-nrs> | Files: <globs>]`. `Depends:` names the phase numbers this phase needs finished first (or `none`). `Files:` is a small glob list declaring the phase's **write scope** — what it creates or modifies, not everything it reads (reads never conflict). Phases whose dependencies are met and whose `Files:` sets are disjoint are independent *work packages*: they may run in any order — or concurrently, on runtimes that support it. An **integration phase** (depends on 2+ phases, touches shared wiring files) is normal and expected; it simply never runs in parallel with anything.
+>
+> **Degradation rule:** absent annotations degrade to sequential execution in written order — exactly the pre-annotation behavior. Unannotated plans are *valid*, not broken. Never retro-annotate a completed feature (nothing will re-execute it); an in-flight legacy plan gets annotated only on its next touch (`louie-extend` annotates just the phase it adds).
+
+### Phase 1: Preparation  [Depends: none | Files: <globs>]
 
 - [ ] Task 1
 - [ ] Task 2
 
-### Phase 2: Backend/Frontend
+### Phase 2: Backend/Frontend  [Depends: 1 | Files: <globs>]
 
 - [ ] Task 1
 - [ ] Task 2
 
-### Phase 3: Integration & Testing
+### Phase 3: Integration & Testing  [Depends: 1, 2 | Files: <globs>]
 
 - [ ] Task 1
 - [ ] Task 2

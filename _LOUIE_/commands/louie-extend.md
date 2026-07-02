@@ -47,7 +47,7 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
    - If changes are needed, get user confirmation before updating docs
 
 8. **Update the feature document:**
-   - Add a new implementation phase to `_LOUIE-output/implementations/[feature-name]/feature.md`
+   - Add a new implementation phase to `_LOUIE-output/implementations/[feature-name]/feature.md`, annotated with `[Depends: … | Files: …]` (see `_LOUIE_/templates/feature-template.md` § Implementation Plan; an extension phase typically depends on the existing phases it builds on). **On a legacy plan without annotations, annotate only the phase you're adding — never rewrite the existing phases** (completed work is never retro-annotated; unannotated phases stay valid and run in written order).
    - Add a Change History entry
    - If a new ADR was made for the extension, append it to `_LOUIE-output/implementations/[feature-name]/decisions.md` (create from template if absent)
    - Update the feature's `Status` column in `_LOUIE-output/implementations/overview.md` if the status changed (mirror the `feature.md` checkboxes)

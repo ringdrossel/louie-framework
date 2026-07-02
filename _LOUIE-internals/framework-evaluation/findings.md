@@ -10,12 +10,13 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### P-01 — Dependency + file-scope annotations on plan phases (work-package model)
 
-- **Tier:** Critical · **Status:** pending
+- **Tier:** Critical · **Status:** applied
 - **Gap:** `feature-template.md` § Implementation Plan is an ordered phase list with no dependency information and no file-scope declaration. Nothing in any artifact says "Phase 3 doesn't need Phase 2." Without that data, no runtime — however capable — can parallelize safely, and even sequential runtimes can't reorder intelligently.
 - **Why it matters:** this is the tool-agnostic foundation the maintainer asked for. It's pure markdown convention: every runtime can read it, capable runtimes can act on it concurrently, and it costs nothing where unsupported. It also gives `louie-continue` sharper resume points and Max a conflict-check surface.
 - **Recommendation:** phases gain `[Depends: none|<phase-nrs> | Files: <globs>]` annotations, authored at feature-doc creation, validated by Nina before implementation. Phases with satisfied dependencies and disjoint file sets are *work packages* that may run in any order or concurrently.
 - **Detail:** `parallelism.md` § The Work-Package Model
 - **Touches:** `feature-template.md`, `coder.md`, `louie-feature.md` (step 6), `louie-extend.md`, `louie-continue.md`, `agent-handoffs.md`
+- **Progress:** applied 2026-07-02, all six touch points. Data-only per the design — no execution change until P-02/P-03. The E-05 lazy-backfill/degradation rule is written into the template blockquote itself; `louie-extend` carries the only-annotate-the-new-phase rule; `reviewer.md` integration deliberately deferred to P-03 (its touch list), with the Max scope-contract noted in `agent-handoffs.md` § Work-Package Annotations meanwhile.
 
 ### P-02 — Runtime execution-capability convention
 

@@ -32,7 +32,7 @@ One live bug was found in passing (all six `.sh` init scripts emit a malformed K
 
 | ID | Tier | Title | Status |
 |----|------|-------|--------|
-| P-01 | Critical | Dependency + file-scope annotations on plan phases (work-package model) | pending |
+| P-01 | Critical | Dependency + file-scope annotations on plan phases (work-package model) | applied |
 | P-02 | Should Fix | Runtime execution-capability convention (detect concurrency, degrade to sequential) | pending |
 | P-03 | Should Fix | Within-feature parallel implementation (concurrent Nina work packages) | pending |
 | P-04 | Should Fix | Across-feature parallelism via a feature dependency graph | pending |
@@ -85,3 +85,4 @@ When a finding is applied, move its design content into the appropriate permanen
 - 2026-07-02: fixed E-02's live merged-bullet bug in all 12 init scripts (verified via test run of `claude-init.sh`). E-02 remains `pending` — the generator / consistency lint is still open.
 - 2026-07-02: **E-02 applied** — consistency lint shipped as `_LOUIE-internals/tools/check-consistency.sh` (command-set diff on listing lines across 16 surfaces, merged-bullet pattern, `_LOUIE_/` path existence, sh/bat pairing; all four checks mutation-tested). The lint chosen over the generator (per maintainer decision; generator parked in `BACKLOG.md`). It immediately caught more live drift, fixed in the same batch: `/louie-update-framework` missing from all 12 init-script tables, `louie-evaluate` + `louie-recipe` missing from `project-setup.md` Quick Reference. Run the lint before every commit (rule in `_LOUIE-internals/README.md`).
 - 2026-07-02: **E-03 applied** — `_LOUIE_/VERSION` created at `1.0.0` (semver adopted per maintainer decision; pre-existing `v05.x` tags remain history, play no role in gating). CHANGELOG cut into its first release section; `louie-update-framework` is version-aware (delta report from the pulled clone's changelog, version-gated migration rule, pre-VERSION fallback = old behavior); lint check 5 enforces bump discipline; release process documented in `core.md` § Versioning & Release Process. Tag `v1.0.0` on `main` when this merges.
+- 2026-07-02: **P-01 applied** — `[Depends: … | Files: …]` phase annotations landed as pure markdown convention: template (§ Implementation Plan, with the E-05 degradation rule written into the spec — absent annotations = sequential in written order, never retro-annotate), `louie-feature` step 6 authors them, Nina validates write scope before implementing (deviation → fix annotation / tripwire), `louie-extend` annotates only the phase it adds on legacy plans, `louie-continue` resumes at any unblocked phase, `agent-handoffs.md` documents the Nina/Max contract. No execution change yet — dispatch lands with P-02/P-03.

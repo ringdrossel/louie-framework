@@ -26,14 +26,14 @@ It does **not** read or recover past chat transcripts — a LOUIE command can't 
    - If the user passed `louie-continue <feature>`, skip straight to that target.
 
 4. **Reconstruct the state** for the chosen target (read-only):
-   - **Feature:** read its `feature.md` — the highest-ticked `Status` checkbox, which `Implementation Plan` phases are ticked (and the first unticked one = where to resume), `Open Questions`, the last `Change History` line, and the `Handoff` sections. Read `decisions.md` if present.
+   - **Feature:** read its `feature.md` — the highest-ticked `Status` checkbox, which `Implementation Plan` phases are ticked, `Open Questions`, the last `Change History` line, and the `Handoff` sections. Read `decisions.md` if present. **Resume point:** if the plan phases carry `[Depends: …]` annotations, any unticked phase whose dependencies are all ticked is a valid resume point (prefer the earliest; mention the others if there are several). Without annotations, the resume point is the first unticked phase — the classic behavior.
    - **Bugfix:** read the per-fix doc (`bugfixes/<date>-<slug>.md`) — Symptoms / Root Cause / Fix / Detect-Avoid — and whether a regression test exists.
    - **Git:** current branch, the uncommitted diff, and recent commits touching the target. This is the richest "where did I stop" signal — reconcile it against what the docs claim.
    - **Roadmap:** if the feature was seeded `--from-roadmap`, note the linked epic and its status.
 
 5. **Infer the chain position** (which agent/step is next) from the breadcrumbs — no separate progress file is kept; it's all derived:
    - `requirements.md` exists but no `feature.md` → create the feature doc (Sophie eval + confirmation gate still apply).
-   - `feature.md` exists, code partial or absent → **Nina**, resuming at the first unticked `Implementation Plan` phase.
+   - `feature.md` exists, code partial or absent → **Nina**, resuming at an unblocked unticked `Implementation Plan` phase (dependencies ticked, per the annotations; first unticked when unannotated).
    - Code exists but no Max review recorded in `Change History` → **Max**.
    - Reviewed but `Tested` unticked / no test files → **Ava**.
    - **Bugfix:** diagnosed but not fixed → finish the fix; fixed but no regression test → **Ava**; fixed + tested but uncommitted → wrap up.

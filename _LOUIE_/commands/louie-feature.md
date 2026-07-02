@@ -37,6 +37,7 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
 6. **Create feature document:**
    - Create `_LOUIE-output/implementations/[feature-name]/feature.md` using `_LOUIE_/templates/feature-template.md`
    - Fill in all sections based on `[feature-name]/requirements.md` and the architecture
+   - **Annotate the Implementation Plan phases** with `[Depends: none|<phase-nrs> | Files: <globs>]` (template § Implementation Plan has the rules). Derive the `Files:` write scopes from the architecture's folder structure; keep the glob lists small. An integration phase that depends on several others is normal — don't contort the plan to avoid it. Nina validates these annotations before implementing.
    - Update `_LOUIE-output/implementations/overview.md` — add the feature to the **Features** table with `Status: Planned`. Document column links to `implementations/[feature-name]/feature.md`. (Tom may already have added it during setup; if so, leave it as `Planned`.)
    - **If this run was seeded `--from-roadmap <id>`:** move the entry from `## Captured` to `## Promoted` in `_LOUIE-output/roadmap.md`. Preserve the original `Created` and `Notes`. Set `Status: In Progress` and add `Promoted: YYYY-MM-DD → _LOUIE-output/implementations/[feature-name]/`. If the `## Promoted` section is showing the placeholder `_No ideas promoted yet._`, remove that line first. Update the `Last Updated:` line at the top of the roadmap file. (Equivalent to `louie-roadmap-change <id> status "In Progress"`.)
 

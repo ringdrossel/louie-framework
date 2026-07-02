@@ -53,7 +53,9 @@ Bias toward action: a failed concrete attempt produces real information; an unbo
 
 ### Step 2: Implement Per the Plan
 
-Follow the Implementation Plan in the feature document phase by phase:
+**Validate the work-package annotations first.** Plan phases carry `[Depends: … | Files: …]` annotations (see `_LOUIE_/templates/feature-template.md` § Implementation Plan). Before implementing a phase, check that what you're about to write stays inside its declared `Files:` scope. If your plan for a phase would write outside it, that's a **plan deviation** — in manual mode, fix the annotation (with a one-line note to the user) before coding; under auto-pilot, treat it as the deviation tripwire and pause. If the plan has no annotations (a pre-annotation feature doc), that's valid — execute the phases in written order, exactly as always.
+
+Follow the Implementation Plan in the feature document phase by phase — in dependency order (`Depends:` satisfied before a phase starts; unannotated plans: written order):
 
 - Create files in the locations specified by the architecture's folder structure
 - Use the patterns described in the architecture document (repository pattern, service layer, etc.)
