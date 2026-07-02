@@ -18,6 +18,7 @@ Exit 0 = clean; exit 1 with `FAIL:` lines otherwise.
 2. **Merged-bullet corruption.** The "two list items on one line" pattern (`- \`x\` — desc- \`y\` — desc`) that regex-based insertions have produced twice (see CHANGELOG: the `louie-continue` rollout, and the Key Files bug fixed 2026-07-02).
 3. **Path existence.** Every backticked `_LOUIE_/...` path referenced in distributed files (root `CLAUDE.md`, `README.md`, all `.md` under `_LOUIE_/`, the init scripts) must exist. Placeholders (`<...>`), globs (`*`), and ellipses are skipped; `foo.sh/.bat` checks both variants. `_LOUIE-internals/` is exempt — internals docs may reference planned files.
 4. **sh/bat pairing.** Every init script exists in both variants, and both register the same command set.
+5. **Version bump discipline (finding E-03).** `_LOUIE_/VERSION` exists, is a single semver line, and equals the newest `## X.Y.Z — date` release header in `_LOUIE-internals/CHANGELOG.md` — a release cut without a version bump, or a bump without a release, fails. `## Unreleased` may accumulate freely between releases.
 
 ### Deliberate omissions
 

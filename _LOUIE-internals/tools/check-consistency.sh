@@ -17,6 +17,9 @@
 #      distributed files exists in the repo.
 #   4. sh/bat pairing — every init script exists in both variants and both
 #      list the same commands.
+#   5. Version bump discipline — _LOUIE_/VERSION is a valid semver line and
+#      equals the newest release header in _LOUIE-internals/CHANGELOG.md
+#      (a release cut without a bump, or a bump without a release, fails).
 #
 # This tool is framework-repo-only. It is never distributed downstream.
 
@@ -130,6 +133,25 @@ for bat in _LOUIE_/setup/*-init.bat; do
   sh="${bat%.bat}.sh"
   [ -f "$sh" ] || fail "init script has no .sh twin: $bat"
 done
+
+# --- Check 5: version bump discipline -----------------------------------------
+VERSION_FILE="_LOUIE_/VERSION"
+CHANGELOG="_LOUIE-internals/CHANGELOG.md"
+if [ ! -f "$VERSION_FILE" ]; then
+  fail "$VERSION_FILE missing"
+else
+  VERSION="$(sed -e 's/\r$//' "$VERSION_FILE" | head -n1)"
+  if ! printf '%s' "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+    fail "$VERSION_FILE is not a single semver line (got: '$VERSION')"
+  else
+    NEWEST_RELEASE="$(grep -m1 -E '^## [0-9]+\.[0-9]+\.[0-9]+' "$CHANGELOG" | sed -E 's/^## ([0-9]+\.[0-9]+\.[0-9]+).*/\1/')"
+    if [ -z "$NEWEST_RELEASE" ]; then
+      fail "$CHANGELOG has no release header (## X.Y.Z — date)"
+    elif [ "$VERSION" != "$NEWEST_RELEASE" ]; then
+      fail "version mismatch: $VERSION_FILE says $VERSION but newest $CHANGELOG release is $NEWEST_RELEASE (cut a release or bump VERSION — see core.md § Release Process)"
+    fi
+  fi
+fi
 
 # --- Result -------------------------------------------------------------------
 echo ""

@@ -107,6 +107,27 @@ Use forward slashes `/` in all documentation, command references, and agent inst
 
 Init scripts exist as both `.sh` (Mac/Linux) and `.bat` (Windows). When adding a new init script, add both. Keep them behaviorally identical.
 
+## Versioning & Release Process
+
+The framework carries a semver stamp in `_LOUIE_/VERSION` (single line). Because it lives inside `_LOUIE_/`, every downstream copy is stamped automatically, and `louie-update-framework`'s wholesale replace propagates new versions with no extra machinery.
+
+Semantics:
+
+- **Major** — breaking artifact-shape changes (the flat→per-feature layout change would have been a major). These are the versions migrations gate on: `louie-update-framework` runs a migration when its trigger version falls in the local→pulled gap.
+- **Minor** — new commands, agents, recipes, settings, or behavior.
+- **Patch** — fixes and doc corrections.
+
+Cutting a release (do this when merging accumulated work to `main`):
+
+1. In `_LOUIE-internals/CHANGELOG.md`, move the `## Unreleased` content under a new `## <version> — <YYYY-MM-DD>` header (newest release directly below `## Unreleased`).
+2. Set `_LOUIE_/VERSION` to the same version, in the same commit.
+3. Run `bash _LOUIE-internals/tools/check-consistency.sh` — its check 5 fails on a release header without a matching VERSION and vice versa, so a half-done cut can't land.
+4. Tag the merge commit on `main` as `v<version>`.
+
+`louie-update-framework` reads the changelog from its temp clone (the file is in `_LOUIE-internals/`, which is never installed downstream) and prints the sections between the project's version and the pulled one. Projects installed before versioning have no `_LOUIE_/VERSION`; the command detects that and falls back to file-diff reporting and filesystem-based migration detection.
+
+Historical note: releases before 1.0.0 (2026-07-02) were tagged `v05.x` with no VERSION file; those tags remain as history and play no role in the version-gating logic.
+
 ## Handoff Conventions
 
 Agents hand off by ending their response with a structured handoff block (see `_LOUIE_/workflow/agent-handoffs.md`). When adding a new agent, follow the same shape: a summary, what was produced, and the next agent to invoke.

@@ -163,12 +163,13 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### E-03 — Framework versioning: VERSION stamp, cut releases, update-framework delta
 
-- **Tier:** Should Fix · **Status:** pending
+- **Tier:** Should Fix · **Status:** applied
 - **Gap:** `CHANGELOG.md` has a single ever-growing `## Unreleased` section and nothing else; downstream projects have no version marker at all. `louie-update-framework` step 5 ("show what changed") has no basis for a delta — it can only eyeball diffs. The BACKLOG's template-versioning item has the same root cause.
 - **Why it matters:** as downstream projects accumulate, "what changed since I installed" becomes unanswerable; breaking changes (like the per-feature-folder migration) can't be gated on "you're coming from < X."
 - **Recommendation:** add `_LOUIE_/VERSION` (semver; ships with the copy), cut the Unreleased section into dated releases, and have `louie-update-framework` compare local vs. pulled VERSION and print the CHANGELOG slice in between — plus trigger version-gated migrations (the old-layout detection becomes "version < 2.0" instead of filesystem heuristics). Bump via the E-02 tooling.
 - **Detail:** `efficiency.md` § E-03
 - **Touches:** new `_LOUIE_/VERSION`, `CHANGELOG.md` restructure, `louie-update-framework.md`, `core.md` internals (release process)
+- **Progress:** applied 2026-07-02. `_LOUIE_/VERSION` = `1.0.0` (maintainer chose fresh semver over continuing the historical `v05.x` tag scheme); first CHANGELOG release section cut; `louie-update-framework` steps 1/2/3/5/6/7 made version-aware with an explicit pre-VERSION fallback; lint check 5 = bump discipline; process in `core.md` § Versioning & Release Process. Remaining manual step: tag `v1.0.0` on `main` at merge.
 
 ### E-04 — Remove or justify the `model: sonnet` pin in agent frontmatter
 

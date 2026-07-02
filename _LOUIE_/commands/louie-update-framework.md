@@ -14,16 +14,19 @@ When the user says **`louie-update-framework`**, follow this procedure to update
      - `.cursorrules` → Cursor
      - `AGENTS.md` with LOUIE section → Codex / opencode / Pi (shared context file)
    - Read the current `_LOUIE_/` directory to understand what's installed
+   - **Read the installed version:** `_LOUIE_/VERSION` (single line, semver). If the file is absent, this is a pre-versioning copy — note that; steps 5 and 6 fall back to their heuristic behavior.
 
 2. **Pull the latest framework:**
    - **Default source:** `https://github.com/ringdrossel/louie-framework` (branch `main`). Use this unless the user explicitly specified a different source alongside the command.
    - Clone shallow into a temp directory: `git clone --depth 1 https://github.com/ringdrossel/louie-framework /tmp/louie-framework-update`
    - If the clone fails (network, auth, rate limit), report the error and ask the user for an alternative source — do **not** silently fall back to a stale local copy.
+   - **Read the pulled version** from the clone's `_LOUIE_/VERSION`. If local and pulled version are identical, tell the user they're already current and stop (offer to force-refresh the files anyway if they suspect local edits).
    - If the project itself has a git remote pointing at the framework, you can pull there instead (faster, no temp dir). Otherwise the temp clone is canonical.
    - **Never overwrite `_LOUIE-output/`** — that's the user's work. Only update files that ship with the framework (overview.md skeleton is safe to skip if it already has content).
    - After step 4, delete the temp clone (`rm -rf /tmp/louie-framework-update`).
 
 3. **Update the framework files:**
+   - Replace `_LOUIE_/VERSION` with the pulled one (this stamps the project with the new version)
    - Replace `_LOUIE_/agents/` with the latest versions
    - Replace `_LOUIE_/commands/` with the latest versions
    - Replace `_LOUIE_/templates/` with the latest versions
@@ -43,15 +46,18 @@ When the user says **`louie-update-framework`**, follow this procedure to update
    - Cursor → `bash _LOUIE_/setup/cursor-init.sh` (text-routing via `.cursorrules` only — Cursor doesn't expose a markdown drop-in slash-command path)
 
 5. **Show what changed:**
-   - List new/updated/removed commands
-   - List new/updated agents
-   - List any template changes
-   - List new/updated recipes (sections and individual recipes)
+   - **Version delta (preferred):** the temp clone contains the framework's changelog at `_LOUIE-internals/CHANGELOG.md` (that folder is never installed into projects, but it is present in the clone). Print the release sections between the local version (exclusive) and the pulled version (inclusive) as the "what changed" report — e.g. local `1.0.0` → pulled `1.2.0` prints the `1.2.0` and `1.1.0` sections. State the versions: "Updating LOUIE 1.0.0 → 1.2.0."
+   - **Pre-versioning fallback:** if the project had no `_LOUIE_/VERSION` before the update, there is no delta basis — fall back to diffing the file trees and summarize:
+     - List new/updated/removed commands
+     - List new/updated agents
+     - List any template changes
+     - List new/updated recipes (sections and individual recipes)
    - **Check `_LOUIE-output/` for any new canonical outputs introduced by this framework update.** If a new output is now expected (e.g. `runbook.md`) and the project doesn't have it, tell the user and offer to bootstrap it from existing artifacts (architecture, ad-hoc context files). Never silently create files in `_LOUIE-output/`.
    - Highlight breaking changes if any (e.g., renamed files, changed handoff format)
 
-6. **Detect old artifact layout and offer migration:**
-   - Inspect `_LOUIE-output/` for the old flat layout signal:
+6. **Run version-gated migrations, and detect the old artifact layout:**
+   - **Version gating (general rule):** a migration applies when its trigger version falls in the update gap — local version < trigger version ≤ pulled version. The changelog marks breaking artifact-shape changes with a major bump, so the gap tells you exactly which migrations this project still needs. Pre-versioning copies (no local `_LOUIE_/VERSION` before this update) can't be gated — for those, use the filesystem detections below.
+   - **Flat-layout migration (predates versioning — always detected by filesystem, never by version):** inspect `_LOUIE-output/` for the old flat layout signal:
      - At least one `*.md` file directly in `_LOUIE-output/implementations/` other than `overview.md`, OR
      - The directory `_LOUIE-output/requirements/` exists
    - If the old layout is detected, tell the user:
@@ -60,7 +66,7 @@ When the user says **`louie-update-framework`**, follow this procedure to update
    - On decline, leave the project on the old layout and warn that newly-shipped commands assume the new layout — features run via `louie-feature` etc. will produce per-feature folders alongside the old flat files until migration runs.
 
 7. **Confirm success:**
-   - "Framework updated to the latest version. Your `_LOUIE-output/` artifacts are [untouched / migrated to the new layout]."
+   - "Framework updated to <pulled version>. Your `_LOUIE-output/` artifacts are [untouched / migrated to the new layout]."
 
 ## Usage
 
