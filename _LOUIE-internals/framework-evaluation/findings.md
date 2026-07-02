@@ -102,21 +102,23 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### S-03 — `overview.md` index scaling: domain grouping + `Retired` status
 
-- **Tier:** Should Fix · **Status:** pending
+- **Tier:** Should Fix · **Status:** applied
 - **Gap:** the Features table is flat; at 100+ features it's past the "brick" threshold `scaling.md` itself identified. There is also no terminal state — retired features sit in the table forever (open BACKLOG item).
 - **Why it matters:** the overview is the primary triage index (`louie-continue`, Tom, Ivy all anchor on it). A 150-row flat table defeats its purpose.
 - **Recommendation:** group the Features table by domain section (same domain names as S-01/S-02) once past ~30 features; add a `Retired` status (with a one-line `louie-roadmap-change`-style command or a `louie-doc` step) that moves rows to a collapsed "Retired" section at the bottom. Past ~100 features: per-domain overview files + a top index, same pattern as everything else.
 - **Detail:** `scaling.md` § Index Scaling
 - **Touches:** `overview.md` scaffold, `analyst.md` (5b), `louie-feature.md` (13), `louie-doc.md` reconcile, `louie-continue.md`
+- **Progress:** applied 2026-07-02. Three size-triggered stages + `Retired` in `louie-doc`'s reconcile pass; scaffold status legend + grouping note; `feature.md` template Retired marker; `louie-continue` skips Retired. Retirement is set via `louie-doc` (the design's either/or — chose the doc-step over a new one-liner command to avoid conflating features with roadmap epics). E-05: the reconcile pass is itself the migration (channel 4).
 
 ### S-04 — Incremental, chunked `louie-evaluate` + smart-merge on rescan
 
-- **Tier:** Should Fix · **Status:** pending
+- **Tier:** Should Fix · **Status:** applied
 - **Gap:** `louie-evaluate` assumes the whole repo fits one scan, and rescans discard all statuses (the smart-merge BACKLOG item was deferred "until users feel the re-triage pain"). At 100k+ LOC both assumptions fail: a single pass overflows any context, and re-triaging hundreds of findings is prohibitive.
 - **Why it matters:** evaluate is the maintainer's main audit tool; it must work at the scale target. The deferral condition ("users feel the pain") is met by definition once the scale goal is adopted.
 - **Recommendation:** (1) chunked scanning — evaluate per top-level directory / domain (from the S-02 map), each chunk a self-contained pass, merged into one findings set before ID assignment; parallel fan-out where the runtime allows (P-05). (2) Promote smart-merge from BACKLOG: carry status forward on file + normalized-signature match (nearest enclosing function as anchor); unmatched old findings → `resolved`, new → `pending`.
 - **Detail:** `scaling.md` § Evaluate at Scale
 - **Touches:** `louie-evaluate.md`, `evaluate.md` internals, `BACKLOG.md` (absorb entry)
+- **Progress:** applied 2026-07-02. Chunked scan (per domain/dir, merge-then-assign-IDs, concurrent via P-05 on capable runtimes, chunk list in `summary.md`); smart-merge on rescan (file + function-anchored normalized signature; matched carry status + ID, unmatched-old → `resolved` for one run, new → `pending`); `archive` stays the clean-slate path; chunk-aligned `louie-evaluate <domain>` re-runs merge in without scope-mismatch. `evaluate.md` internals § Scanning at Scale added, Future-Considerations smart-merge removed, BACKLOG entry marked DONE.
 
 ### S-05 — Context-read discipline for agents at scale
 
@@ -139,12 +141,13 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### S-07 — `louie-status` aggregation command
 
-- **Tier:** Suggestion · **Status:** pending
+- **Tier:** Suggestion · **Status:** applied
 - **Gap:** open BACKLOG item ("Where am I?"). At 100+ features the absence turns into real navigation cost; `louie-continue` answers "what was I doing," not "what's the state of everything."
 - **Why it matters:** the bigger the project, the more sessions start with orientation; today that's manual grepping.
 - **Recommendation:** implement as specified in BACKLOG (read-only, no agent, pure aggregation): features by status, aggregated Open Questions, stale in-development docs, recent bugfixes, roadmap deltas. Group output by domain once S-03 lands.
 - **Detail:** `scaling.md` § Status Command
 - **Touches:** new `louie-status.md` command + registrations (use E-02's generator/lint when adding)
+- **Progress:** applied 2026-07-02. `louie-status` — read-only, no agent, pure aggregation (features by status, aggregated Open Questions, stale In-Development docs, recent bugfix rows, roadmap deltas; grouped by domain; index-first + `feature.md`-headers-only per S-05). Registered on all 17 surfaces; lint confirms 24 commands. BACKLOG "Where am I?" absorbed.
 
 ---
 
@@ -192,9 +195,10 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### E-05 — Downstream migration path: propagate shape-changing findings through the existing update channels
 
-- **Tier:** Should Fix · **Status:** pending
+- **Tier:** Should Fix · **Status:** applied
 - **Gap:** the scaling/parallelism findings change artifact shapes (annotated plans, split architecture, new codebase map, new overview column), but nothing specifies how *existing* downstream projects get there. `louie-update-framework` never touches `_LOUIE-output/` by design, so without an explicit path, updated framework behavior meets un-migrated project artifacts.
 - **Why it matters:** the framework already has the right propagation channels — wholesale `_LOUIE_/` replace, the step-5 new-canonical-output bootstrap (runbook precedent), the step-6 detect-and-offer-migration hook (`louie-migrate`), and `louie-doc`'s reconcile pass (legacy-overview precedent). Each shape-changing finding must name its channel, or implementers will improvise per-finding and existing projects will drift.
 - **Recommendation:** codify the channel mapping and the two rules: (1) **lazy backfill for P-01** — absent annotations degrade to sequential execution (today's exact behavior); completed features are never annotated retroactively, in-flight ones get annotated on next touch (same "no heuristic backfill" principle as the layout migration); (2) **version-gated migrations via E-03** — extend `louie-update-framework` step 6's detection list (architecture.md over threshold → offer split), add the architecture-split case to `louie-migrate`, add the `Depends on` column to `louie-doc`'s reconcile, and bootstrap `codebase-map.md` through step 5.
 - **Detail:** `efficiency.md` § E-05
 - **Touches:** `louie-update-framework.md` (steps 5–6), `louie-migrate.md`, `louie-doc.md` (reconcile), the P-01 spec (degradation rule), E-03 (version gating)
+- **Progress:** applied 2026-07-02 — not a batch of its own; its channel mapping shipped inside each shape-changing finding, as designed. P-01 lazy-backfill/degradation rule written into the feature-template spec (batch 3). E-03 version-gating in `update-framework` (batch 2). S-01 architecture split via `louie-migrate architecture` + step-6 detection; S-02 codebase-map bootstrap via step 5 (batch 6). P-04 `Depends on` reconcile column in `louie-doc` (batch 7). S-03 grouping/`Retired` is the `louie-doc` reconcile pass itself (batch 8). All four channels exercised; nothing left open.

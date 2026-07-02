@@ -78,7 +78,7 @@ For codebases with < ~15 findings, the per-category split is overkill — collap
 
 ### Stable Finding IDs
 
-Each finding gets `F001`, `F002`, … assigned at scan time. IDs are **stable across files** — the same finding in `findings.md` and `code-quality.md` shares the ID. Apply-loop status updates reference the ID. On rescan with overwrite, IDs are reassigned (no merge in v1; see "Future Considerations" below).
+Each finding gets `F001`, `F002`, … assigned at scan time. IDs are **stable across files** — the same finding in `findings.md` and `code-quality.md` shares the ID. Apply-loop status updates reference the ID. On rescan, IDs are preserved for matched findings and appended for new ones (smart-merge — see below); only `archive` starts IDs fresh.
 
 ### Status Lifecycle
 
@@ -96,11 +96,31 @@ pending  ──► applied
 When `_LOUIE-output/evaluation/summary.md` exists:
 
 - **continue** — skip scan, jump straight to the apply loop using existing findings. This is how the user picks up deferred items or finishes a walkthrough they paused.
-- **rescan** — overwrite all files. **All status is lost** in v1 (see Future Considerations for smart-merge). The `archive` option exists precisely so the user can preserve a prior run before redoing.
-- **archive** — move existing files into `archive/<YYYY-MM-DD>/`, then rescan fresh.
+- **rescan** — re-analyze and **smart-merge** onto the existing set (see below). Triage decisions survive; only genuinely new findings need re-triaging.
+- **archive** — move existing files into `archive/<YYYY-MM-DD>/`, then rescan fresh (IDs and status start clean — the deliberate clean-slate option).
 - **quit** — exit without doing anything.
 
 Default is `continue` if there's pending/deferred work, `rescan` otherwise. The default is informational, not prescriptive — show counts so the user can decide.
+
+## Scanning at Scale (S-04)
+
+Two mechanics keep evaluate usable on a 100k+ LOC repo, where a single pass overflows context and re-triaging hundreds of findings is prohibitive.
+
+### Chunked scan
+
+Scope the scan per **chunk** — one per domain (`codebase-map.md` rows / `architecture.md` domains) or per top-level directory when no map exists. Each chunk is a self-contained Max pass; the per-pass context ceiling is bounded by chunk size, not repo size. On capable runtimes chunks run concurrently (read-only, no write conflict — the P-05 fan-out); otherwise sequentially. **Merge all raw findings, then assign IDs once** — IDs must stay dense and stable, so per-chunk assignment is wrong. Cross-chunk dedup is rare (the same rule in two domains is two per-file findings) and limited to exact file:line repeats. The chunk list is recorded in `summary.md` so `continue`, `rescan`, and domain re-runs reuse the same partition. A small repo is one chunk — no behavior change.
+
+Bonus: a chunk-aligned path argument (`louie-evaluate <domain>`) becomes a targeted re-scan that smart-merges into the whole-repo set instead of tripping the scope-mismatch warning — the "I just refactored auth, re-check only auth" path.
+
+### Smart-merge
+
+Match new→old findings by `file` + normalized signature: category + the offending construct's text, whitespace-collapsed, **anchored to the nearest enclosing function/class name** so line drift doesn't break the match. Matching runs per-chunk (tractable at scale). Outcomes:
+
+- **Matched** → carry status (`applied` / `skipped` / `deferred` / `modified`) and the prior ID forward.
+- **Unmatched old** → `resolved`; kept in a `## Resolved` section for one run, then dropped.
+- **New** → `pending`, ID appended after the current max.
+
+The deferral condition the BACKLOG set for this ("until users feel the re-triage pain") is met by definition once the scale target is adopted — a whole-repo rescan that discarded status was the blocker to using evaluate as an ongoing audit tool.
 
 ### Scope Mismatch
 
@@ -161,7 +181,6 @@ In apply-all mode, the upfront opt-in is the gate. The user explicitly chose una
 
 ## Future Considerations
 
-- **Smart merge on rescan.** Carry status forward when a finding's file:line + signature matches a prior finding. New findings start `pending`. Findings no longer present move to `resolved`. Real work — added to `BACKLOG.md`.
 - **Custom standards source.** Today the lens is always `_LOUIE_/guidelines/coding-guidelines.md`. A `--standards <path>` flag for non-LOUIE projects with their own standards. Defer until requested.
 - **Severity scoring vs. tier tally.** Only tier counts for now. Numeric scores invite arguing about formulas.
 - **Cross-LOUIE-project comparison.** When a user has multiple LOUIE projects, an aggregate "which project needs work first?" view. Not the current command's job; would be a `louie-portfolio` or similar.

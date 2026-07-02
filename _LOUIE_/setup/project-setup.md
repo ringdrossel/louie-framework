@@ -221,6 +221,7 @@ The init scripts (Step 2) report adapter availability at the end of their output
 | Quick change (< 50 lines, auto-escalates to `louie-extend`) | `louie-update` |
 | Diagnose and fix a bug | `louie-bugfix` |
 | Resume in-progress work after a break (reconstruct from artifacts + git) | `louie-continue` |
+| Read-only project snapshot (features by status, open questions, stale docs, recent fixes) | `louie-status` |
 | Code review by Max | `louie-review` |
 | Review + fix + update docs in one flow | `louie-review-doc` |
 | Whole-codebase standards assessment with persistent findings + apply loop | `louie-evaluate` |

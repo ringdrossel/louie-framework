@@ -65,6 +65,7 @@ echo ^| `/louie-extend` ^| Extend an existing feature ^|
 echo ^| `/louie-update` ^| Quick change ^(^< 50 lines^) ^|
 echo ^| `/louie-bugfix` ^| Diagnose and fix a bug ^|
 echo ^| `/louie-continue` ^| Resume in-progress work after a break ^|
+echo ^| `/louie-status` ^| Read-only project snapshot (features, open questions, stale docs) ^|
 echo ^| `/louie-review` ^| Code review by Max ^|
 echo ^| `/louie-review-doc` ^| Review + fix + update docs ^|
 echo ^| `/louie-evaluate` ^| Whole-codebase standards assessment + step-by-step apply loop ^|

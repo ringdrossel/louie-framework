@@ -20,6 +20,7 @@ All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
 | `louie-update` | Quick change (< 50 lines, auto-escalates to `louie-extend`) |
 | `louie-bugfix` | Diagnose and fix a bug |
 | `louie-continue` | Resume in-progress work after a break (reconstruct from artifacts + git) |
+| `louie-status` | Read-only project snapshot — features by status, open questions, stale docs, recent fixes |
 | `louie-review` | Code review by Max |
 | `louie-review-doc` | Review + fix + update docs in one flow |
 | `louie-evaluate` | Assess a whole codebase against LOUIE standards; persistent findings + optional step-by-step apply loop |

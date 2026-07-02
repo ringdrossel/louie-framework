@@ -15,7 +15,7 @@ It does **not** read or recover past chat transcripts — a LOUIE command can't 
    - If there's no `_LOUIE-output/` yet, tell the user there's no LOUIE project to continue and point them at `louie-setup` / `louie-import`.
 
 2. **Detect in-progress work** (gather candidates from two signals):
-   - **Overview anchor:** every row in the Features table with `Status: In Development`. This is the primary signal for feature work — `louie-feature` sets it when coding starts.
+   - **Overview anchor:** every row in the Features table with `Status: In Development`. This is the primary signal for feature work — `louie-feature` sets it when coding starts. Skip any row in the collapsed `### Retired` section — retired features are terminal, not resumable.
    - **Git anchor:** run `git status` and `git diff --stat`, note the current branch and recent commits. Uncommitted changes, a `feature/<name>` branch, or recently-touched source under a feature folder all point at active work. This catches **bugfix / extend** in progress (which don't flip the overview to `In Development`): look for a recently-added `implementations/<feature>/bugfixes/<date>-<slug>.md` (or `_LOUIE-output/bugfixes/<date>-<slug>.md`) whose fix isn't committed, or a `requirements.md` recently appended by `louie-extend`.
    - Build a candidate list. Each candidate is `(target, kind ∈ {feature, bugfix, extend}, evidence)`.
 

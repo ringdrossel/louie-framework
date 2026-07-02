@@ -40,18 +40,28 @@ If `_LOUIE-output/evaluation/summary.md` already exists:
 
   What would you like to do?
     [c]ontinue   skip scan, resume apply phase using existing findings
-    [r]escan     re-analyze codebase, overwrite existing findings
-    [a]rchive    move existing to evaluation/archive/<YYYY-MM-DD>/, then rescan
+    [r]escan     re-analyze codebase, smart-merge onto existing statuses
+    [a]rchive    move existing to evaluation/archive/<YYYY-MM-DD>/, then rescan fresh
     [q]uit
   ```
 - Default = `continue` if there are `pending` or `deferred` findings, otherwise `rescan`.
-- If the user picks `archive`, move the existing files (excluding any prior `archive/` folder) into `_LOUIE-output/evaluation/archive/<YYYY-MM-DD>/` then proceed to scan.
+- If the user picks `archive`, move the existing files (excluding any prior `archive/` folder) into `_LOUIE-output/evaluation/archive/<YYYY-MM-DD>/` then proceed to scan **fresh** (no merge — the archive is the clean-slate option).
 - If the user picks `continue`, jump to Step 6.
+
+**Smart-merge on rescan.** `rescan` no longer discards triage decisions. After the new scan produces raw findings (Step 5), match each against the prior findings set **before** assigning IDs:
+
+- **Match key:** `file` + a normalized signature (category + the offending construct's text, whitespace-collapsed, anchored to the nearest enclosing function/class name so line drift doesn't break the match). Matching runs per-chunk, so it stays tractable at scale.
+- **Matched** → carry the prior status forward (`applied` / `skipped` / `deferred` / `modified`), keeping the prior ID.
+- **Unmatched old** (in prior set, not re-found) → status `resolved`; keep in a `## Resolved` section for one run, then drop on the following rescan.
+- **New** (re-found, no prior match) → `pending`, fresh ID appended after the highest existing.
+
+This means a re-run on a 100k-LOC repo re-triages only genuinely new findings, not hundreds of already-decided ones.
 
 ### 3. Determine scope
 
 - If the user passed a path (e.g. `louie-evaluate src/api`), evaluate only that path. Record it in `summary.md` so future runs can detect a scope mismatch.
-- If a previous evaluation existed with a different scope and the user picked `rescan`/`archive`, warn explicitly before proceeding — don't silently mix scopes.
+- **Domain re-scan (chunk-aligned):** if the passed path matches a **chunk** recorded in `summary.md`'s chunk list (e.g. `louie-evaluate <domain>` or a top-level dir the last whole-repo run scanned), treat it as a targeted re-scan of that chunk and **smart-merge its findings into the existing whole-repo set** — don't warn about scope mismatch, and don't touch other chunks' findings. This is the cheap "I just refactored auth, re-check only auth" path.
+- If a previous evaluation had a genuinely different scope (not a chunk of it) and the user picked `rescan`/`archive`, warn explicitly before proceeding — don't silently mix scopes.
 - Otherwise evaluate the whole repo, excluding obvious ignore paths (`node_modules/`, `.git/`, `dist/`, `build/`, `target/`, `vendor/`, `.next/`, `__pycache__/`, etc.).
 
 ### 4. Sophie pass (structural — non-LOUIE mode only)
@@ -64,6 +74,8 @@ In non-LOUIE mode:
 - This file gives Max enough context to evaluate without re-scanning. If the user later runs `louie-import`, this map can be promoted to `_LOUIE-output/codebase-map.md` as-is.
 
 ### 5. Max pass (standards)
+
+**Chunked scanning (large codebases).** Don't assume the whole repo fits one pass. Scope the scan into chunks — **one per domain** (from `_LOUIE-output/codebase-map.md` rows, or `architecture.md` domains) or **per top-level directory** when no map exists. Each chunk is a self-contained Max pass producing raw findings against its slice. On a capable runtime the chunks run **concurrently** (read-only, no conflict — see `_LOUIE_/guidelines/execution-guidelines.md`); otherwise sequentially. Either way the context ceiling per pass is bounded by chunk size, not repo size. **Merge all chunks' raw findings first, then assign IDs once** (IDs must stay stable and dense — never assign per-chunk). Cross-chunk duplicates are rare (the same rule violated in two domains stays per-file) — dedupe only exact file:line repeats. Record the chunk list in `summary.md` so `continue` and rescans reuse the same partition. A small repo is simply one chunk — no behavior change.
 
 Read and follow `_LOUIE_/agents/reviewer.md`. Tell Max this is **evaluate mode**. The standard Max review is the lens; evaluate-mode adds:
 

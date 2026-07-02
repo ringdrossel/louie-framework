@@ -43,19 +43,9 @@ Proposed: a `louie-release` command that:
 
 Open questions: which agent owns this (Sophie? new persona? command-only with no agent)? Does it interact with the merge-to-main gate or sit downstream of it? How does it handle multiple in-flight features being released together?
 
-### "Where am I?" status command
+### "Where am I?" status command — DONE (S-07)
 
-Long-running projects accumulate in-flight features, open questions across docs, and stale feature docs. There's no quick way to ask "what's the state?" without grepping.
-
-Proposed: a `louie-status` (or `louie-overview`) command that summarizes:
-
-- Features by status (Planned / In Development / Implemented / Tested) from `implementations/overview.md` and per-feature docs
-- All `## Open Questions` sections aggregated across requirements and feature docs
-- Stale feature docs (e.g., In Development with no Change History entry in N days)
-- Recent runbook gotchas
-- Any architecture/tech-stack items added since last status check
-
-Read-only command. No agent. Pure aggregation.
+Implemented as `louie-status` (2026-07-02). Read-only, no agent, pure aggregation: features by status, aggregated Open Questions, stale `In Development` docs, recent bugfix rows, roadmap deltas — grouped by domain, index-first per Context Discipline. See `_LOUIE_/commands/louie-status.md` and CHANGELOG.
 
 ### Scaling the artifact layout for large projects
 
@@ -65,17 +55,13 @@ Direction locked in: **universal per-feature folders** (`implementations/<featur
 
 Largest structural change since the framework was built. Touches templates, every command that writes to `_LOUIE-output/`, all agents, the overview format, `louie-update-framework`, and adds `louie-migrate`. Best done on its own feature branch.
 
-### Smart merge for `louie-evaluate` rescan
+### Smart merge for `louie-evaluate` rescan — DONE (S-04)
 
-`louie-evaluate` v1 overwrites all findings on rescan — the `archive` option preserves the prior run as a folder, but the live findings lose their `applied`/`skipped`/`modified`/`deferred` status (IDs are reassigned fresh). On a large codebase that's re-evaluated periodically, that means re-triaging things the user already decided on.
-
-Proposed: a smart merge that carries status forward when a new finding matches a prior one by **file:line + signature**. New findings start `pending`; findings no longer present move to `resolved`. Needs a stable signature scheme that survives line-number drift (e.g. a normalized hash of the offending construct + nearest stable anchor like the enclosing function name), otherwise every edit above a finding invalidates the match.
-
-Defer until users actually feel the re-triage pain — premature signature schemes are easy to get wrong and hard to change once findings files exist in the wild.
+Implemented 2026-07-02 alongside chunked scanning. Rescan now matches new→old findings by `file` + normalized signature anchored to the nearest enclosing function/class; matched carry status forward, unmatched-old → `resolved`, new → `pending`. `archive` remains the clean-slate option. See `_LOUIE-internals/evaluate.md` § Scanning at Scale and CHANGELOG.
 
 ## Smaller / nice-to-have
 
-- **No deprecation path for retired features.** Their docs just sit in `implementations/`. Could be a `louie-retire` command or a status flag.
+- ~~**No deprecation path for retired features.**~~ DONE (S-03, 2026-07-02): terminal `Retired` status; `louie-doc` moves the row to a collapsed `### Retired` section, folder stays on disk, agents skip it when scanning.
 - **No domain glossary artifact.** Tom captures personas but not vocabulary. For projects with heavy jargon, terms should have a single home (e.g., `_LOUIE-output/glossary.md`).
 - **Multi-repo / monorepo story.** Current model assumes one project per LOUIE install. Big projects with backend/frontend/mobile splits have no story.
 - **Test coverage thresholds.** Ava's coverage is descriptive, never measured against a minimum. Could be a tech-stack-level setting.

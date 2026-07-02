@@ -34,6 +34,7 @@ Available commands:
 - `louie-update` → `_LOUIE_/commands/louie-update.md`
 - `louie-bugfix` → `_LOUIE_/commands/louie-bugfix.md`
 - `louie-continue` → `_LOUIE_/commands/louie-continue.md`
+- `louie-status` → `_LOUIE_/commands/louie-status.md`
 - `louie-review` → `_LOUIE_/commands/louie-review.md`
 - `louie-review-doc` → `_LOUIE_/commands/louie-review-doc.md`
 - `louie-evaluate` → `_LOUIE_/commands/louie-evaluate.md`

@@ -13,6 +13,8 @@
 - [ ] Implemented
 - [ ] Tested
 
+<!-- Retired: a feature that's been removed or superseded. Add "**Retired:** YYYY-MM-DD — <reason>" here when it happens; louie-doc moves the overview row to its collapsed Retired section. The folder stays on disk for history. -->
+
 ## Metadata
 
 - **Type:** API / Client / Integration
