@@ -130,6 +130,15 @@ Cutting a release (do this when merging accumulated work to `main`):
 
 Historical note: releases before 1.0.0 (2026-07-02) were tagged `v05.x` with no VERSION file; those tags remain as history and play no role in the version-gating logic.
 
+## Monorepo Direction
+
+Decision rule for a repo containing multiple packages (backend/frontend/mobile, or several services). No machinery — this is a documented convention, not a new flow.
+
+- **Default: one `_LOUIE-output/` per repo, even for monorepos.** The domain partitioning (`architecture.md` split, `codebase-map.md`, overview grouping — all S-01/S-02/S-03) carries the backend/frontend/mobile structure. Features regularly span packages — an API + UI feature is *one* feature — and a per-package `_LOUIE-output/` would force cross-cutting features into two half-artifacts. `tech-stack.md` gains a **Per-Package Commands** table (install/lint/test/build per package) so Nina and Ava know which package's commands to run for a given path; the work-package `Files:` scopes map each change to its package mechanically.
+- **Exception: genuinely independent products in one repo** (separate deploys, separate users, near-zero shared code) → a per-product `_LOUIE-output/` in each product root. Commands operate on the nearest `_LOUIE-output/` above the working path.
+
+The test is shared-code and shared-features, not directory count: if features cross the package boundary, it's one install; if the products never share a feature, split them.
+
 ## Handoff Conventions
 
 Agents hand off by ending their response with a structured handoff block (see `_LOUIE_/workflow/agent-handoffs.md`). When adding a new agent, follow the same shape: a summary, what was produced, and the next agent to invoke.

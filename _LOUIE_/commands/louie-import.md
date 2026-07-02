@@ -43,7 +43,7 @@ After it completes, the project is indistinguishable from one that went through 
 
 5. **Invoke Sophie (Architect) — codebase analysis pass:**
    - Read and follow `_LOUIE_/agents/architect.md`.
-   - Tell Sophie this is import mode. She is to analyze the codebase directly:
+   - Tell Sophie this is import mode. She is to analyze the codebase directly (on a capable runtime she may fan the scan out per top-level directory / domain as concurrent read-only passes, merging before she writes — see `_LOUIE_/guidelines/execution-guidelines.md` § Read Fan-Out; sequential runtimes scan in order):
      - Inspect manifest files (`package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, `pom.xml`, `build.gradle`, `composer.json`, `Gemfile`, `mix.exs`, `setup.py`, `requirements.txt`, etc.) to determine the tech stack.
      - Inspect entry points, top-level module layout, framework signatures, and folder shape to infer the architecture.
      - Inspect manifests, `Dockerfile`, `docker-compose.yml`, `.env.example`, and `README.md` to fill the runbook (start/build/test commands, ports, env vars, external services).

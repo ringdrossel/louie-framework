@@ -47,3 +47,11 @@ Last Updated: YYYY-MM-DD
 ## Version Requirements
 
 - [e.g., Node.js >= 20, .NET >= 8]
+
+## Per-Package Commands (monorepos only)
+
+> Fill this in only for a monorepo (multiple packages in one repo). One `_LOUIE-output/` still governs the whole repo — domains (`architecture.md` / `codebase-map.md`) carry the backend/frontend/mobile partitioning, and a feature that spans packages is still *one* feature. This table tells Nina and Ava **which package's commands to run** for a given path; work-package `Files:` scopes map the change to its package. See `_LOUIE-internals/core.md` § Monorepo Direction for the single-vs-per-product decision rule.
+
+| Package | Path root | Install | Lint | Test | Build |
+|---------|-----------|---------|------|------|-------|
+| [name] | [e.g., packages/api] | [cmd] | [cmd] | [cmd] | [cmd] |

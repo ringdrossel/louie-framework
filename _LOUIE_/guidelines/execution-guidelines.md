@@ -69,6 +69,21 @@ When a scope split (Tom's Scope Split Gate) produced several features, the same 
 - **Branch/merge:** under `current` branch mode all features land on the current branch and the orchestrator owns commit ordering. Under `ask`-mode-with-branches, one branch per feature and **sequential merges** at the end — merge stays a per-feature user gate (Critical Rule #3), never parallel.
 - **Sequential fallback:** a dependency-ordered queue — build the ready features in order, one at a time. Exactly today's behavior; no feature waits on an unrelated one.
 
+## Read Fan-Out
+
+The cheapest concurrency win, zero risk — reads can't conflict. Each agent's "Context (Read First)" list is a set of *independent* reads, not ordered steps: on a capable runtime, batch them or read them concurrently; order doesn't matter. Sequential runtimes read them in listed order — no change.
+
+Whole-codebase scans (`louie-evaluate`, `louie-import`'s Sophie pass) fan out the same way: on a capable runtime, scan per top-level directory (or per domain / category) as concurrent read-only passes, then **merge results before assigning finding IDs** (IDs must stay stable and dense — never assign per-chunk). On other runtimes, the same chunking runs sequentially. This is the enabling half of the chunked evaluate (S-04).
+
+## Reviewer/Tester Overlap
+
+Only under auto-pilot on a capable runtime; the default everywhere else (and in manual mode) stays serial Max → Ava.
+
+- After Nina's handoff, dispatch **Max and Ava together**. Ava works from `feature.md` + `requirements.md` — her test checklist barely depends on Max's verdict.
+- When Max returns clean: Ava's result stands; have Ava (same subagent, follow-up) fold Max's "Key concerns for testing" into a targeted top-up pass.
+- When Max requires fixes: the fix rounds run as usual; Ava's suite then **re-runs against the fixed code** — her tests weren't wasted, they're the regression net for the fix round.
+- Honest cost/benefit: one extra Ava top-up pass vs. Max's full wall-clock hidden. Worth it on big features, which is why it stays a *suggestion*, not a default.
+
 ## Gate Composition
 
 Parallelism and gates compose by **containment**: concurrency lives strictly inside the unattended stretches auto-pilot already defines. This adds no new mode and no new setting — parallel execution is an execution strategy inside existing modes. (If it ever needs a kill switch, a `parallel: on/off` line under the runbook's `## Auto-Pilot` is the natural slot — deliberately deferred until someone actually asks.)

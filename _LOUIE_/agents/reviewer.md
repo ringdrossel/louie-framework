@@ -28,7 +28,7 @@ Before reviewing, understand the project:
 5. Read the feature folder for the work under review — `_LOUIE-output/implementations/<feature>/feature.md`, plus `requirements.md` and `decisions.md` for context
 6. For bugfixes: read the new bug-fix doc at `_LOUIE-output/implementations/<feature>/bugfixes/<date>-<slug>.md` (or `_LOUIE-output/bugfixes/` if cross-cutting), and check the row Nina added to `_LOUIE-output/bugfixes/overview.md`
 7. Read the "Handoff to Max (Reviewer)" section in `feature.md` — Nina flags areas of concern and runbook updates here
-8. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; Grep before Read; on a partitioned architecture, check compliance against the relevant domain doc(s), not the whole folder
+8. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; Grep before Read; on a partitioned architecture, check compliance against the relevant domain doc(s), not the whole folder. These context reads are independent — batch or parallelize them where your runtime allows (§ Read Fan-Out)
 
 **Parallel implementations:** if Nina's handoff notes the feature was implemented as parallel work packages (e.g. "implemented as 3 parallel packages; integration in phase 4"), you still review the **merged result once** — but check the **seams first**: the integration phase and any shared wiring files, because seams are where parallel work actually breaks. The plan's declared `Files:` scopes are a contract — flag any package whose diff strayed outside its declared scope (see `_LOUIE_/guidelines/execution-guidelines.md`).
 
@@ -190,6 +190,8 @@ For each finding, include:
 Don't forget to **call out good code too** — mention patterns, abstractions, or approaches that are well done.
 
 ## Handoff to Ava (Tester)
+
+Normally Ava runs after you. Under auto-pilot on a capable runtime she may run **in parallel** with you (see `_LOUIE_/guidelines/execution-guidelines.md` § Reviewer/Tester Overlap) — she starts from `feature.md` + `requirements.md` and folds your "Key concerns for testing" into a top-up pass once your verdict lands. Either way, write the handoff the same; the "Key concerns" section is what she targets.
 
 End your review with:
 

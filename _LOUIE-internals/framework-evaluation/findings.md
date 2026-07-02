@@ -50,12 +50,13 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### P-05 — Parallel read/analysis fan-out
 
-- **Tier:** Suggestion · **Status:** pending
+- **Tier:** Suggestion · **Status:** applied
 - **Gap:** agents' "Context (Read First)" lists are presented as sequential steps; `louie-evaluate` and `louie-import` scan whole codebases as one linear pass.
 - **Why it matters:** cheapest latency win, zero risk — reads can't conflict. On large codebases (see S-04) fan-out is what makes whole-repo scans feasible at all.
 - **Recommendation:** one line in each agent's Context section ("these reads are independent — batch or parallelize them if your runtime allows"); `louie-evaluate`/`louie-import` gain a fan-out note: on capable runtimes, scan per top-level directory (or per category) concurrently, then merge findings before ID assignment.
 - **Detail:** `parallelism.md` § Read Fan-Out
 - **Touches:** all agent Context sections, `louie-evaluate.md` (step 5), `louie-import.md`
+- **Progress:** applied 2026-07-02. § Read Fan-Out added to `execution-guidelines.md`; the fan-out clause folded into all seven agents' existing S-05 Context Discipline pointer (no new list item); evaluate step 5 + import Sophie scan reference it. The chunked-scan half was already leaned on by S-04 — this formalizes the independent-reads principle.
 
 ### P-06 — Auto-pilot is the gate model for parallel execution
 
@@ -69,12 +70,13 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### P-07 — Overlap Max's review and Ava's test writing
 
-- **Tier:** Suggestion · **Status:** pending
+- **Tier:** Suggestion · **Status:** applied
 - **Gap:** Max → Ava is serial; both only read after Nina finishes. Ava's only true input from Max is the "Key concerns for testing" handoff.
 - **Why it matters:** modest wall-clock win on every feature; both agents are read-only against source.
 - **Recommendation:** on capable runtimes under auto-pilot, dispatch Max and Ava concurrently after Nina; Ava starts from `feature.md` + `requirements.md`; when Max's verdict lands, Ava folds "Key concerns" into a targeted second pass. If Max requires changes, Ava's tests are re-validated after Nina's fix round (same as a cap-hit today). Keep serial as the default and in manual mode.
 - **Detail:** `parallelism.md` § Reviewer/Tester Overlap
 - **Touches:** `reviewer.md`, `tester.md`, `louie-feature.md` (steps 11–12)
+- **Progress:** applied 2026-07-02. § Reviewer/Tester Overlap in `execution-guidelines.md` (auto-pilot + capable runtime only; serial default and in manual mode); `tester.md` handles a not-yet-available review (start from feature.md+requirements.md, top-up on Max's Key concerns, re-run after fixes); `reviewer.md` handoff notes the parallel case; `louie-feature` steps 11–12 carry the optional-overlap pointer.
 
 ---
 
@@ -132,12 +134,13 @@ Tier meanings: **Critical** = structural gap blocking a stated goal. **Should Fi
 
 ### S-06 — Monorepo / multi-package story
 
-- **Tier:** Suggestion · **Status:** pending
+- **Tier:** Suggestion · **Status:** applied
 - **Gap:** open BACKLOG item; one `_LOUIE-output/` per install, no story for backend/frontend/mobile splits.
 - **Why it matters:** most 100k+ LOC systems are monorepos; without a convention, users improvise divergent layouts.
 - **Recommendation:** stay single-install: one root `_LOUIE-output/`, domains (S-01/S-02/S-03) carry the partitioning, and `tech-stack.md` gains a per-package section (build/test commands per package — Nina and Ava need this). Per-subproject `_LOUIE-output/` only for genuinely independent products in one repo. Document the decision rule; don't build machinery yet.
 - **Detail:** `scaling.md` § Monorepo Direction
 - **Touches:** `core.md` internals, `tech-stack-template.md`, `project-setup.md`
+- **Progress:** applied 2026-07-02 as a documented decision rule (no machinery, per the design). `core.md` § Monorepo Direction (one `_LOUIE-output/` default; per-product only for genuinely independent products; the shared-features test); `tech-stack-template.md` gains a Per-Package Commands table so Nina/Ava know which package's commands to run. BACKLOG multi-repo item absorbed.
 
 ### S-07 — `louie-status` aggregation command
 

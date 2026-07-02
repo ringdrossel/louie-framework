@@ -63,7 +63,7 @@ Implemented 2026-07-02 alongside chunked scanning. Rescan now matches new→old 
 
 - ~~**No deprecation path for retired features.**~~ DONE (S-03, 2026-07-02): terminal `Retired` status; `louie-doc` moves the row to a collapsed `### Retired` section, folder stays on disk, agents skip it when scanning.
 - **No domain glossary artifact.** Tom captures personas but not vocabulary. For projects with heavy jargon, terms should have a single home (e.g., `_LOUIE-output/glossary.md`).
-- **Multi-repo / monorepo story.** Current model assumes one project per LOUIE install. Big projects with backend/frontend/mobile splits have no story.
+- ~~**Multi-repo / monorepo story.**~~ DONE (S-06, 2026-07-02): documented decision rule — default one `_LOUIE-output/` per repo with domains carrying the partitioning + a `tech-stack.md` Per-Package Commands table; per-product `_LOUIE-output/` only for genuinely independent products. See `core.md` § Monorepo Direction.
 - **Test coverage thresholds.** Ava's coverage is descriptive, never measured against a minimum. Could be a tech-stack-level setting.
 - **Tom standalone.** Tom can't be invoked just to "capture this idea" without committing to setup/feature. A `louie-capture` or `--requirements-only` flag would help when the user is still uncertain. *Partially absorbed by `louie-roadmap` (capture without commitment); the remaining gap is "I want Tom-level requirements but no architecture/chain" which is a distinct use case.*
 - **ADR growth.** Architecture template mentions ADRs but nothing adds new ones over time. Either a `louie-adr` command or a slot in `louie-extend`/`louie-feature` to capture decisions made during the chain.

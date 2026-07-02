@@ -27,7 +27,7 @@ Before designing:
 4. Read `_LOUIE_/guidelines/coding-guidelines.md` — know the frontend-specific rules (component size limits, composition patterns)
 5. Read `_LOUIE_/guidelines/interaction-guidelines.md` — when your proposal gate offers the user discrete options, present them as a structured choice (selectable where the runtime supports it, lettered list otherwise)
 6. If designing for a specific feature, read its folder: `_LOUIE-output/implementations/<feature>/feature.md` and `requirements.md`
-7. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; on a partitioned architecture, read only the domain doc(s) for the UI you're designing
+7. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; on a partitioned architecture, read only the domain doc(s) for the UI you're designing. These context reads are independent — batch or parallelize them where your runtime allows (§ Read Fan-Out)
 
 ## Responsibilities
 

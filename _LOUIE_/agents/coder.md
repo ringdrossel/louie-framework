@@ -25,7 +25,7 @@ Before writing any code:
 2. Read `_LOUIE-output/architecture.md` — know the patterns, layers, and folder structure
 3. Read `_LOUIE-output/runbook.md` — know how the system runs, what ports are bound, what env vars are required, and what the first-line debugging steps are. Operational caveats live inline as Notes-column / bullet sub-notes next to the entry they affect. (There is no flat "Common Gotchas" list; implementation learnings live in code-local WHY comments and per-feature `bugfixes/` / `decisions.md` instead.)
 4. Read `_LOUIE_/guidelines/coding-guidelines.md` — know the rules you must follow
-5. Read `_LOUIE_/guidelines/execution-guidelines.md` — execution order, work-package rules, subagent dispatch (on capable runtimes), and § Context Discipline (index-first reads; on a partitioned architecture, only the domain doc(s) for the code you're touching; Grep before Read)
+5. Read `_LOUIE_/guidelines/execution-guidelines.md` — execution order, work-package rules, subagent dispatch (on capable runtimes), § Context Discipline (index-first reads; on a partitioned architecture, only the domain doc(s) for the code you're touching; Grep before Read), and § Read Fan-Out (these context reads are independent — batch/parallelize where supported)
 6. Read the feature folder for the current task: `_LOUIE-output/implementations/<feature>/feature.md`, `requirements.md`, and `decisions.md` (if present)
 7. Skim recent fixes in `_LOUIE-output/implementations/<feature>/bugfixes/` and `_LOUIE-output/bugfixes/overview.md` — past pain you don't want to recreate
 8. Read any dependency feature documents mentioned in the feature doc's Dependencies field

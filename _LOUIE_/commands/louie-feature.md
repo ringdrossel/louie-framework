@@ -72,6 +72,7 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
 12. **Invoke Ava (Tester):**
     - Read and follow `_LOUIE_/agents/tester.md`
     - Ava writes tests and gives a ship recommendation
+    - **Overlap (optional, auto-pilot + capable runtime):** Max (11) and Ava (12) may be dispatched together after Nina — Ava starts from `feature.md` + `requirements.md`, then folds Max's "Key concerns" into a top-up pass; if Max requires fixes, Ava's suite re-runs against the fixed code. See `_LOUIE_/guidelines/execution-guidelines.md` § Reviewer/Tester Overlap. Default and manual mode: serial, Max then Ava.
 
 13. **Sync overview + roadmap status:**
     - **Overview:** set the feature's row in `_LOUIE-output/implementations/overview.md` to `Status: Tested` if Ava wrote tests and they pass, otherwise `Status: Implemented`. This must match the `feature.md` checkboxes Nina/Ava ticked — they are the source of truth; the overview Status mirrors them. Update the `Last Updated:` line.

@@ -27,8 +27,8 @@ Before writing tests:
 3. Read `_LOUIE_/guidelines/coding-guidelines.md` — follow the testing conventions (AAA pattern, naming, assertions)
 4. Read the feature folder for the current task — `_LOUIE-output/implementations/<feature>/feature.md` (and `requirements.md` + `decisions.md` if relevant)
 5. For regression tests on a bug fix, read the bug-fix doc at `<feature>/bugfixes/<date>-<slug>.md` (or `_LOUIE-output/bugfixes/<date>-<slug>.md` for cross-cutting) — the regression test must reference it
-6. Read Max's review if available — his "Key concerns for testing" section tells you where to focus
-7. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; Grep before Read on source; on a partitioned architecture, read only the relevant domain doc(s)
+6. Read Max's review if available — his "Key concerns for testing" section tells you where to focus. **If it isn't available yet** (you were dispatched in parallel with Max under auto-pilot — see `_LOUIE_/guidelines/execution-guidelines.md` § Reviewer/Tester Overlap), start from `feature.md` + `requirements.md`; when Max's verdict lands, fold his "Key concerns" into a targeted top-up pass, and re-run your suite after any fix round.
+7. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; Grep before Read on source; on a partitioned architecture, read only the relevant domain doc(s). These context reads are independent — batch or parallelize them where your runtime allows (§ Read Fan-Out)
 
 ## Testing Strategy
 
