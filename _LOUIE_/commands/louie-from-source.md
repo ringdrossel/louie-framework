@@ -47,3 +47,4 @@ louie-from-source 42       — fetch task with ID 42
 
 - This command is the public, tool-agnostic entry point. All source-specific behaviour (endpoints, auth, payloads) lives in a private adapter (`louie-adapters/<name>/adapter.md` in the project, or `~/.louie/adapters/<name>/adapter.md` machine-global), never in `_LOUIE_/`.
 - If any adapter call fails (auth, network, unexpected shape), surface the error and stop — don't silently continue or fabricate a task.
+- **Agentic composition:** when an autonomous agent (not a human) is driving this command, run the routed command with `--agentic` — the concept becomes the task spec for Tom's evidential gate, and the run ends in a run report instead of chat gates. Mirror the run-report `Status` back via `update_status` (`completed` → "Done"; `needs-human` / `blocked` → your escalation state, not "Done"). See `_LOUIE_/workflow/agentic-mode.md`.

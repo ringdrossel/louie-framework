@@ -72,6 +72,15 @@ What the `update:` toggle (or a `--auto`/`--manual` flag) does:
 
 Resolution order is the same as the other commands: `--auto`/`--manual` flag > `runbook.md` `## Auto-Pilot` `update:` value (default `off`).
 
+## Agentic
+
+When invoked with `--agentic`, an autonomous agent is driving (full contract: `_LOUIE_/workflow/agentic-mode.md`). Thin here, like auto-pilot:
+
+- Auto-pilot is implied `on` (slim Max review runs as a loop). `--agentic --manual` is a contradiction — stop.
+- **The feature must resolve without a prompt** (Step 2): if the invocation doesn't name it unambiguously, write a run report with `status: needs-human` and stop.
+- **The 50-line escalation halts instead of asking:** write the run report with `status: needs-human` recommending `louie-extend --agentic`, leave the work uncommitted-but-intact, and stop. Same for a real bug surfacing mid-review — report `needs-human` recommending `louie-bugfix` rather than switching flows on your own.
+- On completion, write the run report to `_LOUIE-output/implementations/<feature>/run-report.md` (`status: completed`); the commit-message step still runs, the commit/merge decision stays human.
+
 ## Escalation Rule
 
 **If the change grows beyond 50 lines during implementation → STOP.**

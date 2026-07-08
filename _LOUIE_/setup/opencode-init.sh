@@ -37,6 +37,8 @@ else
 
 This project uses **LOUIE** (Lean Orchestration for Unified Intelligent Engineering) for AI-assisted development.
 
+**Operating autonomously?** If no human can answer prompts in this session, read `_LOUIE_/workflow/agentic-mode.md` before invoking any louie command.
+
 ### Commands
 
 LOUIE commands are available as opencode slash commands (`/louie-*`). Type `/louie-` to see all available commands in the palette. Typing the bare name without the slash (e.g. `louie-setup`) also works — opencode reads the matching file from `.opencode/command/` either way, and the routing table below lets the agent resolve names that miss the autocomplete.

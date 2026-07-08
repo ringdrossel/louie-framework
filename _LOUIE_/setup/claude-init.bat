@@ -51,6 +51,8 @@ echo ## LOUIE Framework
 echo.
 echo This project uses **LOUIE** ^(Lean Orchestration for Unified Intelligent Engineering^) for AI-assisted development.
 echo.
+echo **Operating autonomously?** If no human can answer prompts in this session, read `_LOUIE_/workflow/agentic-mode.md` before invoking any louie command.
+echo.
 echo ### Commands
 echo.
 echo LOUIE commands are available as slash commands ^(`/louie-*`^). Type `/louie-` to see all available commands.

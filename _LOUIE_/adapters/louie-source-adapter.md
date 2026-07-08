@@ -66,3 +66,13 @@ The routed command still runs its own confirmation gates — architecture and
 tech-stack must be confirmed before feature work, and the feature document must
 be approved before coding. A concept replaces Tom's interview questions, not
 his playback-and-approval gate, and it does not bypass the Three Critical Rules.
+
+## Agentic Mode
+
+Adapters and agentic mode are orthogonal layers that compose: the adapter
+fetches the task and writes status back; agentic mode (`--agentic` on the
+routed command) governs how gates resolve when an autonomous agent — not a
+human — is driving. In that combination the concept is the task spec for Tom's
+evidential gate, and the run-report `Status` maps back through
+`update_status`: `completed` → "Done", `needs-human` / `blocked` → an
+escalation state. See `_LOUIE_/workflow/agentic-mode.md`.

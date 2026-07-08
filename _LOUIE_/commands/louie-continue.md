@@ -27,6 +27,7 @@ It does **not** read or recover past chat transcripts — a LOUIE command can't 
 
 4. **Reconstruct the state** for the chosen target (read-only):
    - **Feature:** read its `feature.md` — the highest-ticked `Status` checkbox, which `Implementation Plan` phases are ticked, `Open Questions`, the last `Change History` line, and the `Handoff` sections. Read `decisions.md` if present. **Resume point:** if the plan phases carry `[Depends: …]` annotations, any unticked phase whose dependencies are all ticked is a valid resume point (prefer the earliest; mention the others if there are several). Without annotations, the resume point is the first unticked phase — the classic behavior.
+   - **Run report:** if `run-report.md` exists in the feature folder (an agentic run — see `_LOUIE_/workflow/agentic-mode.md`), read its header. `Status: needs-human` means the run halted on the `Pending decision:` question — that decision (now answered by the user, or by the agent's new invocation) is the resume point; the report's per-agent sections say exactly where the chain stopped.
    - **Bugfix:** read the per-fix doc (`bugfixes/<date>-<slug>.md`) — Symptoms / Root Cause / Fix / Detect-Avoid — and whether a regression test exists.
    - **Git:** current branch, the uncommitted diff, and recent commits touching the target. This is the richest "where did I stop" signal — reconcile it against what the docs claim.
    - **Roadmap:** if the feature was seeded `--from-roadmap`, note the linked epic and its status.

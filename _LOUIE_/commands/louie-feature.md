@@ -4,6 +4,8 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
 
 > **Auto-pilot:** before Step 4, resolve whether this run is unattended (see `## Auto-Pilot` at the bottom). It changes where the approval gate sits and whether Steps 5–12 stop for the user. The Procedure below is the **step-by-step (manual)** flow; the Auto-Pilot section describes how it reshapes.
 
+> **Agentic:** invoked with `--agentic` (an autonomous agent is driving, no human can answer prompts)? Read `_LOUIE_/workflow/agentic-mode.md` first and see `## Agentic` at the bottom — auto-pilot is implied, gates resolve without prompting, and the run ends in a run report instead of a chat summary.
+
 ## Procedure
 
 1. **Read project context:**
@@ -115,6 +117,17 @@ Auto-pilot lets the chain run unattended after the user approves the plan, stopp
 - **The merge-to-main gate** (Critical Rule #3). Auto-pilot **always stops before merge** with a final summary: what was built, Sophie's decision, Leo's direction (if any), Max's review outcome (rounds + deferred Suggestions), Ava's result + ship recommendation, files changed, and the merge decision left to the user. Never auto-merge.
 - Then complete Step 13 (sync overview + roadmap) as usual.
 
+## Agentic
+
+When invoked with `--agentic`, an autonomous agent is driving and nobody can answer a prompt mid-run. Full contract: `_LOUIE_/workflow/agentic-mode.md`. On top of the Auto-Pilot unattended run above:
+
+- **Auto-pilot is implied `on`** for this run (per-run effective value; ignore the runbook setting and never offer the inline choice). `--agentic --manual` is a contradiction — stop and say so.
+- **Prerequisite check hardens:** if `architecture.md` / `tech-stack.md` are missing (Step 2), write a run report with `status: blocked` pointing at `louie-setup` / `louie-import` and stop — setup never runs agentically.
+- **Tom runs the evidential gate** instead of an interview (see `analyst.md` § Agentic): checklist mapped against the task input; low-stakes gaps become `requirements.md` § Assumptions; scope-defining gaps end the run with `status: needs-human`. A scope split builds the first feature and lists the rest as follow-up tasks in the run report.
+- **The deviation tripwire halts instead of pausing to ask:** write the fork into the run report (`status: needs-human`, `Pending decision:` filled), leave the work committed and resumable via `louie-continue`, and stop.
+- **Branch mode `ask` resolves to `current`** — never create a branch unless the invocation explicitly requested one.
+- **The terminal summary becomes a run report** at `_LOUIE-output/implementations/<feature>/run-report.md` (template: `_LOUIE_/templates/run-report-template.md`) with `status: completed`. Narrate in chat as usual too — chat is free; the file is the contract. The merge gate is unchanged: work stays unmerged, the decision is the human's.
+
 ## Usage
 
 ```
@@ -145,4 +158,11 @@ or building a whole scope split in one run (see `## Batch Mode`):
 
 ```
 louie-feature --batch
+```
+
+or driven by an autonomous agent (no human in the loop — see `_LOUIE_/workflow/agentic-mode.md`):
+
+```
+louie-feature --agentic
+Add CSV export to the reports page. Users: account admins. Done when ...
 ```

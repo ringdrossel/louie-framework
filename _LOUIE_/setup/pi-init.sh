@@ -38,6 +38,8 @@ else
 
 This project uses **LOUIE** (Lean Orchestration for Unified Intelligent Engineering) for AI-assisted development.
 
+**Operating autonomously?** If no human can answer prompts in this session, read `_LOUIE_/workflow/agentic-mode.md` before invoking any louie command.
+
 ### Commands
 
 LOUIE commands are installed as Pi prompt templates under `.pi/prompts/`. Invoke them as `/louie-setup`, `/louie-feature`, etc. Typing the bare name (e.g. `louie-setup`) also works — the routing table below lets the agent resolve names that miss the autocomplete.

@@ -260,6 +260,19 @@ It reconstructs *where you stopped* from artifacts on disk + git, **not** from c
 
 ---
 
+## Scenario 11: Driven by an Autonomous Agent (Agentic Mode)
+
+When LOUIE is operated by an autonomous agent (an orchestrator with no human answering prompts), the chain commands accept `--agentic`:
+
+```
+louie-feature --agentic
+Add CSV export to the reports page. Users: account admins. Done when ...
+```
+
+Agentic mode implies auto-pilot, replaces Tom's interview with an **evidential gate** against the task spec (low-stakes gaps become documented assumptions; scope-defining gaps halt the run), resolves every remaining gate without prompting, and ends in a **run report** (`_LOUIE-output/implementations/<feature>/run-report.md`) with a machine-readable status: `completed` / `needs-human` / `blocked`. It never merges, never creates a branch, and never runs `louie-setup` — a human reviews the report and diff afterward. Read `_LOUIE_/workflow/agentic-mode.md` for the full contract, including the task-shape routing table and how it composes with `louie-from-source`.
+
+---
+
 ## All Commands
 
 | Command | What it does |

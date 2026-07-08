@@ -6,6 +6,8 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
 
 > **Auto-pilot:** before Step 6, resolve whether this run is unattended (see `## Auto-Pilot` at the bottom). It moves the approval gate to Tom's playback and lets Steps 7–10 run without stopping. The Procedure below is the **step-by-step (manual)** flow.
 
+> **Agentic:** invoked with `--agentic` (an autonomous agent is driving, no human can answer prompts)? Read `_LOUIE_/workflow/agentic-mode.md` first and see `## Agentic` at the bottom.
+
 ## Procedure
 
 1. **Read project context:**
@@ -76,6 +78,16 @@ Auto-pilot lets the extension chain run unattended after the user approves the p
 **Unattended run** (Steps 7–10): Sophie auto-applies minimal changes + narrates (pauses on material arch change); the feature-doc update + Step 9 gate are pre-approved (narrate, don't re-ask); Leo auto-applies the recommended UI direction + narrates (pauses on a fundamentally different UX); Nina implements; Max runs the `auto-fix-critical` loop; Ava tests. Each agent narrates as it goes.
 
 **Hard stops that survive auto-pilot:** the **deviation tripwire** (pause if the write-up / Sophie's eval materially diverges from what was agreed — non-trivial arch change, undiscussed scope) and the **merge-to-main gate** (always stop before merge with a final summary; never auto-merge, never auto-branch). See `_LOUIE-internals/autopilot.md` for the full model.
+
+## Agentic
+
+When invoked with `--agentic`, an autonomous agent is driving. Full contract: `_LOUIE_/workflow/agentic-mode.md`. On top of the Auto-Pilot unattended run:
+
+- **Auto-pilot is implied `on`** (per-run; ignore the runbook setting, never offer the inline choice; `--agentic --manual` is a contradiction — stop).
+- **The target feature must resolve without a prompt.** If the invocation doesn't name an existing feature folder unambiguously (Step 2/3), write a run report with `status: needs-human` naming the candidates and stop — never guess the target and never create a folder.
+- **Tom runs the evidential gate** against the task input instead of the extension interview (see `analyst.md` § Agentic): low-stakes gaps → documented assumptions appended with the "Extension: <date>" section; scope-defining gaps → `status: needs-human`.
+- **The deviation tripwire halts instead of pausing to ask** — fork into the run report, work stays resumable via `louie-continue`.
+- **The terminal summary becomes a run report** at `_LOUIE-output/implementations/<feature>/run-report.md` with `status: completed`. Merge stays the human's decision.
 
 ## Usage
 

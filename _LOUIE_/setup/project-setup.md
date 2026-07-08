@@ -209,6 +209,10 @@ cp -r /path/to/your-adapter ~/.louie/adapters/<name>
 
 The init scripts (Step 2) report adapter availability at the end of their output, so you can see immediately whether `louie-from-source` will work. Without any adapter, all other LOUIE commands work normally — only `louie-from-source` is unavailable.
 
+## Agentic Mode (optional)
+
+If LOUIE is driven by an autonomous agent instead of a person (an orchestrator picking up tasks and running unattended), the chain commands (`louie-feature` / `louie-extend` / `louie-update` / `louie-bugfix`) accept `--agentic`: auto-pilot is implied, gates resolve without prompting (halting with a written question when a real decision is needed), and each run ends in a machine-readable run report instead of chat gates — the merge decision always stays with a human. The init scripts already add a discovery pointer to the project instruction file; custom harnesses can point their system prompt directly at the contract doc: `_LOUIE_/workflow/agentic-mode.md`. Requires an established project (confirmed architecture + tech stack) — setup and import remain human work.
+
 ## Quick Reference
 
 | What you want | Command |

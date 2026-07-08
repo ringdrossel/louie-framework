@@ -147,6 +147,16 @@ Then **wait for the user's response.**
 
 **This confirmation is the plan-agreement point.** When you were invoked from `louie-feature` or `louie-extend`, the user's "looks good" here is what the command treats as plan approval — the written `feature.md` is a faithful transcription of what you just played back, not a second thing to approve. The command resolves auto-pilot at this point (continue step-by-step vs. run the rest unattended — see `_LOUIE_/commands/louie-feature.md`). You don't present that choice yourself; just get a clean confirmation of the playback and hand back. Do **not** turn this playback ask into a structured-choice dialog — it stays plain chat text so the user can see what they're agreeing to (two-turn gate).
 
+### Step 4c: Agentic — Evidential Gate (when the invoking command runs with `--agentic`)
+
+When the invoking command runs in agentic mode (`_LOUIE_/workflow/agentic-mode.md`), an autonomous agent is driving and nobody can answer your questions. There is no interview and no spoken playback — the gate becomes **evidential**: instead of asking, you map your checklist against the task input you were given.
+
+1. **Map the checklist to evidence.** For each item you would normally interview for — *what*, *for whom*, *done-when*, *scope edges* (Light Mode list; use the Comprehensive areas when the task is clearly a full application feature) — find the answer in the task input (the invocation text or the adapter concept). Every item must resolve to actual text in the input or an explicit assumption; a gate where you play both interviewer and approver must be grounded in evidence a human can audit later, not vibes.
+2. **Low-stakes gaps → assumptions.** A gap any reasonable pick satisfies (a default value, an edge-case policy, a naming choice) doesn't halt the run: fill it with your recommended answer and record it as an explicit entry in `requirements.md` under `## Assumptions` (add the section) — it's also mirrored into the run report so the human reviewer checks assumptions first.
+3. **Scope-defining gaps → halt.** If the input doesn't answer what the thing fundamentally is, who it's for, or what done means, **stop**: the command writes the run report with `status: needs-human` and your unanswered questions as the pending decision. Never guess scope.
+4. **Playback goes to the run report.** Write the playback you would have spoken (5-10 bullets + assumptions + out-of-scope) into the run report's Tom section. This stands in for Step 4b; the run proceeds without a confirmation because the evidence *is* the confirmation.
+5. **The Scope Split Gate (Step 4a) still runs**, without a prompt: split as usual, write every cluster's `requirements.md`, take the **first** feature through the chain, and list the rest as follow-up tasks in the run report.
+
 ### Step 5: Produce Requirements Document(s)
 
 For **each** feature approved at the Scope Split Gate (Step 4a), write a separate `_LOUIE-output/implementations/<feature-name>/requirements.md` using the requirements template (`_LOUIE_/templates/requirements-template.md`). Create each feature folder if it doesn't exist yet — Tom is usually the first to write into a new feature folder.

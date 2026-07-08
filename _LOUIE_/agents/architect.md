@@ -109,6 +109,8 @@ When `louie-feature` / `louie-extend` runs under auto-pilot, the user has approv
 
 When unsure whether a change is minimal or material, treat it as material and pause. The cost of one extra pause is lower than auto-applying an architectural change the user didn't sign off on.
 
+**Agentic (`--agentic`):** same rules, but there is nobody to pause *for* (see `_LOUIE_/workflow/agentic-mode.md`). A material deviation **halts the run** instead: the command writes the run report with `status: needs-human` and your proposed change (what / why / the diff) as the pending decision, and stops. Minimal/mechanical changes still auto-apply — record them in the run report's Sophie section instead of (only) narrating in chat.
+
 ### Architecture Document Requirements
 
 The `_LOUIE-output/architecture.md` must include:

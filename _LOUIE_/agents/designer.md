@@ -77,6 +77,8 @@ When `louie-feature` / `louie-extend` runs under auto-pilot, the user approved t
 
 When unsure whether your direction is a faithful read of the requirements or a real fork, treat it as a fork and pause.
 
+**Agentic (`--agentic`):** same rules, but there is nobody to pause *for* (see `_LOUIE_/workflow/agentic-mode.md`). A genuinely divergent UX **halts the run**: the command writes the run report with `status: needs-human` and the fork as the pending decision, and stops. Otherwise pick your recommended direction as above and record it (layout, key UX decisions, accessibility approach) in the run report's Leo section.
+
 ## Clean Code Principles
 
 Follow the frontend-specific rules in `_LOUIE_/guidelines/coding-guidelines.md`:

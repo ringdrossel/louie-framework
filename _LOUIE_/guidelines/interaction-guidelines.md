@@ -28,6 +28,8 @@ Use the most structured mechanism your runtime supports, and always degrade grac
 
 Pick the structured tool if there's any doubt it exists — it falls back to text naturally; the reverse doesn't.
 
+3. **No interlocutor at all (agentic mode)** — when the run was invoked with `--agentic`, an autonomous agent is driving and *nobody will answer any rendering* of a question. Don't ask in any form. Every would-be choice resolves by policy instead: take the recommended default and record it in the run report, or — for scope-defining forks and material deviations — **halt** with `status: needs-human` and the question written into the run report as the pending decision. The full contract is `_LOUIE_/workflow/agentic-mode.md`; the rest of this document describes the human modes.
+
 ## Content first, choice second (approval gates — two-turn gate)
 
 A structured choice renders as a compact dialog — on most runtimes it takes over the screen and shows **only** the question and its options. Anything else in the same response is invisible at decision time:

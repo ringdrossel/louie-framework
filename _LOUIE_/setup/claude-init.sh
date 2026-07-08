@@ -49,6 +49,8 @@ else
 
 This project uses **LOUIE** (Lean Orchestration for Unified Intelligent Engineering) for AI-assisted development.
 
+**Operating autonomously?** If no human can answer prompts in this session, read `_LOUIE_/workflow/agentic-mode.md` before invoking any louie command.
+
 ### Commands
 
 LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to see all available commands.

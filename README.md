@@ -204,6 +204,10 @@ This layout scales — projects with hundreds of features and thousands of bug f
 | [`_LOUIE_/guidelines/execution-guidelines.md`](_LOUIE_/guidelines/execution-guidelines.md) | How work runs — sequential baseline, work packages, subagent dispatch on capable runtimes |
 | [`_LOUIE_/setup/project-setup.md`](_LOUIE_/setup/project-setup.md) | How to deploy LOUIE into a project |
 
+## Agentic Mode
+
+LOUIE also works when the "user" is itself an autonomous agent — an orchestrator that picks up tasks and runs unattended. Invoking a chain command with `--agentic` implies auto-pilot, resolves every gate without prompting (recommended defaults auto-apply; scope-defining ambiguity halts the run instead of guessing), and ends in a machine-readable **run report** (`completed` / `needs-human` / `blocked`) instead of chat gates. The work is never merged — a human reviews the report and diff afterward and makes the merge call. Full contract: [`_LOUIE_/workflow/agentic-mode.md`](_LOUIE_/workflow/agentic-mode.md).
+
 ## Design Principles
 
 - **Lightweight** — lean enough to add value without overhead. No complex state machines or heavy orchestration.
