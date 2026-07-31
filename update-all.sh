@@ -175,14 +175,33 @@ EOF
 is_git_repo() { git -C "$1" rev-parse --git-dir >/dev/null 2>&1; }
 
 # Replace the block between <!-- LOUIE-FRAMEWORK --> and <!-- /LOUIE-FRAMEWORK -->,
-# preserving everything the user added around it. Projects predating the closing
-# marker are left alone and reported — without an end boundary there is no safe
-# way to tell where the framework section stops and the user's content starts.
+# preserving everything the user added around it.
+#
+# Files predating the closing marker (early init scripts emitted only the opener)
+# have no end boundary. Rather than punt, treat everything from the opening
+# marker to EOF as framework content and regenerate it: init scripts *append*
+# their block, so it always runs to the end of the file at the time it was
+# written. Anything the user added afterwards would be inside that span, so a
+# backup is written first and reported — return 4 signals "regenerated with
+# backup" so the caller can say so.
 refresh_context_block() {
   local file="$1" newblock="$2"
   [ -f "$file" ] || return 2
   grep -q '<!-- LOUIE-FRAMEWORK -->'  "$file" || return 2
-  grep -q '<!-- /LOUIE-FRAMEWORK -->' "$file" || return 3
+
+  if ! grep -q '<!-- /LOUIE-FRAMEWORK -->' "$file"; then
+    cp "$file" "$file.louie-bak"
+    awk -v blockfile="$newblock" '
+      /<!-- LOUIE-FRAMEWORK -->/ && !done {
+        while ((getline line < blockfile) > 0) print line
+        close(blockfile)
+        done = 1
+        next
+      }
+      !done { print }
+    ' "$file" > "$file.louie-tmp" && mv "$file.louie-tmp" "$file"
+    return 4
+  fi
 
   awk -v blockfile="$newblock" '
     /<!-- LOUIE-FRAMEWORK -->/ && !inblock {
@@ -223,6 +242,8 @@ info ""
 
 updated=0; skipped=0; current=0; needs_attention=0
 ATTENTION=()
+NOTES=()
+OPTIONAL=()
 
 for proj in "${PROJECTS[@]}"; do
   name="$(basename "$proj")"
@@ -294,7 +315,7 @@ for proj in "${PROJECTS[@]}"; do
   for artifact in runbook roadmap; do
     if [ ! -f "$proj/_LOUIE-output/$artifact.md" ]; then
       info "   NOTE: _LOUIE-output/$artifact.md missing"
-      ATTENTION+=("$name — no $artifact.md; louie-update-framework can bootstrap it")
+      OPTIONAL+=("$name — no $artifact.md")
       needs_attention=$((needs_attention + 1))
     fi
   done
@@ -306,7 +327,7 @@ for proj in "${PROJECTS[@]}"; do
   if is_git_repo "$proj" && [ -n "$(git -C "$proj" status --porcelain -- _LOUIE_ 2>/dev/null)" ]; then
     if [ "$APPLY" -eq 1 ]; then
       info "   WARNING: uncommitted changes inside _LOUIE_/ — overwriting them"
-      ATTENTION+=("$name — had uncommitted _LOUIE_/ edits; the refresh overwrote them")
+      NOTES+=("$name — had uncommitted _LOUIE_/ edits; the refresh overwrote them")
     else
       info "   WARNING: uncommitted changes inside _LOUIE_/ would be overwritten"
       ATTENTION+=("$name — has uncommitted _LOUIE_/ edits that a refresh would overwrite")
@@ -383,9 +404,8 @@ for proj in "${PROJECTS[@]}"; do
         rc=$?
         set -e
         case "$rc" in
-          3) info "   note: $ctx has no closing <!-- /LOUIE-FRAMEWORK --> marker — section left as-is"
-             ATTENTION+=("$name — $ctx predates the closing marker; refresh its LOUIE section by hand")
-             needs_attention=$((needs_attention + 1)) ;;
+          4) info "   note: $ctx predated the closing marker — regenerated (backup: $ctx.louie-bak)"
+             NOTES+=("$name — $ctx had no closing marker; regenerated, backup at $ctx.louie-bak") ;;
         esac
       fi
     fi
@@ -407,12 +427,26 @@ info "  current:   $current"
 info "  updated:   $updated"
 info "  skipped:   $skipped"
 
+if [ ${#NOTES[@]} -gt 0 ]; then
+  info ""
+  info "Notes (already handled — no action needed):"
+  for n in "${NOTES[@]}"; do info "  • $n"; done
+fi
+
+if [ ${#OPTIONAL[@]} -gt 0 ]; then
+  info ""
+  info "Optional (canonical artifacts these projects don't have yet):"
+  for o in "${OPTIONAL[@]}"; do info "  • $o"; done
+  info ""
+  info "These are only created from a project's real content, so they're left"
+  info "to the assistant — run 'louie-update-framework' there if you want them."
+fi
+
 if [ ${#ATTENTION[@]} -gt 0 ]; then
   info ""
-  info "Needs your attention (open these in your AI assistant):"
+  info "Needs the assistant (this script can't do these):"
   for a in "${ATTENTION[@]}"; do info "  • $a"; done
+else
   info ""
-  info "Run 'louie-update-framework' in each — it does the version-gated"
-  info "migrations, layout migration, and new-artifact bootstrapping that"
-  info "this script deliberately leaves alone."
+  info "Nothing left to do — every project was updated in full."
 fi

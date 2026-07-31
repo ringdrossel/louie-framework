@@ -136,7 +136,9 @@ The underlying reason the loose rule is safe: `_LOUIE_/` is wholly framework-own
 
 **The context-block problem.** Init scripts skip the context-file section when the LOUIE marker is already present (that's what makes them idempotent), so framework changes to the `CLAUDE.md` / `AGENTS.md` / `GEMINI.md` block would never reach an existing project. `louie-update-framework` step 3 handles this by reasoning; the script does it by splicing between `<!-- LOUIE-FRAMEWORK -->` and `<!-- /LOUIE-FRAMEWORK -->`, generating the canonical block by running init against a scratch directory. Everything outside the markers is preserved verbatim.
 
-Projects whose context file predates the **closing** marker are reported and left alone: with only an opening marker there is no way to tell where the framework section ends and the user's content begins, and guessing would eat their notes.
+Projects whose context file predates the **closing** marker are regenerated rather than punted on. Early init scripts emitted only the opener, and they *append* their block — so it always ran to the end of the file as written. Everything from the opening marker to EOF is therefore framework content, and is replaced. A `.louie-bak` copy is written first and reported, since anything the user added after the block would fall inside that span.
+
+The earlier design skipped these files as unsafe. Measured against a real fleet, the one project that hit the case had a context file that was *entirely* the LOUIE block — nothing to protect, and the guard just left it stale.
 
 **The changelog is not in the tarball.** `.gitattributes` marks `_LOUIE-internals/ export-ignore`, which applies to `git archive` and therefore to GitHub's tarball endpoint. The script fetches `CHANGELOG.md` separately from `raw.githubusercontent.com` for its version-gap report. `louie-update-framework` is unaffected — it uses `git clone`, and `export-ignore` does not apply to clones. Anything that needs a `_LOUIE-internals/` file from an archive must fetch it separately.
 
