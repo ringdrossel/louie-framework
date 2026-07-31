@@ -277,16 +277,15 @@ for proj in "${PROJECTS[@]}"; do
     continue
   fi
 
+  # A matching version does NOT mean there is nothing to do. The context-file
+  # block and the installed command/agent files drift independently of
+  # _LOUIE_/VERSION — a project can sit at the latest version with a stale
+  # CLAUDE.md section or a half-deleted .claude/commands/. So current projects
+  # run the same refresh; only the label differs.
+  AT_LATEST=0
   if [ "$ver" = "$LATEST" ]; then
-    info "   already current"
-    current=$((current + 1))
-    # Still worth flagging a stale layout even on a current version.
-    if has_flat_layout "$proj"; then
-      ATTENTION+=("$name — old flat _LOUIE-output/ layout; run louie-migrate")
-      needs_attention=$((needs_attention + 1))
-    fi
-    info ""
-    continue
+    AT_LATEST=1
+    info "   at latest — verifying installed files"
   fi
 
   # --- notes, not blockers ---------------------------------------------------
@@ -320,11 +319,25 @@ for proj in "${PROJECTS[@]}"; do
     fi
   done
 
+  # Does the refresh actually change _LOUIE_/? If the tree already matches the
+  # incoming one, there is nothing to overwrite and nothing to warn about.
+  #
+  # This check exists because the warning below is otherwise self-triggering:
+  # once a run rewrites _LOUIE_/ and the user hasn't committed, EVERY later run
+  # sees uncommitted changes there and reports overwriting them — detecting its
+  # own prior output and calling it a risk. Comparing against the incoming
+  # content distinguishes "someone edited the framework" from "a previous run
+  # wrote exactly this".
+  LOUIE_DIFFERS=1
+  if diff -rq "$proj/_LOUIE_" "$SRC/_LOUIE_" >/dev/null 2>&1; then
+    LOUIE_DIFFERS=0
+  fi
+
   # The one thing this update destroys irreversibly: hand-edits to _LOUIE_/
   # files that were never committed. The directory is replaced wholesale, so
   # customized agents or commands are gone with no way back. Detect and report
   # it before touching anything — the update still proceeds.
-  if is_git_repo "$proj" && [ -n "$(git -C "$proj" status --porcelain -- _LOUIE_ 2>/dev/null)" ]; then
+  if [ "$LOUIE_DIFFERS" -eq 1 ] && is_git_repo "$proj" && [ -n "$(git -C "$proj" status --porcelain -- _LOUIE_ 2>/dev/null)" ]; then
     if [ "$APPLY" -eq 1 ]; then
       info "   WARNING: uncommitted changes inside _LOUIE_/ — overwriting them"
       NOTES+=("$name — had uncommitted _LOUIE_/ edits; the refresh overwrote them")
@@ -344,7 +357,7 @@ for proj in "${PROJECTS[@]}"; do
   fi
 
   if [ "$APPLY" -eq 0 ]; then
-    info "   would update (dry run)"
+    if [ "$AT_LATEST" -eq 1 ]; then info "   would verify (dry run)"; else info "   would update (dry run)"; fi
     info ""
     continue
   fi
@@ -353,9 +366,12 @@ for proj in "${PROJECTS[@]}"; do
 
   # _LOUIE_/ is the tool, wholly framework-owned — replace it outright. Private
   # source adapters live in louie-adapters/ at the project root, outside it.
-  rm -rf "$proj/_LOUIE_"
-  cp -R "$SRC/_LOUIE_" "$proj/_LOUIE_"
-  chmod +x "$proj/_LOUIE_/setup/"*.sh 2>/dev/null || true
+  # Skipped when the tree already matches: no churn, no touched mtimes.
+  if [ "$LOUIE_DIFFERS" -eq 1 ]; then
+    rm -rf "$proj/_LOUIE_"
+    cp -R "$SRC/_LOUIE_" "$proj/_LOUIE_"
+    chmod +x "$proj/_LOUIE_/setup/"*.sh 2>/dev/null || true
+  fi
 
   # Which integrations does this project use? Same marker set as
   # louie-update-framework step 1.
@@ -369,7 +385,7 @@ for proj in "${PROJECTS[@]}"; do
 
   if [ ${#tools[@]} -eq 0 ]; then
     info "   framework files refreshed (no tool integration detected — no init run)"
-    updated=$((updated + 1))
+    if [ "$AT_LATEST" -eq 1 ]; then current=$((current + 1)); else updated=$((updated + 1)); fi
     info ""
     continue
   fi
@@ -412,8 +428,13 @@ for proj in "${PROJECTS[@]}"; do
     rm -f "$scratch/$ctx"
   done
 
-  info "   updated → $LATEST (${tools[*]})"
-  updated=$((updated + 1))
+  if [ "$AT_LATEST" -eq 1 ]; then
+    info "   verified at $LATEST (${tools[*]})"
+    current=$((current + 1))
+  else
+    info "   updated → $LATEST (${tools[*]})"
+    updated=$((updated + 1))
+  fi
   info ""
 done
 
@@ -423,7 +444,7 @@ info "════════════════════════�
 if [ "$APPLY" -eq 0 ]; then
   info "DRY RUN — nothing was changed. Re-run without --dry-run to apply."
 fi
-info "  current:   $current"
+info "  verified:  $current"
 info "  updated:   $updated"
 info "  skipped:   $skipped"
 

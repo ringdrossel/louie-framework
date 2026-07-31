@@ -144,6 +144,14 @@ The earlier design skipped these files as unsafe. Measured against a real fleet,
 
 Fetch happens **once** per run and is reused across all projects — never N downloads for N projects.
 
+## Idempotence
+
+Re-running must be quiet and cheap, or the tool stops being usable as routine maintenance. Two rules make that true:
+
+**A matching `VERSION` does not mean "nothing to do."** The context-file block and the installed command/agent files drift independently of the version stamp — a project can sit at the latest version with a stale `CLAUDE.md` section. Current projects therefore run the same refresh; only the label differs (`verified` vs `updated`). An early `continue` on version equality is what let a stale context block survive an update that reported success.
+
+**The `_LOUIE_/` warning must not detect its own output.** Warning on "uncommitted changes under `_LOUIE_/`" is self-triggering: once a run rewrites the directory and the user hasn't committed, every later run sees uncommitted changes there and reports overwriting them. On a real fleet the second run warned about nearly every project, all of them false. The fix is to compare the working tree against the *incoming* content first (`diff -rq`); if they match, there is nothing to overwrite, no warning, and the copy is skipped entirely. What survives the filter is a genuine local edit.
+
 ## Not covered by the lint
 
 `check-consistency.sh` checks command-set registration; the installers list no commands, so they are outside its checks. What can drift instead:
