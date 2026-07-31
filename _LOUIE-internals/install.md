@@ -118,6 +118,14 @@ The consequence shapes the design: **the triage report is the primary output, th
 | Old flat `_LOUIE-output/` layout | Needs `louie-migrate` and its `git mv` history preservation |
 | Uncommitted changes | Git is the undo; without a clean tree there isn't one (`--allow-dirty` overrides) |
 | Not a git repository | Same — no way back from a bad update |
+| The framework's own source repo | It is not an installation — see below |
+| Version ahead of latest | A refresh would be a downgrade |
+
+**The framework must never update itself.** A maintainer's checkout of this repo has a `_LOUIE_/` directory and therefore looks exactly like an installed project to a filesystem scan. It isn't one: refreshing it would `rm -rf` the source tree and replace it with the last *published* copy, silently reverting unreleased work. Detection uses `_LOUIE-internals/` plus a root `install.sh` — `_LOUIE-internals/` is repo-only and never distributed, so it cannot appear in a real installation.
+
+This failure mode stays latent while the repo's `VERSION` matches the published one (it reads as "already current"). It arms itself precisely during a release cut, when `VERSION` is bumped locally before the tag is pushed — the moment the source tree is most valuable and least recoverable.
+
+**Version comparison must be ordered, not equality.** Bare `$local = $latest` treats "ahead" and "behind" identically, so any project ahead of the published release gets silently downgraded. `version_gt` compares semver components; anything ahead is reported and left alone.
 
 **The context-block problem.** Init scripts skip the context-file section when the LOUIE marker is already present (that's what makes them idempotent), so framework changes to the `CLAUDE.md` / `AGENTS.md` / `GEMINI.md` block would never reach an existing project. `louie-update-framework` step 3 handles this by reasoning; the script does it by splicing between `<!-- LOUIE-FRAMEWORK -->` and `<!-- /LOUIE-FRAMEWORK -->`, generating the canonical block by running init against a scratch directory. Everything outside the markers is preserved verbatim.
 

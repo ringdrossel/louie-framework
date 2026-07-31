@@ -142,6 +142,31 @@ has_flat_layout() {
   return 1
 }
 
+# The framework's own source repo is NOT an installation of the framework.
+# Updating it would rm -rf the maintainer's _LOUIE_/ source tree and replace it
+# with the published copy, silently reverting in-progress work. _LOUIE-internals/
+# is the reliable marker: repo-only, never distributed, never present in an
+# installed project.
+is_framework_repo() {
+  local p="$1"
+  [ -d "$p/_LOUIE-internals" ] && [ -f "$p/install.sh" ]
+}
+
+# Returns 0 if $1 is strictly newer than $2.
+version_gt() {
+  local a="$1" b="$2"
+  [ "$a" = "pre-versioning" ] && return 1
+  [ "$b" = "pre-versioning" ] && return 0
+  local am ai ap bm bi bp
+  IFS=. read -r am ai ap <<EOF
+$a
+EOF
+  IFS=. read -r bm bi bp <<EOF
+$b
+EOF
+  [ $(( am*1000000 + ai*1000 + ${ap:-0} )) -gt $(( bm*1000000 + bi*1000 + ${bp:-0} )) ]
+}
+
 git_is_dirty() {
   local p="$1"
   git -C "$p" rev-parse --git-dir >/dev/null 2>&1 || return 1  # not a repo: not "dirty"
@@ -211,10 +236,29 @@ for proj in "${PROJECTS[@]}"; do
 
   info "── $name"
   info "   $proj"
+
+  # Never touch the framework's own source checkout — see is_framework_repo.
+  if is_framework_repo "$proj"; then
+    info "   framework source repo — not an installation; skipped"
+    info ""
+    continue
+  fi
+
   info "   version: $ver → $LATEST"
 
   reasons=()
   blocked=0
+
+  # Ahead of the published release (a local build, or a maintainer mid-release).
+  # Refreshing would be a downgrade.
+  if version_gt "$ver" "$LATEST"; then
+    info "   SKIP: ahead of the published release ($ver > $LATEST) — refresh would downgrade it"
+    ATTENTION+=("$name — ahead of latest ($ver > $LATEST); left alone")
+    skipped=$((skipped + 1))
+    needs_attention=$((needs_attention + 1))
+    info ""
+    continue
+  fi
 
   if [ "$ver" = "$LATEST" ]; then
     info "   already current"
