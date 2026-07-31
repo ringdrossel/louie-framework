@@ -4,6 +4,23 @@
 
 This guide walks you through deploying the LOUIE framework into a new project and running your first agent sequence.
 
+## Quick Install
+
+Steps 1 and 2 in one command, run from your project root:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ringdrossel/louie-framework/main/install.sh | bash -s -- claude
+```
+
+```powershell
+# Windows (PowerShell)
+irm https://raw.githubusercontent.com/ringdrossel/louie-framework/main/install.ps1 | iex
+```
+
+Swap `claude` for `cursor`, `codex`, `gemini`, `opencode`, `pi`, or `all`; omit it to autodetect. Existing `_LOUIE-output/` work is never overwritten, and the installer refuses to run over an existing install (use `louie-update-framework` to upgrade). Options are documented in the repo README.
+
+Steps 1 and 2 below describe the same result done by hand — use them for offline installs, or to understand what the installer does.
+
 ## Step 1: Copy the Framework
 
 Copy both `_LOUIE_/` and `_LOUIE-output/` into your project root:

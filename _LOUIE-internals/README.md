@@ -24,6 +24,7 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 | `language.md` | Language setting design — Conversation/Documents keys, auto-detect-and-persist, BMAD prior art, single-source-of-truth placement |
 | `continue.md` | `louie-continue` design — artifact+git resume, no stored progress, why not chat-recovery |
 | `adapters.md` | Source-adapter layer — public interface + `louie-from-source`, public/private split, concept handoff |
+| `install.md` | One-liner install design — `curl \| bash` bootstrapper, allowlist copy, guards, the `/dev/tty` constraint |
 | `import.md` | Import system design — cold + v1-docs modes, init-script detection, agent reuse |
 | `evaluate.md` | Evaluate system design — LOUIE/non-LOUIE modes, output schema, apply-loop routing, distinction from `louie-review` |
 | `scaling.md` | Artifact-layout scaling design — per-feature folders, bugfix home, migration path |
@@ -40,6 +41,7 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 - **Adding a recipe or changing the recipe system** → `recipes.md`
 - **Changing `louie-evaluate` or its output schema** → `evaluate.md`
 - **Changing anything that ships downstream** → `core.md` (distribution model)
+- **Touching `install.sh` / `install.ps1` or the install docs** → `install.md` (allowlist copy, guards, non-interactivity)
 
 ## Authoring Rules For This Folder
 

@@ -41,13 +41,48 @@ Command definitions live in [`_LOUIE_/commands/`](_LOUIE_/commands/).
 
 ## Install
 
-### 1. Copy the framework into your project root
+### Quick install (recommended)
 
-Copy both `_LOUIE_/` and `_LOUIE-output/` into your project.
+Run this in your project root:
 
-### 2. Run the init script for your AI tool
+```bash
+curl -fsSL https://raw.githubusercontent.com/ringdrossel/louie-framework/main/install.sh | bash -s -- claude
+```
 
-#### Claude Code
+```powershell
+# Windows (PowerShell)
+irm https://raw.githubusercontent.com/ringdrossel/louie-framework/main/install.ps1 | iex
+```
+
+This copies `_LOUIE_/` and `_LOUIE-output/` into the current directory and runs the init script for your tool. Then type `/louie-setup` (or `louie-setup`) in your AI assistant.
+
+Replace `claude` with `cursor`, `codex`, `gemini`, `opencode`, `pi`, or `all`. Leave it off and the installer detects what your project already uses, defaulting to Claude Code.
+
+**Options** (bash form — pass after `bash -s --`):
+
+| Option | Effect |
+|---|---|
+| `--dir <path>` | Install into `<path>` instead of the current directory |
+| `--version <ref>` | Install a specific tag or branch (default: `main`; env: `LOUIE_VERSION`) |
+| `--force` | Reinstall over an existing `_LOUIE_/` |
+| `--no-init` | Copy files only, skip the init script |
+
+Your work in `_LOUIE-output/` is never overwritten — only missing skeleton files are seeded. If LOUIE is already installed, the installer stops and points you at `louie-update-framework`, which does version-gated migrations a plain overwrite would skip. On Windows, the piped `iex` form takes no options; download the script first to pass any.
+
+> **Prefer not to pipe a script into your shell?** Read it first — [`install.sh`](install.sh) — or use the manual install below.
+
+### Manual install
+
+<details>
+<summary>Copy the framework yourself (offline, air-gapped, or if you'd rather not run the installer)</summary>
+
+#### 1. Copy the framework into your project root
+
+Copy both `_LOUIE_/` and `_LOUIE-output/` into your project. Copy nothing else — the rest of this repo is framework source, not part of an install.
+
+#### 2. Run the init script for your AI tool
+
+##### Claude Code
 
 ```bash
 # macOS / Linux
@@ -59,7 +94,7 @@ _LOUIE_\setup\claude-init.bat
 
 Creates `CLAUDE.md` and installs all commands as native slash commands (`/louie-setup`, `/louie-feature`, etc.).
 
-#### Cursor
+##### Cursor
 
 ```bash
 # macOS / Linux
@@ -71,7 +106,7 @@ _LOUIE_\setup\cursor-init.bat
 
 Creates/updates `.cursorrules` with LOUIE command routing.
 
-#### Codex (OpenAI)
+##### Codex (OpenAI)
 
 ```bash
 # macOS / Linux
@@ -83,7 +118,7 @@ _LOUIE_\setup\codex-init.bat
 
 Creates/updates `AGENTS.md` with LOUIE command routing.
 
-#### Gemini CLI
+##### Gemini CLI
 
 ```bash
 # macOS / Linux
@@ -95,7 +130,7 @@ _LOUIE_\setup\gemini-init.bat
 
 Creates/updates `GEMINI.md` with LOUIE command routing.
 
-#### opencode
+##### opencode
 
 ```bash
 # macOS / Linux
@@ -107,7 +142,7 @@ _LOUIE_\setup\opencode-init.bat
 
 Creates/updates `AGENTS.md` with LOUIE command routing (opencode's native convention).
 
-#### Pi Coding Agent (pi.dev)
+##### Pi Coding Agent (pi.dev)
 
 ```bash
 # macOS / Linux
@@ -119,7 +154,7 @@ _LOUIE_\setup\pi-init.bat
 
 Creates/updates `AGENTS.md` with LOUIE command routing (pi's native convention).
 
-#### Other AI Tools / Local AI
+##### Other AI Tools / Local AI
 
 If your tool has a project-level instructions file, add this to it:
 
@@ -136,7 +171,9 @@ If your tool has no config file, tell it once per session:
 Read the project README.md to understand the LOUIE framework.
 ```
 
-### 3. Start building
+</details>
+
+### Start building
 
 Type `louie-setup` (or `/louie-setup` in Claude Code) to kick off your first project.
 

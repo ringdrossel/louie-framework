@@ -10,17 +10,19 @@ A 1-minute tour of LOUIE. For the full reference, see [`README.md`](README.md). 
 
 ### 1. Install the framework
 
-Run the init script for your AI tool — this wires LOUIE into your project's config file.
+Run this in your project root — it downloads LOUIE and wires it into your AI tool's config file.
 
 ```bash
-# Claude Code (macOS / Linux)
-bash _LOUIE_/setup/claude-init.sh
-
-# Claude Code (Windows)
-_LOUIE_\setup\claude-init.bat
+# macOS / Linux
+curl -fsSL https://raw.githubusercontent.com/ringdrossel/louie-framework/main/install.sh | bash -s -- claude
 ```
 
-> Other tools: `cursor-init`, `codex-init`, `gemini-init`, `opencode-init`, `pi-init`. Same `.sh` / `.bat` pattern. See [`README.md`](README.md#install) for the full list.
+```powershell
+# Windows (PowerShell)
+irm https://raw.githubusercontent.com/ringdrossel/louie-framework/main/install.ps1 | iex
+```
+
+> Other tools: swap `claude` for `cursor`, `codex`, `gemini`, `opencode`, `pi`, or `all` — or leave it off to autodetect. Options and the manual install are in [`README.md`](README.md#install).
 
 ### 2. Start your project
 
@@ -102,17 +104,19 @@ You now know enough to use LOUIE end-to-end. The framework will guide you throug
 
 ### 1. Framework installieren
 
-Führe das Init-Skript für dein KI-Tool aus — das verdrahtet LOUIE mit der Projekt-Konfigurationsdatei.
+Führe das im Projektverzeichnis aus — es lädt LOUIE herunter und verdrahtet es mit der Konfigurationsdatei deines KI-Tools.
 
 ```bash
-# Claude Code (macOS / Linux)
-bash _LOUIE_/setup/claude-init.sh
-
-# Claude Code (Windows)
-_LOUIE_\setup\claude-init.bat
+# macOS / Linux
+curl -fsSL https://raw.githubusercontent.com/ringdrossel/louie-framework/main/install.sh | bash -s -- claude
 ```
 
-> Andere Tools: `cursor-init`, `codex-init`, `gemini-init`, `opencode-init`, `pi-init`. Gleiches `.sh` / `.bat`-Muster. Die vollständige Liste steht in [`README.md`](README.md#install).
+```powershell
+# Windows (PowerShell)
+irm https://raw.githubusercontent.com/ringdrossel/louie-framework/main/install.ps1 | iex
+```
+
+> Andere Tools: `claude` durch `cursor`, `codex`, `gemini`, `opencode`, `pi` oder `all` ersetzen — oder weglassen, dann wird automatisch erkannt. Optionen und manuelle Installation stehen in [`README.md`](README.md#install).
 
 ### 2. Projekt starten
 
