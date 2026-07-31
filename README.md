@@ -76,8 +76,8 @@ Your work in `_LOUIE-output/` is never overwritten — only missing skeleton fil
 Normally you update a project by running `louie-update-framework` in your AI assistant. If you have a lot of LOUIE projects, [`update-all.sh`](update-all.sh) scans directory trees and refreshes them in bulk:
 
 ```bash
-bash update-all.sh ~/projects            # dry run — report versions and what needs attention
-bash update-all.sh ~/projects --apply    # refresh them
+bash update-all.sh ~/projects              # refresh them
+bash update-all.sh ~/projects --dry-run    # preview: report versions and what needs attention
 ```
 
 It does the mechanical part only: replace `_LOUIE_/`, refresh the LOUIE section of your context file (preserving your own sections), re-run init scripts. `_LOUIE-output/` is never touched.

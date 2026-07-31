@@ -107,7 +107,7 @@ Scans directory trees for LOUIE projects and refreshes them. For maintainers of 
 
 **Scope is deliberately partial.** The script does the mechanical part: replace `_LOUIE_/`, refresh the context-file block, re-run init scripts. It does *not* do the judgment parts — version-gated migrations, the flat→per-feature layout migration, bootstrapping newly-canonical `_LOUIE-output/` files. Those need per-project reasoning over the user's actual artifacts.
 
-The consequence shapes the design: **the triage report is the primary output, the update is secondary.** A project the script refuses to touch is a successful result, not a failure — it has been correctly identified as needing `louie-update-framework`. Dry-run is the default.
+The consequence shapes the design: the run always produces a **triage report** alongside the refresh, naming what still needs the assistant. `--dry-run` previews without changing anything; applying is the default, since the operation is near-fully reversible (`_LOUIE_/` is regenerable at any version via `install.sh --force --version <ref>`, and `_LOUIE-output/` is never touched).
 
 **Only two conditions stop an update:** the directory isn't a LOUIE project, or it is the framework's own source repo. Everything else is refreshed.
 

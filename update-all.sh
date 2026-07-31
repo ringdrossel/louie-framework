@@ -3,8 +3,8 @@
 # LOUIE bulk updater — scan a directory tree for LOUIE projects, report their
 # versions, and optionally refresh the framework files in each.
 #
-#   bash update-all.sh ~/projects              # dry run: report only
-#   bash update-all.sh ~/projects --apply      # refresh every LOUIE project found
+#   bash update-all.sh ~/projects              # refresh every LOUIE project found
+#   bash update-all.sh ~/projects --dry-run    # report only, change nothing
 #
 # SCOPE: this does the *mechanical* part of louie-update-framework — replace
 # _LOUIE_/, refresh the context-file block, re-run init scripts. It deliberately
@@ -22,7 +22,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/ringdrossel/louie-framework"
 REF="${LOUIE_VERSION:-main}"
-APPLY=0
+APPLY=1
 ROOTS=()
 MAXDEPTH=6
 
@@ -36,15 +36,15 @@ LOUIE bulk updater
   update-all.sh <dir> [<dir> ...] [options]
 
 Scans each <dir> for LOUIE projects (directories containing _LOUIE_/) and
-reports their version against the latest release. With --apply, refreshes the
-framework files in every one of them.
+reports their version against the latest release, then refreshes the framework
+files in each. Use --dry-run to preview without changing anything.
 
 Only two things stop an update: the directory isn't a LOUIE project, or it's
 the framework's own source repo. Anything else is refreshed, with conditions
 needing follow-up reported at the end.
 
 Options:
-  --apply          Actually update (default: dry run, report only)
+  --dry-run, -n    Report only, change nothing
   --version <ref>  Framework ref to install (default: main; env: LOUIE_VERSION)
   --depth <n>      Directory scan depth (default: 6)
   -h, --help       Show this help
@@ -57,7 +57,7 @@ USAGE
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --apply)       APPLY=1; shift ;;
+    --dry-run|-n)  APPLY=0; shift ;;
     --version)
       [ $# -ge 2 ] || { err "--version requires a ref"; exit 2; }
       REF="$2"; shift 2 ;;
@@ -309,7 +309,7 @@ for proj in "${PROJECTS[@]}"; do
       ATTENTION+=("$name — had uncommitted _LOUIE_/ edits; the refresh overwrote them")
     else
       info "   WARNING: uncommitted changes inside _LOUIE_/ would be overwritten"
-      ATTENTION+=("$name — has uncommitted _LOUIE_/ edits that --apply would overwrite")
+      ATTENTION+=("$name — has uncommitted _LOUIE_/ edits that a refresh would overwrite")
     fi
     needs_attention=$((needs_attention + 1))
   elif ! is_git_repo "$proj"; then
@@ -401,7 +401,7 @@ done
 
 info "═══════════════════════════════════════"
 if [ "$APPLY" -eq 0 ]; then
-  info "DRY RUN — nothing was changed. Re-run with --apply."
+  info "DRY RUN — nothing was changed. Re-run without --dry-run to apply."
 fi
 info "  current:   $current"
 info "  updated:   $updated"
