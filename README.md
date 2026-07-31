@@ -71,19 +71,6 @@ Your work in `_LOUIE-output/` is never overwritten — only missing skeleton fil
 
 > **Prefer not to pipe a script into your shell?** Read it first — [`install.sh`](install.sh) — or use the manual install below.
 
-### Updating many projects at once
-
-Normally you update a project by running `louie-update-framework` in your AI assistant. If you have a lot of LOUIE projects, [`update-all.sh`](update-all.sh) scans directory trees and refreshes them in bulk:
-
-```bash
-bash update-all.sh ~/projects              # refresh them
-bash update-all.sh ~/projects --dry-run    # preview: report versions and what needs attention
-```
-
-It does the mechanical part only: replace `_LOUIE_/`, refresh the LOUIE section of your context file (preserving your own sections), re-run init scripts. `_LOUIE-output/` is never touched.
-
-It refreshes **every** LOUIE project it finds. Only two things stop an update: the directory isn't a LOUIE project, or it *is* this framework's own source repo — refreshing that would overwrite unreleased work. Conditions needing follow-up (old flat layout, missing `runbook.md` / `roadmap.md`, uncommitted edits inside `_LOUIE_/`) are reported at the end rather than blocking; run `louie-update-framework` in those projects.
-
 ### Manual install
 
 <details>

@@ -105,6 +105,8 @@ The sh/bat parity rule from `tools/README.md` applies here by extension: `instal
 
 Scans directory trees for LOUIE projects and refreshes them. For maintainers of many LOUIE projects, where opening each one in an assistant to run `louie-update-framework` is the bottleneck.
 
+**Repo-only — `export-ignore`'d, never released.** It lives at the repo root for convenience but is excluded from archives alongside `_LOUIE-internals/`. It was briefly documented in the user-facing README; that was wrong on its own terms, since the file isn't in the tarball a user downloads, leaving the docs pointing at something unobtainable. The distributed update path stays `louie-update-framework`, which is what a one-or-two-project user should run anyway. Note the exclusion applies to `git archive` (and so GitHub tarballs), not to clones — a maintainer cloning the repo still gets it, which is the intent.
+
 **Scope is deliberately partial.** The script does the mechanical part: replace `_LOUIE_/`, refresh the context-file block, re-run init scripts. It does *not* do the judgment parts — version-gated migrations, the flat→per-feature layout migration, bootstrapping newly-canonical `_LOUIE-output/` files. Those need per-project reasoning over the user's actual artifacts.
 
 The consequence shapes the design: the run always produces a **triage report** alongside the refresh, naming what still needs the assistant. `--dry-run` previews without changing anything; applying is the default, since the operation is near-fully reversible (`_LOUIE_/` is regenerable at any version via `install.sh --force --version <ref>`, and `_LOUIE-output/` is never touched).
