@@ -4,13 +4,17 @@
 # versions, and optionally refresh the framework files in each.
 #
 #   bash update-all.sh ~/projects              # dry run: report only
-#   bash update-all.sh ~/projects --apply      # refresh the ones that are safe
+#   bash update-all.sh ~/projects --apply      # refresh every LOUIE project found
 #
 # SCOPE: this does the *mechanical* part of louie-update-framework — replace
 # _LOUIE_/, refresh the context-file block, re-run init scripts. It deliberately
 # does NOT do the judgment parts: version-gated migrations, the flat->per-feature
 # layout migration, or bootstrapping newly-canonical _LOUIE-output/ files. Those
 # need the AI assistant per project; this script reports which projects need it.
+#
+# It refreshes every LOUIE project it finds. The only two things that stop an
+# update are: the directory isn't a LOUIE project, or it IS the framework's own
+# source repo (updating that would overwrite unreleased work).
 #
 # Design notes: _LOUIE-internals/install.md § Bulk update
 
@@ -19,7 +23,6 @@ set -euo pipefail
 REPO_URL="https://github.com/ringdrossel/louie-framework"
 REF="${LOUIE_VERSION:-main}"
 APPLY=0
-ALLOW_DIRTY=0
 ROOTS=()
 MAXDEPTH=6
 
@@ -34,11 +37,14 @@ LOUIE bulk updater
 
 Scans each <dir> for LOUIE projects (directories containing _LOUIE_/) and
 reports their version against the latest release. With --apply, refreshes the
-framework files in projects that are safe to update automatically.
+framework files in every one of them.
+
+Only two things stop an update: the directory isn't a LOUIE project, or it's
+the framework's own source repo. Anything else is refreshed, with conditions
+needing follow-up reported at the end.
 
 Options:
   --apply          Actually update (default: dry run, report only)
-  --allow-dirty    Update projects with uncommitted changes (default: skip)
   --version <ref>  Framework ref to install (default: main; env: LOUIE_VERSION)
   --depth <n>      Directory scan depth (default: 6)
   -h, --help       Show this help
@@ -52,7 +58,6 @@ USAGE
 while [ $# -gt 0 ]; do
   case "$1" in
     --apply)       APPLY=1; shift ;;
-    --allow-dirty) ALLOW_DIRTY=1; shift ;;
     --version)
       [ $# -ge 2 ] || { err "--version requires a ref"; exit 2; }
       REF="$2"; shift 2 ;;
@@ -167,12 +172,6 @@ EOF
   [ $(( am*1000000 + ai*1000 + ${ap:-0} )) -gt $(( bm*1000000 + bi*1000 + ${bp:-0} )) ]
 }
 
-git_is_dirty() {
-  local p="$1"
-  git -C "$p" rev-parse --git-dir >/dev/null 2>&1 || return 1  # not a repo: not "dirty"
-  [ -n "$(git -C "$p" status --porcelain 2>/dev/null)" ]
-}
-
 is_git_repo() { git -C "$1" rev-parse --git-dir >/dev/null 2>&1; }
 
 # Replace the block between <!-- LOUIE-FRAMEWORK --> and <!-- /LOUIE-FRAMEWORK -->,
@@ -246,9 +245,6 @@ for proj in "${PROJECTS[@]}"; do
 
   info "   version: $ver → $LATEST"
 
-  reasons=()
-  blocked=0
-
   # Ahead of the published release (a local build, or a maintainer mid-release).
   # Refreshing would be a downgrade.
   if version_gt "$ver" "$LATEST"; then
@@ -272,38 +268,52 @@ for proj in "${PROJECTS[@]}"; do
     continue
   fi
 
-  # --- blockers -------------------------------------------------------------
+  # --- notes, not blockers ---------------------------------------------------
+  # Only two things stop an update: it isn't a LOUIE project, or it's the
+  # framework's own source. Everything else is refreshable — _LOUIE_/ is
+  # framework-owned with no user content, and _LOUIE-output/ is never touched.
+  # These conditions are reported so they can be followed up in the assistant.
 
-  if [ "$ver" = "pre-versioning" ]; then
-    reasons+=("pre-versioning install — needs louie-update-framework's filesystem-based migration detection")
-    blocked=1
-  elif [ "$(major_of "$ver")" != "$(major_of "$LATEST")" ]; then
-    reasons+=("major version gap $ver → $LATEST — migrations required, run louie-update-framework")
-    blocked=1
-  fi
-
+  # The old flat layout doesn't block the refresh: louie-update-framework itself
+  # supports declining the migration and carrying on, warning that newly-shipped
+  # commands assume the new layout. Same warning here.
   if has_flat_layout "$proj"; then
-    reasons+=("old flat _LOUIE-output/ layout — run louie-migrate")
-    blocked=1
-  fi
-
-  if [ "$ALLOW_DIRTY" -eq 0 ] && git_is_dirty "$proj"; then
-    reasons+=("uncommitted changes — commit first, or pass --allow-dirty")
-    blocked=1
-  fi
-
-  if ! is_git_repo "$proj"; then
-    reasons+=("not a git repository — no way to undo a bad update")
-    blocked=1
-  fi
-
-  if [ "$blocked" -eq 1 ]; then
-    for r in "${reasons[@]}"; do info "   SKIP: $r"; done
-    ATTENTION+=("$name — ${reasons[0]}")
-    skipped=$((skipped + 1))
+    info "   NOTE: old flat _LOUIE-output/ layout — new commands assume per-feature folders"
+    ATTENTION+=("$name — old flat _LOUIE-output/ layout; run louie-migrate")
     needs_attention=$((needs_attention + 1))
-    info ""
-    continue
+  fi
+
+  if [ "$ver" != "pre-versioning" ] && [ "$(major_of "$ver")" != "$(major_of "$LATEST")" ]; then
+    info "   NOTE: major version gap $ver → $LATEST — check for migrations"
+    ATTENTION+=("$name — major version gap $ver → $LATEST; run louie-update-framework for migrations")
+    needs_attention=$((needs_attention + 1))
+  fi
+
+  # Newer canonical outputs. Only the assistant can bootstrap these from a
+  # project's existing artifacts, so they're reported, never generated here.
+  for artifact in runbook roadmap; do
+    if [ ! -f "$proj/_LOUIE-output/$artifact.md" ]; then
+      info "   NOTE: _LOUIE-output/$artifact.md missing"
+      ATTENTION+=("$name — no $artifact.md; louie-update-framework can bootstrap it")
+      needs_attention=$((needs_attention + 1))
+    fi
+  done
+
+  # The one thing this update destroys irreversibly: hand-edits to _LOUIE_/
+  # files that were never committed. The directory is replaced wholesale, so
+  # customized agents or commands are gone with no way back. Detect and report
+  # it before touching anything — the update still proceeds.
+  if is_git_repo "$proj" && [ -n "$(git -C "$proj" status --porcelain -- _LOUIE_ 2>/dev/null)" ]; then
+    if [ "$APPLY" -eq 1 ]; then
+      info "   WARNING: uncommitted changes inside _LOUIE_/ — overwriting them"
+      ATTENTION+=("$name — had uncommitted _LOUIE_/ edits; the refresh overwrote them")
+    else
+      info "   WARNING: uncommitted changes inside _LOUIE_/ would be overwritten"
+      ATTENTION+=("$name — has uncommitted _LOUIE_/ edits that --apply would overwrite")
+    fi
+    needs_attention=$((needs_attention + 1))
+  elif ! is_git_repo "$proj"; then
+    info "   NOTE: not a git repository — no undo if you'd customized _LOUIE_/"
   fi
 
   gap="$(changelog_gap "$ver" "$LATEST")"

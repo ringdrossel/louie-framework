@@ -77,10 +77,12 @@ Normally you update a project by running `louie-update-framework` in your AI ass
 
 ```bash
 bash update-all.sh ~/projects            # dry run — report versions and what needs attention
-bash update-all.sh ~/projects --apply    # refresh the ones that are safe to update automatically
+bash update-all.sh ~/projects --apply    # refresh them
 ```
 
-It does the mechanical part only: replace `_LOUIE_/`, refresh the LOUIE section of your context file (preserving your own sections), re-run init scripts. It **skips and reports** projects needing judgment — major version gaps, the old flat `_LOUIE-output/` layout, pre-versioning installs, uncommitted changes, non-git directories. Run `louie-update-framework` in those. `_LOUIE-output/` is never touched.
+It does the mechanical part only: replace `_LOUIE_/`, refresh the LOUIE section of your context file (preserving your own sections), re-run init scripts. `_LOUIE-output/` is never touched.
+
+It refreshes **every** LOUIE project it finds. Only two things stop an update: the directory isn't a LOUIE project, or it *is* this framework's own source repo — refreshing that would overwrite unreleased work. Conditions needing follow-up (old flat layout, missing `runbook.md` / `roadmap.md`, uncommitted edits inside `_LOUIE_/`) are reported at the end rather than blocking; run `louie-update-framework` in those projects.
 
 ### Manual install
 

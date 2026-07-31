@@ -109,23 +109,30 @@ Scans directory trees for LOUIE projects and refreshes them. For maintainers of 
 
 The consequence shapes the design: **the triage report is the primary output, the update is secondary.** A project the script refuses to touch is a successful result, not a failure — it has been correctly identified as needing `louie-update-framework`. Dry-run is the default.
 
-**Blockers** (reported, never auto-updated):
+**Only two conditions stop an update:** the directory isn't a LOUIE project, or it is the framework's own source repo. Everything else is refreshed.
+
+That is a deliberate loosening of the original design, which blocked on pre-versioning installs, major version gaps, the flat layout, dirty trees, and non-git directories. Measured against a real 24-project fleet, those rules refused 15 of 24 — and the refusals were mostly wrong. The pre-versioning block in particular was circular: it deferred to `louie-update-framework`'s "filesystem-based migration detection," but the only thing that detection looks for is the flat layout, which this script already tests directly. Exactly one of the 15 actually had it.
+
+The underlying reason the loose rule is safe: `_LOUIE_/` is wholly framework-owned and regenerable, and `_LOUIE-output/` is never touched. A refresh has almost nothing irreversible to destroy.
+
+**Reported, not blocked** (each needs the assistant, none needs to stop the file refresh):
+
+| Condition | Follow-up |
+|---|---|
+| Old flat `_LOUIE-output/` layout | `louie-migrate`. `louie-update-framework` itself supports declining the migration and carrying on, so blocking here would be stricter than the command it stands in for |
+| Major version gap | Check for version-gated migrations |
+| Missing `runbook.md` / `roadmap.md` | Newer canonical outputs; only the assistant can bootstrap them from existing artifacts |
+| Uncommitted edits **inside `_LOUIE_/`** | The one genuinely irreversible loss — see below |
+| Not a git repository | Same exposure, no undo available |
+
+**Still hard blockers:**
 
 | Condition | Why |
 |---|---|
-| Major version gap | Migrations live exactly here (`core.md` § Versioning) |
-| Pre-versioning install (no `VERSION`) | No gating basis; needs the command's filesystem-based detection |
-| Old flat `_LOUIE-output/` layout | Needs `louie-migrate` and its `git mv` history preservation |
-| Uncommitted changes | Git is the undo; without a clean tree there isn't one (`--allow-dirty` overrides) |
-| Not a git repository | Same — no way back from a bad update |
 | The framework's own source repo | It is not an installation — see below |
 | Version ahead of latest | A refresh would be a downgrade |
 
-**The framework must never update itself.** A maintainer's checkout of this repo has a `_LOUIE_/` directory and therefore looks exactly like an installed project to a filesystem scan. It isn't one: refreshing it would `rm -rf` the source tree and replace it with the last *published* copy, silently reverting unreleased work. Detection uses `_LOUIE-internals/` plus a root `install.sh` — `_LOUIE-internals/` is repo-only and never distributed, so it cannot appear in a real installation.
-
-This failure mode stays latent while the repo's `VERSION` matches the published one (it reads as "already current"). It arms itself precisely during a release cut, when `VERSION` is bumped locally before the tag is pushed — the moment the source tree is most valuable and least recoverable.
-
-**Version comparison must be ordered, not equality.** Bare `$local = $latest` treats "ahead" and "behind" identically, so any project ahead of the published release gets silently downgraded. `version_gt` compares semver components; anything ahead is reported and left alone.
+**Dirty-tree handling is scoped, not global.** The original rule skipped any project with uncommitted changes anywhere — which on a real fleet meant skipping projects whose *application code* was mid-edit, something a framework refresh cannot touch. The check now narrows to `git status -- _LOUIE_`, the only path the update overwrites. On the same fleet that took 7 blocked projects down to 3 warnings, and all 3 turned out to be uncommitted framework upgrades rather than customizations. It warns and proceeds; a hand-customized agent prompt is the case worth naming, and the user gets told.
 
 **The context-block problem.** Init scripts skip the context-file section when the LOUIE marker is already present (that's what makes them idempotent), so framework changes to the `CLAUDE.md` / `AGENTS.md` / `GEMINI.md` block would never reach an existing project. `louie-update-framework` step 3 handles this by reasoning; the script does it by splicing between `<!-- LOUIE-FRAMEWORK -->` and `<!-- /LOUIE-FRAMEWORK -->`, generating the canonical block by running init against a scratch directory. Everything outside the markers is preserved verbatim.
 
