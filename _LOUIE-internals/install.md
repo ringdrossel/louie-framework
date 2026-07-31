@@ -101,6 +101,32 @@ irm https://raw.githubusercontent.com/ringdrossel/louie-framework/main/install.p
 
 The sh/bat parity rule from `tools/README.md` applies here by extension: `install.sh` and `install.ps1` must stay behaviorally aligned. The consistency lint does not cover them (they register no commands), so this is a manual review item at each release.
 
+## Bulk update (`update-all.sh`)
+
+Scans directory trees for LOUIE projects and refreshes them. For maintainers of many LOUIE projects, where opening each one in an assistant to run `louie-update-framework` is the bottleneck.
+
+**Scope is deliberately partial.** The script does the mechanical part: replace `_LOUIE_/`, refresh the context-file block, re-run init scripts. It does *not* do the judgment parts — version-gated migrations, the flat→per-feature layout migration, bootstrapping newly-canonical `_LOUIE-output/` files. Those need per-project reasoning over the user's actual artifacts.
+
+The consequence shapes the design: **the triage report is the primary output, the update is secondary.** A project the script refuses to touch is a successful result, not a failure — it has been correctly identified as needing `louie-update-framework`. Dry-run is the default.
+
+**Blockers** (reported, never auto-updated):
+
+| Condition | Why |
+|---|---|
+| Major version gap | Migrations live exactly here (`core.md` § Versioning) |
+| Pre-versioning install (no `VERSION`) | No gating basis; needs the command's filesystem-based detection |
+| Old flat `_LOUIE-output/` layout | Needs `louie-migrate` and its `git mv` history preservation |
+| Uncommitted changes | Git is the undo; without a clean tree there isn't one (`--allow-dirty` overrides) |
+| Not a git repository | Same — no way back from a bad update |
+
+**The context-block problem.** Init scripts skip the context-file section when the LOUIE marker is already present (that's what makes them idempotent), so framework changes to the `CLAUDE.md` / `AGENTS.md` / `GEMINI.md` block would never reach an existing project. `louie-update-framework` step 3 handles this by reasoning; the script does it by splicing between `<!-- LOUIE-FRAMEWORK -->` and `<!-- /LOUIE-FRAMEWORK -->`, generating the canonical block by running init against a scratch directory. Everything outside the markers is preserved verbatim.
+
+Projects whose context file predates the **closing** marker are reported and left alone: with only an opening marker there is no way to tell where the framework section ends and the user's content begins, and guessing would eat their notes.
+
+**The changelog is not in the tarball.** `.gitattributes` marks `_LOUIE-internals/ export-ignore`, which applies to `git archive` and therefore to GitHub's tarball endpoint. The script fetches `CHANGELOG.md` separately from `raw.githubusercontent.com` for its version-gap report. `louie-update-framework` is unaffected — it uses `git clone`, and `export-ignore` does not apply to clones. Anything that needs a `_LOUIE-internals/` file from an archive must fetch it separately.
+
+Fetch happens **once** per run and is reused across all projects — never N downloads for N projects.
+
 ## Not covered by the lint
 
 `check-consistency.sh` checks command-set registration; the installers list no commands, so they are outside its checks. What can drift instead:
