@@ -17,23 +17,51 @@ A project-local `louie-adapters/` takes precedence over the global directory.
 `_LOUIE_/` itself stays fully tool-agnostic: it defines this interface and the
 `louie-from-source` command, and names no specific source system.
 
-## Required Operations
+## Operations
 
-**fetch_next_task()**
+**fetch_next_task()** — *Required*
 Returns the next task ready for LOUIE processing.
 Must provide: id, title, louie_type, concept (markdown, if available)
 
-**fetch_task(id)**
+**fetch_task(id)** — *Required*
 Returns a specific task by ID.
 Must provide: id, title, louie_type, concept (markdown, if available)
 
-**update_status(id, status)**
-Updates the task status in the source system.
+**update_status(id, status)** — *Required*
+Brings the task to the given state in the source system. This is a **state
+goal, not a single write**: the adapter is responsible for satisfying whatever
+intermediate transitions its source system enforces to reach that state.
+Callers issue exactly one `update_status` call per intended state and never
+orchestrate intermediate steps themselves.
 Called by LOUIE on pickup ("In LOUIE") and on completion ("Done").
 
-**attach_concept(id, markdown)**
+> If the source system has a constrained status lifecycle — a state machine
+> that rejects direct hops between non-adjacent states — the adapter must
+> document that lifecycle in its own `adapter.md` and walk it internally,
+> so the framework never learns a source system's status lifecycle.
+>
+> If such a walk fails part-way, the adapter must surface the failure
+> **together with the state actually reached** — the caller is otherwise
+> left guessing between "unchanged" and "fully applied", and cannot decide
+> whether to retry, resume, or escalate.
+
+**create_task(...)** — *Optional*
+Creates a new task in the source system. Returns the created task's `id`.
+Fields: whatever identifies the owning project in that system, plus title,
+description, louie_type, priority.
+
+- The created task's **initial state is adapter-defined** and may not be a
+  state LOUIE can pick up. An adapter that implements `create_task` must
+  document which state creation yields. A caller must not assume a requested
+  state is honored at creation — reach the intended state afterwards via
+  `update_status`, which handles any required intermediate transitions.
+- Creation is **not part of any current LOUIE command flow**. It exists for
+  adapters that need to file work back to the source system, and is
+  deliberately spec-only until a command needs it.
+
+**attach_concept(id, markdown)** — *Optional*
 Writes a concept document back to the source system.
-Optional — only needed if concepts are generated outside the source system.
+Only needed if concepts are generated outside the source system.
 
 ## louie_type Routing
 
