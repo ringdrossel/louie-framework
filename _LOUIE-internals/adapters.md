@@ -23,7 +23,7 @@ louie-adapters/                       ← PRIVATE, project root, gitignored
 
 The interface defines three required operations — `fetch_next_task`, `fetch_task(id)`, `update_status(id, status)` — and two optional ones — `create_task(...)`, `attach_concept(id, markdown)` — plus a `louie_type → command` routing table (setup/feature/extend/update/bugfix) and the concept handoff rule (concept present → skip Tom, go straight to Sophie / the bugfix chain; the routed command's gates still apply).
 
-`louie-from-source` is the entry point: pick the active adapter under `louie-adapters/`, read its `adapter.md`, fetch the task, mark it "In LOUIE", route by `louie_type` passing the concept as context, and mark it "Done" on completion.
+`louie-from-source` is the entry point: pick the active adapter under `louie-adapters/`, read its `adapter.md`, fetch the task, mark it "In LOUIE", route by `louie_type` passing the concept as context, and mark it "Done" only once the user has merged — the end of the routed chain is the merge gate, not completion.
 
 ## Design decisions
 

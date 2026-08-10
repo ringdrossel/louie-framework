@@ -41,10 +41,10 @@ louie-from-source 42       — fetch task with ID 42
    - If a concept is absent: start the full chain from Tom (full interview).
    - Either way, the routed command's normal confirmation gates still apply (architecture/tech-stack confirmed before feature work; feature doc approved before coding).
 
-7. **On LOUIE workflow completion** (the routed command finished — e.g. Ava shipped / the change is merged): call `update_status(id, "Done")` on the source system.
+7. **On merge (not before).** The routed command ends at the merge-to-main gate, which is always the user's decision (Critical Rule #3). Do not call `update_status(id, "Done")` when the chain finishes — Ava shipping, tests passing, and a commit landing are not completion. Report that the work is ready and leave the task at "In LOUIE". Call `update_status(id, "Done")` only once the user has merged or explicitly said to close it. If they end the session without saying, the task stays "In LOUIE" — that is the correct resting state, not an oversight.
 
 ## Notes
 
 - This command is the public, tool-agnostic entry point. All source-specific behaviour (endpoints, auth, payloads) lives in a private adapter (`louie-adapters/<name>/adapter.md` in the project, or `~/.louie/adapters/<name>/adapter.md` machine-global), never in `_LOUIE_/`.
 - If any adapter call fails (auth, network, unexpected shape), surface the error and stop — don't silently continue or fabricate a task.
-- **Agentic composition:** when an autonomous agent (not a human) is driving this command, run the routed command with `--agentic` — the concept becomes the task spec for Tom's evidential gate, and the run ends in a run report instead of chat gates. Mirror the run-report `Status` back via `update_status` (`completed` → "Done"; `needs-human` / `blocked` → your escalation state, not "Done"). See `_LOUIE_/workflow/agentic-mode.md`.
+- **Agentic composition:** when an autonomous agent (not a human) is driving this command, run the routed command with `--agentic` — the concept becomes the task spec for Tom's evidential gate, and the run ends in a run report instead of chat gates. Mirror the run-report `Status` back via `update_status` — an agentic run never merges either, so `completed` maps to your review/handoff state (leave it at "In LOUIE" if you have none), never "Done"; `needs-human` / `blocked` → your escalation state. See `_LOUIE_/workflow/agentic-mode.md`.

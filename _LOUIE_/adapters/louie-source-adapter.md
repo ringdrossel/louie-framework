@@ -33,7 +33,8 @@ goal, not a single write**: the adapter is responsible for satisfying whatever
 intermediate transitions its source system enforces to reach that state.
 Callers issue exactly one `update_status` call per intended state and never
 orchestrate intermediate steps themselves.
-Called by LOUIE on pickup ("In LOUIE") and on completion ("Done").
+Called by LOUIE on pickup ("In LOUIE") and after the user merges ("Done") —
+never when the routed command's chain merely finishes.
 
 > If the source system has a constrained status lifecycle — a state machine
 > that rejects direct hops between non-adjacent states — the adapter must
@@ -102,5 +103,6 @@ fetches the task and writes status back; agentic mode (`--agentic` on the
 routed command) governs how gates resolve when an autonomous agent — not a
 human — is driving. In that combination the concept is the task spec for Tom's
 evidential gate, and the run-report `Status` maps back through
-`update_status`: `completed` → "Done", `needs-human` / `blocked` → an
-escalation state. See `_LOUIE_/workflow/agentic-mode.md`.
+`update_status`: `completed` → a review/handoff state (an agentic run never
+merges, so not "Done"; leave the task at "In LOUIE" if there is no such state),
+`needs-human` / `blocked` → an escalation state. See `_LOUIE_/workflow/agentic-mode.md`.
