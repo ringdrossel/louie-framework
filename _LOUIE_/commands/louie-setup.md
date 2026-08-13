@@ -11,9 +11,15 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
 
 2. **Greet the user and explain what's about to happen:**
    - Introduce the LOUIE framework briefly
-   - Explain that Tom (Analyst) will interview them about their project/feature idea
-   - After requirements, Sophie (Architect) will define the architecture and tech stack
-   - Both will be shown for confirmation before any code is written
+   - Show the **setup itinerary** so the stops ahead are expected, not confusing — a compact numbered list of the whole run with the confirmation gates marked, e.g.:
+     1. Tom (Analyst) interviews you → requirements per feature
+     2. Sophie (Architect) drafts architecture, tech stack, runbook
+     3. **Gate: you confirm the foundation docs**
+     4. Feature doc for the first feature
+     5. **Gate: you confirm the feature doc**
+     6. Design (if UI) → code → review → tests for that first feature
+     7. Remaining features ship one at a time via `louie-feature`
+   - Make clear that at each gate a plain reply ("looks good" / "change X") moves things forward, and nothing is coded before both gates are confirmed
 
 3. **Ask for their idea:**
    - If the user already provided an idea alongside the command, proceed directly
@@ -66,7 +72,7 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
 6. **Confirmation gate (architecture):**
    - Present the requirements, architecture, tech stack, and runbook **in chat as a normal message** — a compact digest per document, not just the file writes (collapsed results are not a presentation)
    - Walk through the key decisions and their rationale
-   - **End the turn after presenting.** Ask for explicit confirmation only in the next response — a structured-choice dialog hides anything sharing its response. Skip the dialog if the user's reply already decides (two-turn gate — see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second). Wait before proceeding.
+   - **End the turn after presenting**, closing with a phase breadcrumb (see `_LOUIE_/guidelines/interaction-guidelines.md` § Phase breadcrumb) — e.g. "Phase 3/7 (foundation docs) — next I draft the feature doc for `auth`. Reply 'looks good' to continue, or tell me what to change." Ask for explicit confirmation only in the next response — a structured-choice dialog hides anything sharing its response. Skip the dialog if the user's reply already decides (two-turn gate — see § Content first, choice second in the same file). Wait before proceeding.
    - If the user wants changes, update the documents and re-present
 
 7. **Create feature document for the FIRST feature only:**
@@ -76,7 +82,7 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
 
 8. **Confirmation gate (feature doc):**
    - Present the feature document and implementation plan **in chat as a normal message** (compact digest + pointer to the file)
-   - **End the turn after presenting**, then ask for explicit confirmation in the next response — skip the dialog if the user's reply already decides (two-turn gate; see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second). Wait before coding.
+   - **End the turn after presenting**, closing with a phase breadcrumb naming what approval unlocks (e.g. "Phase 5/7 (feature doc) — on your go, implementation starts. Reply 'looks good' to continue, or tell me what to change."), then ask for explicit confirmation in the next response — skip the dialog if the user's reply already decides (two-turn gate; see `_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second and § Phase breadcrumb). Wait before coding.
 
 9. **Invoke Leo (Designer) — if the feature has UI:**
    - Read and follow `_LOUIE_/agents/designer.md`

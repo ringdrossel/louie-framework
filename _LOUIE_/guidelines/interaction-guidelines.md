@@ -39,13 +39,31 @@ A structured choice renders as a compact dialog — on most runtimes it takes ov
 
 So every content-carrying approval gate (playback, proposal, document confirmation) is a **two-turn gate**:
 
-1. **Turn one — present, then stop.** Send the content as a normal chat message: the playback summary, the design proposal, the document digest. Compact: 5–15 bullets or a short section, not a full document dump. Name the file where the full version lives ("full doc: `_LOUIE-output/implementations/<feature>/feature.md`"), but never *rely* on the user opening it. End the message with a one-line handoff — e.g. "Take a look — I'll ask for the go/no-go next." — and **end the turn. No structured-choice call in this response.**
+1. **Turn one — present, then stop.** Send the content as a normal chat message: the playback summary, the design proposal, the document digest. Compact: 5–15 bullets or a short section, not a full document dump. Name the file where the full version lives ("full doc: `_LOUIE-output/implementations/<feature>/feature.md`"), but never *rely* on the user opening it. End the message with a phase breadcrumb (§ Phase breadcrumb below) — and **end the turn. No structured-choice call in this response.**
 2. **Turn two — read the reply before reaching for the dialog.** If the user's reply already decides ("looks good", "approved", "change X first"), **treat it as the gate answer and skip the structured choice entirely** — re-asking what they just answered is noise. Only if the reply doesn't decide (a bare "ok", a question, a tangent) do you raise the structured choice — **alone in its own response**, short and self-contained, one line naming *what* is being approved (e.g. "Approve the preview-panel feature doc (summary above)?").
 3. **If the user asks to "see it again" or for a summary mid-gate**, that request supersedes the pending choice. Respond with the content as plain message text and **nothing else** — no structured-choice call in the same response — and only re-ask after they've replied.
 
 This rule targets **structured-choice tool calls** (the dialog is what hides things). A conversational, free-form ask ("Does this match what you have in mind?") may share the response with the content — plain text hides nothing. The same goes for the lettered pick-list fallback: it *is* plain text, so content + lettered question in one message is fine.
 
 Never chain *write file → ask approval* with no chat presentation in between, and never put a structured-choice call in the same response as the content it asks about.
+
+## Phase breadcrumb (mid-chain stops)
+
+Commands that run an agent chain (`louie-setup`, `louie-feature`, `louie-extend`, `louie-bugfix`, …) stop several times — approval gates, questions, playbacks. To someone who doesn't know the chain, an undirected stop reads as a dead end: is it finished? Is it waiting? What do I type?
+
+So **every message that ends a turn mid-chain closes with one line of orientation** covering three things:
+
+1. **Where we are** — the phase just completed, positioned against the whole chain. Use `phase N/M` when the chain length is known; name the phase when it isn't (skipped agents can change the count).
+2. **What's next** — the next phase and who runs it.
+3. **How to continue** — the concrete reply that moves the chain forward.
+
+Example closer:
+
+> Phase 2/6 (architecture) done. Next: I draft the feature doc for `auth`. Reply "looks good" to continue, or tell me what to change.
+
+This composes with the two-turn gate above: the breadcrumb is the **last line of turn one's presentation**, and it tells the user up front that a plain reply is enough — the structured choice in turn two only appears if their reply doesn't decide.
+
+At the **chain's final stop**, point at the next *command* instead of a reply (e.g. "Next up: `books-core` is still Planned — run `louie-feature` when you're ready"). A chain must never end on a bare summary with no named next action.
 
 ## Authoring rules (regardless of rendering)
 
