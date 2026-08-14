@@ -65,6 +65,38 @@ This composes with the two-turn gate above: the breadcrumb is the **last line of
 
 At the **chain's final stop**, point at the next *command* instead of a reply (e.g. "Next up: `books-core` is still Planned — run `louie-feature` when you're ready"). A chain must never end on a bare summary with no named next action.
 
+## Checkpoint (session handoff at mid-chain stops)
+
+The breadcrumb tells the *human* how to continue; `_LOUIE-output/checkpoint.md` tells the *next session*. The user may leave at any stop — deliberately (fresh chat to avoid a contaminated context) or not (crash, restart) — and gate answers, chat-only decisions, and "why we deferred X" exist nowhere on disk. The checkpoint captures that residue so `louie-continue` in a new session doesn't have to guess.
+
+**Write rule:** at every mid-chain stop where you emit a phase breadcrumb, also write `_LOUIE-output/checkpoint.md` — same moment, two audiences. Rules:
+
+- **Full overwrite, never append.** One file, always describing only the latest phase boundary. It must not matter at which phase the user actually leaves.
+- **Self-contained, not a delta.** Each write carries forward everything a fresh session still needs from *earlier* phases — a gate confirmed in phase 2 stays in the phase-3 and phase-4 checkpoints for as long as it matters. Dropping it because "that was last phase" defeats the file.
+- **Compact.** 10–20 lines. It's a handoff summary (same spirit as `agent-handoffs.md`), not a context dump — the full detail lives in the artifacts it points at.
+- **Stamped.** First lines carry the date and current git HEAD, so a checkpoint that predates manual work is detectable.
+
+Format:
+
+```markdown
+# Checkpoint
+- **Written:** <date> at <git HEAD short SHA>
+- **Task:** <command + target, e.g. louie-setup / louie-feature auth>
+- **Phase completed:** <N/M — name>
+- **Next step:** <the single next action, incl. which agent/gate>
+- **Gates passed:** <e.g. architecture gate confirmed by user on <date>>
+- **Chat-only decisions:** <decisions made in conversation not yet in any doc>
+- **Open questions:** <carried from the docs or the conversation>
+- **Read next:** <the 2–4 files a fresh session should read first>
+```
+
+**Lifecycle:**
+
+- Written (overwritten) at every mid-chain stop.
+- **Deleted by `louie-continue`** immediately after reading it, *before* resuming work — a consumed checkpoint must not linger to confuse a later session.
+- **Deleted at chain completion** — the final step of a chain removes it instead of writing one. A finished task leaves no "resume me" file behind.
+- **Artifacts win on conflict.** The checkpoint is a hint, not authority — if it disagrees with `_LOUIE-output/` docs or git (e.g. the session died mid-phase after the last write), trust the files and use the checkpoint only to narrow the search.
+
 ## Authoring rules (regardless of rendering)
 
 - **2–4 options.** More than four means the question is really several questions — split it.

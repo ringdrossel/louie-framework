@@ -4,6 +4,8 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
 
 ## Procedure
 
+Throughout the chain: every stop that ends a turn closes with a **phase breadcrumb** in chat *and* refreshes `_LOUIE-output/checkpoint.md` (full overwrite, self-contained — record gates passed and chat-only decisions so a fresh session can resume via `louie-continue`). The final step deletes the checkpoint instead of writing one. Both rules: `_LOUIE_/guidelines/interaction-guidelines.md` § Phase breadcrumb and § Checkpoint.
+
 1. **Read the framework context:**
    - Read `README.md` (project root) for an overview of LOUIE
    - Read `_LOUIE_/workflow/ai-workflow.md` for the full workflow
@@ -20,6 +22,7 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
      6. Design (if UI) → code → review → tests for that first feature
      7. Remaining features ship one at a time via `louie-feature`
    - Make clear that at each gate a plain reply ("looks good" / "change X") moves things forward, and nothing is coded before both gates are confirmed
+   - Mention that every stop is a safe exit: the user can leave (or deliberately switch to a fresh chat) and pick up right where they stopped by running `louie-continue` in the new session
 
 3. **Ask for their idea:**
    - If the user already provided an idea alongside the command, proceed directly
@@ -102,6 +105,7 @@ When the user says **`louie-setup`**, follow this procedure to initialize the LO
 
 13. **Hand off to the next feature:**
     - Tell the user which features remain `Planned` in the Features table and that the next one ships by running `louie-feature` (which will go straight to creating the `feature.md` from the already-captured `requirements.md`).
+    - **Delete `_LOUIE-output/checkpoint.md`** if present — the setup chain is complete; the remaining features start fresh via `louie-feature`, not a resume. A finished chain leaves no checkpoint behind.
 
 ## Usage
 

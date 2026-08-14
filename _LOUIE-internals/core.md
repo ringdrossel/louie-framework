@@ -61,6 +61,8 @@ Additionally, a third rule (added later): **no merge to `main` without explicit 
 
 **Phase breadcrumb** (added 2026-08 after user feedback that setup stops read as dead ends): every mid-chain stop closes with one line naming where the chain is, what's next, and what reply continues it; the final stop names the next command. The rule lives in `_LOUIE_/guidelines/interaction-guidelines.md` § Phase breadcrumb — placed there, not per-command, because every chain command already reads that file for the two-turn gate and the two rules compose (the breadcrumb is turn one's closing line). `louie-setup` additionally shows the full itinerary in its greeting so gates are expected before the first one hits.
 
+**Checkpoint** (same feedback thread): the breadcrumb's on-disk twin — every mid-chain stop also overwrites `_LOUIE-output/checkpoint.md` so the user can continue in a *fresh session* (`louie-continue` consumes and deletes it). Spec in `interaction-guidelines.md` § Checkpoint, design rationale in `_LOUIE-internals/continue.md` (it supersedes that file's original "no new state file" rule).
+
 ## Naming Conventions
 
 ### Files
