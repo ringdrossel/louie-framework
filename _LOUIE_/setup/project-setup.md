@@ -241,7 +241,7 @@ If LOUIE is driven by an autonomous agent instead of a person (an orchestrator p
 | Extend an existing feature | `louie-extend` |
 | Quick change (< 50 lines, auto-escalates to `louie-extend`) | `louie-update` |
 | Diagnose and fix a bug | `louie-bugfix` |
-| Resume in-progress work after a break (reconstruct from artifacts + git) | `louie-continue` |
+| Resume in-progress work after a break (checkpoint-first, else reconstruct from artifacts + git) | `louie-continue` |
 | Read-only project snapshot (features by status, open questions, stale docs, recent fixes) | `louie-status` |
 | Code review by Max | `louie-review` |
 | Review + fix + update docs in one flow | `louie-review-doc` |

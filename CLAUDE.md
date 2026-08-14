@@ -18,7 +18,7 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 | `louie-extend` | `_LOUIE_/commands/louie-extend.md` | Extend an existing feature |
 | `louie-update` | `_LOUIE_/commands/louie-update.md` | Quick change (< 50 lines) |
 | `louie-bugfix` | `_LOUIE_/commands/louie-bugfix.md` | Diagnose and fix a bug |
-| `louie-continue` | `_LOUIE_/commands/louie-continue.md` | Resume in-progress work after a break (reconstruct from artifacts + git) |
+| `louie-continue` | `_LOUIE_/commands/louie-continue.md` | Resume in-progress work after a break (checkpoint-first, else reconstruct from artifacts + git) |
 | `louie-status` | `_LOUIE_/commands/louie-status.md` | Read-only project snapshot — features by status, open questions, stale docs, recent fixes |
 | `louie-review` | `_LOUIE_/commands/louie-review.md` | Code review by Max |
 | `louie-review-doc` | `_LOUIE_/commands/louie-review-doc.md` | Review + fix + update docs |

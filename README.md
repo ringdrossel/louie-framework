@@ -19,7 +19,7 @@ All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
 | `louie-extend` | Extend an existing feature |
 | `louie-update` | Quick change (< 50 lines, auto-escalates to `louie-extend`) |
 | `louie-bugfix` | Diagnose and fix a bug |
-| `louie-continue` | Resume in-progress work after a break (reconstruct from artifacts + git) |
+| `louie-continue` | Resume in-progress work after a break (checkpoint-first, else reconstruct from artifacts + git) |
 | `louie-status` | Read-only project snapshot — features by status, open questions, stale docs, recent fixes |
 | `louie-review` | Code review by Max |
 | `louie-review-doc` | Review + fix + update docs in one flow |
@@ -214,6 +214,7 @@ _LOUIE-output/
 ├── tech-stack.md                         (Sophie's build-time stack)
 ├── runbook.md                            (Sophie creates; Nina appends)
 ├── roadmap.md                            (bigger changes / epics list; created at setup)
+├── checkpoint.md                         (ephemeral session handoff; written at chain stops, consumed + deleted by louie-continue)
 ├── implementations/
 │   ├── overview.md                       (slim index of all features)
 │   └── <feature>/                        (one folder per feature)
@@ -250,5 +251,6 @@ LOUIE also works when the "user" is itself an autonomous agent — an orchestrat
 - **Lightweight** — lean enough to add value without overhead. No complex state machines or heavy orchestration.
 - **Tech-stack agnostic** — agents read the tech stack from `_LOUIE-output/tech-stack.md`, never from hardcoded values. Works for any language, framework, or platform.
 - **Two confirmation gates** — architecture must be approved before feature work; feature docs must be approved before coding. Catches mistakes early.
+- **Stop anywhere, resume anywhere** — every stop in a chain ends with a phase breadcrumb (where you are, what's next, how to continue) and writes an ephemeral `checkpoint.md`, so you can leave — or deliberately switch to a fresh chat — and pick up exactly there with `louie-continue`.
 - **Agents hand off, not hand-wave** — every agent ends with a structured handoff summary for the next agent in the chain.
 

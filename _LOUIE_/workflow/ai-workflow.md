@@ -284,7 +284,7 @@ Agentic mode implies auto-pilot, replaces Tom's interview with an **evidential g
 | `louie-extend` | Extend an existing feature |
 | `louie-update` | Quick change (< 50 lines, auto-escalates to `louie-extend`) |
 | `louie-bugfix` | Diagnose and fix a bug |
-| `louie-continue` | Resume in-progress work after a break (reconstruct from artifacts + git) |
+| `louie-continue` | Resume in-progress work after a break (checkpoint-first, else reconstruct from artifacts + git) |
 | `louie-status` | Read-only project snapshot — features by status, open questions, stale docs, recent fixes |
 | `louie-review` | Code review by Max |
 | `louie-review-doc` | Review + fix + update docs in one flow |
