@@ -84,7 +84,20 @@ Lowercase the argument before matching. Filenames are lowercase-kebab-case; be f
 
 ## Execution — After a Recipe Is Loaded
 
-A recipe is a **seed for the standard agent chain**, not a bypass. After reading the recipe file:
+### Determine the recipe type first
+
+A recipe declares its type on a line near the top: `**Recipe type:** audit`. **A recipe with no such line is a feature recipe** — that is the default and covers every recipe that builds something.
+
+| Type | What it does | Path |
+|------|--------------|------|
+| `feature` (default) | Seeds the standard agent chain to build something | Execution A |
+| `audit` | Measures the codebase against a standard, reports findings, files follow-up work | Execution B |
+
+The two paths are exclusive. Never run the agent chain for an audit recipe, and never let an audit recipe edit application code.
+
+### Execution A — Feature recipes
+
+A feature recipe is a **seed for the standard agent chain**, not a bypass. After reading the recipe file:
 
 1. **Read project context first:**
    - `_LOUIE-output/architecture.md` and `_LOUIE-output/tech-stack.md` (if they exist)
@@ -107,6 +120,26 @@ A recipe is a **seed for the standard agent chain**, not a bypass. After reading
 
 **Gates are load-bearing.** A recipe never skips the architecture gate or the feature-doc gate. If the recipe's assumptions conflict with the project's tech stack, Sophie reconciles and the user approves the reconciled feature doc.
 
+### Execution B — Audit recipes
+
+An audit recipe reads the codebase, reports what it found, and turns findings into tracked work. It writes **no application code** and invokes **no agent chain**.
+
+1. **Read project context:** `_LOUIE-output/tech-stack.md` and `_LOUIE-output/architecture.md` if they exist, plus any guideline the recipe's standard is sourced from. All optional — an audit **does not** require a confirmed architecture (Critical Rule 2 gates feature work, and an audit builds nothing). A cold repo can be audited on day one.
+
+2. **State the scope before scanning:** what will be checked, against which standard and threshold, and over which part of the repo. A subpath scan reported as a whole-repo scan is a false clean bill of health.
+
+3. **Run the recipe's Audit Procedure** verbatim. Report exclusions with reasons — a file that silently vanishes from an audit is worse than one never checked.
+
+4. **Report findings to the user first, in their own turn.** Never pair the findings with a structured choice in one response; the dialog hides the content it asks about (`_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second).
+
+5. **Clean result → stop.** No findings means no roadmap entry, no evaluation file, no artifact created just to record emptiness.
+
+6. **Then ask before writing anything,** and follow the recipe's Outcome section for where findings land — usually `louie-roadmap add` for epic-sized work, per `_LOUIE_/commands/louie-roadmap.md`. Use `Source: audit`.
+
+7. **Re-runs must not duplicate.** Before filing, check for an existing entry covering the same finding; append a dated measurement via `louie-roadmap-change` instead. Report findings that have since been resolved and *offer* to close them — never close automatically.
+
+8. **Fixing is a separate, user-initiated step.** If the user asks to fix findings while the audit is loaded, route to `louie-roadmap promote` → `louie-feature`, or `louie-update` for genuinely small changes. Editing code inside an audit run bypasses the feature-doc gate.
+
 ## Usage
 
 Browse:
@@ -121,10 +154,13 @@ Load:
 louie-recipe build-push
 louie-recipe docker:build-push
 louie-recipe docker/build-push
+louie-recipe quality:file-length
 ```
 
 ## Notes for the Dispatcher
 
 - The user may call this command many times in one session. Do not re-read static framework files (guidelines, architecture) if you already have them in context — just re-check that the recipe file itself is current.
 - If the user types `louie-recipe` with no argument, always show the section list. Don't assume intent.
+- Check the recipe's type line before doing anything else with it. Defaulting to the feature chain is correct only because most recipes build something — an audit recipe run through Tom produces a requirements doc for work nobody asked for.
+- A recipe may take a trailing argument after its name (e.g. a threshold or a subpath: `louie-recipe quality:file-length src/api`). Pass it to the recipe; the recipe defines what it means. Arguments never persist beyond the run.
 - Case-insensitive matching is a fallback, not the default — prefer exact lowercase matches, retry insensitively only if the exact match fails.

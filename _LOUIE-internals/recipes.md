@@ -4,7 +4,7 @@ Design doc for the LOUIE recipe system. Read this before touching `_LOUIE_/recip
 
 ## Status
 
-**Implemented.** First recipe (`admin:settings`) shipped. See `CHANGELOG.md` for details.
+**Implemented.** First recipe (`admin:settings`) shipped. Audit recipes added with `quality:file-length`. See `CHANGELOG.md` for details.
 
 ## Motivation
 
@@ -84,6 +84,41 @@ recipes/
 
 No central registry. The filesystem *is* the registry.
 
+## Recipe Types
+
+Two types, distinguished by a `**Recipe type:** audit` line near the top of the file. **Absence means `feature`** — the default, so all pre-existing recipes stay valid without an edit, and adding the marker to a new feature recipe is never required.
+
+| Type | Produces | Path in `louie-recipe.md` |
+|------|----------|---------------------------|
+| `feature` | Code, via Tom → Sophie → feature doc → Leo/Nina/Max/Ava | Execution A |
+| `audit` | Findings + roadmap entries; no code, no agents | Execution B |
+
+### Why a type marker rather than a separate command
+
+The audit shape arrived with `quality:file-length` — "scan every file against the 800-line cap, file the violations." Three options were on the table:
+
+1. **A new `louie-*` command.** Cleanest semantic fit, but the command table grows per audit, which is exactly the argument that produced the single `louie-recipe` dispatcher in the first place (see § Why Not a Separate Command Per Recipe). One audit does not justify reversing that.
+2. **Recipe file only, no dispatcher change.** The dispatcher would still route it into Tom, so the recipe would have to instruct the assistant to override its own dispatcher — a contradiction between two files, resolved differently every run.
+3. **A type marker on the recipe + a second execution path.** Chosen. Additive, defaults to today's behavior, and the filesystem stays the registry.
+
+The marker is a prose line rather than YAML front matter because every other convention in `recipes/` keys off document structure (first line = description), and no recipe consumer parses these files mechanically.
+
+### What Execution B relaxes, and what it does not
+
+Relaxed: the architecture prerequisite. Critical Rule 2 gates *feature work*; an audit builds nothing, so requiring a confirmed `architecture.md` would block the case audits are most useful for — a cold repo, right after `louie-import`.
+
+Not relaxed: no application-code edits, and no filing without the user seeing the findings first (the two-turn rule). An audit that starts refactoring what it found would bypass the feature-doc gate through a side door — which is precisely what the type marker exists to prevent, not enable.
+
+### Re-run safety is a type-level requirement
+
+An audit's defining property is that it will be run again on the same repo. Every audit recipe must specify how a second run avoids duplicating what the first filed, and must *offer* — never perform — closure of findings that have since been resolved. The audit measures; the user decides. This is enforced by the authoring checklist in `_LOUIE_/recipes/README.md`, not by tooling.
+
+Roadmap entries from audits carry `Source: audit` (added to the enum in `_LOUIE_/templates/roadmap-template.md` and `louie-roadmap.md`), so measured findings are distinguishable from proposed ideas.
+
+### Relationship to `louie-evaluate`
+
+`louie-evaluate` is the broad, multi-category assessment with a persistent findings set and an apply loop; file size >800 is one of its many checks. An audit recipe is one standard, end to end, cheap enough to re-run often, filing to the roadmap rather than to `_LOUIE-output/evaluation/`. The overlap is intentional and narrow: `evaluate` answers "how healthy is this codebase," an audit answers "does it satisfy rule X, and where doesn't it."
+
 ## Recipe File Shape
 
 A recipe file is a self-contained spec. It should contain:
@@ -99,6 +134,8 @@ A recipe file is a self-contained spec. It should contain:
 A template for recipe authors lives at `_LOUIE_/recipes/README.md` (the recipe-authoring guide, distinct from per-section READMEs).
 
 ## Integration with the Agent Chain
+
+Applies to **feature** recipes; audit recipes never enter the chain (see § Recipe Types).
 
 Recipes are **inputs**, not bypasses. Loading a recipe via `louie-recipe <name>` seeds Tom with a pre-drafted requirements block instead of starting from scratch. From there, the standard flow applies:
 

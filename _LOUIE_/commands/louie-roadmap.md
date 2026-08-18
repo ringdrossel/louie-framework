@@ -32,6 +32,7 @@ Match the subcommand case-insensitively. To edit or restatus an entry, use `loui
    - `ideate` — when invoked downstream of `louie-ideate` (the ideate command will pass this through).
    - `feature-work` — when invoked mid-`louie-feature` / `louie-extend`.
    - `bugfix` — when invoked mid-`louie-bugfix`.
+   - `audit` — when invoked by an audit recipe (`_LOUIE_/recipes/README.md` § Recipe Types), e.g. `quality:file-length`. Measured findings, not proposed ideas: the Notes carry the measurement, its date, and the commit it was taken at.
    - `manual` — anything else (the default for a bare `louie-roadmap add`).
 
 3. **Allocate the next ID.**

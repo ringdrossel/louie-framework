@@ -16,7 +16,7 @@ Last Updated: YYYY-MM-DD
 
 - Created: YYYY-MM-DD
 - Status: Captured | Deferred | Dropped
-- Source: ideate | manual | feature-work | bugfix
+- Source: ideate | manual | feature-work | bugfix | audit
 - Effort: S | M | L         (optional — only if the user supplied one)
 - Notes:
 
