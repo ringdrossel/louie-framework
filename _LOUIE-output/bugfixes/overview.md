@@ -23,4 +23,4 @@ Bug fixes that touched multiple features. Documents live at `_LOUIE-output/bugfi
 ## Notes
 
 - The index is append-only. Don't delete entries when their feature is retired — they remain valuable history.
-- For the operational view ("when this breaks, here's what to check first"), see `_LOUIE-output/runbook.md` Common Gotchas. The two are complementary: this index is the *log* of fixes; the runbook is the *playbook* for symptoms.
+- For the runtime first-check view ("when this breaks at runtime, here's what to look at"), see the Debugging table in `_LOUIE-output/runbook.md`. The two are complementary: this index is the chronological log of fixes; the runbook's Debugging table is the symptom-to-first-check lookup. Per-bug *detect / avoid* knowledge lives in the bugfix doc itself, not the runbook.
