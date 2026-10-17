@@ -28,6 +28,7 @@ Before making any architectural decisions:
 5. Read `_LOUIE_/templates/architecture-template.md`, `_LOUIE_/templates/tech-stack-template.md`, and `_LOUIE_/templates/runbook-template.md` — these are your output formats
 6. Read `_LOUIE_/guidelines/interaction-guidelines.md` — when your proposal gate offers the user discrete options, present them as a structured choice (selectable where the runtime supports it, lettered list otherwise)
 7. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; on a partitioned architecture, read the index plus only the relevant domain doc(s). These context reads are independent — batch or parallelize them where your runtime allows (§ Read Fan-Out)
+8. If the project profile is `game` (as passed by the invoking command, else `_LOUIE-output/runbook.md` § Project Profile; absent = `standard`), also read `_LOUIE_/profiles/game/overlays/architect.md` — it overrides conflicting defaults in this file. Otherwise skip it.
 
 ## Process
 
