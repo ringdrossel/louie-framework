@@ -20,6 +20,9 @@
 #   5. Version bump discipline — _LOUIE_/VERSION is a valid semver line and
 #      equals the newest release header in _LOUIE-internals/CHANGELOG.md
 #      (a release cut without a bump, or a bump without a release, fails).
+#   6. Profile gating — files that load for every project (CLAUDE.md, agents,
+#      commands, workflow, guidelines, templates, init scripts) reference
+#      _LOUIE_/profiles/ only behind a profile check.
 #
 # This tool is framework-repo-only. It is never distributed downstream.
 
@@ -152,6 +155,38 @@ else
     fi
   fi
 fi
+
+# --- Check 6: profile material only behind a profile check ----------------------
+# Files that load for every project must reference _LOUIE_/profiles/ only behind
+# a profile check (see _LOUIE-internals/profiles.md § Gating). A reference is
+# guarded when the guard phrase is on the same line, in the enclosing block
+# (markdown: from the nearest non-indented line above), or — in init scripts —
+# within the 6 lines above. Exempt: the profile command itself, louie-content
+# (it refuses first in a standard project), and the profile folder.
+PROFILE_SCAN_FILES="$(printf '%s\n' CLAUDE.md; find _LOUIE_/agents _LOUIE_/commands _LOUIE_/workflow _LOUIE_/guidelines _LOUIE_/templates -name '*.md'; printf '%s\n' $INIT_SURFACES)"
+PROFILE_EXEMPT="_LOUIE_/commands/louie-profile.md _LOUIE_/commands/louie-content.md"
+for f in $PROFILE_SCAN_FILES; do
+  [ -f "$f" ] || continue
+  case " $PROFILE_EXEMPT " in *" $f "*) continue ;; esac
+  case "$f" in *.sh|*.bat) script=1 ;; *) script=0 ;; esac
+  sed -e 's/\r$//' "$f" | awk -v f="$f" -v script="$script" '
+    function guarded(s) { return s ~ /profile is `game`|Project Profile/ }
+    {
+      line[NR] = $0
+      if (script == 0 && $0 !~ /^[ \t]/ && $0 != "") head = NR
+      if ($0 ~ /profiles[\/\\]game|_LOUIE_\/profiles\//) {
+        ok = 0
+        from = (script == 1) ? NR - 6 : head
+        if (from < 1) from = 1
+        for (i = from; i <= NR; i++) if (guarded(line[i])) { ok = 1; break }
+        if (!ok) print "UNGUARDED " f ":" NR
+      }
+    }'
+done > /tmp/louie-lint-profile.$$ 2>&1
+if [ -s /tmp/louie-lint-profile.$$ ]; then
+  while read -r line; do fail "profile reference without a profile check: ${line#UNGUARDED }"; done < /tmp/louie-lint-profile.$$
+fi
+rm -f /tmp/louie-lint-profile.$$
 
 # --- Result -------------------------------------------------------------------
 echo ""

@@ -93,6 +93,10 @@ Two types, distinguished by a `**Recipe type:** audit` line near the top of the 
 | `feature` | Code, via Tom → Sophie → feature doc → Leo/Nina/Max/Ava | Execution A |
 | `audit` | Findings + roadmap entries; no code, no agents | Execution B |
 
+### Profile marker
+
+A recipe that only makes sense under a project profile declares `**Requires profile:** <profile>` near the top (all `game:` recipes declare `game`). `louie-recipe` checks it right after loading, before the type: if the runbook's Project Profile differs (absent = `standard`), it warns and stops by default, continuing only on an explicit choice. A recipe without the line skips the check and reads nothing extra, so existing recipes and standard projects are unaffected. Same reasoning as the type marker: a prose line, absence means the default. Design of profiles: `profiles.md`.
+
 ### Why a type marker rather than a separate command
 
 The audit shape arrived with `quality:file-length` — "scan every file against the 800-line cap, file the violations." Three options were on the table:

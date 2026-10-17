@@ -20,6 +20,8 @@ Exit 0 = clean; exit 1 with `FAIL:` lines otherwise.
 4. **sh/bat pairing.** Every init script exists in both variants, and both register the same command set.
 5. **Version bump discipline (finding E-03).** `_LOUIE_/VERSION` exists, is a single semver line, and equals the newest `## X.Y.Z — date` release header in `_LOUIE-internals/CHANGELOG.md` — a release cut without a version bump, or a bump without a release, fails. `## Unreleased` may accumulate freely between releases.
 
+6. **Profile gating.** Files that load for every project — root `CLAUDE.md`, `_LOUIE_/agents/`, `_LOUIE_/commands/`, `_LOUIE_/workflow/`, `_LOUIE_/guidelines/`, `_LOUIE_/templates/`, and the init scripts — may reference `_LOUIE_/profiles/` only behind a profile check: the phrase ``profile is `game` `` or `Project Profile` must appear on the same line, in the enclosing markdown block (from the nearest non-indented line above — a numbered step, a heading, a paragraph), or, in init scripts, within the six lines above. Exempt: `louie-profile.md` (the switch itself), `louie-content.md` (refuses first in a standard project), and everything under `_LOUIE_/profiles/` and `_LOUIE_/recipes/game/` (gated by the `**Requires profile:**` marker). Design: `_LOUIE-internals/profiles.md` § Gating.
+
 ### Deliberate omissions
 
 If a surface is ever *supposed* to omit a command, add a `surface-path:command` line to the `EXCLUSIONS` variable at the top of the script. The list is empty by default and should stay short — an exclusion is a documented decision, not a suppressed warning.

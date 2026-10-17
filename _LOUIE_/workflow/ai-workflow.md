@@ -28,6 +28,8 @@ These rules apply ALWAYS, without exception.
 Ivy (Muse) — runs independently, feeds ideas back to Tom
 ```
 
+Only if the project profile is `game` (`_LOUIE-output/runbook.md` § Project Profile): Kai and Mira join this chain and content runs through `louie-content` — see `_LOUIE_/profiles/game/README.md`. Standard projects skip this paragraph.
+
 ### Agent Responsibilities
 
 | Agent | Role | Produces |

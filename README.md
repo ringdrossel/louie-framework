@@ -201,6 +201,10 @@ Ivy (Muse) — independent ideation, feeds ideas back to Tom
 | **Ava** the Tester | Writes tests and gives a ship/no-ship recommendation |
 | **Ivy** the Muse | Brainstorms feature ideas and improvements |
 
+## Game Profile
+
+LOUIE assumes application development by default. For story-driven games, `louie-profile game` switches a project to the optional **game profile**: Kai the Game Designer (core loop, rules, balancing, levels) and Mira the Narrative Designer (world, characters, dialogue, supports and romance) join the team, the existing agents load game overlays (game UI and input instead of web UI, determinism and save/load tests instead of auth checks), and `louie-content` writes chapters, dialogue, and maps. The profile is engine-agnostic; engine-specific setup lives in the `game:` recipes (`louie-recipe list game`). In a standard project none of it is loaded. Details: [`_LOUIE_/profiles/game/README.md`](_LOUIE_/profiles/game/README.md).
+
 ## The Two Directories
 
 - **`_LOUIE_/`** — the framework itself (agents, templates, guidelines, workflow). This is the tool. It rarely changes after setup.

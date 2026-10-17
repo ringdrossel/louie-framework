@@ -37,7 +37,7 @@ Downstream installation flow (see `_LOUIE_/setup/project-setup.md`):
 
 What the init scripts do:
 
-- `claude-init.sh/.bat` → copies `_LOUIE_/commands/louie-*.md` into `.claude/commands/` and appends a LOUIE section to the downstream `CLAUDE.md`.
+- `claude-init.sh/.bat` → copies `_LOUIE_/commands/louie-*.md` into `.claude/commands/`, installs `_LOUIE_/agents/*.md` as subagents, converges the profile agents (`_LOUIE_/profiles/<profile>/agents/`) to the runbook's Project Profile, and appends a LOUIE section to the downstream `CLAUDE.md`.
 - `cursor-init.sh/.bat` → appends a LOUIE section to the downstream `.cursorrules`.
 - `codex-init.sh/.bat` → appends a LOUIE section to the downstream `AGENTS.md`.
 - `gemini-init.sh/.bat` → appends a LOUIE section to the downstream `GEMINI.md`.
@@ -92,6 +92,7 @@ Additionally, a third rule (added later): **no merge to `main` without explicit 
 - Bug-fix index: `_LOUIE-output/bugfixes/overview.md`
 - Feature index: `_LOUIE-output/implementations/overview.md` (slim — one-line description per feature)
 - Partitioned architecture (large projects, threshold-triggered): `_LOUIE-output/architecture.md` (slim index) + `_LOUIE-output/architecture/<domain>.md`
+- Game profile only (`profiles.md`): per-feature `_LOUIE-output/implementations/<feature>/mechanics.md`; game design in `_LOUIE-output/game-design/` (`overview.md`, `gdd.md`, `balancing.md`, `systems/<system>.md`, `levels/<map>.md`); narrative in `_LOUIE-output/story/` (`overview.md`, `story-bible.md`, `characters/<name>.md`, `chapters/<nn>-<slug>.md`, `relationships.md`, `flags.md`)
 - Codebase map (large projects): `_LOUIE-output/codebase-map.md` — descriptive index (domain → paths → entry points → owning features → size); sibling of the architecture split, same threshold
 
 See `_LOUIE-internals/scaling.md` for the design rationale (universal per-feature folders, lazy-loading-friendly, AI-efficiency criterion). The scale pattern is always the same move: slim index up top, partitioned detail below, lazy-load the partition you need. **Domain names are the partition vocabulary** — defined once in the architecture index, reused by the codebase map, overview grouping, and evaluate chunks. Read discipline for agents at scale is single-sourced in `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline.
@@ -149,12 +150,12 @@ Agents hand off by ending their response with a structured handoff block (see `_
 
 ## Agents as Subagents
 
-Every `_LOUIE_/agents/*.md` file carries Claude Code subagent frontmatter (`name`, `description`, `tools`). `claude-init.sh/.bat` installs them to `.claude/agents/`, making them natively dispatchable; on every other runtime (and in manual mode everywhere) agents run via inline "read and follow" — the universal fallback. Which stage may run as a subagent is defined in `_LOUIE_/guidelines/execution-guidelines.md` (interactive stages never; work stages during unattended stretches).
+Every `_LOUIE_/agents/*.md` file carries Claude Code subagent frontmatter (`name`, `description`, `tools`). `claude-init.sh/.bat` installs them to `.claude/agents/`, making them natively dispatchable (profile-only agents live in `_LOUIE_/profiles/<profile>/agents/` and are installed only while that profile is active — see `profiles.md`); on every other runtime (and in manual mode everywhere) agents run via inline "read and follow" — the universal fallback. Which stage may run as a subagent is defined in `_LOUIE_/guidelines/execution-guidelines.md` (interactive stages never; work stages during unattended stretches).
 
 Frontmatter rules:
 
 - **No `model:` key — deliberate.** Subagents inherit the session model. A pinned model silently downgrades users running a stronger model on the most judgment-heavy stages (Sophie, Max), and a hardcoded model name ages with no owner. If cost-tiering is ever wanted, do it deliberately: document here which stages tolerate a cheaper tier, and revisit at every release cut.
-- **`tools:` reflects what the agent does when dispatched.** Nina and Ava have `Edit, Write, Bash` (they write code/tests and run commands). Tom, Sophie, Leo, Max, Ivy stay read-only: conversational stages run in the main loop anyway, and read-only subagents (Sophie's eval, Max's review) *return* their doc changes/verdicts for the orchestrator to apply — see the dispatch table in `execution-guidelines.md`.
+- **`tools:` reflects what the agent does when dispatched.** Nina and Ava have `Edit, Write, Bash` (they write code/tests and run commands). Tom, Sophie, Leo, Max, Ivy — and the game profile's Kai — stay read-only (Mira, the game profile's Narrative Designer, has `Edit, Write` because she writes content files in `louie-content`): conversational stages run in the main loop anyway, and read-only subagents (Sophie's eval, Max's review) *return* their doc changes/verdicts for the orchestrator to apply — see the dispatch table in `execution-guidelines.md`.
 
 ## What To Read When
 

@@ -94,6 +94,22 @@ louie-language
 
 Code, identifiers, comments, and commit messages always stay English.
 
+### 8. Making a game (optional)
+
+Building a story-driven game instead of an app? Switch the project to the game profile:
+
+```
+louie-profile game
+```
+
+Kai (Game Designer) and Mira (Narrative Designer) join the team, and the other agents switch to game-specific design, reviews, and tests. Build systems with `louie-feature` as usual; write chapters, dialogue, supports, and maps with:
+
+```
+louie-content
+```
+
+Engine setup (Godot, Dialogue Manager, SpriteCook) comes from `louie-recipe list game`. Back to apps anytime with `louie-profile standard` — nothing gets deleted.
+
 ### That's it
 
 You now know enough to use LOUIE end-to-end. The framework will guide you through the rest — confirmation gates catch mistakes early, agents hand off cleanly, and every artifact lives in `_LOUIE-output/`.
@@ -187,6 +203,22 @@ louie-language
 - **Documents** — die Sprache der erzeugten Artefakte. Standard `English` (hält Ergebnisse portabel); setze `follow`, um die Konversationssprache zu übernehmen.
 
 Code, Bezeichner, Kommentare und Commit-Messages bleiben immer Englisch.
+
+### 8. Ein Spiel bauen (optional)
+
+Du baust ein storybasiertes Spiel statt einer App? Stell das Projekt auf das Game-Profil um:
+
+```
+louie-profile game
+```
+
+Kai (Game Designer) und Mira (Narrative Designerin) kommen ins Team, und die anderen Agenten wechseln zu spielspezifischem Design, Reviews und Tests. Systeme baust du wie gewohnt mit `louie-feature`; Kapitel, Dialoge, Supports und Maps schreibst du mit:
+
+```
+louie-content
+```
+
+Das Engine-Setup (Godot, Dialogue Manager, SpriteCook) kommt aus `louie-recipe list game`. Zurück zu Apps jederzeit mit `louie-profile standard` — dabei wird nichts gelöscht.
 
 ### Das war's
 
