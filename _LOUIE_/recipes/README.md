@@ -31,6 +31,14 @@ A recipe declares a non-default type on a line near the top, right under the one
 
 **No type line means `feature`.** Existing recipes are unaffected.
 
+A recipe that only makes sense under a project profile (see `louie-profile`) declares it on its own line, also near the top:
+
+```markdown
+**Requires profile:** game
+```
+
+`louie-recipe` then warns before loading it into a project with a different profile. **No profile line means the recipe works in every project.** All `game:` recipes carry `**Requires profile:** game`.
+
 An audit recipe does **not** require a confirmed architecture — Critical Rule 2 gates feature work, and an audit builds nothing. It also never fixes what it finds: fixing goes through `louie-roadmap promote` → `louie-feature`, or `louie-update` for small changes. Keep each audit recipe to **one** standard; broad multi-category assessment is `louie-evaluate`'s job.
 
 ## Naming Rules
@@ -170,6 +178,8 @@ Before committing a new recipe:
 - [ ] Filename is lowercase-kebab-case and matches the recipe's intent.
 - [ ] Section README exists and has a first-line description.
 - [ ] Type is correct: a `**Recipe type:** audit` line for audits, no type line for feature recipes.
+- [ ] A `**Requires profile:** <profile>` line if, and only if, the recipe depends on a project profile.
+- [ ] Every version number and install command cites its official source and the date it was verified — never from memory.
 
 Feature recipes:
 

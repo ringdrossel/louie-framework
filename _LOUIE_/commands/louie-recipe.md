@@ -84,6 +84,14 @@ Lowercase the argument before matching. Filenames are lowercase-kebab-case; be f
 
 ## Execution — After a Recipe Is Loaded
 
+### Check a required profile
+
+Only if the recipe declares a `**Requires profile:** <profile>` line near the top (e.g. every `game:` recipe declares `game`): look up the `## Project Profile` section of `_LOUIE-output/runbook.md` (absent section or file = `standard`). If it differs from the required profile, warn before anything else — present the warning as normal text, end the turn, and ask in the next response as a structured choice (`_LOUIE_/guidelines/interaction-guidelines.md` § Content first, choice second):
+
+> "`<section>:<name>` is a `<profile>`-profile recipe, but this project's profile is `<current>`. It assumes that profile's agents and artifacts. Switch with `louie-profile <profile>` first, or continue anyway?"
+
+Options: **Stop here** *(default)* / **Continue anyway**. On "stop," end the command. A recipe without the line skips this check entirely — no runbook read.
+
 ### Determine the recipe type first
 
 A recipe declares its type on a line near the top: `**Recipe type:** audit`. **A recipe with no such line is a feature recipe** — that is the default and covers every recipe that builds something.
