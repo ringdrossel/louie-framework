@@ -24,6 +24,7 @@ This is a **read-only assessment** by default. Source code is only modified duri
 ### 1. Detect mode
 
 - **LOUIE project** if `_LOUIE-output/architecture.md` exists. Use the project's own `architecture.md`, `tech-stack.md`, `runbook.md`, and `_LOUIE_/guidelines/coding-guidelines.md` as the standards lens. If the architecture is partitioned (`_LOUIE-output/architecture/` exists), architecture-compliance checks run **per domain against the domain doc**, with the index supplying the cross-domain dependency rules. If `_LOUIE-output/codebase-map.md` exists, hand it to Max as orientation — no re-scan needed for layout/size context.
+- **Project profile (LOUIE mode only):** read the runbook's `## Project Profile` section (absent = `standard`) and pass it to Max — only if it is `game`, Max's game overlay adds the engine anti-pattern and determinism categories. Non-LOUIE mode is always `standard`.
 - **Non-LOUIE project** otherwise. Use `_LOUIE_/guidelines/coding-guidelines.md` as the standards lens. Sophie does a light structural pass first (next step).
 
 Tell the user which mode was detected and continue.

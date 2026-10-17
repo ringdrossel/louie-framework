@@ -31,6 +31,7 @@ After it completes, the project is indistinguishable from one that went through 
    - Tell the user what was detected and ask them to confirm or override:
      > "I detected this is a [cold / v1-docs] import. [If v1-docs: I found these feature docs at docs/implementations/: …]. Proceed with this mode, or switch to the other?"
    - Do not proceed without an explicit answer.
+   - **Resolve the project profile** (see `_LOUIE_/commands/louie-profile.md`): look for game-engine project files at the root — `project.godot` (Godot), a `ProjectSettings/` folder (Unity), a `*.uproject` file (Unreal). If none exists, the profile is `standard` — do not ask. If one exists, propose the game profile as a structured choice in its own response, after the mode answer: "I found `<file>` — this looks like a game project. Enable LOUIE's game profile?" Options: `game` *(recommended)* / `standard`. Hold the answer for the run, pass it to every agent invoked below, and write it to the runbook in step 10f.
 
 3. **Refuse to overwrite without permission:**
    - If `_LOUIE-output/architecture.md`, `tech-stack.md`, `runbook.md`, or any subfolder under `_LOUIE-output/implementations/` already exists with content (not just template placeholders), stop and ask the user before continuing. Show them which files exist and ask whether to overwrite, merge, or abort. Never silently overwrite.
@@ -51,6 +52,7 @@ After it completes, the project is indistinguishable from one that went through 
    - Sophie produces draft `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, and `_LOUIE-output/runbook.md`. Anything she could not infer from code goes into the document's Open Questions section — do not invent details.
    - **If the codebase is large** (roughly the partition threshold — ~6+ domains, or an architecture doc that would cross ~400 lines), Sophie also produces `_LOUIE-output/codebase-map.md` from `_LOUIE_/templates/codebase-map-template.md`, and may propose the partitioned-architecture shape (slim index + `_LOUIE-output/architecture/<domain>.md`) from the start rather than one oversized file. Small projects skip both.
    - Sophie also produces a **discovered-features list** for the next step.
+   - **Only if the profile is `game`:** Sophie also inventories existing content (dialogue files, data resources, level/scene files) and fills `architecture.md` § Content Pipeline from what she finds — paths, formats, validators — marking anything uncertain in Open Questions. Candidate features are systems; chapters, maps, and dialogue are content, not features.
 
 6. **Branch on import mode:**
    - **Cold mode:** skip to Step 7.
@@ -65,6 +67,10 @@ After it completes, the project is indistinguishable from one that went through 
      - Any items Sophie flagged in Open Questions
    - For v1-docs mode, Tom should mine the v1 feature docs first (they often contain goal/overview text) and only ask the user about what is still missing.
    - Tom keeps the interview short. Do not over-ask — most of the requirements information should be derivable from code or v1 docs.
+
+7b. **Only if the profile is `game`: invoke Kai, then Mira (import mode):**
+   - Read and follow `_LOUIE_/profiles/game/agents/game-designer.md` in **Mode A** (import) — Kai drafts `_LOUIE-output/game-design/gdd.md` and seeds `balancing.md` from what the code and data files already define. Nothing invented; gaps go to Open Questions.
+   - Read and follow `_LOUIE_/profiles/game/agents/narrative-designer.md` in **Mode A** (import) — Mira drafts the `_LOUIE-output/story/story-bible.md` stub, registers the flags she finds in existing content in `story/flags.md`, and lists existing chapters and characters in `story/overview.md` with status `Drafted` (existing content is not `Checked` until it passes a consistency check). Nothing invented; open points go to Open Creative Questions.
 
 8. **Produce per-feature folders:**
    For each discovered feature `<feature>`:
@@ -110,6 +116,10 @@ After it completes, the project is indistinguishable from one that went through 
     - Update `_LOUIE-output/runbook.md` § Language in place: set `Conversation:` to `auto`, `Documents:` to `English`, `Set:` to today's date.
     - Note alongside: "Language is `auto` for conversation (I'll match the language you write in) and `English` for documents. Change either anytime with `louie-language`."
 
+10f. **Record the project profile (resolved in step 2):**
+    - Update `_LOUIE-output/runbook.md` § Project Profile in place: set `Profile:` to the resolved profile (`standard` unless the user chose `game`), `Set:` to today's date. No note for `standard`.
+    - **Only if the profile is `game`:** seed the remaining game artifacts and install the game agents exactly as `_LOUIE_/commands/louie-profile.md` steps 4–5 describe (missing skeletons only — what Kai and Mira wrote in step 7b is kept). Note alongside: "Game profile is on — switch anytime with `louie-profile`."
+
 11. **Confirmation gate (architecture):**
     - Present `architecture.md`, `tech-stack.md`, `runbook.md`, the per-feature folders (with their `feature.md` and `requirements.md`), and the overviews (`implementations/overview.md` + `bugfixes/overview.md`) — **in chat as a normal message** (compact digest per document; file writes alone are not a presentation).
     - Walk the user through Sophie's key inferences and any Open Questions.
@@ -123,7 +133,7 @@ After it completes, the project is indistinguishable from one that went through 
 ## Constraints
 
 - **No source code modifications.** Import is a documentation pass.
-- **No agent invocations beyond Tom and Sophie.** Leo, Nina, Max, and Ava are not part of import — there is nothing to design, build, review, or test.
+- **No agent invocations beyond Tom and Sophie** (plus Kai and Mira, only when the profile is `game`). Leo, Nina, Max, and Ava are not part of import — there is nothing to design, build, review, or test.
 - **No fabrication.** Anything not derivable from code or v1 docs and not confirmed by the user belongs in Open Questions.
 - **No silent overwrite of existing `_LOUIE-output/` artifacts.** Always ask first.
 

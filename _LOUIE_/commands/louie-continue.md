@@ -13,6 +13,7 @@ It does **not** read or recover past chat transcripts — a LOUIE command can't 
 1. **Read project context:**
    - Read `_LOUIE-output/implementations/overview.md`, `_LOUIE-output/runbook.md`, and `_LOUIE-output/architecture.md` (skim).
    - If there's no `_LOUIE-output/` yet, tell the user there's no LOUIE project to continue and point them at `louie-setup` / `louie-import`.
+   - **Resolve the project profile** from the runbook's `## Project Profile` section (absent = `standard`) and pass it to the agent you resume. In a `standard` project, skip every step marked "Only if the profile is `game`".
 
 2. **Checkpoint first:** if `_LOUIE-output/checkpoint.md` exists, read it and **delete it immediately** — before any resume work — so a consumed checkpoint can't linger to confuse a later session. It names the task, phase completed, next step, gates passed, and chat-only decisions (format: `_LOUIE_/guidelines/interaction-guidelines.md` § Checkpoint). Treat it as the primary signal, not as authority: reconcile it against git and the artifacts in step 5 — **on any disagreement the files win** (the session may have died after the last write), and the checkpoint only narrows the search. When it reconciles, take its target and skip step 4's picking.
 
@@ -20,7 +21,8 @@ It does **not** read or recover past chat transcripts — a LOUIE command can't 
    - **Overview anchor:** every row in the Features table with `Status: In Development`. This is the primary signal for feature work — `louie-feature` sets it when coding starts. Skip any row in the collapsed `### Retired` section — retired features are terminal, not resumable.
    - **Git anchor:** run `git status` and `git diff --stat`, note the current branch and recent commits. Uncommitted changes, a `feature/<name>` branch, or recently-touched source under a feature folder all point at active work. This catches **bugfix / extend** in progress (which don't flip the overview to `In Development`): look for a recently-added `implementations/<feature>/bugfixes/<date>-<slug>.md` (or `_LOUIE-output/bugfixes/<date>-<slug>.md`) whose fix isn't committed, or a `requirements.md` recently appended by `louie-extend`.
    - **Setup anchor:** a half-finished `louie-setup` looks like *no* activity to the other two signals (every feature still `Planned`, no source code) — check for it explicitly. It's in progress when requirements folders exist but the foundation isn't complete or no feature has started: `_LOUIE-output/implementations/*/requirements.md` exists **and** (`_LOUIE-output/architecture.md` is missing **or** no folder has a `feature.md` and every Features-table row is `Planned`). If so, add a candidate of kind `setup` (target: the project).
-   - Build a candidate list. Each candidate is `(target, kind ∈ {feature, bugfix, extend, setup}, evidence)`.
+   - **Content anchor — only if the profile is `game`:** rows with status `Outlined` or `Drafted` in `_LOUIE-output/story/overview.md` or `_LOUIE-output/game-design/overview.md`, and uncommitted changes under the content paths declared in `architecture.md` § Content Pipeline, point at an unfinished `louie-content` run. Add a candidate of kind `content` (target: the chapter, character, support, or level).
+   - Build a candidate list. Each candidate is `(target, kind ∈ {feature, bugfix, extend, setup}, evidence)` — plus kind `content` when the profile is `game`.
 
 4. **Pick the target:**
    - **None:** report there's nothing obviously in progress. Show the most recent activity (latest `Change History` line across features, last commit) and offer to start something (`louie-feature` / `louie-bugfix`). Stop.
@@ -35,6 +37,7 @@ It does **not** read or recover past chat transcripts — a LOUIE command can't 
    - **Git:** current branch, the uncommitted diff, and recent commits touching the target. This is the richest "where did I stop" signal — reconcile it against what the docs claim.
    - **Roadmap:** if the feature was seeded `--from-roadmap`, note the linked epic and its status.
    - **Setup:** read `overview.md`'s Features table, note which requirements folders exist, and which of the three foundation docs (`architecture.md`, `tech-stack.md`, `runbook.md`) are present.
+   - **Content — only if the profile is `game`:** read the target's doc (`story/chapters/<nn>-<slug>.md`, `story/characters/<name>.md`, the `relationships.md` row, or `game-design/levels/<map>.md`) — its status, its Consistency Check boxes — plus the content files it lists and their git state.
 
 6. **Infer the chain position** (which agent/step is next) from the breadcrumbs — no stored progress pointer exists (the checkpoint, if any, was consumed in step 2); it's derived:
    - **Setup, before the foundation:** requirements folders exist but `architecture.md` is missing → resume `louie-setup` at Sophie (its step 5).
@@ -44,6 +47,7 @@ It does **not** read or recover past chat transcripts — a LOUIE command can't 
    - Code exists but no Max review recorded in `Change History` → **Max**.
    - Reviewed but `Tested` unticked / no test files → **Ava**.
    - **Bugfix:** diagnosed but not fixed → finish the fix; fixed but no regression test → **Ava**; fixed + tested but uncommitted → wrap up.
+   - **Content — only if the profile is `game`:** resume `louie-content` for the target. `Planned` with an agreed brief in the checkpoint → **Mira / Kai** proposal; `Outlined` → write; `Drafted` → consistency check; `Checked` but the overview not updated or content uncommitted → wrap up (optional Ava content-integrity run first).
 
 7. **Summarize and propose the next step:**
    - Give a tight recap: target, kind, where it stands (phase X of Y, N files uncommitted, what's done, open questions), and the **single recommended next action**.

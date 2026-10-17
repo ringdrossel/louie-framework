@@ -10,6 +10,7 @@ When the user says **`louie-bugfix`**, follow this procedure to diagnose and fix
    - Read `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, and `_LOUIE-output/runbook.md`. Then read `_LOUIE-output/bugfixes/overview.md` and the relevant feature's `bugfixes/` folder — that's where prior detect/avoid knowledge lives (the runbook no longer carries a gotchas list).
    - Read `_LOUIE_/guidelines/coding-guidelines.md`
    - Read `_LOUIE-output/implementations/overview.md` and `_LOUIE-output/bugfixes/overview.md` — understand the feature landscape and prior bug history
+   - **Resolve the project profile** from the runbook's `## Project Profile` section (absent = `standard`) and pass it to every agent invoked below. In a `standard` project, skip every step marked "Only if the profile is `game`".
 
 2. **Identify the bug:**
    - If the user described the bug alongside the command, proceed
@@ -23,12 +24,14 @@ When the user says **`louie-bugfix`**, follow this procedure to diagnose and fix
    - **The work adds new functionality, controls, fields, or surfaces** rather than restoring intended behavior: this is not a bugfix. Suggest `louie-update` (under 50 lines, contained) or `louie-extend` (larger or touches requirements).
    - **The "bug" is actually a missing feature**: route to `louie-feature`.
    - **Cosmetic polish requested by the user** that wasn't broken (e.g. "make the spacing nicer"): route to `louie-update`, not `louie-bugfix`.
+   - **Only if the profile is `game`:** code that diverges from `mechanics.md` or `balancing.md` is a bug. Wanting a different rule or number is a design change (`louie-extend`, so Kai updates `mechanics.md`; or `louie-update` for a pure tuning value). An error inside story or level content (a wrong flag in a dialogue file, a typo, a broken branch) is fixed via `louie-content`.
 
    When in doubt, ask the user: "This looks more like [update/extend/feature] than a bugfix because [reason]. Want me to switch?" Mislabeled bugfix docs cause real downstream confusion — a future `louie-extend` against the affected area cannot tell whether the "bugfix" is a feature or a fix.
 
 4. **Read the affected feature folder:**
    - Read `_LOUIE-output/implementations/[feature-name]/feature.md`
    - Skim `_LOUIE-output/implementations/[feature-name]/bugfixes/` for related prior fixes
+   - **Only if the profile is `game`:** read `[feature-name]/mechanics.md` if it exists — it defines the intended behavior the fix restores.
    - For cross-cutting bugs, do this for every affected feature
 
 5. **Invoke Nina (Coder) — diagnosis and fix:**

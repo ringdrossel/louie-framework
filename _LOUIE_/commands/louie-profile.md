@@ -23,7 +23,7 @@ The setting is **project-wide**, stored in `_LOUIE-output/runbook.md` under the 
      - `standard` — application development (default)
      - `game` — game profile: game-design and narrative agents, game overlays, `louie-content`
      - keep current
-   - If the chosen value equals the current one, or the user picks "keep current," print a one-line confirmation and stop. The command is idempotent.
+   - If the chosen value equals the current one, or the user picks "keep current," don't touch the runbook. For `standard`, print a one-line confirmation and stop. For `game`, still run steps 4–5 as a repair pass (re-sync the installed agents, seed only skeletons that are missing), then confirm. The command is idempotent.
 
 3. **Update the runbook:**
    - Update the `## Project Profile` section of `_LOUIE-output/runbook.md` in place: set `Profile:` to the chosen value and bump `Set:` to today's date. Write the value bare, exactly `**Profile:** game` or `**Profile:** standard` — the init scripts read this line.

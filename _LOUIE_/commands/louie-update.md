@@ -20,6 +20,7 @@ This command is for changes that are:
    - Read `_LOUIE-output/implementations/overview.md`
    - Read `_LOUIE-output/tech-stack.md` — know which build/lint commands to run
    - Read `_LOUIE_/guidelines/coding-guidelines.md`
+   - **Resolve the project profile:** look up only the `## Project Profile` section of `_LOUIE-output/runbook.md` (absent section or file = `standard`) and pass it to Max. In a `standard` project, skip every step marked "Only if the profile is `game`".
 
 2. **Identify the feature:**
    - If the user specified the feature alongside the command, open its folder at `_LOUIE-output/implementations/[feature-name]/`
@@ -30,6 +31,7 @@ This command is for changes that are:
    - Estimate lines of code affected
    - If likely **under 50 lines** → proceed
    - If likely **over 50 lines** → STOP and tell the user: "This looks bigger than a simple update. I'd recommend running `louie-extend` instead to get proper requirements and a review."
+   - **Only if the profile is `game`:** a change to story or level content (dialogue lines, chapter scripts, map data in a declared content path) is not an update — route it to `louie-content`. A change that alters a gameplay rule (not just a tuning value) goes to `louie-extend`, so Kai updates `mechanics.md`.
 
 4. **Implement the change:**
    - Follow `_LOUIE_/guidelines/coding-guidelines.md`
@@ -56,6 +58,7 @@ This command is for changes that are:
    - **If the change touched env vars, ports, external services, or operator commands:** update `_LOUIE-output/runbook.md`. Implementation learnings (framework quirks, cache rules) go in a code-local `// WHY` comment instead — the runbook does not carry a gotchas list.
    - **If a non-trivial decision was made** (e.g. picked one approach over another for a real reason): append an ADR to `_LOUIE-output/implementations/[feature-name]/decisions.md` (create from `_LOUIE_/templates/decisions-template.md` if absent)
    - **If feature status changed** (e.g. moved from In Development to Implemented): update the feature's `Status` column in `_LOUIE-output/implementations/overview.md` to mirror the `feature.md` checkboxes
+   - **Only if the profile is `game`:** if the change touched a tuning value, update its entry in `_LOUIE-output/game-design/balancing.md` (numbers live in one place) and the `mechanics.md` test oracles that cite it; if it added or changed a flag, update `_LOUIE-output/story/flags.md`.
 
 8. **Generate a commit message:**
    ```

@@ -13,6 +13,7 @@ Aggregate and print, grouped by domain once the overview is domain-grouped (reus
 3. **Stale in-development docs** — features marked `In Development` whose last `Change History` line is older than ~14 days (configurable in the ask if the user wants a different window). These are the "started and forgotten" candidates.
 4. **Recent bug fixes** — the newest rows from `_LOUIE-output/bugfixes/overview.md` (last ~5).
 5. **Roadmap deltas** — `In Progress` epics and anything changed since the roadmap's `Last Updated`, from `_LOUIE-output/roadmap.md`.
+6. **Content status — only if the profile is `game`** — counts per status (`Planned` / `Outlined` / `Drafted` / `Checked` / `Final`) for chapters, characters, supports, and levels, from `_LOUIE-output/story/overview.md` and `_LOUIE-output/game-design/overview.md`; list every chapter and character that is not yet `Checked`.
 
 Close with a one-line suggestion of the single most useful next action (usually `louie-continue` when something is `In Development`, else the highest-priority `Planned` feature).
 
@@ -28,6 +29,7 @@ This command must stay cheap even at 150 features — follow `_LOUIE_/guidelines
 
 1. If there's no `_LOUIE-output/`, tell the user there's no LOUIE project yet and point them at `louie-setup` / `louie-import`. Stop.
 2. Read `_LOUIE-output/implementations/overview.md` (+ per-domain overview files if the index is split), `_LOUIE-output/bugfixes/overview.md`, and `_LOUIE-output/roadmap.md`.
+   - **Resolve the project profile:** look up only the `## Project Profile` section of `_LOUIE-output/runbook.md` (absent = `standard`). Only if the profile is `game`, also read `_LOUIE-output/story/overview.md` and `_LOUIE-output/game-design/overview.md` (indexes only — never chapter or content files) for report item 6.
 3. For each active feature, read only its `feature.md` headers listed above.
 4. Print the report, grouped by domain if the overview is grouped. Keep it tight — this is a dashboard, not a narrative.
 

@@ -197,14 +197,18 @@ if exist "%LOUIE_DIR%\docs\implementations\overview.md" (
     )
 )
 if !EXISTING_PROJECT! equ 0 (
-    for %%m in (package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle composer.json Gemfile mix.exs setup.py requirements.txt) do (
+    for %%m in (package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle composer.json Gemfile mix.exs setup.py requirements.txt project.godot) do (
         if exist "%LOUIE_DIR%\%%m" set "EXISTING_PROJECT=1"
     )
 )
 if !EXISTING_PROJECT! equ 0 (
-    for %%d in (src app lib) do (
+    for %%d in (src app lib ProjectSettings) do (
         if exist "%LOUIE_DIR%\%%d\" set "EXISTING_PROJECT=1"
     )
+)
+:: Game engine projects (Godot: project.godot above; Unity: ProjectSettings\ above; Unreal: *.uproject)
+if !EXISTING_PROJECT! equ 0 (
+    if exist "%LOUIE_DIR%\*.uproject" set "EXISTING_PROJECT=1"
 )
 
 if !EXISTING_PROJECT! equ 1 (
