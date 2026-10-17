@@ -250,6 +250,7 @@ If LOUIE is driven by an autonomous agent instead of a person (an orchestrator p
 | View or change the project branch mode (current / ask) | `louie-branch-mode` |
 | View or change the per-command auto-pilot mode (run the chain unattended after plan approval) | `louie-autopilot-mode` |
 | View or change the project language (conversation language + document language) | `louie-language` |
+| View or change the project profile (standard / game) | `louie-profile` |
 | Write or improve tests with Ava | `louie-test` |
 | Update documentation and generate a commit message | `louie-doc` |
 | Brainstorm ideas with Ivy | `louie-ideate` |

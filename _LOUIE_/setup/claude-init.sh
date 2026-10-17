@@ -34,6 +34,36 @@ for agent in "$AGENTS_SRC"/*.md; do
 done
 echo "  Installed $agent_count agents to .claude/agents/ (Tom, Sophie, Leo, Nina, Max, Ava, Ivy)"
 
+# Profile agents: installed only when the runbook's Project Profile is game,
+# removed again when it is not (louie-profile re-runs this script on a switch).
+# No runbook or no Project Profile section means standard.
+RUNBOOK="$LOUIE_DIR/_LOUIE-output/runbook.md"
+GAME_AGENTS_SRC="$SCRIPT_DIR/../profiles/game/agents"
+PROFILE="standard"
+if [ -f "$RUNBOOK" ] && tr -d '\r' < "$RUNBOOK" | grep -qE '^\*\*Profile:\*\*[[:space:]]*`?game`?([[:space:]]|$)'; then
+  PROFILE="game"
+fi
+game_installed=0
+game_removed=0
+for agent in "$GAME_AGENTS_SRC"/*.md; do
+  [ -f "$agent" ] || continue
+  dest="$LOUIE_DIR/.claude/agents/$(basename "$agent")"
+  if [ "$PROFILE" = "game" ]; then
+    cp "$agent" "$dest"
+    game_installed=$((game_installed + 1))
+  elif [ -f "$dest" ] && grep -qxF "$(grep -m1 '^name:' "$agent")" "$dest"; then
+    # Only remove a file that is our agent (same frontmatter name), never a user's own.
+    rm -f "$dest"
+    game_removed=$((game_removed + 1))
+  fi
+done
+if [ $game_installed -gt 0 ]; then
+  echo "  Project profile: game — installed $game_installed game-profile agents (Kai, Mira)"
+fi
+if [ $game_removed -gt 0 ]; then
+  echo "  Project profile: standard — removed $game_removed game-profile agents"
+fi
+
 # Create CLAUDE.md if it doesn't exist, or append LOUIE section
 CLAUDE_MD="$LOUIE_DIR/CLAUDE.md"
 LOUIE_MARKER="<!-- LOUIE-FRAMEWORK -->"
@@ -73,6 +103,7 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 | `/louie-branch-mode` | View or change the project branch mode (current / ask) |
 | `/louie-autopilot-mode` | Per-command auto-pilot — run the chain unattended after plan approval |
 | `/louie-language` | View or change the project language (conversation + document language) |
+| `/louie-profile` | View or change the project profile (standard / game) |
 | `/louie-test` | Write or improve tests with Ava |
 | `/louie-doc` | Update documentation + commit message |
 | `/louie-ideate` | Brainstorm ideas with Ivy |

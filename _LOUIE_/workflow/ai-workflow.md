@@ -293,6 +293,7 @@ Agentic mode implies auto-pilot, replaces Tom's interview with an **evidential g
 | `louie-branch-mode` | View or change the project branch mode (current / ask) |
 | `louie-autopilot-mode` | View or change the per-command auto-pilot mode (run the chain unattended after plan approval) |
 | `louie-language` | View or change the project language (conversation language + document language) |
+| `louie-profile` | View or change the project profile (standard / game) |
 | `louie-test` | Write or improve tests with Ava |
 | `louie-doc` | Update documentation and generate a commit message |
 | `louie-ideate` | Brainstorm ideas with Ivy |

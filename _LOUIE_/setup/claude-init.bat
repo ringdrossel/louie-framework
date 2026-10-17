@@ -31,6 +31,38 @@ for %%f in ("%AGENTS_SRC%\*.md") do (
 )
 echo   Installed !agent_count! agents to .claude\agents\ (Tom, Sophie, Leo, Nina, Max, Ava, Ivy)
 
+:: Profile agents: installed only when the runbook's Project Profile is game,
+:: removed again when it is not (louie-profile re-runs this script on a switch).
+:: No runbook or no Project Profile section means standard.
+set "RUNBOOK=%LOUIE_DIR%\_LOUIE-output\runbook.md"
+set "GAME_AGENTS_SRC=%SCRIPT_DIR%..\profiles\game\agents"
+set "PROFILE=standard"
+if exist "%RUNBOOK%" (
+    findstr /r /c:"^\*\*Profile:\*\* *`*game" "%RUNBOOK%" > nul 2>&1
+    if !errorlevel! equ 0 set "PROFILE=game"
+)
+set game_installed=0
+set game_removed=0
+if exist "%GAME_AGENTS_SRC%\" (
+    for %%f in ("%GAME_AGENTS_SRC%\*.md") do (
+        if "!PROFILE!"=="game" (
+            copy /Y "%%f" "%LOUIE_DIR%\.claude\agents\" > nul
+            set /a game_installed+=1
+        ) else if exist "%LOUIE_DIR%\.claude\agents\%%~nxf" (
+            rem Only remove a file that is our agent - same frontmatter name - never a user's own.
+            set "GAME_NAME="
+            for /f "delims=" %%n in ('findstr /b /c:"name:" "%%f"') do if not defined GAME_NAME set "GAME_NAME=%%n"
+            findstr /x /c:"!GAME_NAME!" "%LOUIE_DIR%\.claude\agents\%%~nxf" > nul 2>&1
+            if !errorlevel! equ 0 (
+                del /Q "%LOUIE_DIR%\.claude\agents\%%~nxf"
+                set /a game_removed+=1
+            )
+        )
+    )
+)
+if !game_installed! gtr 0 echo   Project profile: game — installed !game_installed! game-profile agents ^(Kai, Mira^)
+if !game_removed! gtr 0 echo   Project profile: standard — removed !game_removed! game-profile agents
+
 :: Create or update CLAUDE.md
 set "CLAUDE_MD=%LOUIE_DIR%\CLAUDE.md"
 
@@ -75,6 +107,7 @@ echo ^| `/louie-review-mode` ^| View or change the project review mode ^(manual 
 echo ^| `/louie-branch-mode` ^| View or change the project branch mode ^(current / ask^) ^|
 echo ^| `/louie-autopilot-mode` ^| Per-command auto-pilot — run the chain unattended after plan approval ^|
 echo ^| `/louie-language` ^| View or change the project language ^(conversation + document language^) ^|
+echo ^| `/louie-profile` ^| View or change the project profile ^(standard / game^) ^|
 echo ^| `/louie-test` ^| Write or improve tests with Ava ^|
 echo ^| `/louie-doc` ^| Update documentation + commit message ^|
 echo ^| `/louie-ideate` ^| Brainstorm ideas with Ivy ^|
