@@ -63,6 +63,7 @@ LOUIE commands are installed as Pi prompt templates under `.pi/prompts/`. Invoke
 | `/louie-autopilot-mode` | Per-command auto-pilot — run the chain unattended after plan approval |
 | `/louie-language` | View or change the project language (conversation + document language) |
 | `/louie-profile` | View or change the project profile (standard / game) |
+| `/louie-content` | Write story, dialogue, and level content (game profile only) |
 | `/louie-test` | Write or improve tests with Ava |
 | `/louie-doc` | Update documentation + commit message |
 | `/louie-ideate` | Brainstorm ideas with Ivy |

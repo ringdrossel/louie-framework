@@ -72,6 +72,7 @@ echo ^| `/louie-branch-mode` ^| View or change the project branch mode ^|
 echo ^| `/louie-autopilot-mode` ^| Per-command auto-pilot — run the chain unattended after plan approval ^|
 echo ^| `/louie-language` ^| View or change the project language ^(conversation + document language^) ^|
 echo ^| `/louie-profile` ^| View or change the project profile ^(standard / game^) ^|
+echo ^| `/louie-content` ^| Write story, dialogue, and level content ^(game profile only^) ^|
 echo ^| `/louie-test` ^| Write or improve tests with Ava ^|
 echo ^| `/louie-doc` ^| Update documentation + commit message ^|
 echo ^| `/louie-ideate` ^| Brainstorm ideas with Ivy ^|

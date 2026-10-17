@@ -45,6 +45,7 @@ Available commands:
 - `louie-autopilot-mode` → `_LOUIE_/commands/louie-autopilot-mode.md`
 - `louie-language` → `_LOUIE_/commands/louie-language.md`
 - `louie-profile` → `_LOUIE_/commands/louie-profile.md`
+- `louie-content` → `_LOUIE_/commands/louie-content.md`
 - `louie-test` → `_LOUIE_/commands/louie-test.md`
 - `louie-doc` → `_LOUIE_/commands/louie-doc.md`
 - `louie-ideate` → `_LOUIE_/commands/louie-ideate.md`

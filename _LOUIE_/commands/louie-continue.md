@@ -37,7 +37,7 @@ It does **not** read or recover past chat transcripts — a LOUIE command can't 
    - **Git:** current branch, the uncommitted diff, and recent commits touching the target. This is the richest "where did I stop" signal — reconcile it against what the docs claim.
    - **Roadmap:** if the feature was seeded `--from-roadmap`, note the linked epic and its status.
    - **Setup:** read `overview.md`'s Features table, note which requirements folders exist, and which of the three foundation docs (`architecture.md`, `tech-stack.md`, `runbook.md`) are present.
-   - **Content — only if the profile is `game`:** read the target's doc (`story/chapters/<nn>-<slug>.md`, `story/characters/<name>.md`, the `relationships.md` row, or `game-design/levels/<map>.md`) — its status, its Consistency Check boxes — plus the content files it lists and their git state.
+   - **Content — only if the profile is `game`:** read the target's doc (`story/chapters/<nn>-<slug>.md`, `story/characters/<name>.md`, the `relationships.md` row, or `game-design/levels/<map>.md`) — its status, its Consistency Check boxes — plus the content files it lists and their git state, and `story/run-report.md` / `game-design/run-report.md` if an agentic content run left one (its `Pending decision:` is the resume point).
 
 6. **Infer the chain position** (which agent/step is next) from the breadcrumbs — no stored progress pointer exists (the checkpoint, if any, was consumed in step 2); it's derived:
    - **Setup, before the foundation:** requirements folders exist but `architecture.md` is missing → resume `louie-setup` at Sophie (its step 5).

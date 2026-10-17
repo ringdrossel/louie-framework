@@ -28,6 +28,7 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 | `louie-autopilot-mode` | `_LOUIE_/commands/louie-autopilot-mode.md` | View or change the per-command auto-pilot mode (run the chain unattended after plan approval) |
 | `louie-language` | `_LOUIE_/commands/louie-language.md` | View or change the project language (conversation language + document language) |
 | `louie-profile` | `_LOUIE_/commands/louie-profile.md` | View or change the project profile (standard / game) |
+| `louie-content` | `_LOUIE_/commands/louie-content.md` | Write story, dialogue, and level content (game profile only) |
 | `louie-test` | `_LOUIE_/commands/louie-test.md` | Write or improve tests with Ava |
 | `louie-doc` | `_LOUIE_/commands/louie-doc.md` | Update documentation + commit message |
 | `louie-ideate` | `_LOUIE_/commands/louie-ideate.md` | Brainstorm ideas with Ivy |
