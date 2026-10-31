@@ -34,11 +34,12 @@ When the user says **`louie-update-framework`**, follow this procedure to update
    - Replace `_LOUIE_/workflow/` with the latest versions
    - Replace `_LOUIE_/setup/` with the latest versions
    - Replace `_LOUIE_/recipes/` with the latest versions (recipe library)
+   - Replace `_LOUIE_/profiles/` with the latest versions (optional project profiles — agents, overlays, templates; inert unless the runbook's Project Profile selects one)
    - Replace `_LOUIE_/adapters/` with the latest versions (public source-adapter interface). **Never touch `louie-adapters/`** at the project root — that's the user's private, source-specific adapters; it is gitignored and outside `_LOUIE_/`.
    - Update `CLAUDE.md` at project root (replace the LOUIE-FRAMEWORK section, preserve any user-added sections)
 
 4. **Re-run the appropriate init script(s)** — each is idempotent (skips the context-file section if the LOUIE marker is present; always overwrites the installed slash-command / skill / prompt-template files so they pick up framework updates). Run every script whose integration the project uses (multiple may apply):
-   - Claude Code → `bash _LOUIE_/setup/claude-init.sh` — refreshes `.claude/commands/louie-*.md` and the subagent definitions in `.claude/agents/`
+   - Claude Code → `bash _LOUIE_/setup/claude-init.sh` — refreshes `.claude/commands/louie-*.md` and the subagent definitions in `.claude/agents/` (including the game-profile agents when the runbook's profile is `game`)
    - opencode → `bash _LOUIE_/setup/opencode-init.sh` — refreshes `.opencode/command/louie-*.md`
    - Codex CLI → `bash _LOUIE_/setup/codex-init.sh` — refreshes `.codex/skills/louie-*/SKILL.md`
    - Pi Coding Agent → `bash _LOUIE_/setup/pi-init.sh` — refreshes `.pi/prompts/louie-*.md`
@@ -52,7 +53,7 @@ When the user says **`louie-update-framework`**, follow this procedure to update
      - List new/updated agents
      - List any template changes
      - List new/updated recipes (sections and individual recipes)
-   - **Check `_LOUIE-output/` for any new canonical outputs introduced by this framework update.** If a new output is now expected (e.g. `runbook.md`) and the project doesn't have it, tell the user and offer to bootstrap it from existing artifacts (architecture, ad-hoc context files). Never silently create files in `_LOUIE-output/`. Current list: `runbook.md`, `roadmap.md`, and — for large projects only (~6+ domains) — `codebase-map.md` (Sophie generates it from the codebase; skip the offer for small projects).
+   - **Check `_LOUIE-output/` for any new canonical outputs introduced by this framework update.** If a new output is now expected (e.g. `runbook.md`) and the project doesn't have it, tell the user and offer to bootstrap it from existing artifacts (architecture, ad-hoc context files). Never silently create files in `_LOUIE-output/`. Current list: `runbook.md`, `roadmap.md`, and — for large projects only (~6+ domains) — `codebase-map.md` (Sophie generates it from the codebase; skip the offer for small projects). Only if the runbook's profile is `game`: the `_LOUIE-output/game-design/` and `_LOUIE-output/story/` skeletons — offer to seed the missing ones by running `louie-profile game` (on a project that is already `game` it runs as a repair pass and only adds missing files). No migration is needed for the profile itself: a runbook without `## Project Profile` is `standard`.
    - Highlight breaking changes if any (e.g., renamed files, changed handoff format)
 
 6. **Run version-gated migrations, and detect the old artifact layout:**

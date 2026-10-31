@@ -61,6 +61,8 @@ echo ^| `/louie-review-mode` ^| View or change the project review mode ^|
 echo ^| `/louie-branch-mode` ^| View or change the project branch mode ^|
 echo ^| `/louie-autopilot-mode` ^| Per-command auto-pilot — run the chain unattended after plan approval ^|
 echo ^| `/louie-language` ^| View or change the project language ^(conversation + document language^) ^|
+echo ^| `/louie-profile` ^| View or change the project profile ^(standard / game^) ^|
+echo ^| `/louie-content` ^| Write story, dialogue, and level content ^(game profile only^) ^|
 echo ^| `/louie-test` ^| Write or improve tests with Ava ^|
 echo ^| `/louie-doc` ^| Update documentation + commit message ^|
 echo ^| `/louie-ideate` ^| Brainstorm ideas with Ivy ^|
@@ -151,14 +153,18 @@ if exist "%LOUIE_DIR%\docs\implementations\overview.md" (
     )
 )
 if !EXISTING_PROJECT! equ 0 (
-    for %%m in (package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle composer.json Gemfile mix.exs setup.py requirements.txt) do (
+    for %%m in (package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle composer.json Gemfile mix.exs setup.py requirements.txt project.godot) do (
         if exist "%LOUIE_DIR%\%%m" set "EXISTING_PROJECT=1"
     )
 )
 if !EXISTING_PROJECT! equ 0 (
-    for %%d in (src app lib) do (
+    for %%d in (src app lib ProjectSettings) do (
         if exist "%LOUIE_DIR%\%%d\" set "EXISTING_PROJECT=1"
     )
+)
+:: Game engine projects (Godot: project.godot above; Unity: ProjectSettings\ above; Unreal: *.uproject)
+if !EXISTING_PROJECT! equ 0 (
+    if exist "%LOUIE_DIR%\*.uproject" set "EXISTING_PROJECT=1"
 )
 
 if !EXISTING_PROJECT! equ 1 (

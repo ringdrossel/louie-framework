@@ -62,6 +62,8 @@ LOUIE commands are installed as Pi prompt templates under `.pi/prompts/`. Invoke
 | `/louie-branch-mode` | View or change the project branch mode (current / ask) |
 | `/louie-autopilot-mode` | Per-command auto-pilot — run the chain unattended after plan approval |
 | `/louie-language` | View or change the project language (conversation + document language) |
+| `/louie-profile` | View or change the project profile (standard / game) |
+| `/louie-content` | Write story, dialogue, and level content (game profile only) |
 | `/louie-test` | Write or improve tests with Ava |
 | `/louie-doc` | Update documentation + commit message |
 | `/louie-ideate` | Brainstorm ideas with Ivy |
@@ -136,14 +138,18 @@ if [ -f "$LOUIE_DIR/docs/implementations/overview.md" ]; then
   fi
 fi
 if [ $EXISTING_PROJECT -eq 0 ]; then
-  for marker in package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle composer.json Gemfile mix.exs setup.py requirements.txt; do
+  for marker in package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle composer.json Gemfile mix.exs setup.py requirements.txt project.godot; do
     if [ -f "$LOUIE_DIR/$marker" ]; then EXISTING_PROJECT=1; break; fi
   done
 fi
 if [ $EXISTING_PROJECT -eq 0 ]; then
-  for srcdir in src app lib; do
+  for srcdir in src app lib ProjectSettings; do
     if [ -d "$LOUIE_DIR/$srcdir" ]; then EXISTING_PROJECT=1; break; fi
   done
+fi
+# Game engine projects (Godot: project.godot above; Unity: ProjectSettings/ above; Unreal: *.uproject)
+if [ $EXISTING_PROJECT -eq 0 ]; then
+  if ls "$LOUIE_DIR"/*.uproject > /dev/null 2>&1; then EXISTING_PROJECT=1; fi
 fi
 
 if [ $EXISTING_PROJECT -eq 1 ]; then

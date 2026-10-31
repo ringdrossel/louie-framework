@@ -26,6 +26,7 @@ Before starting any interview:
 3. Read `_LOUIE_/templates/requirements-template.md` — this is the output format you will produce
 4. Read `_LOUIE_/guidelines/interaction-guidelines.md` — keep the open interview conversational, but when you offer the user a discrete pick (e.g. confirming a scope split, which feature to take first), present it as a structured choice
 5. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; never bulk-load feature folders. These context reads are independent — batch or parallelize them where your runtime allows (§ Read Fan-Out)
+6. If the project profile is `game` (as passed by the invoking command, else `_LOUIE-output/runbook.md` § Project Profile; absent = `standard`), also read `_LOUIE_/profiles/game/overlays/analyst.md` — it overrides conflicting defaults in this file. Otherwise skip it.
 
 ## Process
 

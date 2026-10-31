@@ -12,6 +12,7 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
    - Read `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, and `_LOUIE-output/runbook.md`
    - Read `_LOUIE-output/implementations/overview.md` if it exists
    - Read `_LOUIE_/workflow/ai-workflow.md` for the workflow
+   - **Resolve the project profile** from the runbook's `## Project Profile` section (absent = `standard`) and pass it to every agent invoked below. In a `standard` project, skip every step marked "Only if the profile is `game`".
 
 2. **Check prerequisites:**
    - If `_LOUIE-output/architecture.md` does not exist, tell the user: "No architecture defined yet. Run `louie-setup` first to set up the project foundation, or `louie-import` if this is an existing project with source code already in place."
@@ -31,15 +32,24 @@ When the user says **`louie-feature`**, follow this procedure to add a new featu
    - **Which features to build now:** by default, confirm which single feature to take through Steps 5–12 first; the others stay `requirements.md`-only until the user runs `louie-feature` for them (today's behavior). **Batch option:** the user may approve the whole split to build in one run — see `## Batch Mode` below. On a capable runtime under auto-pilot, independent features then run concurrently; otherwise they run as a dependency-ordered queue.
    - Tom creates each feature folder `_LOUIE-output/implementations/<feature-name>/` and writes its `requirements.md`.
 
+4b. **Only if the profile is `game` — invoke Kai (Game Designer) for features with gameplay rules:**
+   - Skip for features without gameplay rules (e.g. a settings menu with no rule logic) and for content (content goes through `louie-content`, never through this command).
+   - Read and follow `_LOUIE_/profiles/game/agents/game-designer.md` in **Mode B**. Kai proposes the rules and key numbers, then writes `_LOUIE-output/implementations/[feature-name]/mechanics.md` (and updates `game-design/balancing.md` / `systems/`) after the user approves. Sophie and the feature doc build on it.
+
 5. **Invoke Sophie (Architect) — evaluation:**
    - Read and follow `_LOUIE_/agents/architect.md`
    - Sophie evaluates whether the new feature fits the existing architecture
    - If yes: Sophie writes a brief handoff note, no document changes needed
    - If no: Sophie proposes minimal updates, gets user confirmation, updates docs
 
+5b. **Only if the profile is `game` — invoke Mira (Narrative Designer) when the feature needs narrative data:**
+   - Only for features that consume story content (e.g. a support system, a codex, dialogue choices). Skip otherwise.
+   - Read and follow `_LOUIE_/profiles/game/agents/narrative-designer.md` in **Mode B**. Mira defines the content schema (in `mechanics.md` § Content Schema, or a short section of `feature.md` when there is no `mechanics.md`) and registers the flags the feature reads and writes in `_LOUIE-output/story/flags.md`. She writes no scenes here — those come later via `louie-content`.
+
 6. **Create feature document:**
    - Create `_LOUIE-output/implementations/[feature-name]/feature.md` using `_LOUIE_/templates/feature-template.md`
    - Fill in all sections based on `[feature-name]/requirements.md` and the architecture
+   - **Only if the profile is `game`:** also base it on `[feature-name]/mechanics.md` if Kai wrote one — reference it from `## Requirements Reference`; don't copy its rules or numbers into `feature.md`.
    - **Annotate the Implementation Plan phases** with `[Depends: none|<phase-nrs> | Files: <globs>]` (template § Implementation Plan has the rules). Derive the `Files:` write scopes from the architecture's folder structure; keep the glob lists small. An integration phase that depends on several others is normal — don't contort the plan to avoid it. Nina validates these annotations before implementing.
    - Update `_LOUIE-output/implementations/overview.md` — add the feature to the **Features** table with `Status: Planned`. Document column links to `implementations/[feature-name]/feature.md`. (Tom may already have added it during setup; if so, leave it as `Planned`.)
    - **If this run was seeded `--from-roadmap <id>`:** move the entry from `## Captured` to `## Promoted` in `_LOUIE-output/roadmap.md`. Preserve the original `Created` and `Notes`. Set `Status: In Progress` and add `Promoted: YYYY-MM-DD → _LOUIE-output/implementations/[feature-name]/`. If the `## Promoted` section is showing the placeholder `_No ideas promoted yet._`, remove that line first. Update the `Last Updated:` line at the top of the roadmap file. (Equivalent to `louie-roadmap-change <id> status "In Progress"`.)
@@ -109,6 +119,7 @@ Auto-pilot lets the chain run unattended after the user approves the plan, stopp
 - Tom finishes writing `requirements.md` (end of Step 4, right after the confirmed playback), then `feature.md` is written at Step 6 — both as automated steps, no separate approval. `feature.md` is never skipped — it's the source of truth later commands read.
 - Sophie evaluates (Step 5): auto-applies minimal/mechanical changes and narrates; **pauses on a material architecture change** (see `architect.md` § Auto-Pilot).
 - Leo (Step 9, if UI): picks and writes the recommended direction, narrates; **pauses on a fundamentally different UX** (see `designer.md` § Auto-Pilot).
+- Only if the profile is `game` — Kai (Step 4b) and Mira (Step 5b) write what follows from the agreed requirements and narrate; **balance, feel, and creative forks always pause** (see their § Auto-Pilot in `_LOUIE_/profiles/game/agents/`). Under `--agentic` such a fork halts with `status: needs-human`.
 - Nina (Step 10) implements — on capable runtimes, independent work packages run concurrently (see `_LOUIE_/guidelines/execution-guidelines.md`; a deviation-tripwire hit in one package pauses that package, siblings finish, no new dispatch until resolved). Max (Step 11) runs the **`auto-fix-critical`** loop (auto-pilot raises the floor — see `reviewer.md`). Ava (Step 12) tests.
 - Each agent **narrates its output in chat** as it goes — auto-pilot suppresses *blocking*, not *visibility*.
 

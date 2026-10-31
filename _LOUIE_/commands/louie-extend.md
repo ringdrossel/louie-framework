@@ -13,6 +13,7 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
 1. **Read project context:**
    - Read `_LOUIE-output/architecture.md`, `_LOUIE-output/tech-stack.md`, and `_LOUIE-output/runbook.md`
    - Read `_LOUIE-output/implementations/overview.md` to see existing features
+   - **Resolve the project profile** from the runbook's `## Project Profile` section (absent = `standard`) and pass it to every agent invoked below. In a `standard` project, skip every step marked "Only if the profile is `game`".
 
 2. **Identify the feature to extend:**
    - If the user specified which feature alongside the command, find its folder at `_LOUIE-output/implementations/[feature-name]/`
@@ -33,6 +34,7 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
    - Read `_LOUIE-output/implementations/[feature-name]/feature.md` completely
    - Read `_LOUIE-output/implementations/[feature-name]/requirements.md` if it exists
    - Skim `_LOUIE-output/implementations/[feature-name]/decisions.md` and `bugfixes/` for context (prior ADRs, recent bug history)
+   - **Only if the profile is `game`:** also read `[feature-name]/mechanics.md` if it exists.
 
 5. **Ask what the extension should do:**
    - If the user already described the extension, proceed
@@ -43,10 +45,16 @@ When the user says **`louie-extend`**, follow this procedure to extend an existi
    - Tom interviews about the extension (Light Mode is usually sufficient for extensions)
    - Tom appends an "Extension: <date>" section to `_LOUIE-output/implementations/[feature-name]/requirements.md` rather than creating a new file. This keeps all requirements for one feature in one document.
 
+6b. **Only if the profile is `game` — invoke Kai when the extension touches gameplay rules:**
+   - Read and follow `_LOUIE_/profiles/game/agents/game-designer.md` in **Mode B**. Kai proposes the rule changes, then appends an "Extension: <date>" section to `[feature-name]/mechanics.md` (creating it from the template if the feature has none yet) and updates `game-design/balancing.md` after the user approves.
+
 7. **Invoke Sophie (Architect) — evaluation:**
    - Read and follow `_LOUIE_/agents/architect.md`
    - Sophie evaluates if the extension fits the existing architecture
    - If changes are needed, get user confirmation before updating docs
+
+7b. **Only if the profile is `game` — invoke Mira when the extension needs narrative data:**
+   - Read and follow `_LOUIE_/profiles/game/agents/narrative-designer.md` in **Mode B**: she extends the content schema and registers new flags in `_LOUIE-output/story/flags.md`. Scenes themselves go through `louie-content`.
 
 8. **Update the feature document:**
    - Add a new implementation phase to `_LOUIE-output/implementations/[feature-name]/feature.md`, annotated with `[Depends: … | Files: …]` (see `_LOUIE_/templates/feature-template.md` § Implementation Plan; an extension phase typically depends on the existing phases it builds on). **On a legacy plan without annotations, annotate only the phase you're adding — never rewrite the existing phases** (completed work is never retro-annotated; unannotated phases stay valid and run in written order).
@@ -75,7 +83,7 @@ Auto-pilot lets the extension chain run unattended after the user approves the p
 - *Off (default):* after Tom's playback is confirmed, present a structured choice in its own response — **Continue step-by-step** / **Auto-pilot the rest**. On auto-pilot, engage the unattended run.
 - *On:* the confirmed playback proceeds straight into the unattended run — no second confirmation.
 
-**Unattended run** (Steps 7–10): Sophie auto-applies minimal changes + narrates (pauses on material arch change); the feature-doc update + Step 9 gate are pre-approved (narrate, don't re-ask); Leo auto-applies the recommended UI direction + narrates (pauses on a fundamentally different UX); Nina implements; Max runs the `auto-fix-critical` loop; Ava tests. Each agent narrates as it goes.
+**Unattended run** (Steps 7–10): Sophie auto-applies minimal changes + narrates (pauses on material arch change); the feature-doc update + Step 9 gate are pre-approved (narrate, don't re-ask); Leo auto-applies the recommended UI direction + narrates (pauses on a fundamentally different UX); Nina implements; Max runs the `auto-fix-critical` loop; Ava tests. Each agent narrates as it goes. Only if the profile is `game`: Kai (6b) and Mira (7b) write what follows from the agreed extension and narrate, but **balance, feel, and creative forks always pause** (under `--agentic` they halt with `status: needs-human`).
 
 **Hard stops that survive auto-pilot:** the **deviation tripwire** (pause if the write-up / Sophie's eval materially diverges from what was agreed — non-trivial arch change, undiscussed scope) and the **merge-to-main gate** (always stop before merge with a final summary; never auto-merge, never auto-branch). See `_LOUIE-internals/autopilot.md` for the full model.
 

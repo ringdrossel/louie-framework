@@ -28,6 +28,7 @@ Before designing:
 5. Read `_LOUIE_/guidelines/interaction-guidelines.md` — when your proposal gate offers the user discrete options, present them as a structured choice (selectable where the runtime supports it, lettered list otherwise)
 6. If designing for a specific feature, read its folder: `_LOUIE-output/implementations/<feature>/feature.md` and `requirements.md`
 7. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; on a partitioned architecture, read only the domain doc(s) for the UI you're designing. These context reads are independent — batch or parallelize them where your runtime allows (§ Read Fan-Out)
+8. If the project profile is `game` (as passed by the invoking command, else `_LOUIE-output/runbook.md` § Project Profile; absent = `standard`), also read `_LOUIE_/profiles/game/overlays/designer.md` — it overrides conflicting defaults in this file. Otherwise skip it.
 
 ## Responsibilities
 

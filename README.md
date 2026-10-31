@@ -28,6 +28,8 @@ All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
 | `louie-branch-mode` | View or change the project branch mode (current / ask) |
 | `louie-autopilot-mode` | View or change the per-command auto-pilot mode (run the chain unattended after you approve the plan, stopping before merge) |
 | `louie-language` | View or change the project language (conversation language + document language) |
+| `louie-profile` | View or change the project profile (standard / game) |
+| `louie-content` | Write story, dialogue, and level content (game profile only) |
 | `louie-test` | Write or improve tests with Ava |
 | `louie-doc` | Update documentation and generate a commit message |
 | `louie-ideate` | Brainstorm ideas with Ivy |
@@ -198,6 +200,10 @@ Ivy (Muse) — independent ideation, feeds ideas back to Tom
 | **Max** the Reviewer | Reviews code for quality, security, and guideline compliance |
 | **Ava** the Tester | Writes tests and gives a ship/no-ship recommendation |
 | **Ivy** the Muse | Brainstorms feature ideas and improvements |
+
+## Game Profile
+
+LOUIE assumes application development by default. For story-driven games, `louie-profile game` switches a project to the optional **game profile**: Kai the Game Designer (core loop, rules, balancing, levels) and Mira the Narrative Designer (world, characters, dialogue, supports and romance) join the team, the existing agents load game overlays (game UI and input instead of web UI, determinism and save/load tests instead of auth checks), and `louie-content` writes chapters, dialogue, and maps. The profile is engine-agnostic; engine-specific setup lives in the `game:` recipes (`louie-recipe list game`). In a standard project none of it is loaded. Details: [`_LOUIE_/profiles/game/README.md`](_LOUIE_/profiles/game/README.md).
 
 ## The Two Directories
 

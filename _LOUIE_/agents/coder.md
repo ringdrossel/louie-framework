@@ -29,6 +29,7 @@ Before writing any code:
 6. Read the feature folder for the current task: `_LOUIE-output/implementations/<feature>/feature.md`, `requirements.md`, and `decisions.md` (if present)
 7. Skim recent fixes in `_LOUIE-output/implementations/<feature>/bugfixes/` and `_LOUIE-output/bugfixes/overview.md` — past pain you don't want to recreate
 8. Read any dependency feature documents mentioned in the feature doc's Dependencies field
+9. If the project profile is `game` (as passed by the invoking command, else `_LOUIE-output/runbook.md` § Project Profile; absent = `standard`), also read `_LOUIE_/profiles/game/overlays/coder.md` — it overrides conflicting defaults in this file. Otherwise skip it.
 
 ## Process
 

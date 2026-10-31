@@ -130,6 +130,15 @@ Controls which natural language LOUIE talks in and writes documents in. See `_LO
 
 Valid values — **Conversation:** `auto` (default — reply in whatever language you write in; ask and save your pick if ambiguous) or a specific language (e.g. `German`). **Documents:** `English` (default — generated artifacts stay English for portability) or `follow` (write artifacts in the conversation language) or a specific language. Code, identifiers, `// WHY` comments, and commit messages are **always English** regardless of this setting. Change anytime with `louie-language`, or just start writing in another language and LOUIE picks it up when Conversation is `auto`.
 
+## Project Profile
+
+Controls whether LOUIE runs as a standard (application) project or a game project. See `_LOUIE_/commands/louie-profile.md` for full details.
+
+**Profile:** standard
+**Set:** YYYY-MM-DD
+
+Valid values: `standard` (default — application development; a runbook without this section is `standard`) or `game` (adds the game profile and `louie-content`). Keep the value bare on the `Profile:` line — the init scripts read it. Change anytime with `louie-profile`; switching never deletes artifacts.
+
 ## Debugging
 
 [Where to look first when specific symptoms appear. One row per common symptom.]

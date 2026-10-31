@@ -49,6 +49,8 @@ echo - `louie-review-mode` → `_LOUIE_/commands/louie-review-mode.md`
 echo - `louie-branch-mode` → `_LOUIE_/commands/louie-branch-mode.md`
 echo - `louie-autopilot-mode` → `_LOUIE_/commands/louie-autopilot-mode.md`
 echo - `louie-language` → `_LOUIE_/commands/louie-language.md`
+echo - `louie-profile` → `_LOUIE_/commands/louie-profile.md`
+echo - `louie-content` → `_LOUIE_/commands/louie-content.md`
 echo - `louie-test` → `_LOUIE_/commands/louie-test.md`
 echo - `louie-doc` → `_LOUIE_/commands/louie-doc.md`
 echo - `louie-ideate` → `_LOUIE_/commands/louie-ideate.md`
@@ -137,14 +139,18 @@ if exist "%LOUIE_DIR%\docs\implementations\overview.md" (
     )
 )
 if !EXISTING_PROJECT! equ 0 (
-    for %%m in (package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle composer.json Gemfile mix.exs setup.py requirements.txt) do (
+    for %%m in (package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle composer.json Gemfile mix.exs setup.py requirements.txt project.godot) do (
         if exist "%LOUIE_DIR%\%%m" set "EXISTING_PROJECT=1"
     )
 )
 if !EXISTING_PROJECT! equ 0 (
-    for %%d in (src app lib) do (
+    for %%d in (src app lib ProjectSettings) do (
         if exist "%LOUIE_DIR%\%%d\" set "EXISTING_PROJECT=1"
     )
+)
+:: Game engine projects (Godot: project.godot above; Unity: ProjectSettings\ above; Unreal: *.uproject)
+if !EXISTING_PROJECT! equ 0 (
+    if exist "%LOUIE_DIR%\*.uproject" set "EXISTING_PROJECT=1"
 )
 
 if !EXISTING_PROJECT! equ 1 (

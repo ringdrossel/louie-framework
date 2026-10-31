@@ -14,6 +14,8 @@ Tom (Analyst) → Sophie (Architect) → Leo (Designer, if UI) → Nina (Coder) 
 
 Ivy (Muse) operates independently — her output goes back to the user, who may then engage Tom.
 
+Only if the project profile is `game`: the Kai and Mira handoffs are listed in `_LOUIE_/profiles/game/README.md` § Handoffs. Standard projects skip this paragraph.
+
 ---
 
 ## Handoff Summary Format

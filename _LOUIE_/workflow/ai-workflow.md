@@ -28,6 +28,8 @@ These rules apply ALWAYS, without exception.
 Ivy (Muse) — runs independently, feeds ideas back to Tom
 ```
 
+Only if the project profile is `game` (`_LOUIE-output/runbook.md` § Project Profile): Kai and Mira join this chain and content runs through `louie-content` — see `_LOUIE_/profiles/game/README.md`. Standard projects skip this paragraph.
+
 ### Agent Responsibilities
 
 | Agent | Role | Produces |
@@ -293,6 +295,8 @@ Agentic mode implies auto-pilot, replaces Tom's interview with an **evidential g
 | `louie-branch-mode` | View or change the project branch mode (current / ask) |
 | `louie-autopilot-mode` | View or change the per-command auto-pilot mode (run the chain unattended after plan approval) |
 | `louie-language` | View or change the project language (conversation language + document language) |
+| `louie-profile` | View or change the project profile (standard / game) |
+| `louie-content` | Write story, dialogue, and level content (game profile only) |
 | `louie-test` | Write or improve tests with Ava |
 | `louie-doc` | Update documentation and generate a commit message |
 | `louie-ideate` | Brainstorm ideas with Ivy |

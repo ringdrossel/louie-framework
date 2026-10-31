@@ -27,12 +27,19 @@ Throughout the chain: every stop that ends a turn closes with a **phase breadcru
 3. **Ask for their idea:**
    - If the user already provided an idea alongside the command, proceed directly
    - If not, ask: "What's the project or feature you'd like to build? A sentence or two is enough — Tom will ask follow-up questions."
+   - **Resolve the project profile** (see `_LOUIE_/commands/louie-profile.md`): the profile is `standard` — do not ask about it — unless the idea clearly describes a game (a game genre, levels or maps, playable characters, a game engine). Only then ask once, as a structured choice: "This sounds like a game — enable LOUIE's game profile (game-design and narrative agents, game-specific reviews and tests)?" Options: `game` / `standard`. Hold the answer for the rest of the run (record it in the checkpoint's chat-only decisions), pass it to every agent invoked below, and write it to the runbook in step 5g.
 
 4. **Invoke Tom (Analyst):**
    - Read and follow `_LOUIE_/agents/analyst.md`
    - Tom interviews the user, then runs the **Scope Split Gate** (analyst.md § Step 4a). For a project-from-scratch this almost always produces multiple features (e.g. `auth`, `books-core`, `shelf-ui`, `csv-import`, …) — not one giant `mvp` folder.
    - For **each** approved feature, Tom creates `_LOUIE-output/implementations/<feature-name>/` and writes its own `requirements.md` using `_LOUIE_/templates/requirements-template.md`.
    - Tom also updates `_LOUIE-output/implementations/overview.md` with the project context (name, goal, status) and adds **every** new feature to the Features table with `Status: Planned`, in implementation order — the `Depends on` column carries the inter-feature edges from the scope split (feature slugs, or `—`), and the Document column links to `implementations/<feature-name>/feature.md`.
+
+4b. **Only if the profile is `game`: invoke Kai, then Mira (project bootstrap):**
+   - Tell the user the itinerary gains two stops before Sophie: Kai (game design) and Mira (story bible).
+   - Read and follow `_LOUIE_/profiles/game/agents/game-designer.md` in **Mode A** — Kai proposes, then writes `_LOUIE-output/game-design/gdd.md` (pillars, core loop, platforms and input, scope) after the user approves.
+   - Read and follow `_LOUIE_/profiles/game/agents/narrative-designer.md` in **Mode A** — Mira writes only a stub of `_LOUIE-output/story/story-bible.md` (premise, tone, rating and content boundaries, in-game text language).
+   - Each agent's proposal is a mid-chain stop (phase breadcrumb + checkpoint). Content work Tom split off goes into the overviews as `Planned` rows and is produced later with `louie-content`.
 
 5. **Invoke Sophie (Architect):**
    - Read and follow `_LOUIE_/agents/architect.md`
@@ -72,6 +79,10 @@ Throughout the chain: every stop that ends a turn closes with a **phase breadcru
    - Update `_LOUIE-output/runbook.md` § Language in place: set `Conversation:` to `auto`, `Documents:` to `English`, `Set:` to today's date.
    - Add a one-line note: "Language is `auto` for conversation (I'll match the language you write in) and `English` for documents. Change either anytime with `louie-language`."
 
+5g. **Record the project profile (no question here — resolved in step 3):**
+   - Update `_LOUIE-output/runbook.md` § Project Profile in place: set `Profile:` to the profile resolved in step 3 (`standard` unless the user chose `game`), `Set:` to today's date. No note for `standard`.
+   - **Only if the profile is `game`:** seed the remaining game artifacts and install the game agents exactly as `_LOUIE_/commands/louie-profile.md` steps 4–5 describe (copy missing skeletons only — Kai's `gdd.md` and Mira's `story-bible.md` from step 4b are kept; re-run `claude-init` if `.claude/` exists). Add a one-line note: "Game profile is on — Kai and Mira are part of the team; produce story and level content with `louie-content`. Switch anytime with `louie-profile`."
+
 6. **Confirmation gate (architecture):**
    - Present the requirements, architecture, tech stack, and runbook **in chat as a normal message** — a compact digest per document, not just the file writes (collapsed results are not a presentation)
    - Walk through the key decisions and their rationale
@@ -105,6 +116,7 @@ Throughout the chain: every stop that ends a turn closes with a **phase breadcru
 
 13. **Hand off to the next feature:**
     - Tell the user which features remain `Planned` in the Features table and that the next one ships by running `louie-feature` (which will go straight to creating the `feature.md` from the already-captured `requirements.md`).
+   - **Only if the profile is `game`:** also name the `Planned` content rows in `_LOUIE-output/story/overview.md` and `_LOUIE-output/game-design/overview.md`, produced with `louie-content`.
     - **Delete `_LOUIE-output/checkpoint.md`** if present — the setup chain is complete; the remaining features start fresh via `louie-feature`, not a resume. A finished chain leaves no checkpoint behind.
 
 ## Usage
