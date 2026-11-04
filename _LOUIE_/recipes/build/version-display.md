@@ -1,4 +1,4 @@
-Derive the app version from the latest git tag at build time, bake it into a generated constant, and display it where the app's UI lives — web header/footer, native window title, or CLI banner + `--version` — chosen by interview.
+Derive the app version from the latest git tag at build time, bake it into a generated constant, and display it where the user chooses — logo tooltip (default), header/footer, window title, About dialog, or CLI banner + `--version`; proposes a first tag when the repo has none.
 
 # Version Display by Git Tag
 
@@ -6,11 +6,16 @@ Derive the app version from the latest git tag at build time, bake it into a gen
 
 The developer marks a release by tagging the repo (e.g. `git tag 07.23.1`). That tag — whatever string it is — becomes the version the application shows its users. This recipe captures the tag **at build time**, bakes it into a generated constant the app imports, and surfaces it on the right display surface for the kind of app being built.
 
-The display surface is **not** assumed — it is decided by interview, because it depends entirely on the app:
+The display surface is **not** assumed — Tom asks where the version should appear (see *Interview and Tag Check*). The default for any app with a visible logo is a **tooltip on the logo**: invisible until wanted, always one hover away. The full menu:
 
+- **Logo tooltip** *(default for web and native apps that show a logo)* → hovering (or focusing) the app's logo shows the version.
 - **Web application** → in the page **header** or **footer** (or both).
-- **Native windowed application** → appended to the **window title** (`MyApp — 07.23.1`).
+- **Native windowed application** → appended to the **window title** (`MyApp — 07.23.1`), or in a Help → **About** dialog.
 - **CLI / terminal application** → printed in the **startup banner** line, plus a conventional **`--version` / `-v`** flag.
+
+"Latest git tag" means the **nearest tag in the history of the commit being built** (`git describe --tags --abbrev=0`) — not the highest tag anywhere in the repo. A build of an old checkout or a feature branch shows the version that code actually descends from.
+
+If the repository has **no tag at all**, the recipe proposes one (see *Interview and Tag Check*) and creates it only after the user confirms.
 
 In every case the app also logs its version once at startup. A single project may select more than one surface (e.g. a web app that shows the footer version *and* logs it on the server at boot).
 
@@ -26,23 +31,66 @@ In every case the app also logs its version once at startup. A single project ma
 - Rich build provenance / SBOM needs (full commit graph, dependency versions, reproducible-build attestation) — that's a heavier concern than a display string.
 - Per-environment banners ("STAGING", "PROD") — that's environment config, orthogonal to the version. Compose the two if you want both.
 
+## Interview and Tag Check
+
+Two things Tom settles before adapting the Requirements Seed. Both are asked as structured choices (`_LOUIE_/guidelines/interaction-guidelines.md`), and both answers go into the requirements and the feature doc.
+
+### 1. Where should the version be shown?
+
+Detect the app kind from the tech stack first (web / native windowed / CLI) and look for a logo in the UI (a header logo, a sidebar brand mark, a toolbar or title-bar icon). Then ask — multi-select, since surfaces combine:
+
+> "Where should the app show its version (from the latest git tag)?"
+
+| Option | Offered when |
+|--------|--------------|
+| **Tooltip on the logo** *(default)* | Web or native app with a logo in its UI |
+| Header | Web |
+| Footer | Web |
+| Window title (`<AppName> — <version>`) | Native windowed |
+| Help → About dialog | Native windowed |
+| Startup banner + `--version` / `-v` | CLI — *(default for CLI apps)* |
+
+An app with no logo and no CLI gets **Footer** (web) or **Window title** (native) as its default instead. Whatever is chosen, the startup log line (requirement 5) is always added.
+
+### 2. Does the repository have a tag?
+
+Run, in the repo root:
+
+1. `git rev-parse --is-inside-work-tree` — fails → not a git repo. Tell the user the build will show the manifest version (or `unknown`) until the project is under git; propose nothing.
+2. `git describe --tags --abbrev=0` — succeeds → report "Current version from git: `<tag>`" and move on. Nothing to propose.
+3. It fails, but `git tag --list` is **not empty** → tags exist, none in the history of `HEAD` (the tags sit on another branch, or the clone is shallow — check `git rev-parse --is-shallow-repository`; `true` means fetch with `git fetch --tags --unshallow` first). List the existing tags and ask whether to tag `HEAD` with a new one; never silently add a duplicate scheme next to them.
+4. No tags at all → **propose one**:
+   - If the project manifest has a version (`package.json`, `pyproject.toml`, `Cargo.toml`, `*.csproj`, `build.gradle`, …) → propose **`v<manifest version>`**, so the first tag agrees with what the project already claims.
+   - Otherwise → propose **`v0.1.0`** (a major version of 0 marks a project still in initial development, per Semantic Versioning).
+   - If `HEAD` does not exist yet (no commit) → say the tag will be created after the first commit, and record the proposal.
+
+   Ask:
+
+   > "This repository has no git tag yet, so the app would show `<fallback>`. Create tag `<proposal>` on the current commit?"
+
+   Options: **Create `<proposal>`** *(default)* / **Use a different tag** (free text — taken verbatim) / **Not now** (the build falls back to the manifest version or `unknown`).
+
+The tag is **created during implementation**, after the feature-doc gate — not during the interview — as an annotated tag on the current commit: `git tag -a <tag> -m "<tag>"`. It is **never pushed automatically**; the final summary offers `git push origin <tag>`. Under auto-pilot or agentic mode the tag is not created: the build uses the fallback, and the proposal is listed in the run summary / run report for a human to confirm.
+
 ## Requirements Seed
 
 ### Functional
 
 1. At build time, a generator resolves the **version string** and writes it into a **generated artifact** the app imports (a constant/module/file — form depends on stack).
 2. Version resolution order:
-   1. The **nearest git tag** reachable from `HEAD` (`git describe --tags --abbrev=0`), displayed **verbatim** — no normalization, no stripping of a leading `v`, no format validation. `07.23.1`, `v2.0`, and `2026-rc1` are all valid and shown as-is.
+   1. The **latest git tag in the history of `HEAD`** — the nearest one reachable (`git describe --tags --abbrev=0`), not the highest tag anywhere in the repo — displayed **verbatim** — no normalization, no stripping of a leading `v`, no format validation. `07.23.1`, `v2.0`, and `2026-rc1` are all valid and shown as-is.
    2. If there is no tag (or no `.git` — e.g. building from a source tarball), fall back to the **project manifest version** (`package.json` `version`, `pyproject.toml`, `Cargo.toml`, `.csproj`, etc. — whatever the stack uses).
    3. If the manifest has no version either, bake the literal string **`unknown`**.
    The build **always succeeds** — a missing tag is never a build error.
 3. "Off-tag" behavior is **tag-only**: when `HEAD` is between tags or the tree is dirty, still show the nearest tag verbatim. Commits-since-tag, the short SHA, and dirty state are **not** appended.
 4. The resolved version is displayed on the surface(s) chosen by interview:
+   - **Logo tooltip (web or native):** hovering the logo shows the version; the same text is reachable by keyboard focus and exposed to assistive technology.
    - **Web:** rendered in the header and/or footer.
-   - **Native windowed:** appended to the window title as `<AppName> — <version>`.
+   - **Native windowed:** appended to the window title as `<AppName> — <version>`, and/or shown in a Help → About dialog.
    - **CLI:** printed in the startup banner line, and returned by a `--version` / `-v` flag that prints the version and exits 0.
 5. The app **logs its version once at startup** (one line, info level), regardless of the visual surface.
 6. A project may select **multiple** surfaces; the startup log line coexists with any visual surface.
+7. **Tag bootstrap:** when the repository has no tag, the recipe proposes one (manifest version as `v<version>`, else `v0.1.0`) and creates it as an annotated tag on `HEAD` only on explicit confirmation. Tags are never pushed automatically.
 
 ### Non-Functional
 
@@ -56,9 +104,9 @@ In every case the app also logs its version once at startup. A single project ma
 - Runtime/live `git describe` (see *Variations*).
 - Long describe form (`07.23.1-3-gabc123`), dirty markers, commit SHA, build timestamp, branch (see *Variations*).
 - A `/version` or health API endpoint (see *Variations*).
-- Interactive build-metadata reveal (hover/click to show commit/date).
+- Build metadata in the tooltip (commit, date) — the tooltip shows the version only (see *Variations*).
 - Tag format enforcement / semver parsing / prefix normalization.
-- Version *bumping* or tag *creation* — this recipe reads tags, it does not write them.
+- Version *bumping* and release tagging. The only tag this recipe ever writes is the confirmed **first** tag of an untagged repository (requirement 7); every later tag is the developer's release decision.
 
 ## Architecture Notes
 
@@ -103,7 +151,9 @@ write generated artifact with `version`
 - The build tool has a **pre-compile hook** where the generator can run before the app reads the constant.
 - The project's **manifest** location and version field (for the fallback) — and whether a manifest even exists (Go modules / single binaries may not have a version field; then fallback goes straight to `unknown`).
 - Whether builds run **without git available** (CI from a tarball, vendored source) — the fallback chain must hold there.
+- For the logo tooltip: **which element is the logo** (there may be several — header, sidebar, splash) and whether the UI already has a **tooltip component** that should be reused instead of the platform default.
 - For native: how the app **sets its window title** (framework-specific).
+- Whether CI checks out with **full history and tags**. Shallow clones (many CI checkouts fetch one commit by default) contain no tags, so `git describe` fails and the build silently shows the fallback. CI must fetch tags (e.g. a full-depth checkout, or `git fetch --tags`).
 - For CLI: whether an **arg parser** already exists to host `--version`, or one must be added.
 
 ## Implementation Guidance
@@ -126,6 +176,15 @@ Write one small generator script/module — the single source of truth for the r
 - For Go-style projects, prefer `-ldflags -X` over a committed file; the "artifact" is the injected symbol.
 
 ### Display — per surface
+
+**Logo tooltip (web):**
+- Reuse the project's tooltip component if it has one. Otherwise the minimal form is the native `title` attribute on the logo's link or image — e.g. `title={`Version ${VERSION}`}` — plus an `aria-describedby` / visually hidden text carrying the same string, because `title` tooltips do not appear on touch devices or on keyboard focus.
+- If the logo is not focusable (a bare `<img>`), the tooltip must not be the *only* way to reach the version for keyboard users — make the logo's link focusable, or also expose the version elsewhere (footer, About).
+- The tooltip text owns any label (`Version 07.23.1`); the constant stays the bare tag.
+
+**Logo tooltip (native):**
+- Use the toolkit's tooltip property on the logo widget — e.g. `setToolTip()` in Qt, the `ToolTip` property in WPF, a `ToolTip` component in WinForms; Electron and Tauri render web content, so the web rules above apply.
+- If the toolkit shows tooltips only on hover, also offer the version in an About dialog for keyboard users.
 
 **Web (header and/or footer):**
 - Import the `VERSION` constant; render it as text in the chosen component(s). Display verbatim.
@@ -152,6 +211,10 @@ Write one small generator script/module — the single source of truth for the r
 - **Don't fail the build on a missing tag.** Fall back to manifest, then `unknown`.
 - **Don't let `--version` do side effects.** It must print and exit before config/IO, so it works even in a broken environment.
 - **Don't read the version before the generator runs.** Order the build so the artifact exists first; if it can't, fail with a clear message, not a blank string.
+- **Don't use the highest tag in the repo.** `git tag --sort=-v:refname | head -1` labels every old or branch build with the newest release. Use `git describe --tags --abbrev=0`.
+- **Don't build from a shallow clone without tags.** The version silently becomes the fallback; fetch tags in CI.
+- **Don't create or push a tag without confirmation.** The first-tag proposal waits for an explicit yes; pushing is always the developer's command.
+- **Don't make the tooltip the only accessible path to the version.** Hover-only `title` tooltips are invisible to touch and keyboard users.
 
 ## Test Guidance
 
@@ -167,10 +230,18 @@ Write one small generator script/module — the single source of truth for the r
 
 ### Display (per built surface)
 
+- **Logo tooltip:** hovering the logo shows the baked version; the same string is present in the accessible description (e.g. `aria-describedby` target or visually hidden text) and reachable by keyboard focus.
 - **Web:** the chosen component(s) render the baked version string; a `v`-prefixed tag renders with the `v`.
 - **Native:** the window title equals `<AppName> — <VERSION>`.
 - **CLI:** `--version` and `-v` both print the version and exit 0 with no other output/side effects; the startup banner includes the version on normal launch.
 - **Startup log:** exactly one version line is logged at boot.
+
+### Tag bootstrap
+
+- Repo without tags → the proposal is shown (`v<manifest version>`, or `v0.1.0` without one) and **no tag exists until the user confirms**.
+- After confirmation → `git describe --tags --abbrev=0` returns the new tag and the next build displays it; the tag is annotated (`git cat-file -t <tag>` prints `tag`) and was not pushed.
+- Repo with tags only on another branch → no new tag is proposed silently; the existing tags are listed.
+- Repo already tagged → no proposal, the current tag is reported.
 
 ### Regression
 
@@ -186,7 +257,7 @@ For a tool meant to be run from a checkout and reflect the working tree, skip th
 
 ### Long describe / build metadata
 
-Append commits-since-tag, short SHA, and a `-dirty` marker (`git describe --tags --dirty`), and/or bake a build timestamp, commit SHA, and branch into the artifact. Useful for staging diagnostics. Surface them in an About dialog (native), a `--version --verbose` mode (CLI), or a tooltip (web).
+Append commits-since-tag, short SHA, and a `-dirty` marker (`git describe --tags --dirty`), and/or bake a build timestamp, commit SHA, and branch into the artifact. Useful for staging diagnostics. Surface them in an About dialog (native), a `--version --verbose` mode (CLI), or as extra lines in the logo tooltip (web and native).
 
 ### Version API / health endpoint
 
@@ -200,6 +271,6 @@ If a project wants `v07.23.1` and `07.23.1` to render identically, add a normali
 
 For projects that want to guarantee a scheme, validate the tag against a configurable regex in the generator and warn (or fail) on a mismatch. Off by default — this recipe accepts any tag string.
 
-### About dialog (native)
+### About dialog with build metadata (native)
 
-In addition to (or instead of) the window title, show the version in a Help → About dialog, alongside build metadata if the long-describe variation is enabled.
+The About dialog is an interview option on its own; this variation adds the long-describe build metadata (commit, date, dirty marker) to it.
