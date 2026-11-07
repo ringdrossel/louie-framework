@@ -66,9 +66,25 @@ Lifecycle rules, and why:
 - **Gitignored by the script** (together with `.louie-run/`). Agentic runs commit; without the ignore, the file would churn through every commit.
 - **Not consumed by interactive commands.** It is the driver's file. `louie-status` may show it; nothing else reads it.
 
+## Live progress
+
+First test, third finding: with `--output-format json` the run log stayed empty until the session ended, and a person in a `tmux` pane saw nothing for the length of a feature. Two signals were added, chosen so that at least one works everywhere. (1) Every harness is started in its line-delimited streaming format (Claude Code `stream-json --verbose`, Codex `--json`, Gemini `stream-json`, opencode `--format json`, pi `--mode json`, Cursor `stream-json`) and tee'd through `louie-run-progress.py`. The filter is deliberately **shape-based, not harness-based**: it walks each JSON object and reacts to `text`, `tool_use{name,input}`, `agent_message`, `command_execution{command}`, `file_change`, `system/task_summary{detail}` and `result` wherever they occur, prints each distinct text once, and prints nothing for anything else. Claude Code's shapes were confirmed by running `claude -p … --output-format stream-json --verbose` and reading the events (the docs give the SDK types but no CLI examples); the other harnesses' event names come from their docs and degrade to silence if the field names differ. (2) A 20-second poller prints new commits (`git log last..HEAD`) and newly ticked `- [x]` lines across `implementations/*/feature.md` — harness-independent, zero schema. `--quiet` disables both; the raw stream is always in the log. Without `python3` only the poller runs, and the script says so once.
+
+## Review mode in unattended runs
+
+First real test (2026-11-07): the project was on `auto-fix-all`, yet the unattended session ran Max at `auto-fix-critical`. `reviewer.md` had the floor right ("never downgrades"), but `agentic-mode.md` — the file the loop's prompt tells every session to read first — said literally "Max (`auto-fix-critical` loop)", and the shorter sentence won. Lesson recorded: **the contract doc a fresh session reads first must carry the full rule, not a shorthand that is only correct with another file in mind.**
+
+The rule itself was also changed, not just restated. Interactive auto-pilot floors at `auto-fix-critical` because a person reads the pre-merge summary and can approve the deferred Suggestions. In an unattended run nobody does, and the maintainer's stated goal is *a finished application to test in the morning*. So agentic runs floor at **`auto-fix-all`**: `auto-fix-all` stays, an explicit `auto-fix-critical` is honoured (the user chose less churn on purpose; Suggestions are listed as deferred in the run report), `manual` or unset becomes `auto-fix-all`. Per-run effective value, runbook untouched — same discipline as every other mode composition.
+
+## Parking (why one stuck feature does not stop the night)
+
+Same first test: the scope split had produced a `docker-deploy` feature. Tom's evidential gate correctly refused to guess the container registry and the NAS's CPU architecture and halted with `needs-human` — and the script, as first shipped, stopped the whole loop on the first `needs-human`. That wasted the night over a feature the user never wanted built unattended: deploying is their job, after they have tested the finished application.
+
+Two changes. **A hard limit:** agentic runs never deploy, publish, or provision infrastructure, and never guess or probe operator facts (registries, hosts, credentials, target hardware). Deployment features are therefore `needs-human` by construction. **Parking:** `louie-continue --agentic` skips a feature whose run report is an unanswered `needs-human` — and anything depending on it — and builds the next ready feature. The loop reports `needs-human` only when nothing else can proceed, with every parked `<feature>: <question>` in one `Pending decision:` line. The morning review then answers all of them in one sitting instead of one per night. No new state: the parked feature's run report *is* the parking record, and an answer written into `decisions.md` / `requirements.md` § Assumptions makes it an ordinary candidate again.
+
 ## Selection order in `louie-continue --agentic`
 
-Deliberately conservative: setup → `blocked`; an unanswered `needs-human` → re-emitted, never redone or guessed; in-progress before `Planned`; `Planned` only when dependencies are satisfied **and** a `requirements.md` exists (otherwise there is no task spec for Tom's evidential gate → `needs-human`, not a guess); content rows (game profile) after all features; nothing left → `done`. Every rule has a non-guessing failure mode, which is what lets the loop run unsupervised.
+Deliberately conservative: setup → `blocked`; an unanswered `needs-human` → parked (skipped with its dependants), never redone or guessed, re-surfaced only when nothing else is ready; in-progress before `Planned`; `Planned` only when dependencies are satisfied **and** a `requirements.md` exists (otherwise there is no task spec for Tom's evidential gate → `needs-human`, not a guess); content rows (game profile) after all features; nothing left → `done`. Every rule has a non-guessing failure mode, which is what lets the loop run unsupervised.
 
 ## What was deliberately not built
 
@@ -81,6 +97,7 @@ Deliberately conservative: setup → `blocked`; an unanswered `needs-human` → 
 ## Files touched
 
 - `_LOUIE_/tools/louie-run.sh` — the loop (new folder; `install.sh` chmods it, `louie-update-framework` replaces it)
+- `_LOUIE_/tools/louie-run-progress.py` — the shape-based live-progress filter
 - `_LOUIE_/workflow/agentic-mode.md` § Unattended loop / § Run status / § Harnesses
 - `_LOUIE_/commands/louie-continue.md` § Agentic (+ usage)
 - `_LOUIE_/commands/louie-{feature,extend,update,bugfix,content}.md` § Agentic — the run-status bullet; `louie-feature` also `--unit phase`

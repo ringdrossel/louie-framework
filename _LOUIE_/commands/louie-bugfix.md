@@ -72,7 +72,7 @@ Resolution order is the same as the other commands: `--auto`/`--manual` flag > `
 
 When invoked with `--agentic`, an autonomous agent is driving (full contract: `_LOUIE_/workflow/agentic-mode.md`). Thin here, like auto-pilot:
 
-- Auto-pilot is implied `on` (Max runs the `auto-fix-critical` loop). `--agentic --manual` is a contradiction — stop.
+- Auto-pilot is implied `on` (Max runs the auto-fix loop at the project's review mode, raised to `auto-fix-all` when `manual`/unset — `_LOUIE_/workflow/agentic-mode.md`). `--agentic --manual` is a contradiction — stop.
 - **The bug description must carry what Step 2 would ask** (affected feature or cross-cutting; what happens vs. what should happen). Missing → run report with `status: needs-human`, stop.
 - **The Step 3 scope check halts instead of asking:** if the work isn't actually a bug (new functionality, bundled unrelated issues, a missing feature), write the run report with `status: needs-human` recommending the correct route (`louie-update` / `louie-extend` / `louie-feature`) and stop — never run a mislabeled bugfix unattended.
 - On completion, write the run report (`status: completed`) next to the bugfix doc: `_LOUIE-output/implementations/<feature>/run-report.md` for per-feature fixes, `_LOUIE-output/bugfixes/<YYYY-MM-DD>-<slug>-run-report.md` for cross-cutting ones. Merge stays the human's decision.
