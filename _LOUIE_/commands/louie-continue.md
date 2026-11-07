@@ -57,6 +57,35 @@ It does **not** read or recover past chat transcripts — a LOUIE command can't 
 
 8. **Respect uncommitted work.** Surface the uncommitted diff; never reset, stash, or overwrite it without asking. Honour the project's branch mode.
 
+## Agentic
+
+When invoked with `--agentic`, an autonomous agent — usually the unattended loop, `_LOUIE_/tools/louie-run.sh` — is driving and nobody can answer a prompt. Full contract: `_LOUIE_/workflow/agentic-mode.md` (§ Unattended loop defines the units and the status file). This is the one command the loop ever starts; everything else is reached through it.
+
+```
+louie-continue --agentic [--unit feature|phase] [<feature>]
+```
+
+The Procedure above runs with these deltas:
+
+- **Step 2 (checkpoint)** unchanged — consume it, reconcile it, files win.
+- **Step 4 (pick the target) never asks.** Resolution order:
+  1. `<feature>` given → that one; if it does not exist, `Status: blocked`.
+  2. A `setup` candidate (requirements folders but no confirmed foundation, or the architecture gate not passed) → `Status: blocked`, `Pending decision: run louie-setup interactively` — setup is human work, never unattended.
+  3. A run report with `Status: needs-human` whose `Pending decision` is **not** answered in this invocation → re-emit `needs-human` with the same decision and stop. Do not redo the work and do not guess the answer. (An answer supplied in the invocation text counts as answered — record it in `decisions.md` or `requirements.md` § Assumptions before continuing.)
+  4. Exactly one in-progress candidate → it.
+  5. Several in-progress → dependency order from the overview's `Depends on` column, then overview row order; features before bugfix/extend leftovers; a batch resumes in dependency order.
+  6. None in progress → the first `Planned` row (overview order, `### Retired` skipped) whose `Depends on` are all `Implemented`/`Tested` (or `—`) **and** whose folder has a `requirements.md` — run `louie-feature --agentic <feature>` with that `requirements.md` as the task spec for Tom's evidential gate. A ready `Planned` row **without** `requirements.md` has no task spec → `Status: needs-human`, `Pending decision: write requirements for <feature> (louie-feature interactively) or retire it`.
+  7. **Only if the profile is `game`:** after every feature is `Implemented`/`Tested`, content rows (`Planned` → `Outlined` → `Drafted`) in overview order via `louie-content --agentic`.
+  8. Nothing left → write `run-status.md` with `Status: done`, `Next: none`, and stop. Write no run report.
+- **Steps 5–6 (reconstruct, infer the chain position)** unchanged.
+- **Step 7 (summarize and propose) becomes hand-off without a gate:** narrate the recap (it lands in the run log), then immediately continue through the routed command's `--agentic` path at the inferred position (`louie-feature` § Agentic, `louie-bugfix` § Agentic, …), honouring `--unit`:
+  - `feature` (default) — finish the feature's remaining chain.
+  - `phase` — finish exactly one unit boundary: plan (`feature.md` written), one Implementation Plan phase (ticked + committed), or finish (Max loop → Ava → overview sync → run report). Definitions: `_LOUIE_/workflow/agentic-mode.md` § Unattended loop.
+- **Step 8 (uncommitted work)** — never reset or stash. A dirty tree from a dead session is reconciled like any other evidence: if the diff matches an unticked phase, it is that phase's partial work; continue it.
+- **Last action, always: write `_LOUIE-output/run-status.md`** (format: `_LOUIE_/workflow/agentic-mode.md` § Run status), after the run report and the commit. `Next:` names what a fresh session should do: `feature <slug>` (the next ready feature, or this one when `--unit phase` left it unfinished), `phase <n> of <slug>`, `review <slug>`, or `none`.
+
+Hard limits are agentic mode's: never merge, never create a branch (branch mode `ask` resolves to `current`), never run `louie-setup` / `louie-import`, halt with `needs-human` rather than guess at anything scope-defining. The structured-choice tool is never called.
+
 ## Cross-Cutting Notes
 
 - **No new agent.** This command orchestrates: it reads the checkpoint (if any) and existing artifacts + git, then hands off to the existing chain.
@@ -72,4 +101,10 @@ louie-continue
 
 ```
 louie-continue user-authentication
+```
+
+or driven by the unattended loop (one fresh session per unit — see `_LOUIE_/workflow/agentic-mode.md` § Unattended loop):
+
+```
+louie-continue --agentic --unit feature
 ```

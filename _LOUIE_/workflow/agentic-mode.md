@@ -86,6 +86,85 @@ The prose body is the pre-merge summary for the human reviewer: Tom's playback +
 
 A `needs-human` run is left in a resumable state. Once the pending decision is answered, run `louie-continue <feature>` (interactively or with `--agentic` plus the answer in the invocation) — it reconstructs the position from artifacts + git; the run report is one more breadcrumb.
 
+To chain many agentic runs without a person between them — one fresh session per feature, overnight — see § Unattended loop below.
+
+## Unattended loop (one fresh session per unit of work)
+
+Agentic mode resolves the gates *inside* one run. The **unattended loop** chains runs: a shell script that lives outside the AI harness — `_LOUIE_/tools/louie-run.sh` — starts a brand-new session, waits for it to exit, reads `_LOUIE-output/run-status.md`, and starts the next one. Each lap is what a person does by hand today — open a fresh chat, say "continue the LOUIE work", wait — minus the person. Nothing crosses a lap except the files in `_LOUIE-output/` and git, which is exactly the cold start `louie-continue` is built for. A fresh context per unit is the point, not a limitation: it is why the script never passes chat history forward.
+
+The overseer is deliberately a script, not an agent. No harness documents a way for a running session to start a new top-level session or clear its own context, and a script costs no tokens and cannot talk itself into a different plan.
+
+### Setting it up
+
+1. **Setup stays a human sitting.** Run `louie-setup` (or `louie-import`) interactively and confirm the architecture gate. The scope split leaves one `Planned` row per feature in `_LOUIE-output/implementations/overview.md`, each with a `requirements.md` — those are the task specs the loop builds from. The loop never runs setup: it refuses to start on a project without `architecture.md` + `tech-stack.md`.
+2. **Start the loop from the project root:**
+
+   ```
+   bash _LOUIE_/tools/louie-run.sh --once      # one fresh session, see how it goes
+   bash _LOUIE_/tools/louie-run.sh             # then the whole queue
+   ```
+
+   `--harness` is detected from the project folder the same way `install.sh` detects it (pass it explicitly when several are installed). `--unit phase` splits large features across sessions (below). `--max-runs` (default 20), `--timeout <seconds>` and the per-run logs in `.louie-run/` are the safety net. `--help` lists everything.
+3. **Afterwards**, read the run reports (`implementations/<feature>/run-report.md`) and `louie-status`, review the diff, and decide what to merge. The loop never merges.
+
+### What one run does
+
+Every session executes `louie-continue --agentic --unit <feature|phase>` (the full per-run procedure is `_LOUIE_/commands/louie-continue.md` § Agentic): consume the checkpoint if any, pick the target **without asking** (in-progress work first, then the next `Planned` feature whose `Depends on` are satisfied, in overview order), hand off to the routed command's `--agentic` path at the inferred chain position, finish exactly one unit, commit, write `run-status.md`, stop.
+
+**Units** — what "one unit" means is the only thing the `--unit` flag changes:
+
+| `--unit` | One session finishes… | Use when |
+|----------|----------------------|----------|
+| `feature` (default) | The whole remaining chain of one feature: Tom's evidential gate on `requirements.md` → Sophie → Leo (if UI) → `feature.md` → Nina (all phases) → Max loop → Ava → run report. One session per feature. | Features are the size the plan-agreement gate normally approves. |
+| `phase` | Exactly one of: **plan** (through `feature.md` written, overview row still `Planned`); **implement** one unticked Implementation Plan phase whose dependencies are ticked — tick it, commit; **finish** (Max loop → Ava → overview sync → run report) once every phase is ticked. | A feature is large enough that one session would hit context compaction mid-build. Each lap starts cold at a phase boundary. |
+
+Agentic runs write no `checkpoint.md` — under auto-pilot there are no mid-chain stops, and under `--unit phase` the phase ticks in `feature.md` plus `run-status.md` are the handoff. If a session dies, the next `louie-continue` reconstructs the position from artifacts + git as always.
+
+### Run status (the handoff file)
+
+`_LOUIE-output/run-status.md` is the one file the script reads. **Every `--agentic` run of every chain command writes it as its very last action** — in or out of the loop; a uniform contract is cheaper than a conditional one. Full overwrite, never append:
+
+```markdown
+# Run Status
+- **Status:** completed | needs-human | blocked | done
+- **Next:** feature <slug> | phase <n> of <slug> | review <slug> | none
+- **Report:** <path of the run report this run wrote, or — >
+- **Pending decision:** <the one question a human must answer, only when needs-human; else — >
+- **Written:** <date> at <git HEAD short SHA>
+```
+
+| Status | Meaning | The script… |
+|--------|---------|-------------|
+| `completed` | This unit is finished and committed; `Next:` names what a fresh session should do | starts the next session |
+| `done` | Nothing left: no in-progress work, no `Planned` feature with satisfied dependencies and a `requirements.md` | stops, exit 0 |
+| `needs-human` | A decision fork (deviation tripwire, scope-defining gap, missing task spec); `Pending decision:` filled, run report written | stops, prints the decision, exit 10 |
+| `blocked` | Environmental failure (prerequisites missing, tests can't run, setup would be needed) | stops, exit 11 |
+
+A session that exits without writing the file is treated as a crash or timeout (exit 2) — the log in `.louie-run/` tells why; rerunning is safe. The script deletes the file before every launch so a stale verdict is never re-read, and it gitignores both the file and the log directory so no commit ever sweeps them up. Interactive commands ignore the file. The run report header carries the same `Next:` line (template: `_LOUIE_/templates/run-report-template.md`) so a report read on its own still says what follows.
+
+### Harnesses
+
+The script has exactly one harness-specific line: how to start a fresh non-interactive session with approvals handled. Everything else — the prompt, the status file, the loop — is shared. The prompt names the files to read (`agentic-mode.md`, `louie-continue.md`) instead of relying on an installed slash command, so it behaves identically on every runtime.
+
+| Harness | Fresh unattended session | Approval handling | Source |
+|---------|--------------------------|-------------------|--------|
+| Claude Code | `claude -p "<prompt>" --permission-mode auto --permission-prompts none --output-format json` | Auto mode's classifier approves; anything that would still prompt is denied, never waited on. `LOUIE_CLAUDE_PERMISSION_MODE=bypassPermissions` only inside a container/VM. | Official docs |
+| Codex CLI | `codex exec --sandbox workspace-write -o <file> "<prompt>"` | `exec` never prompts; approval requests are rejected and the run continues. Default sandbox is read-only, so the flag is required. | Docs + current source |
+| Gemini CLI | `gemini --approval-mode yolo --output-format json -p "<prompt>"` (with `GEMINI_CLI_TRUST_WORKSPACE=true`) | `ask_user` resolves to deny when non-interactive; untrusted folders are fatal, hence the env var. | Official docs |
+| opencode | `opencode run --auto --format json "<prompt>"` | `--auto` approves anything not explicitly denied in `opencode.json`. | Official docs |
+| pi | `pi -p --approve "<prompt>"` | pi never prompts per tool call; `--approve` settles the project-trust decision headless mode cannot ask for (LOUIE's `.pi/prompts` are trust-gated). | Official docs |
+| Cursor CLI | `agent -p --force --output-format json "<prompt>"` | `--force` approves non-denied commands and trusts the workspace. **Unverified** — flags come from search summaries of cursor.com; confirm before relying on it. | Second-hand |
+| `custom` | `LOUIE_RUN_COMMAND='<your command>'`; the prompt arrives as `$LOUIE_PROMPT` | Yours. Any harness with a non-interactive mode plugs in here. | — |
+
+`LOUIE_RUN_EXTRA_ARGS` appends flags to any of these (a budget cap, a model pin). Each tool starts a new session when no resume/continue flag is passed — Claude Code and Codex document that explicitly; for the others it follows from resume being opt-in.
+
+### Hard limits (inherited, plus the loop's own)
+
+- Everything under *Hard limits* above: never merges, never branches, never runs setup/import, halts rather than guesses.
+- **Never calls the structured-choice tool.** No harness auto-approves a user-interaction tool in unattended mode; a call would hang or be denied. Agentic runs decide from the task spec or write `needs-human`.
+- **Bounded.** `--max-runs` (default 20) caps sessions per invocation; `--timeout` caps one session. Both end with the work committed — rerun to continue.
+- **Narrate anyway.** Chat output lands in the per-run log; it is the only trace of *how* a decision was reached.
+
 ## Composition with source adapters
 
 `louie-from-source` (fetching tasks from an external tracker) and agentic mode are orthogonal layers that compose:

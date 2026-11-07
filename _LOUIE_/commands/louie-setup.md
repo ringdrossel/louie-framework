@@ -116,6 +116,7 @@ Throughout the chain: every stop that ends a turn closes with a **phase breadcru
 
 13. **Hand off to the next feature:**
     - Tell the user which features remain `Planned` in the Features table and that the next one ships by running `louie-feature` (which will go straight to creating the `feature.md` from the already-captured `requirements.md`).
+    - Add one line: the remaining features can also be built unattended, one fresh session each, with `bash _LOUIE_/tools/louie-run.sh` from the project root (`--once` for a first trial) — see `_LOUIE_/workflow/agentic-mode.md` § Unattended loop. Merging stays the user's call either way.
    - **Only if the profile is `game`:** also name the `Planned` content rows in `_LOUIE-output/story/overview.md` and `_LOUIE-output/game-design/overview.md`, produced with `louie-content`.
     - **Delete `_LOUIE-output/checkpoint.md`** if present — the setup chain is complete; the remaining features start fresh via `louie-feature`, not a resume. A finished chain leaves no checkpoint behind.
 

@@ -35,6 +35,7 @@ When the user says **`louie-update-framework`**, follow this procedure to update
    - Replace `_LOUIE_/setup/` with the latest versions
    - Replace `_LOUIE_/recipes/` with the latest versions (recipe library)
    - Replace `_LOUIE_/profiles/` with the latest versions (optional project profiles — agents, overlays, templates; inert unless the runbook's Project Profile selects one)
+   - Replace `_LOUIE_/tools/` with the latest versions (the unattended-loop script `louie-run.sh`)
    - Replace `_LOUIE_/adapters/` with the latest versions (public source-adapter interface). **Never touch `louie-adapters/`** at the project root — that's the user's private, source-specific adapters; it is gitignored and outside `_LOUIE_/`.
    - Update `CLAUDE.md` at project root (replace the LOUIE-FRAMEWORK section, preserve any user-added sections)
 

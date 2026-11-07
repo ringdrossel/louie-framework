@@ -134,6 +134,7 @@ info "Installing framework files..."
 rm -rf "$TARGET/_LOUIE_"
 cp -R "$SRC/_LOUIE_" "$TARGET/_LOUIE_"
 chmod +x "$TARGET/_LOUIE_/setup/"*.sh 2>/dev/null || true
+chmod +x "$TARGET/_LOUIE_/tools/"*.sh 2>/dev/null || true
 info "  _LOUIE_/            framework $VERSION"
 
 # _LOUIE-output/ holds the user's work — seed missing skeleton files only,

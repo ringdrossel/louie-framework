@@ -221,6 +221,7 @@ _LOUIE-output/
 ├── runbook.md                            (Sophie creates; Nina appends)
 ├── roadmap.md                            (bigger changes / epics list; created at setup)
 ├── checkpoint.md                         (ephemeral session handoff; written at chain stops, consumed + deleted by louie-continue)
+├── run-status.md                         (gitignored; written by every --agentic run, read by the unattended loop _LOUIE_/tools/louie-run.sh)
 ├── implementations/
 │   ├── overview.md                       (slim index of all features)
 │   └── <feature>/                        (one folder per feature)
@@ -252,11 +253,25 @@ This layout scales — projects with hundreds of features and thousands of bug f
 
 LOUIE also works when the "user" is itself an autonomous agent — an orchestrator that picks up tasks and runs unattended. Invoking a chain command with `--agentic` implies auto-pilot, resolves every gate without prompting (recommended defaults auto-apply; scope-defining ambiguity halts the run instead of guessing), and ends in a machine-readable **run report** (`completed` / `needs-human` / `blocked`) instead of chat gates. The work is never merged — a human reviews the report and diff afterward and makes the merge call. Full contract: [`_LOUIE_/workflow/agentic-mode.md`](_LOUIE_/workflow/agentic-mode.md).
 
+### Unattended Mode — one fresh session per feature
+
+You run `louie-setup` once, interactively, and confirm the architecture and the feature list. From then on a small script builds the planned features for you — overnight, with nobody at the keyboard:
+
+```bash
+bash _LOUIE_/tools/louie-run.sh --once   # one fresh session, see how it goes
+bash _LOUIE_/tools/louie-run.sh          # then the whole queue
+```
+
+Each lap starts a **brand-new** session of your AI tool (no chat history carried over — the files are the memory), which runs `louie-continue --agentic`, builds, reviews, tests and commits one feature, and writes `_LOUIE-output/run-status.md`. The script reads that file and starts the next session, or stops when a human decision is pending (`needs-human`), the environment is broken (`blocked`), or nothing is left (`done`). In the morning you read the run reports and decide what to merge — merging is never automated.
+
+The script has one harness-specific line and works with Claude Code, Codex CLI, Gemini CLI, opencode, pi, and Cursor CLI (the last unverified), or any tool with a non-interactive mode via `--harness custom`. `--unit phase` splits large features across sessions, `--max-runs` / `--timeout` bound the night. Details: [`_LOUIE_/workflow/agentic-mode.md` § Unattended loop](_LOUIE_/workflow/agentic-mode.md).
+
 ## Design Principles
 
 - **Lightweight** — lean enough to add value without overhead. No complex state machines or heavy orchestration.
 - **Tech-stack agnostic** — agents read the tech stack from `_LOUIE-output/tech-stack.md`, never from hardcoded values. Works for any language, framework, or platform.
 - **Two confirmation gates** — architecture must be approved before feature work; feature docs must be approved before coding. Catches mistakes early.
 - **Stop anywhere, resume anywhere** — every stop in a chain ends with a phase breadcrumb (where you are, what's next, how to continue) and writes an ephemeral `checkpoint.md`, so you can leave — or deliberately switch to a fresh chat — and pick up exactly there with `louie-continue`.
+- **Files are the memory, not the chat** — because every handoff lives on disk, a fresh session can pick up cold. That is what makes the unattended loop a dumb script instead of a fragile agent.
 - **Agents hand off, not hand-wave** — every agent ends with a structured handoff summary for the next agent in the chain.
 

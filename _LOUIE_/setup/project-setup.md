@@ -230,6 +230,38 @@ The init scripts (Step 2) report adapter availability at the end of their output
 
 If LOUIE is driven by an autonomous agent instead of a person (an orchestrator picking up tasks and running unattended), the chain commands (`louie-feature` / `louie-extend` / `louie-update` / `louie-bugfix`) accept `--agentic`: auto-pilot is implied, gates resolve without prompting (halting with a written question when a real decision is needed), and each run ends in a machine-readable run report instead of chat gates — the merge decision always stays with a human. The init scripts already add a discovery pointer to the project instruction file; custom harnesses can point their system prompt directly at the contract doc: `_LOUIE_/workflow/agentic-mode.md`. Requires an established project (confirmed architecture + tech stack) — setup and import remain human work.
 
+## Unattended Mode (optional)
+
+Once setup is confirmed, the remaining `Planned` features can be built without you — one fresh AI session per feature, chained by a script, no copy-pasting a "continue" prompt into a new chat after every phase.
+
+**How it works.** `_LOUIE_/tools/louie-run.sh` starts a brand-new non-interactive session of your AI tool with the instruction to run `louie-continue --agentic`, waits for it to exit, reads `_LOUIE-output/run-status.md`, and starts the next session. Nothing but the files in `_LOUIE-output/` and git crosses from one session to the next — that is how `louie-continue` resumes anyway. The session itself follows agentic mode: gates resolve from the written requirements, a real decision fork stops the run with a written question, and the work is committed but never merged.
+
+**Run it** from the project root:
+
+```bash
+bash _LOUIE_/tools/louie-run.sh --once     # a first trial: one session, then stop
+bash _LOUIE_/tools/louie-run.sh            # the whole queue (default cap: 20 sessions)
+bash _LOUIE_/tools/louie-run.sh --unit phase --timeout 3600   # large features: one implementation phase per session, 1h cap each
+```
+
+The AI tool is detected from your project folder (`.claude/`, `.codex/`, `GEMINI.md`, `.opencode/`, `.pi/`, `.cursorrules`); pass `--harness <name>` when several are installed. Per-run logs land in `.louie-run/` (gitignored by the script).
+
+**How each tool is started** — one line per harness, flags taken from each tool's documentation:
+
+| Tool | Non-interactive session the script starts | Note |
+|------|--------------------------------------------|------|
+| Claude Code | `claude -p … --permission-mode auto --permission-prompts none` | Auto mode's classifier approves routine actions; anything that would still prompt is denied, never waited on. Set `LOUIE_CLAUDE_PERMISSION_MODE=bypassPermissions` only inside a container or VM. |
+| Codex CLI | `codex exec --sandbox workspace-write …` | `exec` never prompts; the default sandbox is read-only, so the flag is required. |
+| Gemini CLI | `gemini --approval-mode yolo -p …` | Workspace trust is granted via `GEMINI_CLI_TRUST_WORKSPACE=true` for the run. |
+| opencode | `opencode run --auto …` | Approves anything not explicitly denied in `opencode.json`. |
+| pi | `pi -p --approve …` | pi never prompts per tool; `--approve` trusts the project's `.pi/` resources, which headless mode cannot ask about. |
+| Cursor CLI | `agent -p --force …` | **Unverified** — flags from search summaries of the Cursor docs, not confirmed first-hand. |
+| anything else | `--harness custom` with `LOUIE_RUN_COMMAND='…'`; the prompt is passed as `$LOUIE_PROMPT` | Any tool with a one-shot mode plugs in. |
+
+**When it stops.** `done` — nothing left, exit 0. `needs-human` — a decision is pending; the script prints it and the run-report path (exit 10); answer it (edit the docs, or pass the answer when you run `louie-continue`), then start the script again. `blocked` — prerequisites or environment (exit 11). A session that ends without writing the status file counts as a crash (exit 2): read its log, rerun. `--max-runs` reached: exit 12, rerun to continue.
+
+**What it never does.** Merge, create a branch, run `louie-setup` or `louie-import`, or guess at a scope-defining question. Full contract: `_LOUIE_/workflow/agentic-mode.md` § Unattended loop.
+
 ## Quick Reference
 
 | What you want | Command |
@@ -242,6 +274,7 @@ If LOUIE is driven by an autonomous agent instead of a person (an orchestrator p
 | Quick change (< 50 lines, auto-escalates to `louie-extend`) | `louie-update` |
 | Diagnose and fix a bug | `louie-bugfix` |
 | Resume in-progress work after a break (checkpoint-first, else reconstruct from artifacts + git) | `louie-continue` |
+| Build the remaining planned features unattended, one fresh session each | `bash _LOUIE_/tools/louie-run.sh` |
 | Read-only project snapshot (features by status, open questions, stale docs, recent fixes) | `louie-status` |
 | Code review by Max | `louie-review` |
 | Review + fix + update docs in one flow | `louie-review-doc` |

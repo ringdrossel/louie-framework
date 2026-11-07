@@ -71,6 +71,7 @@ When invoked with `--agentic`, an autonomous agent is driving. Full contract: `_
 - The brief must name one unit unambiguously; otherwise `status: needs-human` with the candidates.
 - The proposal gate becomes evidential: the agent writes the proposal into the run report and continues only if it follows directly from the brief. **Any creative or balance fork halts the run** with `status: needs-human` and the fork as the pending decision. Unresolved consistency issues halt the same way.
 - The run report goes to `_LOUIE-output/story/run-report.md` (Mira) or `_LOUIE-output/game-design/run-report.md` (Kai), using `_LOUIE_/templates/run-report-template.md` with its header unchanged and the per-agent sections replaced by one Mira or Kai section (proposal, files written, flags, consistency-check result). Committing stays the human's decision.
+- Last action of every agentic run: write `_LOUIE-output/run-status.md` (format: `_LOUIE_/workflow/agentic-mode.md` § Run status) — the unattended loop reads nothing else.
 
 ## Usage
 
