@@ -53,6 +53,8 @@ The Max stage is *already* automatable via review-mode (`manual` / `auto-fix-cri
 
 Rule: **auto-pilot implies an effective review floor of `auto-fix-critical` for that run.** If the project's review-mode is already `auto-fix-all`, that stays (the floor never downgrades). If it's `manual`, auto-pilot lifts it to `auto-fix-critical` for the run only.
 
+Agentic runs (`--agentic`, and therefore the unattended loop) raise the floor once more: `manual`/unset → `auto-fix-all`; an explicit `auto-fix-critical` or `auto-fix-all` is honoured. Rationale in `unattended.md` § Review mode.
+
 This is a **per-run effective value** — auto-pilot does **not** mutate the runbook's `## Review Mode` setting. The loop cap, regression guard, and test-failure protocol in `reviewer.md` apply unchanged. After the loop, leftover Suggestions (in `auto-fix-critical`) fold into the final pre-merge summary rather than prompting mid-run.
 
 ## Per-command leverage (and the update/bugfix thinness)

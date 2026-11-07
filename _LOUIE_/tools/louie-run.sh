@@ -233,10 +233,10 @@ while :; do
       say "all planned work is built. Review the run reports and the diff; merging is yours."
       exit 0 ;;
     needs-human)
-      say "stopped: a human decision is pending."
-      [ -n "$pending" ] && say "        decision: $pending"
+      say "stopped: everything still buildable is built; the rest is parked and needs you."
+      [ -n "$pending" ] && say "        parked:   $pending"
       [ -n "$report" ]  && say "        report:   $report"
-      say "        answer it (edit the docs or pass the answer to louie-continue), then rerun."
+      say "        answer the questions (interactively, or in the docs), then rerun — or build those features yourself."
       exit 10 ;;
     blocked)
       say "stopped: the run is blocked (environment / prerequisites)."

@@ -133,6 +133,7 @@ Auto-pilot lets the chain run unattended after the user approves the plan, stopp
 When invoked with `--agentic`, an autonomous agent is driving and nobody can answer a prompt mid-run. Full contract: `_LOUIE_/workflow/agentic-mode.md`. On top of the Auto-Pilot unattended run above:
 
 - **Auto-pilot is implied `on`** for this run (per-run effective value; ignore the runbook setting and never offer the inline choice). `--agentic --manual` is a contradiction — stop and say so.
+- **Max runs at the project's review mode, raised to `auto-fix-all` when it is `manual` or unset** (an explicit `auto-fix-critical` is honoured) — see `_LOUIE_/workflow/agentic-mode.md` § What happens during the run. The runbook setting is read, never edited.
 - **Prerequisite check hardens:** if `architecture.md` / `tech-stack.md` are missing (Step 2), write a run report with `status: blocked` pointing at `louie-setup` / `louie-import` and stop — setup never runs agentically.
 - **Tom runs the evidential gate** instead of an interview (see `analyst.md` § Agentic): checklist mapped against the task input; low-stakes gaps become `requirements.md` § Assumptions; scope-defining gaps end the run with `status: needs-human`. A scope split builds the first feature and lists the rest as follow-up tasks in the run report.
 - **The deviation tripwire halts instead of pausing to ask:** write the fork into the run report (`status: needs-human`, `Pending decision:` filled), leave the work committed and resumable via `louie-continue`, and stop.

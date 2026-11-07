@@ -91,7 +91,7 @@ Auto-pilot lets the extension chain run unattended after the user approves the p
 
 When invoked with `--agentic`, an autonomous agent is driving. Full contract: `_LOUIE_/workflow/agentic-mode.md`. On top of the Auto-Pilot unattended run:
 
-- **Auto-pilot is implied `on`** (per-run; ignore the runbook setting, never offer the inline choice; `--agentic --manual` is a contradiction — stop).
+- **Auto-pilot is implied `on`** (per-run; ignore the runbook setting, never offer the inline choice; `--agentic --manual` is a contradiction — stop). Max runs at the project's review mode, raised to `auto-fix-all` when `manual`/unset (`_LOUIE_/workflow/agentic-mode.md`).
 - **The target feature must resolve without a prompt.** If the invocation doesn't name an existing feature folder unambiguously (Step 2/3), write a run report with `status: needs-human` naming the candidates and stop — never guess the target and never create a folder.
 - **Tom runs the evidential gate** against the task input instead of the extension interview (see `analyst.md` § Agentic): low-stakes gaps → documented assumptions appended with the "Extension: <date>" section; scope-defining gaps → `status: needs-human`.
 - **The deviation tripwire halts instead of pausing to ask** — fork into the run report, work stays resumable via `louie-continue`.

@@ -258,9 +258,9 @@ The AI tool is detected from your project folder (`.claude/`, `.codex/`, `GEMINI
 | Cursor CLI | `agent -p --force …` | **Unverified** — flags from search summaries of the Cursor docs, not confirmed first-hand. |
 | anything else | `--harness custom` with `LOUIE_RUN_COMMAND='…'`; the prompt is passed as `$LOUIE_PROMPT` | Any tool with a one-shot mode plugs in. |
 
-**When it stops.** `done` — nothing left, exit 0. `needs-human` — a decision is pending; the script prints it and the run-report path (exit 10); answer it (edit the docs, or pass the answer when you run `louie-continue`), then start the script again. `blocked` — prerequisites or environment (exit 11). A session that ends without writing the status file counts as a crash (exit 2): read its log, rerun. `--max-runs` reached: exit 12, rerun to continue.
+**When it stops.** `done` — nothing left, exit 0. `needs-human` — everything that could be built is built; the features that needed you (a real decision, or operator facts like a registry, a hostname, the target machine's CPU) were *parked* and the script lists them with their questions (exit 10); answer them in one sitting, then rerun the script or build those features interactively. A parked feature never blocks unrelated ones. `blocked` — prerequisites or environment (exit 11). A session that ends without writing the status file counts as a crash (exit 2): read its log, rerun. `--max-runs` reached: exit 12, rerun to continue.
 
-**What it never does.** Merge, create a branch, run `louie-setup` or `louie-import`, or guess at a scope-defining question. Full contract: `_LOUIE_/workflow/agentic-mode.md` § Unattended loop.
+**What it never does.** Merge, create a branch, run `louie-setup` or `louie-import`, deploy or push images or provision infrastructure, or guess at a scope-defining question. Max reviews at your project's review mode, raised to `auto-fix-all` when it is `manual` or unset — unattended runs aim at a finished application. Full contract: `_LOUIE_/workflow/agentic-mode.md` § Unattended loop.
 
 ## Quick Reference
 

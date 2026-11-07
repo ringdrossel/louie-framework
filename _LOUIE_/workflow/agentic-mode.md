@@ -35,6 +35,7 @@ How gaps are handled:
 
 - **Low-stakes gaps** (a default value, a naming choice, an edge-case policy that any reasonable pick satisfies) → the run proceeds and records each as an explicit entry under `requirements.md` § Assumptions.
 - **Scope-defining gaps** (what the thing fundamentally is, who it's for, what done means) → the run **halts** with `status: needs-human` and the unanswered questions in the run report. LOUIE does not guess scope.
+- **Operator facts** (a registry URL, a hostname, credentials, the target machine's CPU architecture, anything only the person running the system knows) are never guessed and never probed from the environment → `status: needs-human` as well. Under the unattended loop such a feature is parked and the rest keeps building (§ Unattended loop → Parking).
 
 Write task specs to pass this gate: a spec that answers the four points above runs straight through.
 
@@ -51,12 +52,13 @@ When unsure between `update` and `extend`, pick `extend` — `update`'s 50-line 
 
 ## What happens during the run
 
-The command runs its full chain with auto-pilot implied `on` — Tom (evidential gate) → Sophie → Leo (if UI) → Nina → Max (`auto-fix-critical` loop) → Ava — and these gate resolutions:
+The command runs its full chain with auto-pilot implied `on` — Tom (evidential gate) → Sophie → Leo (if UI) → Nina → Max (auto-fix loop at the project's review mode, see below) → Ava — and these gate resolutions:
 
 - **Recommended defaults auto-apply** and are recorded in the run report (Sophie's minimal changes, Leo's UI direction).
 - **The deviation tripwire halts instead of asking.** If the run materially diverges from the task spec (non-trivial architecture change, undiscussed scope, a fundamentally different UX, `update` crossing 50 lines), it stops with `status: needs-human` and the fork written into the run report.
 - **Branch mode `ask` resolves to `current`** — no branch is created unless your invocation explicitly requests one.
 - **A scope split** (the task is really several features) builds the **first** feature and lists the rest as follow-up tasks in the run report.
+- **Max runs at the project's review mode — never below `auto-fix-all` by default.** Read `_LOUIE-output/runbook.md` § Review Mode: `auto-fix-all` → `auto-fix-all`; an explicit `auto-fix-critical` → honoured (Suggestions are listed as deferred in the run report, not applied); `manual` or unset → **`auto-fix-all`**, because nobody is there to approve a fix and the goal of an unattended run is a finished application. This is a per-run effective value; the runbook setting is never edited. (Interactive auto-pilot keeps its own floor of `auto-fix-critical` — see `_LOUIE_/agents/reviewer.md`.)
 
 ## Hard limits (never overridden)
 
@@ -64,6 +66,7 @@ The command runs its full chain with auto-pilot implied `on` — Tom (evidential
 - **Never runs `louie-setup` / `louie-import`.**
 - **Never creates a branch on its own.**
 - **Halts rather than guesses** on scope-defining ambiguity and material deviations.
+- **Never deploys, publishes, or provisions infrastructure.** Building and testing the application is the job. Pushing images, deploying to a host, creating registries, databases, or cloud resources, and anything that needs operator facts only a human has — registry URLs, hostnames, credentials, the target machine's CPU architecture — are human steps, run interactively afterwards (for example the `docker:build-push` recipe). Such facts are never guessed and never probed from the environment; a feature whose substance is deployment is parked as `needs-human` (see § Unattended loop → Parking) and the rest of the queue keeps building.
 
 ## What comes back
 
@@ -120,6 +123,8 @@ Every session executes `louie-continue --agentic --unit <feature|phase>` (the fu
 
 Agentic runs write no `checkpoint.md` — under auto-pilot there are no mid-chain stops, and under `--unit phase` the phase ticks in `feature.md` plus `run-status.md` are the handoff. If a session dies, the next `louie-continue` reconstructs the position from artifacts + git as always.
 
+**Parking — one stuck feature does not stop the night.** When a run ends in `needs-human` (scope-defining gap, deviation tripwire, operator facts such as a registry or target hardware), that feature is *parked*: its run report holds the question, and the next `louie-continue --agentic` skips it — and anything that depends on it — and picks the next ready feature. The loop reports `needs-human` only when **nothing else can proceed**; its `Pending decision:` then lists every parked feature with its question, one per `<feature>: <question>` item separated by ` | `. The human answers them in the morning, in one sitting, and either builds those features interactively or lets the loop pick them up again. Deployment features are the typical case: the application gets built and tested overnight; the deploy stays yours.
+
 ### Run status (the handoff file)
 
 `_LOUIE-output/run-status.md` is the one file the script reads. **Every `--agentic` run of every chain command writes it as its very last action** — in or out of the loop; a uniform contract is cheaper than a conditional one. Full overwrite, never append:
@@ -129,7 +134,7 @@ Agentic runs write no `checkpoint.md` — under auto-pilot there are no mid-chai
 - **Status:** completed | needs-human | blocked | done
 - **Next:** feature <slug> | phase <n> of <slug> | review <slug> | none
 - **Report:** <path of the run report this run wrote, or — >
-- **Pending decision:** <the one question a human must answer, only when needs-human; else — >
+- **Pending decision:** <only when needs-human: `<feature>: <question>`, several items separated by ` | `; else — >
 - **Written:** <date> at <git HEAD short SHA>
 ```
 
@@ -137,7 +142,7 @@ Agentic runs write no `checkpoint.md` — under auto-pilot there are no mid-chai
 |--------|---------|-------------|
 | `completed` | This unit is finished and committed; `Next:` names what a fresh session should do | starts the next session |
 | `done` | Nothing left: no in-progress work, no `Planned` feature with satisfied dependencies and a `requirements.md` | stops, exit 0 |
-| `needs-human` | A decision fork (deviation tripwire, scope-defining gap, missing task spec); `Pending decision:` filled, run report written | stops, prints the decision, exit 10 |
+| `needs-human` | Nothing else can proceed: every remaining feature is parked (deviation tripwire, scope-defining gap, operator facts, missing task spec) or depends on a parked one; `Pending decision:` lists every parked `<feature>: <question>`, each run report has the detail | stops, prints the decisions, exit 10 |
 | `blocked` | Environmental failure (prerequisites missing, tests can't run, setup would be needed) | stops, exit 11 |
 
 A session that exits without writing the file is treated as a crash or timeout (exit 2) — the log in `.louie-run/` tells why; rerunning is safe. The script deletes the file before every launch so a stale verdict is never re-read, and it gitignores both the file and the log directory so no commit ever sweeps them up. Interactive commands ignore the file. The run report header carries the same `Next:` line (template: `_LOUIE_/templates/run-report-template.md`) so a report read on its own still says what follows.
