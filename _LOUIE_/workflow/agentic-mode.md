@@ -153,15 +153,17 @@ The script has exactly one harness-specific line: how to start a fresh non-inter
 
 | Harness | Fresh unattended session | Approval handling | Source |
 |---------|--------------------------|-------------------|--------|
-| Claude Code | `claude -p "<prompt>" --permission-mode auto --permission-prompts none --output-format json` | Auto mode's classifier approves; anything that would still prompt is denied, never waited on. `LOUIE_CLAUDE_PERMISSION_MODE=bypassPermissions` only inside a container/VM. | Official docs |
-| Codex CLI | `codex exec --sandbox workspace-write -o <file> "<prompt>"` | `exec` never prompts; approval requests are rejected and the run continues. Default sandbox is read-only, so the flag is required. | Docs + current source |
-| Gemini CLI | `gemini --approval-mode yolo --output-format json -p "<prompt>"` (with `GEMINI_CLI_TRUST_WORKSPACE=true`) | `ask_user` resolves to deny when non-interactive; untrusted folders are fatal, hence the env var. | Official docs |
+| Claude Code | `claude -p "<prompt>" --permission-mode auto --permission-prompts none --output-format stream-json --verbose` | Auto mode's classifier approves; anything that would still prompt is denied, never waited on. `LOUIE_CLAUDE_PERMISSION_MODE=bypassPermissions` only inside a container/VM. | Official docs |
+| Codex CLI | `codex exec --sandbox workspace-write --json -o <file> "<prompt>"` | `exec` never prompts; approval requests are rejected and the run continues. Default sandbox is read-only, so the flag is required. | Docs + current source |
+| Gemini CLI | `gemini --approval-mode yolo --output-format stream-json -p "<prompt>"` (with `GEMINI_CLI_TRUST_WORKSPACE=true`) | `ask_user` resolves to deny when non-interactive; untrusted folders are fatal, hence the env var. | Official docs |
 | opencode | `opencode run --auto --format json "<prompt>"` | `--auto` approves anything not explicitly denied in `opencode.json`. | Official docs |
-| pi | `pi -p --approve "<prompt>"` | pi never prompts per tool call; `--approve` settles the project-trust decision headless mode cannot ask for (LOUIE's `.pi/prompts` are trust-gated). | Official docs |
-| Cursor CLI | `agent -p --force --output-format json "<prompt>"` | `--force` approves non-denied commands and trusts the workspace. **Unverified** — flags come from search summaries of cursor.com; confirm before relying on it. | Second-hand |
+| pi | `pi --mode json --approve "<prompt>"` | pi never prompts per tool call; `--approve` settles the project-trust decision headless mode cannot ask for (LOUIE's `.pi/prompts` are trust-gated). | Official docs |
+| Cursor CLI | `agent -p --force --output-format stream-json "<prompt>"` | `--force` approves non-denied commands and trusts the workspace. **Unverified** — flags come from search summaries of cursor.com; confirm before relying on it. | Second-hand |
 | `custom` | `LOUIE_RUN_COMMAND='<your command>'`; the prompt arrives as `$LOUIE_PROMPT` | Yours. Any harness with a non-interactive mode plugs in here. | — |
 
 `LOUIE_RUN_EXTRA_ARGS` appends flags to any of these (a budget cap, a model pin). Each tool starts a new session when no resume/continue flag is passed — Claude Code and Codex document that explicitly; for the others it follows from resume being opt-in.
+
+**Live progress.** Every harness is started in its line-delimited streaming format so the terminal shows the night as it happens: the script tees the raw stream into the run log and pipes it through `_LOUIE_/tools/louie-run-progress.py`, which prints one line per thing the agent says, tool it runs, and one-line progress note, plus the final turn count and cost. The filter is shape-based, not harness-based (it reacts to `text`, `tool_use`, `agent_message`, `command_execution`, `task_summary`, `result` objects wherever they appear), so an unknown event prints nothing rather than breaking. Independently of any stream, a poller prints every new commit and every newly ticked `feature.md` phase every 20 seconds — that signal works on every harness, including `custom`. `--quiet` turns both off; the raw log is written either way.
 
 ### Hard limits (inherited, plus the loop's own)
 

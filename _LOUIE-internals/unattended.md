@@ -66,6 +66,10 @@ Lifecycle rules, and why:
 - **Gitignored by the script** (together with `.louie-run/`). Agentic runs commit; without the ignore, the file would churn through every commit.
 - **Not consumed by interactive commands.** It is the driver's file. `louie-status` may show it; nothing else reads it.
 
+## Live progress
+
+First test, third finding: with `--output-format json` the run log stayed empty until the session ended, and a person in a `tmux` pane saw nothing for the length of a feature. Two signals were added, chosen so that at least one works everywhere. (1) Every harness is started in its line-delimited streaming format (Claude Code `stream-json --verbose`, Codex `--json`, Gemini `stream-json`, opencode `--format json`, pi `--mode json`, Cursor `stream-json`) and tee'd through `louie-run-progress.py`. The filter is deliberately **shape-based, not harness-based**: it walks each JSON object and reacts to `text`, `tool_use{name,input}`, `agent_message`, `command_execution{command}`, `file_change`, `system/task_summary{detail}` and `result` wherever they occur, prints each distinct text once, and prints nothing for anything else. Claude Code's shapes were confirmed by running `claude -p … --output-format stream-json --verbose` and reading the events (the docs give the SDK types but no CLI examples); the other harnesses' event names come from their docs and degrade to silence if the field names differ. (2) A 20-second poller prints new commits (`git log last..HEAD`) and newly ticked `- [x]` lines across `implementations/*/feature.md` — harness-independent, zero schema. `--quiet` disables both; the raw stream is always in the log. Without `python3` only the poller runs, and the script says so once.
+
 ## Review mode in unattended runs
 
 First real test (2026-11-07): the project was on `auto-fix-all`, yet the unattended session ran Max at `auto-fix-critical`. `reviewer.md` had the floor right ("never downgrades"), but `agentic-mode.md` — the file the loop's prompt tells every session to read first — said literally "Max (`auto-fix-critical` loop)", and the shorter sentence won. Lesson recorded: **the contract doc a fresh session reads first must carry the full rule, not a shorthand that is only correct with another file in mind.**
@@ -93,6 +97,7 @@ Deliberately conservative: setup → `blocked`; an unanswered `needs-human` → 
 ## Files touched
 
 - `_LOUIE_/tools/louie-run.sh` — the loop (new folder; `install.sh` chmods it, `louie-update-framework` replaces it)
+- `_LOUIE_/tools/louie-run-progress.py` — the shape-based live-progress filter
 - `_LOUIE_/workflow/agentic-mode.md` § Unattended loop / § Run status / § Harnesses
 - `_LOUIE_/commands/louie-continue.md` § Agentic (+ usage)
 - `_LOUIE_/commands/louie-{feature,extend,update,bugfix,content}.md` § Agentic — the run-status bullet; `louie-feature` also `--unit phase`

@@ -246,16 +246,18 @@ bash _LOUIE_/tools/louie-run.sh --unit phase --timeout 3600   # large features: 
 
 The AI tool is detected from your project folder (`.claude/`, `.codex/`, `GEMINI.md`, `.opencode/`, `.pi/`, `.cursorrules`); pass `--harness <name>` when several are installed. Per-run logs land in `.louie-run/` (gitignored by the script).
 
+**Watching it work.** The terminal shows live what the session says, which tool it runs, its one-line progress notes, every new commit, and every implementation phase ticked in `feature.md` — so a `tmux` pane left open tells you what is being built right now. Needs `python3` for the say/tool lines (commits and ticks show without it). `--quiet` turns the live view off; the raw stream always goes to `.louie-run/run-NNN.log`.
+
 **How each tool is started** — one line per harness, flags taken from each tool's documentation:
 
 | Tool | Non-interactive session the script starts | Note |
 |------|--------------------------------------------|------|
-| Claude Code | `claude -p … --permission-mode auto --permission-prompts none` | Auto mode's classifier approves routine actions; anything that would still prompt is denied, never waited on. Set `LOUIE_CLAUDE_PERMISSION_MODE=bypassPermissions` only inside a container or VM. |
-| Codex CLI | `codex exec --sandbox workspace-write …` | `exec` never prompts; the default sandbox is read-only, so the flag is required. |
-| Gemini CLI | `gemini --approval-mode yolo -p …` | Workspace trust is granted via `GEMINI_CLI_TRUST_WORKSPACE=true` for the run. |
+| Claude Code | `claude -p … --permission-mode auto --permission-prompts none --output-format stream-json --verbose` | Auto mode's classifier approves routine actions; anything that would still prompt is denied, never waited on. Set `LOUIE_CLAUDE_PERMISSION_MODE=bypassPermissions` only inside a container or VM. |
+| Codex CLI | `codex exec --sandbox workspace-write --json …` | `exec` never prompts; the default sandbox is read-only, so the flag is required. |
+| Gemini CLI | `gemini --approval-mode yolo --output-format stream-json -p …` | Workspace trust is granted via `GEMINI_CLI_TRUST_WORKSPACE=true` for the run. |
 | opencode | `opencode run --auto …` | Approves anything not explicitly denied in `opencode.json`. |
-| pi | `pi -p --approve …` | pi never prompts per tool; `--approve` trusts the project's `.pi/` resources, which headless mode cannot ask about. |
-| Cursor CLI | `agent -p --force …` | **Unverified** — flags from search summaries of the Cursor docs, not confirmed first-hand. |
+| pi | `pi --mode json --approve …` | pi never prompts per tool; `--approve` trusts the project's `.pi/` resources, which headless mode cannot ask about. |
+| Cursor CLI | `agent -p --force --output-format stream-json …` | **Unverified** — flags from search summaries of the Cursor docs, not confirmed first-hand. |
 | anything else | `--harness custom` with `LOUIE_RUN_COMMAND='…'`; the prompt is passed as `$LOUIE_PROMPT` | Any tool with a one-shot mode plugs in. |
 
 **When it stops.** `done` — nothing left, exit 0. `needs-human` — everything that could be built is built; the features that needed you (a real decision, or operator facts like a registry, a hostname, the target machine's CPU) were *parked* and the script lists them with their questions (exit 10); answer them in one sitting, then rerun the script or build those features interactively. A parked feature never blocks unrelated ones. `blocked` — prerequisites or environment (exit 11). A session that ends without writing the status file counts as a crash (exit 2): read its log, rerun. `--max-runs` reached: exit 12, rerun to continue.
