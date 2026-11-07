@@ -10,6 +10,9 @@ JSON object and reacts to a few shapes that the streaming formats share or
 resemble closely:
 
   * text the agent says      {"type":"text","text":...}             (Claude Code,
+                             — only inside events the agent emits; text inside
+                             "user" events (tool results, subagent handbacks fed
+                             back to the agent) is labelled handback:/error: or dropped
                              {"type":"agent_message","text":...}    Anthropic-style)
                              {"type":"message", "content"/"text"}   (Codex items, Gemini)
   * a tool being used        {"type":"tool_use","name":...,"input":{...}}
@@ -50,19 +53,43 @@ def summarize_input(inp):
     return ""
 
 
-def walk(node, seen_text):
-    """Yield (kind, text) for every recognised shape under node."""
+NOISE = ("SubagentHandback", "agentId:", "Read it there; it is not repeated here")
+
+
+def walk(node, seen_text, inbound=False):
+    """Yield (kind, text) for every recognised shape under node.
+
+    inbound=True while inside a "user" event: that content flows INTO the agent
+    (tool results, subagent reports), so it is not something the agent said.
+    """
     if isinstance(node, list):
         for item in node:
-            yield from walk(item, seen_text)
+            yield from walk(item, seen_text, inbound)
         return
     if not isinstance(node, dict):
         return
 
     t = node.get("type")
+    if t == "user":
+        inbound = True
+
+    if t == "tool_result":
+        # Tool output is not progress — unless it failed.
+        if node.get("is_error"):
+            body = node.get("content")
+            if isinstance(body, list):
+                body = " ".join(b.get("text", "") for b in body if isinstance(b, dict))
+            yield ("error:", str(body or "tool call failed"))
+        return
 
     if t == "text" and isinstance(node.get("text"), str):
-        yield ("says:", node["text"])
+        text = node["text"]
+        if inbound:
+            if any(marker in text for marker in NOISE):
+                return
+            yield ("handback:", text)
+        else:
+            yield ("says:", text)
     elif t in ("agent_message", "message"):
         body = node.get("text") or node.get("content")
         if isinstance(body, str) and body.strip():
@@ -102,7 +129,7 @@ def walk(node, seen_text):
     for key in ("message", "content", "item", "items", "value", "data"):
         child = node.get(key)
         if isinstance(child, (dict, list)):
-            yield from walk(child, seen_text)
+            yield from walk(child, seen_text, inbound)
 
 
 def main():
@@ -117,7 +144,7 @@ def main():
             continue
         try:
             for kind, text in walk(obj, seen_text):
-                if kind == "says:":
+                if kind in ("says:", "handback:"):
                     # Streaming formats often repeat the same text block across
                     # events (partial + final); print each distinct text once.
                     key = text.strip()[:200]
