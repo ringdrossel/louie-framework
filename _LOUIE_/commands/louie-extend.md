@@ -96,6 +96,7 @@ When invoked with `--agentic`, an autonomous agent is driving. Full contract: `_
 - **Tom runs the evidential gate** against the task input instead of the extension interview (see `analyst.md` § Agentic): low-stakes gaps → documented assumptions appended with the "Extension: <date>" section; scope-defining gaps → `status: needs-human`.
 - **The deviation tripwire halts instead of pausing to ask** — fork into the run report, work stays resumable via `louie-continue`.
 - **The terminal summary becomes a run report** at `_LOUIE-output/implementations/<feature>/run-report.md` with `status: completed`. Merge stays the human's decision.
+- **Last action of every agentic run: write `_LOUIE-output/run-status.md`** (format: `_LOUIE_/workflow/agentic-mode.md` § Run status), after the run report and the commit — the unattended loop reads nothing else.
 
 ## Usage
 

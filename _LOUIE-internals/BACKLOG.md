@@ -8,6 +8,10 @@ Format: short title + the gap + why it matters + tradeoff or open design questio
 
 ## Open
 
+### Unattended loop — Windows driver and follow-ups
+
+`_LOUIE_/tools/louie-run.sh` is bash only; no PowerShell in the dev loop to test a `.ps1`/`.bat` twin (`install.ps1` exists, so Windows users do install LOUIE). Also open: confirm the Cursor CLI launch line first-hand (cursor.com unreachable during research; flags from search summaries); Claude Code's `--permission-prompts none` needs v2.1.259+ and `--bare` may become the `-p` default (it skips CLAUDE.md) — add the opt-out flag once documented; a `--notify <command>` hook on stop would spare users wrapping the exit code themselves. Design: `unattended.md`.
+
 ### Init-script generator (E-02 level 2)
 
 The E-02 consistency lint (`_LOUIE-internals/tools/check-consistency.sh`) catches command-table drift across the ~16 registration surfaces, but adding a command still means hand-editing all of them. The full fix sketched in `framework-evaluation/efficiency.md` § E-02 is a generator that renders the 12 init scripts from per-tool templates plus one manifest (or parses `_LOUIE_/commands/*.md` headers directly), making the scripts build artifacts. Deferred because the scripts carry real per-tool differences (codex skill frontmatter, opencode command dir, adapter reporting) — the templates would inherit that complexity, and a generator bug corrupts 12 files at once. Revisit if the per-command editing tax keeps hurting despite the lint.

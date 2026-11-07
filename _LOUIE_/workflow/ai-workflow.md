@@ -275,6 +275,19 @@ Agentic mode implies auto-pilot, replaces Tom's interview with an **evidential g
 
 ---
 
+## Scenario 12: Building the Queue Unattended (One Fresh Session per Feature)
+
+After `louie-setup` left several features `Planned`, you do not have to babysit each one — and you do not have to copy a "continue" prompt into a fresh chat after every phase. From the project root:
+
+```
+bash _LOUIE_/tools/louie-run.sh --once    # one session, see how it goes
+bash _LOUIE_/tools/louie-run.sh           # the whole queue
+```
+
+The script starts a **new** non-interactive session of your AI tool, which runs `louie-continue --agentic`: pick the next ready feature, build it through Tom → Sophie → Leo → Nina → Max → Ava, commit, write a run report and `_LOUIE-output/run-status.md`, exit. The script reads the status file and starts the next session — a fresh context every time, because the files are the memory. It stops on `needs-human` (a real decision fork, printed for you), `blocked`, `done`, a crash, or the `--max-runs` cap. Nothing is ever merged; you review the run reports and the diff afterwards. `--unit phase` makes each session finish one implementation phase instead of a whole feature when features are large. Contract and per-tool details: `_LOUIE_/workflow/agentic-mode.md` § Unattended loop.
+
+---
+
 ## All Commands
 
 | Command | What it does |
@@ -364,13 +377,15 @@ _LOUIE_/                          ← The framework (you are here)
 ├── templates/                    ← Output templates
 ├── guidelines/                   ← Coding rules
 ├── workflow/                     ← This document + handoff protocol
-└── setup/                        ← Deployment & kickoff
+├── setup/                        ← Deployment & kickoff
+└── tools/                        ← louie-run.sh — the unattended loop (one fresh session per feature)
 
 _LOUIE-output/                    ← Agent-produced artifacts
 ├── architecture.md               ← Sophie's output (design)
 ├── tech-stack.md                 ← Sophie's output (build-time)
 ├── runbook.md                    ← Sophie's output (run-time); Nina appends
 ├── roadmap.md                    ← bigger changes / epics list; created at setup
+├── run-status.md                 ← gitignored handoff written by --agentic runs, read by louie-run.sh
 ├── implementations/              ← One folder per feature + slim overview
 │   ├── overview.md               ← slim index of all features
 │   └── [feature]/

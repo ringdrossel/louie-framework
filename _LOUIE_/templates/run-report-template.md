@@ -6,9 +6,12 @@
 **Command:** [e.g. louie-feature --agentic]
 **Date:** YYYY-MM-DD
 **Pending decision:** — [only when `needs-human`: one line stating the question a human must answer]
+**Next:** [what a fresh session should do after this run: `feature <slug>` | `phase <n> of <slug>` | `review <slug>` | `none`]
 
 <!-- The header above is the machine-readable contract — orchestrators branch on Status
-     without parsing the prose below. Keep the field names and order exactly as-is. -->
+     without parsing the prose below. Keep the field names and order exactly as-is.
+     Next mirrors the Next line of _LOUIE-output/run-status.md (agentic-mode.md § Run status)
+     so a report read on its own still says what follows. -->
 
 ## What was requested
 

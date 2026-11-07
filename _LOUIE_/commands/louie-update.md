@@ -83,6 +83,7 @@ When invoked with `--agentic`, an autonomous agent is driving (full contract: `_
 - **The feature must resolve without a prompt** (Step 2): if the invocation doesn't name it unambiguously, write a run report with `status: needs-human` and stop.
 - **The 50-line escalation halts instead of asking:** write the run report with `status: needs-human` recommending `louie-extend --agentic`, leave the work uncommitted-but-intact, and stop. Same for a real bug surfacing mid-review — report `needs-human` recommending `louie-bugfix` rather than switching flows on your own.
 - On completion, write the run report to `_LOUIE-output/implementations/<feature>/run-report.md` (`status: completed`); the commit-message step still runs, the commit/merge decision stays human.
+- Last action of every agentic run: write `_LOUIE-output/run-status.md` (format: `_LOUIE_/workflow/agentic-mode.md` § Run status) — the unattended loop reads nothing else.
 
 ## Escalation Rule
 

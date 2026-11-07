@@ -131,4 +131,4 @@ No new command: agentic mode is a per-invocation flag, not a stored mode, so the
 - **Agentic `louie-setup` / `louie-import`.** Establishing a project is human work; far riskier design, no demonstrated need.
 - **A runbook `## Agentic` policy section** (per-gate tuning of auto vs. halt). Fixed policies in v1; add configurability only when a real project needs it.
 - **A push/notification channel to the human.** The run report + orchestrator is the loop; LOUIE stays a markdown framework.
-- **Multi-task orchestration** (queues, retries, parallel runs). That is the orchestrator's job; LOUIE handles one command invocation at a time.
+- **Multi-task orchestration** (queues, retries, parallel runs). That is the orchestrator's job; LOUIE handles one command invocation at a time. The one orchestrator LOUIE does ship — `_LOUIE_/tools/louie-run.sh`, a shell loop that starts one fresh session per unit and reads `run-status.md` between them — is deliberately that dumb; see `unattended.md`.

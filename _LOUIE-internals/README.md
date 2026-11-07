@@ -21,6 +21,7 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 | `branch-mode.md` | Branch-mode setting design — current / ask modes, default flip away from branch-per-feature |
 | `autopilot.md` | Auto-pilot setting design — gate-at-agreement, per-command modes, deviation tripwire, review-mode composition |
 | `agentic.md` | Agentic-mode design — LOUIE driven by autonomous agents, gate-resolution policies, evidential Tom gate, run report |
+| `unattended.md` | Unattended-loop design — `louie-run.sh` as a dumb overseer, one fresh session per unit, `run-status.md` contract, per-harness launch lines and their evidence |
 | `profiles.md` | Project profiles design — optional `game` profile, overlays vs forked agents, separate folder, three-part gating, how future profiles plug in |
 | `language.md` | Language setting design — Conversation/Documents keys, auto-detect-and-persist, BMAD prior art, single-source-of-truth placement |
 | `continue.md` | `louie-continue` design — artifact+git resume, no stored progress, why not chat-recovery |
@@ -38,6 +39,7 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 
 - **Adding a `louie-*` command** → `core.md` (naming, lazy-loading), then register it on every surface and let `tools/check-consistency.sh` verify
 - **Touching init scripts, command tables, or Key Files blocks** → `tools/README.md` (the lint covers these surfaces)
+- **Touching `_LOUIE_/tools/louie-run.sh`, `run-status.md`, or `louie-continue --agentic`** → `unattended.md` (layering, harness evidence, selection order); gate semantics inside a run stay in `agentic.md`
 - **Adding an agent** → `core.md` (handoff conventions); a profile-only agent → `profiles.md`
 - **Touching `_LOUIE_/profiles/` or anything profile-gated** → `profiles.md` (gating rules; lint check 6)
 - **Adding a recipe or changing the recipe system** → `recipes.md`

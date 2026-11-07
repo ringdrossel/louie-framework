@@ -138,6 +138,8 @@ When invoked with `--agentic`, an autonomous agent is driving and nobody can ans
 - **The deviation tripwire halts instead of pausing to ask:** write the fork into the run report (`status: needs-human`, `Pending decision:` filled), leave the work committed and resumable via `louie-continue`, and stop.
 - **Branch mode `ask` resolves to `current`** — never create a branch unless the invocation explicitly requested one.
 - **The terminal summary becomes a run report** at `_LOUIE-output/implementations/<feature>/run-report.md` (template: `_LOUIE_/templates/run-report-template.md`) with `status: completed`. Narrate in chat as usual too — chat is free; the file is the contract. The merge gate is unchanged: work stays unmerged, the decision is the human's.
+- **`--unit phase` (set by the unattended loop) ends the run at the next unit boundary** — after `feature.md` is written, after one Implementation Plan phase is ticked and committed, or after Max + Ava — instead of running the whole chain. Unit definitions: `_LOUIE_/workflow/agentic-mode.md` § Unattended loop. Without the flag the run finishes the feature.
+- **Last action of every agentic run: write `_LOUIE-output/run-status.md`** (`Status`, `Next`, `Report`, `Pending decision`, `Written` — format in `_LOUIE_/workflow/agentic-mode.md` § Run status), after the run report and the commit. The unattended loop reads nothing else.
 
 ## Usage
 

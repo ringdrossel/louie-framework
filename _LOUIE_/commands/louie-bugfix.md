@@ -76,6 +76,7 @@ When invoked with `--agentic`, an autonomous agent is driving (full contract: `_
 - **The bug description must carry what Step 2 would ask** (affected feature or cross-cutting; what happens vs. what should happen). Missing → run report with `status: needs-human`, stop.
 - **The Step 3 scope check halts instead of asking:** if the work isn't actually a bug (new functionality, bundled unrelated issues, a missing feature), write the run report with `status: needs-human` recommending the correct route (`louie-update` / `louie-extend` / `louie-feature`) and stop — never run a mislabeled bugfix unattended.
 - On completion, write the run report (`status: completed`) next to the bugfix doc: `_LOUIE-output/implementations/<feature>/run-report.md` for per-feature fixes, `_LOUIE-output/bugfixes/<YYYY-MM-DD>-<slug>-run-report.md` for cross-cutting ones. Merge stays the human's decision.
+- Last action of every agentic run: write `_LOUIE-output/run-status.md` (format: `_LOUIE_/workflow/agentic-mode.md` § Run status) — the unattended loop reads nothing else.
 
 ## Usage
 
