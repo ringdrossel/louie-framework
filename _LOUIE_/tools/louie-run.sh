@@ -22,8 +22,15 @@
 #   --timeout <seconds>  kill a single session after this long; 0 = no limit (default: 0)
 #   --pause <seconds>    wait between sessions (default: 0)
 #   --once               run a single session and exit (handy for a first trial)
+#   --quiet              no live progress view; only the per-run summary lines
 #   --dry-run            print what would be launched and exit
 #   -h, --help
+#
+# Live progress (default on): while a session runs, the terminal shows what the
+# agent says, which tools it runs, new commits, and newly ticked feature.md
+# phases — filtered from the harness's streaming output by louie-run-progress.py
+# (python3) plus a 20-second poll of git and _LOUIE-output/. The raw stream is
+# kept in the run log either way.
 #
 # Environment:
 #   LOUIE_RUN_LOG_DIR            where per-run logs go (default: .louie-run/, gitignored)
@@ -55,8 +62,10 @@ RUN_TIMEOUT=0
 PAUSE=0
 ONCE=0
 DRY_RUN=0
+QUIET=0
+PROGRESS_PY="$SCRIPT_DIR/louie-run-progress.py"
 
-usage() { sed -n '2,36p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,43p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
 die()   { echo "louie-run: $*" >&2; exit 64; }
 say()   { echo "[louie-run] $*"; }
 
@@ -69,6 +78,7 @@ while [ $# -gt 0 ]; do
     --timeout)  RUN_TIMEOUT="${2:-}"; shift 2 ;;
     --pause)    PAUSE="${2:-}"; shift 2 ;;
     --once)     ONCE=1; shift ;;
+    --quiet)    QUIET=1; shift ;;
     --dry-run)  DRY_RUN=1; shift ;;
     -h|--help)  usage; exit 0 ;;
     *) die "unknown option: $1 (try --help)" ;;
@@ -145,18 +155,18 @@ build_cmd() {
   local last_msg="$1"
   case "$HARNESS" in
     claude)
-      CMD=(claude -p "$PROMPT" --permission-mode "${LOUIE_CLAUDE_PERMISSION_MODE:-auto}" --permission-prompts none --output-format json "${EXTRA[@]}") ;;
+      CMD=(claude -p "$PROMPT" --permission-mode "${LOUIE_CLAUDE_PERMISSION_MODE:-auto}" --permission-prompts none --output-format stream-json --verbose "${EXTRA[@]}") ;;
     codex)
-      CMD=(codex exec --sandbox "${LOUIE_CODEX_SANDBOX:-workspace-write}" -o "$last_msg" "${EXTRA[@]}" "$PROMPT") ;;
+      CMD=(codex exec --sandbox "${LOUIE_CODEX_SANDBOX:-workspace-write}" --json -o "$last_msg" "${EXTRA[@]}" "$PROMPT") ;;
     gemini)
       export GEMINI_CLI_TRUST_WORKSPACE=true
-      CMD=(gemini --approval-mode yolo --output-format json "${EXTRA[@]}" -p "$PROMPT") ;;
+      CMD=(gemini --approval-mode yolo --output-format stream-json "${EXTRA[@]}" -p "$PROMPT") ;;
     opencode)
       CMD=(opencode run --auto --format json "${EXTRA[@]}" "$PROMPT") ;;
     pi)
-      CMD=(pi -p --approve "${EXTRA[@]}" "$PROMPT") ;;
+      CMD=(pi --mode json --approve "${EXTRA[@]}" "$PROMPT") ;;
     cursor)
-      CMD=("$CURSOR_BIN" -p --force --output-format json "${EXTRA[@]}" "$PROMPT") ;;
+      CMD=("$CURSOR_BIN" -p --force --output-format stream-json "${EXTRA[@]}" "$PROMPT") ;;
     custom)
       CMD=(bash -c "$LOUIE_RUN_COMMAND") ;;
   esac
@@ -170,6 +180,39 @@ ensure_ignored() {
   [ -f .gitignore ] && grep -qxF "$entry" .gitignore && return 0
   { [ -f .gitignore ] && [ -n "$(tail -c1 .gitignore)" ] && echo; echo "$entry"; } >> .gitignore
   say "added '$entry' to .gitignore"
+}
+
+# ----------------------------------------------------------- live progress
+# Two independent signals, so something shows on every harness:
+#  1. the harness's streaming output, filtered to "says / tool / note" lines
+#     (needs python3; silently skipped without it — the raw log still fills)
+#  2. a poll of git + feature.md every 20s: new commits and newly ticked phases
+HAVE_PY=0; command -v python3 >/dev/null 2>&1 && [ -f "$PROGRESS_PY" ] && HAVE_PY=1
+if [ "$QUIET" -eq 0 ] && [ "$HAVE_PY" -eq 0 ]; then
+  say "note: python3 not found — live view shows commits and ticked phases only; the raw stream is in the log"
+fi
+
+ticked_snapshot() { grep -h -E '^\s*- \[x\]' _LOUIE-output/implementations/*/feature.md 2>/dev/null | sort || true; }
+
+poller() {   # $1 = starting commit; prints new commits and newly ticked phases
+  local last="$1" before after line
+  before="$(ticked_snapshot)"
+  while :; do
+    sleep 20
+    if git rev-parse -q --verify HEAD >/dev/null 2>&1; then
+      git log --reverse --format='%h %s' "${last}..HEAD" 2>/dev/null | while IFS= read -r line; do
+        [ -n "$line" ] && echo "$(date '+%H:%M:%S') [louie-run] commit: $line"
+      done
+      last="$(git rev-parse HEAD)"
+    fi
+    after="$(ticked_snapshot)"
+    if [ "$after" != "$before" ]; then
+      comm -13 <(printf '%s\n' "$before") <(printf '%s\n' "$after") | while IFS= read -r line; do
+        [ -n "$line" ] && echo "$(date '+%H:%M:%S') [louie-run] ticked: $(echo "$line" | sed -E 's/^\s*- \[x\]\s*//')"
+      done
+      before="$after"
+    fi
+  done
 }
 
 # ----------------------------------------------------------------- dry run
@@ -194,6 +237,7 @@ mkdir -p "$LOG_DIR"
 ensure_ignored "${LOG_DIR%/}/"
 ensure_ignored "$STATUS_FILE"
 
+trap '[ -n "${poll_pid:-}" ] && kill "$poll_pid" 2>/dev/null; exit 130' INT TERM
 say "harness=$HARNESS unit=$UNIT${TARGET:+ target=$TARGET} max-runs=$MAX_RUNS logs=$LOG_DIR/"
 run=0
 while :; do
@@ -209,12 +253,24 @@ while :; do
   build_cmd "$LOG_DIR/run-$n-last-message.md"
 
   say "run $n: starting a fresh $HARNESS session ($(date '+%H:%M:%S')) → $log"
-  rc=0
+  RUNNER=("${CMD[@]}")
   if [ "$RUN_TIMEOUT" -gt 0 ] && command -v timeout >/dev/null 2>&1; then
-    LOUIE_PROMPT="$PROMPT" timeout "$RUN_TIMEOUT" "${CMD[@]}" </dev/null >"$log" 2>&1 || rc=$?
-  else
-    LOUIE_PROMPT="$PROMPT" "${CMD[@]}" </dev/null >"$log" 2>&1 || rc=$?
+    RUNNER=(timeout "$RUN_TIMEOUT" "${CMD[@]}")
   fi
+  poll_pid=""
+  if [ "$QUIET" -eq 0 ]; then
+    poller "$(git rev-parse -q --verify HEAD 2>/dev/null || echo HEAD)" &
+    poll_pid=$!
+  fi
+  rc=0
+  if [ "$QUIET" -eq 0 ] && [ "$HAVE_PY" -eq 1 ]; then
+    # stdout: tee'd to the log and filtered live; stderr: log only
+    LOUIE_PROMPT="$PROMPT" "${RUNNER[@]}" </dev/null 2>>"$log" | tee -a "$log" | python3 "$PROGRESS_PY" "[$HARNESS] " || true
+    rc=${PIPESTATUS[0]}
+  else
+    LOUIE_PROMPT="$PROMPT" "${RUNNER[@]}" </dev/null >>"$log" 2>&1 || rc=$?
+  fi
+  if [ -n "$poll_pid" ]; then kill "$poll_pid" 2>/dev/null || true; wait "$poll_pid" 2>/dev/null || true; fi
 
   if [ ! -f "$STATUS_FILE" ]; then
     say "run $n: session exited (code $rc) without writing $STATUS_FILE — treating as a crash or timeout."
