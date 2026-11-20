@@ -133,11 +133,21 @@ detect_harness() {
 
 need_bin() { command -v "$1" >/dev/null 2>&1 || die "'$1' not found on PATH (harness: $HARNESS)"; }
 CURSOR_BIN=""
+OPENCODE_APPROVE=""
 case "$HARNESS" in
   claude)   need_bin claude ;;
   codex)    need_bin codex ;;
   gemini)   need_bin gemini ;;
-  opencode) need_bin opencode ;;
+  opencode)
+    need_bin opencode
+    # The auto-approve flag was renamed: --auto in older releases,
+    # --dangerously-skip-permissions in current ones (1.15.13 rejects --auto
+    # and prints the help). Ask the installed version which one it has.
+    if opencode run --help 2>&1 | grep -q -- '--dangerously-skip-permissions'; then
+      OPENCODE_APPROVE="--dangerously-skip-permissions"
+    else
+      OPENCODE_APPROVE="--auto"
+    fi ;;
   pi)       need_bin pi ;;
   cursor)
     if command -v agent >/dev/null 2>&1; then CURSOR_BIN="agent"
@@ -177,7 +187,7 @@ build_cmd() {
       export GEMINI_CLI_TRUST_WORKSPACE=true
       CMD=(gemini --approval-mode yolo --output-format stream-json "${EXTRA[@]}" -p "$PROMPT") ;;
     opencode)
-      CMD=(opencode run --auto --format json "${EXTRA[@]}" "$PROMPT") ;;
+      CMD=(opencode run "$OPENCODE_APPROVE" --format json "${EXTRA[@]}" "$PROMPT") ;;
     pi)
       CMD=(pi --mode json --approve "${EXTRA[@]}" "$PROMPT") ;;
     cursor)

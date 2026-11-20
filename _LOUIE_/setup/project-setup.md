@@ -255,7 +255,7 @@ The AI tool is detected from your project folder (`.claude/`, `.codex/`, `GEMINI
 | Claude Code | `claude -p … --permission-mode auto --permission-prompts none --output-format stream-json --verbose` | Auto mode's classifier approves routine actions; anything that would still prompt is denied, never waited on. Set `LOUIE_CLAUDE_PERMISSION_MODE=bypassPermissions` only inside a container or VM. |
 | Codex CLI | `codex exec --sandbox workspace-write --json …` | `exec` never prompts; the default sandbox is read-only, so the flag is required. |
 | Gemini CLI | `gemini --approval-mode yolo --output-format stream-json -p …` | Workspace trust is granted via `GEMINI_CLI_TRUST_WORKSPACE=true` for the run. |
-| opencode | `opencode run --auto …` | Approves anything not explicitly denied in `opencode.json`. |
+| opencode | `opencode run --dangerously-skip-permissions …` (`--auto` on older releases — the script asks the installed version) | Approves anything not explicitly denied in `opencode.json`. |
 | pi | `pi --mode json --approve …` | pi never prompts per tool; `--approve` trusts the project's `.pi/` resources, which headless mode cannot ask about. |
 | Cursor CLI | `agent -p --force --output-format stream-json …` | **Unverified** — flags from search summaries of the Cursor docs, not confirmed first-hand. |
 | anything else | `--harness custom` with `LOUIE_RUN_COMMAND='…'`; the prompt is passed as `$LOUIE_PROMPT` | Any tool with a one-shot mode plugs in. |
