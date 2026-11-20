@@ -32,5 +32,6 @@ Write into the feature's `feature.md` (UI portion of `## Technical Details`), pe
 5. **Scaling** — base resolution, anchoring, behavior at each target aspect ratio.
 6. **Accessibility notes** — which options affect this screen and how.
 7. **Reusability** — shared panels/widgets and the theme resource.
+8. **Text fit** — each text element's rule (wrap / shrink to a minimum / scroll / truncate) and how it holds the longest plausible string in every supported language (`_LOUIE_/profiles/game/guidelines/production-readiness.md` § UI text).
 
 The handoff to Nina keeps its shape; "Accessibility requirements" lists game-accessibility needs per screen instead of ARIA attributes.

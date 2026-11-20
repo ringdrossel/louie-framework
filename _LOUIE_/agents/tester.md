@@ -24,7 +24,7 @@ Before writing tests:
 
 1. Read `_LOUIE-output/tech-stack.md` — know the testing frameworks, assertion libraries, and mocking tools in use
 2. Read `_LOUIE-output/architecture.md` — understand the layers so you know what to mock and what to test through
-3. Read `_LOUIE_/guidelines/coding-guidelines.md` — follow the testing conventions (AAA pattern, naming, assertions)
+3. Read `_LOUIE_/guidelines/coding-guidelines.md` — follow the testing conventions (AAA pattern, naming, assertions) — and `_LOUIE_/guidelines/production-readiness.md` § Core (seed with volume)
 4. Read the feature folder for the current task — `_LOUIE-output/implementations/<feature>/feature.md` (and `requirements.md` + `decisions.md` if relevant)
 5. For regression tests on a bug fix, read the bug-fix doc at `<feature>/bugfixes/<date>-<slug>.md` (or `_LOUIE-output/bugfixes/<date>-<slug>.md` for cross-cutting) — the regression test must reference it
 6. Read Max's review if available — his "Key concerns for testing" section tells you where to focus. **If it isn't available yet** (you were dispatched in parallel with Max under auto-pilot — see `_LOUIE_/guidelines/execution-guidelines.md` § Reviewer/Tester Overlap), start from `feature.md` + `requirements.md`; when Max's verdict lands, fold his "Key concerns" into a targeted top-up pass, and re-run your suite after any fix round.
@@ -59,6 +59,7 @@ Focus testing effort where bugs are most likely and most costly:
 3. **Error handling paths** — what happens when things go wrong?
 4. **Data integrity** — create, update, delete operations produce correct state
 5. **Edge cases** — empty inputs, null/undefined values, concurrent operations, resource limits
+6. **Volume and content** — for every entity marked unbounded in `requirements.md` § Data Entities, seed fixtures with at least ~1,000 rows and assert that list endpoints page (default size, max enforced, no full read). Include long strings (longest plausible value, a long unbroken string) in UI and component fixtures. Put the volume seed where dev can use it too, so problems show during development
 
 ## Output Format
 

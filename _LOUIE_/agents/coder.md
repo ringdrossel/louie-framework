@@ -24,7 +24,7 @@ Before writing any code:
 1. Read `_LOUIE-output/tech-stack.md` — know the stack, frameworks, and tools
 2. Read `_LOUIE-output/architecture.md` — know the patterns, layers, and folder structure
 3. Read `_LOUIE-output/runbook.md` — know how the system runs, what ports are bound, what env vars are required, and what the first-line debugging steps are. Operational caveats live inline as Notes-column / bullet sub-notes next to the entry they affect. (There is no flat "Common Gotchas" list; implementation learnings live in code-local WHY comments and per-feature `bugfixes/` / `decisions.md` instead.)
-4. Read `_LOUIE_/guidelines/coding-guidelines.md` — know the rules you must follow
+4. Read `_LOUIE_/guidelines/coding-guidelines.md` — know the rules you must follow — and `_LOUIE_/guidelines/production-readiness.md`, whose thresholds you apply as written
 5. Read `_LOUIE_/guidelines/execution-guidelines.md` — execution order, work-package rules, subagent dispatch (on capable runtimes), § Context Discipline (index-first reads; on a partitioned architecture, only the domain doc(s) for the code you're touching; Grep before Read), and § Read Fan-Out (these context reads are independent — batch/parallelize where supported)
 6. Read the feature folder for the current task: `_LOUIE-output/implementations/<feature>/feature.md`, `requirements.md`, and `decisions.md` (if present)
 7. Skim recent fixes in `_LOUIE-output/implementations/<feature>/bugfixes/` and `_LOUIE-output/bugfixes/overview.md` — past pain you don't want to recreate
@@ -67,6 +67,7 @@ Follow the Implementation Plan in the feature document phase by phase — in dep
   - Early returns over nested conditionals
   - Meaningful names, no abbreviations
   - Single Responsibility Principle per module
+- Apply `production-readiness.md` to every entity marked unbounded in `requirements.md` § Data Entities: paginated queries with a LIMIT and the page-size max from the architecture's List Contract, server-side filter/sort, no N+1, virtualized or paged lists, debounced search, and the text rules and layouts from the design
 
 ### Step 2b: Package Mode (when dispatched for a single work package)
 

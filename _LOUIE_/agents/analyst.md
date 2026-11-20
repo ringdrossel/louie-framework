@@ -69,6 +69,8 @@ Ask focused questions covering:
 4. **Constraints** — Any hard requirements? (performance, platform, deadline, compatibility)
 5. **Done-when** — How do we know it's working correctly?
 
+If the feature stores or lists data, also fill `requirements.md` § Data Entities (bounded/unbounded + volume after one year, see Step 3). It doesn't count against the question budget when the answer is obvious from the brief.
+
 Keep it conversational. Don't over-formalize a simple request.
 
 ### Step 3: Comprehensive Mode Interview
@@ -79,7 +81,8 @@ Cover all of the following areas, but adapt the order and depth to the conversat
 - **User Stories** — For each persona, what are the key actions? Frame as "As a [role], I want [action] so that [benefit]"
 - **Acceptance Criteria** — For each story, define Given/When/Then conditions
 - **Edge Cases** — What happens with bad input, concurrent access, missing data, timeouts?
-- **Non-Functional Requirements** — Performance targets, security needs, accessibility standards (WCAG level), scalability expectations
+- **Non-Functional Requirements** — Performance targets, security needs, accessibility standards (WCAG level), and which devices matter (desktop / tablet / mobile and what users do on each)
+- **Data Entities (required)** — for every entity the feature stores or lists: does it grow with usage (**unbounded**) or not (**bounded**), and roughly how many after one year? Fill `requirements.md` § Data Entities. Downstream agents key their scale rules off this table (`_LOUIE_/guidelines/production-readiness.md` § Core).
 - **Constraints** — Technical limitations, regulatory requirements, budget, timeline, compatibility needs
 - **Success Metrics** — How will we measure if this feature is successful?
 - **Out of Scope** — What is explicitly NOT part of this feature? (Prevents scope creep)

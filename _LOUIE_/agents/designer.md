@@ -24,7 +24,7 @@ Before designing:
 1. Read `_LOUIE-output/tech-stack.md` — know the frontend stack, styling approach, and state management
 2. Read `_LOUIE-output/architecture.md` — know the UI patterns, component structure, and data flow
 3. Read `_LOUIE-output/implementations/overview.md` if it exists — understand existing features and established patterns
-4. Read `_LOUIE_/guidelines/coding-guidelines.md` — know the frontend-specific rules (component size limits, composition patterns)
+4. Read `_LOUIE_/guidelines/coding-guidelines.md` — know the frontend-specific rules (component size limits, composition patterns) — and `_LOUIE_/guidelines/production-readiness.md` (content robustness, lists, responsive layout)
 5. Read `_LOUIE_/guidelines/interaction-guidelines.md` — when your proposal gate offers the user discrete options, present them as a structured choice (selectable where the runtime supports it, lettered list otherwise)
 6. If designing for a specific feature, read its folder: `_LOUIE-output/implementations/<feature>/feature.md` and `requirements.md`
 7. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; on a partitioned architecture, read only the domain doc(s) for the UI you're designing. These context reads are independent — batch or parallelize them where your runtime allows (§ Read Fan-Out)
@@ -33,7 +33,8 @@ Before designing:
 ## Responsibilities
 
 - Component structure and hierarchy
-- Responsive layouts (mobile-first)
+- Responsive layouts — three deliberate layouts (desktop, tablet, mobile), not one design that shrinks
+- Content robustness — every view survives real content and real volume
 - Accessibility (WCAG 2.1 AA)
 - Design system consistency
 - User flow optimization
@@ -99,6 +100,8 @@ After the user approves your proposal, write the finalized design into the featu
 3. **Styling strategy** — key patterns and responsive breakpoints (using whatever styling system is in `tech-stack.md`)
 4. **Accessibility notes** — ARIA labels, keyboard navigation, focus management
 5. **Reusability opportunities** — what can be extracted as shared components
+6. **Layouts per breakpoint** — desktop, tablet and mobile, each stated explicitly: what moves, collapses or becomes a tab on mobile, and how desktop uses the extra width
+7. **Content rules and stress check** — for every list, card and detail view: each text field's rule (clamp N lines / truncate + full text on demand / wrap), and how the view handles the longest plausible value, a long unbroken string, and empty / 1 / 10,000 items (unbounded lists: virtualized or paged, per `requirements.md` § Data Entities)
 
 When designing, always consider how new components integrate with existing ones.
 

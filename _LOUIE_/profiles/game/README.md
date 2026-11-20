@@ -11,6 +11,7 @@ _LOUIE_/profiles/game/
   README.md      ← this file
   agents/        ← game-only agents (installed to .claude/agents/ only when the profile is game)
   overlays/      ← per-agent additions; an existing agent reads its overlay only when the profile is game
+  guidelines/    ← production-readiness.md: replaces the Web section of _LOUIE_/guidelines/production-readiness.md (Core still applies)
   templates/     ← skeletons for _LOUIE-output/game-design/, _LOUIE-output/story/, and game sections of the foundation docs
 ```
 
@@ -35,6 +36,10 @@ Each existing agent has one conditional line in its Context section that loads i
 | `overlays/coder.md` (Nina) | `mechanics.md` as rule source of truth, data over literals, logic/presentation split, seeded RNG, flag registry |
 | `overlays/reviewer.md` (Max) | Engine anti-patterns, determinism, data/contract consistency; web security only for online features |
 | `overlays/tester.md` (Ava) | Determinism, save/load round-trips, content integrity, balancing simulations; manual playtest checklist instead of E2E |
+
+## Guidelines
+
+`guidelines/production-readiness.md`: game data classification (saves, logs, leaderboards), frame budget, no per-frame allocations, pooling, asset preload/unload, UI text that fits in every language. The base guideline points here when the profile is `game`, and replaces its Web section with this file.
 
 ## Templates
 

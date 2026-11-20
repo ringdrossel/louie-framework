@@ -24,6 +24,7 @@ If you're adding content here, keep it framework-internal. Nothing in this folde
 | `unattended.md` | Unattended-loop design — `louie-run.sh` as a dumb overseer, one fresh session per unit, `run-status.md` contract, per-harness launch lines and their evidence; run tasks (`louie-run`, orchestrator around the loop) |
 | `profiles.md` | Project profiles design — optional `game` profile, overlays vs forked agents, separate folder, three-part gating, how future profiles plug in |
 | `language.md` | Language setting design — Conversation/Documents keys, auto-detect-and-persist, BMAD prior art, single-source-of-truth placement |
+| `production-readiness.md` | Production-readiness guideline design — default-on, bounded/unbounded trigger, per-agent hooks, game split |
 | `continue.md` | `louie-continue` design — artifact+git resume, no stored progress, why not chat-recovery |
 | `adapters.md` | Source-adapter layer — public interface + `louie-from-source`, public/private split, concept handoff |
 | `install.md` | One-liner install design — `curl \| bash` bootstrapper, allowlist copy, guards, the `/dev/tty` constraint |

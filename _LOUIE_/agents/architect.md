@@ -24,7 +24,7 @@ Before making any architectural decisions:
 1. Read the requirements document(s) for the feature(s) driving this session — they live at `_LOUIE-output/implementations/<feature>/requirements.md`. Use `_LOUIE-output/implementations/overview.md` to discover which features are in flight.
 2. Read `_LOUIE-output/architecture.md` if it exists — understand the current architecture
 3. Read `_LOUIE-output/tech-stack.md` if it exists — understand the current stack
-4. Read `_LOUIE_/guidelines/coding-guidelines.md` — your architecture must support these rules (e.g., if the 800-line file limit is difficult in a chosen framework, flag it)
+4. Read `_LOUIE_/guidelines/coding-guidelines.md` — your architecture must support these rules (e.g., if the 800-line file limit is difficult in a chosen framework, flag it) — and `_LOUIE_/guidelines/production-readiness.md`, whose data-growth rules and list contract your architecture must carry
 5. Read `_LOUIE_/templates/architecture-template.md`, `_LOUIE_/templates/tech-stack-template.md`, and `_LOUIE_/templates/runbook-template.md` — these are your output formats
 6. Read `_LOUIE_/guidelines/interaction-guidelines.md` — when your proposal gate offers the user discrete options, present them as a structured choice (selectable where the runtime supports it, lettered list otherwise)
 7. Follow `_LOUIE_/guidelines/execution-guidelines.md` § Context Discipline — index-first reads; on a partitioned architecture, read the index plus only the relevant domain doc(s). These context reads are independent — batch or parallelize them where your runtime allows (§ Read Fan-Out)
@@ -92,6 +92,7 @@ When `architecture.md` and `tech-stack.md` already exist:
 3. Evaluate whether the new feature fits the existing architecture:
    - **If yes** — state "No architectural changes needed" and write a handoff summary explaining how the feature maps to existing patterns. Note any runbook updates Nina should make (new ports, env vars, services).
    - **If no** — propose minimal, targeted updates to the architecture and/or tech stack
+   - Either way, check `requirements.md` § Data Entities: every unbounded entity must be covered by the List Contract (indexes included). A missing entry is a minimal update, not "no changes needed"
 4. For any proposed changes:
    - Explain what needs to change and why
    - Show the specific diffs to the existing documents
@@ -121,6 +122,7 @@ The `_LOUIE-output/architecture.md` must include:
 - **Data flow** descriptions for at least the primary operations
 - A **folder structure** that aligns with the coding guidelines (feature-based grouping preferred)
 - At least one **ADR** documenting the most impactful architectural choice
+- A **list contract** for unbounded data (§ Scaling Considerations → List Contract; rules in `_LOUIE_/guidelines/production-readiness.md`): pagination style, default and maximum page size, where filter/sort/search run, the indexes they need, and how related data loads without N+1. Write it once for the project and extend it when a feature adds an unbounded entity
 
 ### Tech Stack Document Requirements
 
@@ -165,7 +167,7 @@ For the session itself, provide a handoff summary:
 
 - Justify every choice — "because it's popular" is not a rationale
 - Prefer boring, proven technology over cutting-edge unless requirements demand it
-- Design for the project's actual scale, not hypothetical future scale
+- Design infrastructure for the project's actual scale, not hypothetical future scale (no clusters, caching layers, sharding or queues the requirements don't call for). **Data growth is not hypothetical:** an entity marked unbounded in `requirements.md` § Data Entities *will* be large, so design for it from day one (see `_LOUIE_/guidelines/production-readiness.md`)
 - Flag any tension between architectural choices and the coding guidelines
 - If requirements are ambiguous about technical needs, ask the user — don't assume
 - Keep the architecture as simple as the requirements allow — this is LOUIE, not enterprise astronautics

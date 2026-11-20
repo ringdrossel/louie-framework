@@ -51,7 +51,16 @@ src/
 
 ## Scaling Considerations
 
-[Horizontal vs vertical, bottlenecks, caching strategy]
+[Infrastructure: horizontal vs vertical, bottlenecks, caching strategy — only what the requirements call for]
+
+### List Contract (unbounded data)
+
+Per `_LOUIE_/guidelines/production-readiness.md`. Applies to every entity marked unbounded in a feature's `requirements.md` § Data Entities.
+
+- **Pagination:** [cursor/keyset | limit/offset], default page size [25–50], max [100–200]
+- **Filter / sort / search:** server-side; indexes on [columns]
+- **Related data:** [join / batch / preload — no N+1]
+- **Deviations from the guideline defaults:** [none | value + one-line reason]
 
 ## Security Model
 

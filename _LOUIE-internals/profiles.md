@@ -20,7 +20,7 @@ LOUIE assumed application development. For a story-driven game (first use case: 
 |-------|-------|-----|
 | Setting | `_LOUIE-output/runbook.md` § Project Profile (`Profile: standard \| game`, `Set:`) | Same pattern as Review / Branch / Auto-Pilot mode and Language (see `review-mode.md`, `language.md`): per-project, tool-agnostic, already in agents' context. **Absent = `standard`**, so no migration. |
 | Command | `louie-profile` | Views/changes the setting; seeds artifacts on a switch to `game`; never deletes on a switch back. Modeled on `louie-language`. |
-| Profile material | `_LOUIE_/profiles/game/` (`agents/`, `overlays/`, `templates/`, `README.md`) | Never in `_LOUIE_/agents/`: `claude-init` installs every file there as a subagent, which would put Kai and Mira into every project. |
+| Profile material | `_LOUIE_/profiles/game/` (`agents/`, `overlays/`, `templates/`, `guidelines/`, `README.md`) | Never in `_LOUIE_/agents/`: `claude-init` installs every file there as a subagent, which would put Kai and Mira into every project. |
 | New agents | Kai (Game Designer, read-only), Mira (Narrative Designer, Edit/Write) | The two missing owners: rules/numbers/levels, and world/characters/dialogue. |
 | Overlays | Tom, Sophie, Leo, Nina, Max, Ava | Game-specific replacements for the parts of each base agent that assume an app. Ivy needs none. |
 | Content flow | `louie-content` | Content is not a feature (below). |

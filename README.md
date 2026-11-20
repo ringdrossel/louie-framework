@@ -249,6 +249,7 @@ This layout scales — projects with hundreds of features and thousands of bug f
 | [`_LOUIE_/guidelines/coding-guidelines.md`](_LOUIE_/guidelines/coding-guidelines.md) | Language-agnostic clean code rules |
 | [`_LOUIE_/guidelines/interaction-guidelines.md`](_LOUIE_/guidelines/interaction-guidelines.md) | How agents ask the user to choose (structured choice, lettered fallback) |
 | [`_LOUIE_/guidelines/execution-guidelines.md`](_LOUIE_/guidelines/execution-guidelines.md) | How work runs — sequential baseline, work packages, subagent dispatch on capable runtimes |
+| [`_LOUIE_/guidelines/production-readiness.md`](_LOUIE_/guidelines/production-readiness.md) | Production rules on by default — bounded/unbounded data, pagination, virtualized lists, content robustness, three responsive layouts |
 | [`_LOUIE_/setup/project-setup.md`](_LOUIE_/setup/project-setup.md) | How to deploy LOUIE into a project |
 
 ## Agentic Mode

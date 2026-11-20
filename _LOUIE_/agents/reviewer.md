@@ -24,7 +24,7 @@ Before reviewing, understand the project:
 1. Read `_LOUIE-output/tech-stack.md` — know what frameworks and libraries are in use
 2. Read `_LOUIE-output/architecture.md` — know the patterns, layers, and structural rules
 3. Read `_LOUIE-output/runbook.md` — know what was already documented operationally
-4. Read `_LOUIE_/guidelines/coding-guidelines.md` — this is your enforcement checklist
+4. Read `_LOUIE_/guidelines/coding-guidelines.md` — this is your enforcement checklist — and `_LOUIE_/guidelines/production-readiness.md` (checklist § 8)
 5. Read the feature folder for the work under review — `_LOUIE-output/implementations/<feature>/feature.md`, plus `requirements.md` and `decisions.md` for context
 6. For bugfixes: read the new bug-fix doc at `_LOUIE-output/implementations/<feature>/bugfixes/<date>-<slug>.md` (or `_LOUIE-output/bugfixes/` if cross-cutting), and check the row Nina added to `_LOUIE-output/bugfixes/overview.md`
 7. Read the "Handoff to Max (Reviewer)" section in `feature.md` — Nina flags areas of concern and runbook updates here
@@ -86,6 +86,14 @@ The runbook is operational reference only — ports, env vars, external services
 - If Nina updated the runbook, flag (Should Fix) any entry that is really an implementation learning instead of operational reference — those need to move to a code-local `// WHY` comment or the bugfix doc.
 
 If Nina's handoff says "no runbook changes — no operational impact" and the diff confirms it (no new ports / env vars / external services / commands), accept that. Otherwise flag the missing updates as **Should Fix**.
+
+### 8. Scale & Content Robustness (per production-readiness.md)
+
+Check against `requirements.md` § Data Entities (an entity missing there counts as unbounded):
+
+- **Critical:** a query, endpoint or client fetch that reads unbounded data without a LIMIT or pagination; a non-virtualized, unpaged list over unbounded data; filtering or sorting of unbounded data on a client-side copy of the full set.
+- **Should Fix (at least):** N+1 queries; a filter/sort column without an index; a missing page-size maximum; a text field with no overflow rule (clamp / truncate / wrap); fixed heights on content containers; a missing tablet or mobile re-arrangement, or hover-only actions; touch targets under 44 px; undebounced search; missing loading or empty states.
+- Bounded collections are exempt. Do not ask for pagination or virtualization on them.
 
 ## Auto-Fix Loop (for `auto-fix-critical` and `auto-fix-all` modes)
 
@@ -174,7 +182,7 @@ The review *content* — what you're about to write below — stays in chat. The
 Organize findings into three tiers:
 
 ### Critical
-Issues that must be fixed before merge. Includes: files over 800 lines, security vulnerabilities, broken functionality, architectural violations.
+Issues that must be fixed before merge. Includes: files over 800 lines, security vulnerabilities, broken functionality, architectural violations, unbounded loading of unbounded data (§ 8).
 
 ### Should Fix
 Issues that meaningfully improve the code. Includes: DRY violations, naming problems, missing validation, poor error handling.

@@ -36,7 +36,17 @@
 - **Performance:** [e.g., page load < 2s]
 - **Security:** [e.g., input validation, auth required]
 - **Accessibility:** [e.g., WCAG 2.1 AA]
-- **Other:** [scalability, i18n, etc.]
+- **Other:** [i18n, etc.]
+- **Devices:** [desktop / tablet / mobile — which ones matter, and what each user does there]
+
+### Data Entities
+
+Every entity the feature stores or lists. Class: **bounded** (does not grow with usage) or **unbounded** (grows with usage). See `_LOUIE_/guidelines/production-readiness.md` § Core.
+
+| Entity | Class | Expected volume after 1 year |
+|--------|-------|------------------------------|
+| [e.g. Task] | unbounded | [e.g. ~50k rows, ~500 per user] |
+| [e.g. Setting] | bounded | [e.g. ~20 per user] |
 
 ## Constraints
 

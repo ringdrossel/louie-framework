@@ -19,6 +19,7 @@ Also read the feature's `mechanics.md` if it exists, the `balancing.md` entries 
   - deep scene-tree lookups by path in hot code
 - **New § Determinism** (Critical for game rules): unseeded or global random calls in game logic; frame-rate- or delta-dependent rule outcomes; iteration over unordered collections where order affects the result; wall-clock time in rule code.
 - **§ 6 Testing Readiness:** game rules run headless without the scene tree; the RNG is injectable.
+- **§ 8 Scale & Content Robustness → against `_LOUIE_/profiles/game/guidelines/production-readiness.md`:** the web layout checks (breakpoints, touch targets, CSS overflow) are dropped. **Critical:** unbounded game data (logs, replays, leaderboards) loaded or rendered in full; allocations in the per-frame loop on a hot path. **Should Fix:** frequently spawned objects without pooling; synchronous asset loads mid-gameplay; UI text without a fit rule for the longest string in every supported language.
 
 ## Slim Mode
 

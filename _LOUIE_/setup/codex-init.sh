@@ -104,6 +104,7 @@ Skill files are kept in sync with `_LOUIE_/commands/` by `bash _LOUIE_/setup/cod
 - `_LOUIE_/guidelines/coding-guidelines.md` — coding rules
 - `_LOUIE_/guidelines/interaction-guidelines.md` — how to ask the user to choose
 - `_LOUIE_/guidelines/execution-guidelines.md` — how work runs (sequential baseline, work packages, subagent dispatch)
+- `_LOUIE_/guidelines/production-readiness.md` — scale, content robustness, responsive layout (on by default)
 - `_LOUIE_/agents/` — agent definitions
 - `_LOUIE-output/architecture.md` — system design
 - `_LOUIE-output/tech-stack.md` — build-time stack
