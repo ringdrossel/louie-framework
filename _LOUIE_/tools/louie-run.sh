@@ -140,9 +140,9 @@ case "$HARNESS" in
   gemini)   need_bin gemini ;;
   opencode)
     need_bin opencode
-    # The auto-approve flag was renamed: --auto in older releases,
-    # --dangerously-skip-permissions in current ones (1.15.13 rejects --auto
-    # and prints the help). Ask the installed version which one it has.
+    # The auto-approve flag has changed between releases: 1.15.13 has only
+    # --dangerously-skip-permissions (and rejects --auto by printing the help),
+    # 1.19.6 has only --auto. Ask the installed version which one it has.
     if opencode run --help 2>&1 | grep -q -- '--dangerously-skip-permissions'; then
       OPENCODE_APPROVE="--dangerously-skip-permissions"
     else
