@@ -5,30 +5,17 @@ A **run** builds several features unattended from one orchestrator session, and 
 ## Usage
 
 ```
-louie-run new              — write a run spec from the current conversation
 louie-run <file>           — execute a run spec stored as a local file
 louie-from-source <id>     — execute a run task from the tracker (routes here)
 ```
 
+This command **executes** a run. Writing the spec is a separate step, `louie-spec-run` (`_LOUIE_/commands/louie-spec-run.md`) — usually at the end of the conversation in which the idea was developed, followed by a new session that runs this command.
+
 Prerequisites are the unattended loop's: a set-up project (`architecture.md` + `tech-stack.md`, Critical Rule #2), and a `requirements.md` for every sub-task. Read `_LOUIE_/workflow/agentic-mode.md` § Unattended loop once before the first run — it defines what one session does, parking, `run-status.md`, and the hard limits a run inherits.
 
-## Create mode — `louie-run new`
+## Procedure
 
-The usual start: the user has developed an idea with the AI and says something like "add this as a runner task that executes the sub-tasks".
-
-1. **Collect the sub-tasks** from the conversation, the overview (`_LOUIE-output/implementations/overview.md`) and — with an adapter — the tracker. For each: the feature slug, its dependencies, and its tracker id if it has a task.
-2. **Make every sub-task buildable.** The unattended build needs a task spec per feature (`louie-continue.md` § Agentic, rule 6). For a sub-task with no `implementations/<slug>/requirements.md`, run Tom (`_LOUIE_/agents/analyst.md`) for it now — interview or concept intake, playback, approval — and write `requirements.md` plus a `Planned` overview row with its `Depends on`. With an adapter, a sub-task that has no tracker task gets one via `create_task` (`louie_type: feature`); leave it in the state creation yields, so another session's `louie-from-source` cannot pick it up — the run claims it.
-3. **Fill the template** `_LOUIE_/templates/run-template.md`: goal, `Mode: unattended` unless the user asks for `attended`, sub-tasks in dependency order, standing rules from the conversation, the `[human]` / `[agent]` steps before and after the build. Write every Before step so its outcome can be checked — that is what makes a rerun safe.
-4. **Show the spec and get approval** (two-turn gate: the spec in one turn, the question in the next — `_LOUIE_/guidelines/interaction-guidelines.md`). The spec is the plan the night runs on; nothing is filed before the user approves it.
-5. **File it.**
-   - **With an adapter:** `create_task` with the spec as `description`, `louie_type: run`, title `RUN: <goal>`; then `update_status(id, "Ready")`. Tell the user the id and the next step: a new session with `louie-from-source <id>`.
-   - **Without one:** write `_LOUIE-output/runs/<slug>.md` and commit it. Next step: a new session with `louie-run _LOUIE-output/runs/<slug>.md`.
-
-   A new session is recommended, not required — it starts the orchestrator with a clean context.
-
-## Execute mode
-
-The orchestrator is the session that runs this mode. It is one session from start to end, and it never builds a sub-task itself — every build happens in a fresh session started by the loop.
+The orchestrator is the session that runs this command. It is one session from start to end, and it never builds a sub-task itself — every build happens in a fresh session started by the loop.
 
 1. **Read the spec** — the task description (via `louie-from-source`, which has already claimed the run task) or the file. Check it before doing anything: every sub-task slug has an overview row and a `requirements.md`; dependencies point at listed slugs or at features already `Implemented`/`Tested`; `Mode` is `unattended` or `attended`. A failed check is reported with what is missing — fix the spec or the docs first, never build around it.
 2. **Claim the sub-tasks** (adapter only): `update_status(id, "In LOUIE")` for each listed tracker id. Idempotent — a rerun changes nothing.

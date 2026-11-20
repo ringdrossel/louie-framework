@@ -5,6 +5,8 @@ This project uses **LOUIE** (Lean Orchestration for Unified Intelligent Engineer
 
 **Operating autonomously?** If no human can answer prompts in this session, read `_LOUIE_/workflow/agentic-mode.md` before invoking any louie command.
 
+**Asked to make a run task?** When the user asks in their own words to turn the parts or sub-tasks discussed into a run task / runner task, follow `_LOUIE_/commands/louie-spec-run.md` — it writes the spec, it does not build. A task or file whose description starts with `# RUN` is executed with `_LOUIE_/commands/louie-run.md`.
+
 ## Commands
 
 When the user types a `louie-*` command, read the matching file from `_LOUIE_/commands/` and follow the instructions in it.
@@ -37,7 +39,8 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 | `louie-recipe` | `_LOUIE_/commands/louie-recipe.md` | Browse or load a reusable recipe |
 | `louie-update-framework` | `_LOUIE_/commands/louie-update-framework.md` | Update LOUIE to the latest version |
 | `louie-from-source` | `_LOUIE_/commands/louie-from-source.md` | Fetch a task from a source adapter and route it to the right command |
-| `louie-run` | `_LOUIE_/commands/louie-run.md` | Run a set of features unattended from one orchestrator session (run task: steps before/after, fresh session per sub-task) |
+| `louie-run` | `_LOUIE_/commands/louie-run.md` | Execute a run spec: build its features unattended from one orchestrator session (steps before/after, fresh session per sub-task) |
+| `louie-spec-run` | `_LOUIE_/commands/louie-spec-run.md` | Write a run spec (run task) from the conversation — plans an unattended run, builds nothing |
 
 ## Critical Rules
 

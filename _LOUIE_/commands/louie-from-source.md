@@ -34,7 +34,7 @@ louie-from-source 42       — fetch task with ID 42
    - `extend`  → run `louie-extend`
    - `update`  → run `louie-update`
    - `bugfix`  → run `louie-bugfix`
-   - `run`     → run `louie-run` in execute mode; the task's **description is the run spec** (`_LOUIE_/templates/run-template.md`). Skip step 6 — a run task is not interviewed; `louie-run` checks the spec instead.
+   - `run`     → run `louie-run`; the task's **description is the run spec** (`_LOUIE_/templates/run-template.md`). Skip step 6 — a run task is not interviewed; `louie-run` checks the spec instead.
    - Unknown `louie_type` → stop and report it; don't guess a command.
 
 6. **Concept handoff:**

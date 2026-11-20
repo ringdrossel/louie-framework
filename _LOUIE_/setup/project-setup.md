@@ -264,7 +264,7 @@ The AI tool is detected from your project folder (`.claude/`, `.codex/`, `GEMINI
 
 **What it never does.** Merge, create a branch, run `louie-setup` or `louie-import`, deploy or push images or provision infrastructure, or guess at a scope-defining question. Max reviews at your project's review mode, raised to `auto-fix-all` when it is `manual` or unset — unattended runs aim at a finished application. Full contract: `_LOUIE_/workflow/agentic-mode.md` § Unattended loop.
 
-**Run tasks.** To build a chosen set of features with steps before and after (a login, fixtures, live acceptance with you), write it as a run: `louie-run new` turns the conversation into a run spec (`_LOUIE_/templates/run-template.md`) and, with a source adapter, files it as a task with `louie_type: run` — the spec is the task's description. A new session started with `louie-from-source <id>` (or `louie-run <file>`) is the orchestrator: it runs the steps around the build, starts the script with `--only <sub-tasks>`, and writes a resolution on every task. Details: `_LOUIE_/commands/louie-run.md`.
+**Run tasks.** To build a chosen set of features with steps before and after (a login, fixtures, live acceptance with you), write it as a run: `louie-spec-run` — or simply asking the AI to make a run task from the parts discussed — turns the conversation into a run spec (`_LOUIE_/templates/run-template.md`) and, with a source adapter, files it as a task with `louie_type: run` — the spec is the task's description. A new session started with `louie-from-source <id>` (or `louie-run <file>`) is the orchestrator: it runs the steps around the build, starts the script with `--only <sub-tasks>`, and writes a resolution on every task. Details: `_LOUIE_/commands/louie-run.md`.
 
 ## Quick Reference
 
@@ -297,4 +297,5 @@ The AI tool is detected from your project folder (`.claude/`, `.codex/`, `GEMINI
 | Browse or load a reusable recipe | `louie-recipe` |
 | Update LOUIE to the latest version | `louie-update-framework` |
 | Fetch a task from a source adapter and route it to the right command | `louie-from-source` |
-| Run a set of features unattended from one orchestrator session (run task: steps before/after, fresh session per sub-task) | `louie-run` |
+| Execute a run spec: build its features unattended from one orchestrator session (steps before/after, fresh session per sub-task) | `louie-run` |
+| Write a run spec (run task) from the conversation — plans an unattended run, builds nothing | `louie-spec-run` |

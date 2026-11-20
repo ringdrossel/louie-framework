@@ -1,10 +1,12 @@
 # RUN — {goal in one line}
 
-<!-- Run spec read by `louie-run` (_LOUIE_/commands/louie-run.md). With a source
+<!-- Run spec written by `louie-spec-run`, executed by `louie-run`. With a source
 adapter this whole text is the description of a task with `louie_type: run`;
 without one it is a local file. Keep to headings, bullet lists, plain text and
 inline code — trackers that store rich text convert it on every read, and
 tables or checkboxes are the first to come back changed. Remove this comment. -->
+
+This is a LOUIE run spec, not a feature: execute it with `louie-run` (`_LOUIE_/commands/louie-run.md`) — `louie-from-source <id>` routes there.
 
 Mode: unattended
 Project: {repo path}

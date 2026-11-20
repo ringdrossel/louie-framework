@@ -286,7 +286,7 @@ bash _LOUIE_/tools/louie-run.sh           # the whole queue
 
 The script starts a **new** non-interactive session of your AI tool, which runs `louie-continue --agentic`: pick the next ready feature, build it through Tom → Sophie → Leo → Nina → Max → Ava, commit, write a run report and `_LOUIE-output/run-status.md`, exit. The script reads the status file and starts the next session — a fresh context every time, because the files are the memory. A feature that needs you (a real decision, or operator facts such as a registry or target hardware) is parked while unrelated features keep building; the script stops when nothing else can proceed (`needs-human`, every parked question printed), on `blocked`, `done`, a crash, or the `--max-runs` cap. Max reviews at the project's review mode, raised to `auto-fix-all` when unset. Nothing is ever merged; you review the run reports and the diff afterwards. `--unit phase` makes each session finish one implementation phase instead of a whole feature when features are large. Contract and per-tool details: `_LOUIE_/workflow/agentic-mode.md` § Unattended loop.
 
-**As a run task.** When the build covers a chosen set of features and needs steps around it, develop the idea with the AI and say "add this as a runner task that executes the sub-tasks". `louie-run new` writes the run spec (`_LOUIE_/templates/run-template.md`) and, with a source adapter, files it as a `run` task whose description is the spec. Then open a new session:
+**As a run task.** When the build covers a chosen set of features and needs steps around it, develop the idea with the AI and say "add this as a runner task that executes the sub-tasks" — or type `louie-spec-run`. That writes the run spec without building anything (`_LOUIE_/templates/run-template.md`) and, with a source adapter, files it as a `run` task whose description is the spec. Then open a new session:
 
 ```
 louie-from-source 42         # or: louie-run _LOUIE-output/runs/<slug>.md
@@ -326,7 +326,8 @@ That session is the orchestrator: it does the `[human]` / `[agent]` steps before
 | `louie-recipe` | Browse or load a reusable recipe (settings, auth, Docker, etc.) |
 | `louie-update-framework` | Update LOUIE to the latest version |
 | `louie-from-source` | Fetch a task from a source adapter and route it to the right command |
-| `louie-run` | Run a set of features unattended from one orchestrator session (run task: steps before/after, fresh session per sub-task) |
+| `louie-run` | Execute a run spec: build its features unattended from one orchestrator session (steps before/after, fresh session per sub-task) |
+| `louie-spec-run` | Write a run spec (run task) from the conversation — plans an unattended run, builds nothing |
 
 Command definitions live in `_LOUIE_/commands/`.
 

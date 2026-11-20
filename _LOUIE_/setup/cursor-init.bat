@@ -28,6 +28,8 @@ echo This project uses **LOUIE** ^(Lean Orchestration for Unified Intelligent En
 echo.
 echo **Operating autonomously?** If no human can answer prompts in this session, read `_LOUIE_/workflow/agentic-mode.md` before invoking any louie command.
 echo.
+echo **Asked to make a run task?** When the user asks in their own words to turn the parts or sub-tasks discussed into a run task / runner task, follow `_LOUIE_/commands/louie-spec-run.md` — it writes the spec, it does not build. A task or file whose description starts with `# RUN` is executed with `_LOUIE_/commands/louie-run.md`.
+echo.
 echo ### Command Routing
 echo.
 echo When the user types a `louie-*` command, read the matching file from `_LOUIE_/commands/` and follow the instructions in it.
@@ -60,6 +62,7 @@ echo - `louie-recipe` → `_LOUIE_/commands/louie-recipe.md`
 echo - `louie-update-framework` → `_LOUIE_/commands/louie-update-framework.md`
 echo - `louie-from-source` → `_LOUIE_/commands/louie-from-source.md`
 echo - `louie-run` → `_LOUIE_/commands/louie-run.md`
+echo - `louie-spec-run` → `_LOUIE_/commands/louie-spec-run.md`
 echo.
 echo ### Critical Rules
 echo.

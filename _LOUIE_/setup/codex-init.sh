@@ -51,6 +51,8 @@ This project uses **LOUIE** (Lean Orchestration for Unified Intelligent Engineer
 
 **Operating autonomously?** If no human can answer prompts in this session, read `_LOUIE_/workflow/agentic-mode.md` before invoking any louie command.
 
+**Asked to make a run task?** When the user asks in their own words to turn the parts or sub-tasks discussed into a run task / runner task, follow `_LOUIE_/commands/louie-spec-run.md` — it writes the spec, it does not build. A task or file whose description starts with `# RUN` is executed with `_LOUIE_/commands/louie-run.md`.
+
 ### Commands
 
 LOUIE commands are installed as Codex CLI skills under `.codex/skills/<name>/SKILL.md`. Invoke them explicitly as `/louie-setup`, `/louie-feature`, etc. Typing the bare name (e.g. `louie-setup`) also works — the routing table below lets the agent resolve names that miss the autocomplete.
@@ -83,7 +85,8 @@ LOUIE commands are installed as Codex CLI skills under `.codex/skills/<name>/SKI
 | `/louie-recipe` | Browse or load a reusable recipe |
 | `/louie-update-framework` | Update LOUIE to the latest version |
 | `/louie-from-source` | Fetch a task from a source adapter and route it |
-| `/louie-run` | Run several features unattended from one orchestrator |
+| `/louie-run` | Execute a run spec — build its features unattended |
+| `/louie-spec-run` | Write a run spec (run task) — builds nothing |
 
 Skill files are kept in sync with `_LOUIE_/commands/` by `bash _LOUIE_/setup/codex-init.sh` (also re-run by `louie-update-framework`). Their frontmatter is worded so Codex does **not** auto-activate them — every LOUIE command requires explicit user invocation.
 

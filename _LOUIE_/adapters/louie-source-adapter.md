@@ -59,9 +59,9 @@ description, louie_type, priority.
   document which state creation yields. A caller must not assume a requested
   state is honored at creation — reach the intended state afterwards via
   `update_status`, which handles any required intermediate transitions.
-- Used by `louie-run new`, which files a run task (`louie_type: run`, the run
+- Used by `louie-spec-run`, which files a run task (`louie_type: run`, the run
   spec as `description`) and, where needed, its sub-tasks. Without
-  `create_task`, `louie-run` writes the spec as a local file instead.
+  `create_task`, `louie-spec-run` writes the spec as a local file instead.
 
 **update_task(id, fields)** — *Optional*
 Partial update of a task: changes only the fields sent. LOUIE uses it for one

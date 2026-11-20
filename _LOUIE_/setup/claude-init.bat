@@ -85,6 +85,8 @@ echo This project uses **LOUIE** ^(Lean Orchestration for Unified Intelligent En
 echo.
 echo **Operating autonomously?** If no human can answer prompts in this session, read `_LOUIE_/workflow/agentic-mode.md` before invoking any louie command.
 echo.
+echo **Asked to make a run task?** When the user asks in their own words to turn the parts or sub-tasks discussed into a run task / runner task, follow `_LOUIE_/commands/louie-spec-run.md` — it writes the spec, it does not build. A task or file whose description starts with `# RUN` is executed with `_LOUIE_/commands/louie-run.md`.
+echo.
 echo ### Commands
 echo.
 echo LOUIE commands are available as slash commands ^(`/louie-*`^). Type `/louie-` to see all available commands.
@@ -117,7 +119,8 @@ echo ^| `/louie-roadmap-change` ^| Change a roadmap entry ^(status / notes / eff
 echo ^| `/louie-recipe` ^| Browse or load a reusable recipe ^|
 echo ^| `/louie-update-framework` ^| Update LOUIE to the latest version ^|
 echo ^| `/louie-from-source` ^| Fetch a task from a source adapter and route it ^|
-echo ^| `/louie-run` ^| Run several features unattended from one orchestrator ^|
+echo ^| `/louie-run` ^| Execute a run spec — build its features unattended ^|
+echo ^| `/louie-spec-run` ^| Write a run spec (run task) — builds nothing ^|
 echo.
 echo ### Critical Rules
 echo.

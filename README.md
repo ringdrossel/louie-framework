@@ -38,7 +38,8 @@ All LOUIE commands start with `louie-`. Type any of these in your AI assistant:
 | `louie-recipe` | Browse or load a reusable recipe (settings, auth, Docker, etc.) |
 | `louie-update-framework` | Update LOUIE to the latest version |
 | `louie-from-source` | Fetch a task from a source adapter (e.g. a task tracker) and route it to the right command |
-| `louie-run` | Run a set of features unattended from one orchestrator session (run task: steps before/after, fresh session per sub-task) |
+| `louie-run` | Execute a run spec: build its features unattended from one orchestrator session (steps before/after, fresh session per sub-task) |
+| `louie-spec-run` | Write a run spec (run task) from the conversation — plans an unattended run, builds nothing |
 
 Command definitions live in [`_LOUIE_/commands/`](_LOUIE_/commands/).
 
@@ -267,7 +268,7 @@ Each lap starts a **brand-new** session of your AI tool (no chat history carried
 
 While it runs, the terminal shows live what the session says, which tool it runs, every new commit and every ticked implementation phase. The script has one harness-specific line and works with Claude Code, Codex CLI, Gemini CLI, opencode, pi, and Cursor CLI (the last unverified), or any tool with a non-interactive mode via `--harness custom`. `--unit phase` splits large features across sessions, `--max-runs` / `--timeout` bound the night, and a crashed session is retried with a fresh one (three in a row stop it). Details: [`_LOUIE_/workflow/agentic-mode.md` § Unattended loop](_LOUIE_/workflow/agentic-mode.md).
 
-**Run tasks — one orchestrator for a set of features.** When the build needs steps around it (log into a service first, live-test with you afterwards), or should cover only some features, describe it once as a run: after talking an idea through, say "add this as a runner task that executes the sub-tasks". `louie-run new` writes a run spec from `_LOUIE_/templates/run-template.md` — goal, sub-tasks in dependency order, standing rules, `[human]` / `[agent]` steps before and after the build, `Mode: unattended` by default — and, with a source adapter, files it as a task with `louie_type: run`, so the spec is the task description you see in your tracker. In a new session, `louie-from-source <id>` (or `louie-run <file>` without a tracker) starts the orchestrator: it does the steps before, runs the script for exactly those features, brings parked questions to you, does the steps after, and writes a resolution on every task. It closes nothing — you test, then merge.
+**Run tasks — one orchestrator for a set of features.** When the build needs steps around it (log into a service first, live-test with you afterwards), or should cover only some features, describe it once as a run: after talking an idea through, say "add this as a runner task that executes the sub-tasks" (or type `louie-spec-run`). That writes a run spec — it builds nothing yet — from `_LOUIE_/templates/run-template.md` — goal, sub-tasks in dependency order, standing rules, `[human]` / `[agent]` steps before and after the build, `Mode: unattended` by default — and, with a source adapter, files it as a task with `louie_type: run`, so the spec is the task description you see in your tracker. In a new session, `louie-from-source <id>` (or `louie-run <file>` without a tracker) starts the orchestrator: it does the steps before, runs the script for exactly those features, brings parked questions to you, does the steps after, and writes a resolution on every task. It closes nothing — you test, then merge.
 
 ## Design Principles
 
