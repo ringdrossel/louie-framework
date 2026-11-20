@@ -71,6 +71,7 @@ LOUIE commands are available as opencode slash commands (`/louie-*`). Type `/lou
 | `/louie-recipe` | Browse or load a reusable recipe |
 | `/louie-update-framework` | Update LOUIE to the latest version |
 | `/louie-from-source` | Fetch a task from a source adapter and route it |
+| `/louie-run` | Run several features unattended from one orchestrator |
 
 Slash-command files live in `.opencode/command/` and are kept in sync with `_LOUIE_/commands/` by `bash _LOUIE_/setup/opencode-init.sh` (also re-run by `louie-update-framework`).
 

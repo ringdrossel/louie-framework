@@ -18,8 +18,12 @@
 #                        (default: detected from the project folder, like install.sh)
 #   --unit feature|phase what one fresh session finishes before it exits (default: feature)
 #   --target <feature>   work only on this feature (default: louie-continue picks)
+#   --only <a,b,…>       build only these features, still in dependency order —
+#                        a run's sub-tasks (louie-run); others stay untouched
 #   --max-runs <n>       stop after n sessions no matter what (default: 20)
 #   --timeout <seconds>  kill a single session after this long; 0 = no limit (default: 0)
+#   --max-crashes <n>    stop after n crashed/timed-out sessions in a row; each
+#                        crash is retried with a fresh session (default: 3)
 #   --pause <seconds>    wait between sessions (default: 0)
 #   --once               run a single session and exit (handy for a first trial)
 #   --quiet              no live progress view; only the per-run summary lines
@@ -41,8 +45,9 @@
 #   LOUIE_RUN_COMMAND            --harness custom: a shell command line; the prompt is
 #                                available to it as $LOUIE_PROMPT
 #
-# Exit codes: 0 all work done (or --once/--dry-run finished) · 2 a session ended
-# without writing run-status.md (crash / timeout) · 10 needs-human · 11 blocked ·
+# Exit codes: 0 all work done (or --once/--dry-run finished) · 2 --max-crashes
+# sessions in a row ended without writing run-status.md (crash / timeout), or an
+# unrecognized status · 10 needs-human · 11 blocked ·
 # 12 --max-runs reached · 64 usage / preflight error.
 
 set -euo pipefail
@@ -57,6 +62,8 @@ LOG_DIR="${LOUIE_RUN_LOG_DIR:-.louie-run}"
 HARNESS=""
 UNIT="feature"
 TARGET=""
+ONLY=""
+MAX_CRASHES=3
 MAX_RUNS=20
 RUN_TIMEOUT=0
 PAUSE=0
@@ -65,7 +72,7 @@ DRY_RUN=0
 QUIET=0
 PROGRESS_PY="$SCRIPT_DIR/louie-run-progress.py"
 
-usage() { sed -n '2,43p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,51p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
 die()   { echo "louie-run: $*" >&2; exit 64; }
 say()   { echo "[louie-run] $*"; }
 
@@ -74,6 +81,8 @@ while [ $# -gt 0 ]; do
     --harness)  HARNESS="${2:-}"; shift 2 ;;
     --unit)     UNIT="${2:-}"; shift 2 ;;
     --target)   TARGET="${2:-}"; shift 2 ;;
+    --only)     ONLY="${2:-}"; shift 2 ;;
+    --max-crashes) MAX_CRASHES="${2:-}"; shift 2 ;;
     --max-runs) MAX_RUNS="${2:-}"; shift 2 ;;
     --timeout)  RUN_TIMEOUT="${2:-}"; shift 2 ;;
     --pause)    PAUSE="${2:-}"; shift 2 ;;
@@ -89,6 +98,12 @@ case "$UNIT" in feature|phase) ;; *) die "--unit must be 'feature' or 'phase'" ;
 [[ "$MAX_RUNS" =~ ^[0-9]+$ ]] && [ "$MAX_RUNS" -ge 1 ] || die "--max-runs must be a positive integer"
 [[ "$RUN_TIMEOUT" =~ ^[0-9]+$ ]] || die "--timeout must be a number of seconds"
 [[ "$PAUSE" =~ ^[0-9]+$ ]] || die "--pause must be a number of seconds"
+[[ "$MAX_CRASHES" =~ ^[0-9]+$ ]] && [ "$MAX_CRASHES" -ge 1 ] || die "--max-crashes must be a positive integer"
+[ -n "$TARGET" ] && [ -n "$ONLY" ] && die "--target and --only exclude each other"
+if [ -n "$ONLY" ]; then
+  ONLY="$(printf '%s' "$ONLY" | tr -d ' ')"
+  [[ "$ONLY" =~ ^[A-Za-z0-9._-]+(,[A-Za-z0-9._-]+)*$ ]] || die "--only takes feature slugs separated by commas"
+fi
 
 # ------------------------------------------------------------------ preflight
 # Same prerequisite agentic mode has: the project must be established. Setup
@@ -144,7 +159,7 @@ fi
 # a slash command being installed, so it works on every runtime the same way.
 PROMPT="LOUIE unattended run. No human is available in this session: never ask a question, never wait for approval, never stop to confirm.
 1. Read _LOUIE_/workflow/agentic-mode.md — all of it, including the section 'Unattended loop'.
-2. Read _LOUIE_/commands/louie-continue.md and execute: louie-continue --agentic --unit ${UNIT}${TARGET:+ ${TARGET}}
+2. Read _LOUIE_/commands/louie-continue.md and execute: louie-continue --agentic --unit ${UNIT}${TARGET:+ ${TARGET}}${ONLY:+ --only ${ONLY}}
 3. Finish exactly one unit of work as that section defines it, commit it, then write _LOUIE-output/run-status.md in the format given in agentic-mode.md § Run status — as your very last action. The run does not count as finished without that file.
 Hard limits: never merge, never create a branch, never run louie-setup or louie-import, never guess at a scope-defining question — write it into the run report with Status needs-human and stop."
 
@@ -219,8 +234,8 @@ poller() {   # $1 = starting commit; prints new commits and newly ticked phases
 if [ "$DRY_RUN" -eq 1 ]; then
   build_cmd "$LOG_DIR/run-001-last-message.md"
   echo "harness:  $HARNESS"
-  echo "unit:     $UNIT${TARGET:+ (target: $TARGET)}"
-  echo "max runs: $MAX_RUNS   timeout: ${RUN_TIMEOUT}s   pause: ${PAUSE}s"
+  echo "unit:     $UNIT${TARGET:+ (target: $TARGET)}${ONLY:+ (only: $ONLY)}"
+  echo "max runs: $MAX_RUNS   max crashes: $MAX_CRASHES   timeout: ${RUN_TIMEOUT}s   pause: ${PAUSE}s"
   echo "logs:     $LOG_DIR/"
   echo "command:"
   printf '  %q' "${CMD[@]}"; echo
@@ -238,8 +253,9 @@ ensure_ignored "${LOG_DIR%/}/"
 ensure_ignored "$STATUS_FILE"
 
 trap '[ -n "${poll_pid:-}" ] && kill "$poll_pid" 2>/dev/null; exit 130' INT TERM
-say "harness=$HARNESS unit=$UNIT${TARGET:+ target=$TARGET} max-runs=$MAX_RUNS logs=$LOG_DIR/"
+say "harness=$HARNESS unit=$UNIT${TARGET:+ target=$TARGET}${ONLY:+ only=$ONLY} max-runs=$MAX_RUNS logs=$LOG_DIR/"
 run=0
+crashes=0
 while :; do
   run=$((run + 1))
   if [ "$run" -gt "$MAX_RUNS" ]; then
@@ -273,10 +289,19 @@ while :; do
   if [ -n "$poll_pid" ]; then kill "$poll_pid" 2>/dev/null || true; wait "$poll_pid" 2>/dev/null || true; fi
 
   if [ ! -f "$STATUS_FILE" ]; then
-    say "run $n: session exited (code $rc) without writing $STATUS_FILE — treating as a crash or timeout."
-    say "        inspect $log, then rerun; louie-continue reconstructs the position from the files."
+    crashes=$((crashes + 1))
+    say "run $n: session exited (code $rc) without writing $STATUS_FILE — treating as a crash or timeout ($crashes in a row)."
+    # A fresh session reconstructs the position from the files, so a retry is
+    # safe; a run of crashes means something a retry will not fix.
+    if [ "$ONCE" -eq 0 ] && [ "$crashes" -lt "$MAX_CRASHES" ]; then
+      say "        retrying with a fresh session; log: $log"
+      [ "$PAUSE" -gt 0 ] && sleep "$PAUSE"
+      continue
+    fi
+    say "        stopped. Inspect $log, then rerun; louie-continue reconstructs the position from the files."
     exit 2
   fi
+  crashes=0
 
   status="$(field Status)"
   next="$(field Next)"

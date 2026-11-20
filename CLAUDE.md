@@ -37,6 +37,7 @@ When the user types a `louie-*` command, read the matching file from `_LOUIE_/co
 | `louie-recipe` | `_LOUIE_/commands/louie-recipe.md` | Browse or load a reusable recipe |
 | `louie-update-framework` | `_LOUIE_/commands/louie-update-framework.md` | Update LOUIE to the latest version |
 | `louie-from-source` | `_LOUIE_/commands/louie-from-source.md` | Fetch a task from a source adapter and route it to the right command |
+| `louie-run` | `_LOUIE_/commands/louie-run.md` | Run a set of features unattended from one orchestrator session (run task: steps before/after, fresh session per sub-task) |
 
 ## Critical Rules
 

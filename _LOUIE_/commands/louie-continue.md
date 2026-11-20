@@ -62,22 +62,24 @@ It does **not** read or recover past chat transcripts — a LOUIE command can't 
 When invoked with `--agentic`, an autonomous agent — usually the unattended loop, `_LOUIE_/tools/louie-run.sh` — is driving and nobody can answer a prompt. Full contract: `_LOUIE_/workflow/agentic-mode.md` (§ Unattended loop defines the units and the status file). This is the one command the loop ever starts; everything else is reached through it.
 
 ```
-louie-continue --agentic [--unit feature|phase] [<feature>]
+louie-continue --agentic [--unit feature|phase] [<feature> | --only <a,b,…>]
 ```
+
+`--only` limits the run to the listed features — a run's sub-tasks (`_LOUIE_/commands/louie-run.md`). Every rule below then considers only those features; everything else in the overview is left untouched and never counts as "left to build".
 
 The Procedure above runs with these deltas:
 
 - **Step 2 (checkpoint)** unchanged — consume it, reconcile it, files win.
 - **Step 4 (pick the target) never asks.** Resolution order:
-  1. `<feature>` given → that one; if it does not exist, `Status: blocked`.
+  1. `<feature>` given → that one; if it does not exist, `Status: blocked`. `--only` given → a listed slug with no overview row is `Status: blocked` too; and a listed feature that depends on a feature **outside** the list which is not yet `Implemented`/`Tested` is parked as `needs-human`, `Pending decision: <feature>: depends on <dependency>, which is not part of this run`.
   2. A `setup` candidate (requirements folders but no confirmed foundation, or the architecture gate not passed) → `Status: blocked`, `Pending decision: run louie-setup interactively` — setup is human work, never unattended.
   3. A feature whose run report says `Status: needs-human` and whose `Pending decision` is **not** answered in this invocation is **parked**: skip it, and treat every feature that lists it under `Depends on` as not ready. Do not redo its work and do not guess the answer. (An answer supplied in the invocation text counts as answered — record it in `decisions.md` or `requirements.md` § Assumptions, then it is an ordinary in-progress candidate again.) Parking is what lets one stuck feature — typically a deployment feature waiting for a registry or target hardware — leave the rest of the queue building; see `_LOUIE_/workflow/agentic-mode.md` § Unattended loop → Parking.
   4. Exactly one in-progress candidate → it.
   5. Several in-progress → dependency order from the overview's `Depends on` column, then overview row order; features before bugfix/extend leftovers; a batch resumes in dependency order.
   6. None in progress → the first `Planned` row (overview order, `### Retired` skipped) whose `Depends on` are all `Implemented`/`Tested` (or `—`) **and** whose folder has a `requirements.md` — run `louie-feature --agentic <feature>` with that `requirements.md` as the task spec for Tom's evidential gate. A ready `Planned` row **without** `requirements.md` has no task spec → `Status: needs-human`, `Pending decision: write requirements for <feature> (louie-feature interactively) or retire it`.
-  7. **Only if the profile is `game`:** after every feature is `Implemented`/`Tested`, content rows (`Planned` → `Outlined` → `Drafted`) in overview order via `louie-content --agentic`.
+  7. **Only if the profile is `game`:** after every feature is `Implemented`/`Tested`, content rows (`Planned` → `Outlined` → `Drafted`) in overview order via `louie-content --agentic`. Skipped under `--only` — a run lists features, not content.
   8. Nothing ready and at least one feature parked → write `run-status.md` with `Status: needs-human`, `Next: none`, and `Pending decision:` listing every parked feature as `<feature>: <question>` separated by ` | `. Write no new run report — each parked feature already has one.
-  9. Nothing left at all → write `run-status.md` with `Status: done`, `Next: none`, and stop. Write no run report.
+  9. Nothing left at all (with `--only`: nothing left among the listed features) → write `run-status.md` with `Status: done`, `Next: none`, and stop. Write no run report.
 - **Steps 5–6 (reconstruct, infer the chain position)** unchanged.
 - **Step 7 (summarize and propose) becomes hand-off without a gate:** narrate the recap (it lands in the run log), then immediately continue through the routed command's `--agentic` path at the inferred position (`louie-feature` § Agentic, `louie-bugfix` § Agentic, …), honouring `--unit`:
   - `feature` (default) — finish the feature's remaining chain.

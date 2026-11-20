@@ -54,6 +54,7 @@ Available commands:
 - `louie-recipe` → `_LOUIE_/commands/louie-recipe.md`
 - `louie-update-framework` → `_LOUIE_/commands/louie-update-framework.md`
 - `louie-from-source` → `_LOUIE_/commands/louie-from-source.md`
+- `louie-run` → `_LOUIE_/commands/louie-run.md`
 
 ### Critical Rules
 

@@ -86,6 +86,22 @@ Two changes. **A hard limit:** agentic runs never deploy, publish, or provision 
 
 Deliberately conservative: setup → `blocked`; an unanswered `needs-human` → parked (skipped with its dependants), never redone or guessed, re-surfaced only when nothing else is ready; in-progress before `Planned`; `Planned` only when dependencies are satisfied **and** a `requirements.md` exists (otherwise there is no task spec for Tom's evidential gate → `needs-human`, not a guess); content rows (game profile) after all features; nothing left → `done`. Every rule has a non-guessing failure mode, which is what lets the loop run unsupervised.
 
+## Run tasks
+
+Second real use (2026-11-20): the maintainer built four dependent features of one project overnight from a hand-written tracker task (typed `feature`, opening with "This is a run task, not a feature…") plus a project-local `overnight.sh` wrapping `louie-run.sh`. Each such night needed the same explanation to the AI: one orchestrator session, every sub-task in its own fresh session, unattended until ready for human testing. `louie-run` (`_LOUIE_/commands/louie-run.md`) and `_LOUIE_/templates/run-template.md` make that a task type.
+
+**Shape: an agent orchestrator around the dumb loop.** The parts that need a person — a login in a browser window, recording fixtures, live acceptance — sit before and after the build and need conversation, so the orchestrator is an agent session: the user's own, opened with `louie-from-source <id>`. The build in the middle stays the script, for the reasons in § The mental model: an agent driving every sub-task in-session would fill its context over a night and sit in permission prompts. The orchestrator never builds anything itself; it starts the script detached and waits on the runtime's background-job notification.
+
+**The spec lives in the task description**, not in a repo file (maintainer's call: transparency in the tracker, and the AI reads it from there). Without a tracker the same template is a local file — the framework does not depend on a tracker for runs. Steps are tagged `[human]` / `[agent]` and must be written so their outcome is checkable; that is what makes rerunning the orchestrator safe without a progress file.
+
+**Scoping: `--only`.** Without it the loop builds whatever `Planned` feature is next, which may not belong to the run. `--only a,b,…` is passed through the prompt to `louie-continue --agentic`, whose selection rules then see only those features; a listed feature depending on an unbuilt feature outside the list is parked with that as its question, never silently extended into the dependency. `--target` and `--only` exclude each other.
+
+**Standing rules reach sessions through `requirements.md` § Constraints**, not the prompt. The prompt is fixed and harness-agnostic; every fresh session already reads the feature's requirements, and a rule written there also survives a manual rerun without the orchestrator.
+
+**Crash retry moved into the script.** `overnight.sh` retried a crashed session up to three times in a row; every run needs that, so `louie-run.sh` now does it (`--max-crashes`, default 3; `--once` never retries). A retry is safe because a fresh session reconstructs from files — the same argument as the loop itself.
+
+**Not taken from `overnight.sh`:** mirroring each run report into its tracker task after every session. The maintainer found a sync hook overcomplicated; the orchestrator writes every sub-task's resolution once, at handoff, through the adapter's `update_task`. Parallel sub-tasks are also out (one working tree; would need a worktree per feature and sequential merges).
+
 ## What was deliberately not built
 
 - **A Windows driver (`.ps1`/`.bat`).** No PowerShell in the dev loop to test it; parked in `BACKLOG.md`.

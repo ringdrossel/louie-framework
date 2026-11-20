@@ -83,6 +83,7 @@ LOUIE commands are installed as Codex CLI skills under `.codex/skills/<name>/SKI
 | `/louie-recipe` | Browse or load a reusable recipe |
 | `/louie-update-framework` | Update LOUIE to the latest version |
 | `/louie-from-source` | Fetch a task from a source adapter and route it |
+| `/louie-run` | Run several features unattended from one orchestrator |
 
 Skill files are kept in sync with `_LOUIE_/commands/` by `bash _LOUIE_/setup/codex-init.sh` (also re-run by `louie-update-framework`). Their frontmatter is worded so Codex does **not** auto-activate them — every LOUIE command requires explicit user invocation.
 

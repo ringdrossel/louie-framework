@@ -113,6 +113,7 @@ LOUIE commands are available as slash commands (`/louie-*`). Type `/louie-` to s
 | `/louie-recipe` | Browse or load a reusable recipe |
 | `/louie-update-framework` | Update LOUIE to the latest version |
 | `/louie-from-source` | Fetch a task from a source adapter and route it |
+| `/louie-run` | Run several features unattended from one orchestrator |
 
 ### Critical Rules
 

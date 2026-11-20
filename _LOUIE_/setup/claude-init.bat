@@ -117,6 +117,7 @@ echo ^| `/louie-roadmap-change` ^| Change a roadmap entry ^(status / notes / eff
 echo ^| `/louie-recipe` ^| Browse or load a reusable recipe ^|
 echo ^| `/louie-update-framework` ^| Update LOUIE to the latest version ^|
 echo ^| `/louie-from-source` ^| Fetch a task from a source adapter and route it ^|
+echo ^| `/louie-run` ^| Run several features unattended from one orchestrator ^|
 echo.
 echo ### Critical Rules
 echo.

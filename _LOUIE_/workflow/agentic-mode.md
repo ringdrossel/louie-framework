@@ -47,6 +47,7 @@ Write task specs to pass this gate: a spec that answers the four points above ru
 | A change/addition to an existing feature | `louie-extend --agentic` |
 | A small contained change (< 50 lines) | `louie-update --agentic` |
 | A defect — behavior diverges from documented intent | `louie-bugfix --agentic` |
+| Several planned features to build in one go, with steps before/after | `louie-run` with a run spec (§ Unattended loop → Run tasks) |
 
 When unsure between `update` and `extend`, pick `extend` — `update`'s 50-line escalation would halt the run anyway. This table routes tasks you already have in hand; adapter-fetched tasks carry their own `louie_type` routing (see Composition).
 
@@ -107,7 +108,7 @@ The overseer is deliberately a script, not an agent. No harness documents a way 
    bash _LOUIE_/tools/louie-run.sh             # then the whole queue
    ```
 
-   `--harness` is detected from the project folder the same way `install.sh` detects it (pass it explicitly when several are installed). `--unit phase` splits large features across sessions (below). `--max-runs` (default 20), `--timeout <seconds>` and the per-run logs in `.louie-run/` are the safety net. `--help` lists everything.
+   `--harness` is detected from the project folder the same way `install.sh` detects it (pass it explicitly when several are installed). `--unit phase` splits large features across sessions (below). `--only <a,b,…>` limits the loop to those features (what `louie-run` passes). `--max-runs` (default 20), `--timeout <seconds>`, `--max-crashes` (default 3: a crashed session is retried with a fresh one, three in a row stop the loop) and the per-run logs in `.louie-run/` are the safety net. `--help` lists everything.
 3. **Afterwards**, read the run reports (`implementations/<feature>/run-report.md`) and `louie-status`, review the diff, and decide what to merge. The loop never merges.
 
 ### What one run does
@@ -145,7 +146,11 @@ Agentic runs write no `checkpoint.md` — under auto-pilot there are no mid-chai
 | `needs-human` | Nothing else can proceed: every remaining feature is parked (deviation tripwire, scope-defining gap, operator facts, missing task spec) or depends on a parked one; `Pending decision:` lists every parked `<feature>: <question>`, each run report has the detail | stops, prints the decisions, exit 10 |
 | `blocked` | Environmental failure (prerequisites missing, tests can't run, setup would be needed) | stops, exit 11 |
 
-A session that exits without writing the file is treated as a crash or timeout (exit 2) — the log in `.louie-run/` tells why; rerunning is safe. The script deletes the file before every launch so a stale verdict is never re-read, and it gitignores both the file and the log directory so no commit ever sweeps them up. Interactive commands ignore the file. The run report header carries the same `Next:` line (template: `_LOUIE_/templates/run-report-template.md`) so a report read on its own still says what follows.
+A session that exits without writing the file is treated as a crash or timeout: the script retries with a fresh session, and stops with exit 2 after `--max-crashes` (default 3) in a row — the log in `.louie-run/` tells why; rerunning is safe. The script deletes the file before every launch so a stale verdict is never re-read, and it gitignores both the file and the log directory so no commit ever sweeps them up. Interactive commands ignore the file. The run report header carries the same `Next:` line (template: `_LOUIE_/templates/run-report-template.md`) so a report read on its own still says what follows.
+
+### Run tasks (one orchestrator for a set of features)
+
+The loop above builds whatever is next. A **run** (`_LOUIE_/commands/louie-run.md`) wraps it for a named set of features: a run spec (`_LOUIE_/templates/run-template.md`) lists the sub-tasks with their dependencies, project standing rules, and `[human]` / `[agent]` steps before and after the build. One orchestrator session — the human's session, usually opened with `louie-from-source <id>` on a task with `louie_type: run` — does the Before steps, starts this script with `--only <the sub-tasks>`, brings parked questions to the user, does the After steps (typically live acceptance), and writes a resolution on every task. Every build still happens in a fresh session started by the script; the orchestrator never builds anything itself, so its own context stays small across the whole run.
 
 ### Harnesses
 
@@ -178,6 +183,7 @@ The script has exactly one harness-specific line: how to start a fresh non-inter
 
 1. Fetch the task via `louie-from-source` — the adapter supplies `louie_type` routing and a concept document.
 2. Run the routed command with `--agentic`; the concept is the task spec for the evidential gate.
-3. Mirror the run-report `Status` back to the source system (`update_status`): `completed` → your "done/review" state, `needs-human`/`blocked` → your escalation state.
+3. Mirror the run-report `Status` back to the source system (`update_status`): `completed` → your "done/review" state, `needs-human`/`blocked` → your escalation state. Write the resolution (`update_task`) at handoff — a task is never closed without one unless it was rejected.
+4. A task with `louie_type: run` routes to `louie-run` instead (§ Unattended loop → Run tasks); its description is the run spec.
 
 See `_LOUIE_/adapters/louie-source-adapter.md` and `_LOUIE_/commands/louie-from-source.md`.

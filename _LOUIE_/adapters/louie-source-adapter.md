@@ -21,11 +21,13 @@ A project-local `louie-adapters/` takes precedence over the global directory.
 
 **fetch_next_task()** — *Required*
 Returns the next task ready for LOUIE processing.
-Must provide: id, title, louie_type, concept (markdown, if available)
+Must provide: id, title, louie_type, concept (markdown, if available), description (markdown — required for `run` tasks, whose
+description is the run spec)
 
 **fetch_task(id)** — *Required*
 Returns a specific task by ID.
-Must provide: id, title, louie_type, concept (markdown, if available)
+Must provide: id, title, louie_type, concept (markdown, if available), description (markdown — required for `run` tasks, whose
+description is the run spec)
 
 **update_status(id, status)** — *Required*
 Brings the task to the given state in the source system. This is a **state
@@ -34,7 +36,8 @@ intermediate transitions its source system enforces to reach that state.
 Callers issue exactly one `update_status` call per intended state and never
 orchestrate intermediate steps themselves.
 Called by LOUIE on pickup ("In LOUIE") and on user-confirmed completion
-("Done") — never on chain completion alone; see `louie-from-source` step 7.
+("Done") — never on chain completion alone, and never to close a task that has
+no resolution unless the task was rejected; see `louie-from-source` step 7.
 
 > If the source system has a constrained status lifecycle — a state machine
 > that rejects direct hops between non-adjacent states — the adapter must
@@ -56,9 +59,18 @@ description, louie_type, priority.
   document which state creation yields. A caller must not assume a requested
   state is honored at creation — reach the intended state afterwards via
   `update_status`, which handles any required intermediate transitions.
-- Creation is **not part of any current LOUIE command flow**. It exists for
-  adapters that need to file work back to the source system, and is
-  deliberately spec-only until a command needs it.
+- Used by `louie-run new`, which files a run task (`louie_type: run`, the run
+  spec as `description`) and, where needed, its sub-tasks. Without
+  `create_task`, `louie-run` writes the spec as a local file instead.
+
+**update_task(id, fields)** — *Optional*
+Partial update of a task: changes only the fields sent. LOUIE uses it for one
+field, the **resolution** — markdown recording how the task was resolved (what
+was done, the outcome, assumptions, follow-ups). Written at handoff by
+`louie-from-source` step 7 and by `louie-run`, and always present before a task
+is closed, unless the task was rejected. An adapter whose system has no
+resolution field may map it to a comment; one that cannot store it at all
+omits the operation, and LOUIE then puts the resolution in its final message.
 
 **attach_concept(id, markdown)** — *Optional*
 Writes a concept document back to the source system.
@@ -75,6 +87,11 @@ The adapter must map louie_type to a LOUIE command:
 | extend     | louie-extend    |
 | update     | louie-update    |
 | bugfix     | louie-bugfix    |
+| run        | louie-run       |
+
+A `run` task carries its run spec (`_LOUIE_/templates/run-template.md`) in the
+task description; there is no concept handoff for it — `louie-run` checks the
+spec and executes it.
 
 ## Concept Handoff
 

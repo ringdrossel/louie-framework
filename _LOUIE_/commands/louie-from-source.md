@@ -34,6 +34,7 @@ louie-from-source 42       — fetch task with ID 42
    - `extend`  → run `louie-extend`
    - `update`  → run `louie-update`
    - `bugfix`  → run `louie-bugfix`
+   - `run`     → run `louie-run` in execute mode; the task's **description is the run spec** (`_LOUIE_/templates/run-template.md`). Skip step 6 — a run task is not interviewed; `louie-run` checks the spec instead.
    - Unknown `louie_type` → stop and report it; don't guess a command.
 
 6. **Concept handoff:**
@@ -41,7 +42,10 @@ louie-from-source 42       — fetch task with ID 42
    - If a concept is absent: start the full chain from Tom (full interview).
    - Either way, the routed command's normal confirmation gates still apply (architecture/tech-stack confirmed before feature work; feature doc approved before coding).
 
-7. **On merge (not before).** The routed command ends at the merge-to-main gate, which is always the user's decision (Critical Rule #3). Do not call `update_status(id, "Done")` when the chain finishes — Ava shipping, tests passing, and a commit landing are not completion. Report that the work is ready and leave the task at "In LOUIE". Call `update_status(id, "Done")` only once the user has merged or explicitly said to close it. If they end the session without saying, the task stays "In LOUIE" — that is the correct resting state, not an oversight.
+7. **Resolution at handoff, "Done" on merge (not before).** The routed command ends at the merge-to-main gate, which is always the user's decision (Critical Rule #3).
+   - **At handoff** — when the work is ready for the user's review — write the task's **resolution** with `update_task(id, resolution)` if the adapter implements it: what was done, the outcome (review and test results), assumptions made, and follow-ups. Markdown, a few short sections.
+   - **Do not call `update_status(id, "Done")` when the chain finishes** — Ava shipping, tests passing, and a commit landing are not completion. Report that the work is ready and leave the task at "In LOUIE". If the user ends the session without saying more, the task stays "In LOUIE" — that is the correct resting state, not an oversight.
+   - **Close only once the user has merged or explicitly said to close it — and never without a resolution.** Before `update_status(id, "Done")`, make sure the task has a current resolution: write it now if handoff did not, refresh it if the work changed since. The one exception is a **rejected** task — the user decided not to do it: close it without a resolution (a one-line reason is welcome, never required).
 
 ## Notes
 

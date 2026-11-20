@@ -72,6 +72,7 @@ LOUIE commands are installed as Pi prompt templates under `.pi/prompts/`. Invoke
 | `/louie-recipe` | Browse or load a reusable recipe |
 | `/louie-update-framework` | Update LOUIE to the latest version |
 | `/louie-from-source` | Fetch a task from a source adapter and route it |
+| `/louie-run` | Run several features unattended from one orchestrator |
 
 Prompt-template files are kept in sync with `_LOUIE_/commands/` by `bash _LOUIE_/setup/pi-init.sh` (also re-run by `louie-update-framework`).
 
