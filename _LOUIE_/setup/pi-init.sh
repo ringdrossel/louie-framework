@@ -42,6 +42,8 @@ This project uses **LOUIE** (Lean Orchestration for Unified Intelligent Engineer
 
 **Asked to make a run task?** When the user asks in their own words to turn the parts or sub-tasks discussed into a run task / runner task, follow `_LOUIE_/commands/louie-spec-run.md` — it writes the spec, it does not build. A task or file whose description starts with `# RUN` is executed with `_LOUIE_/commands/louie-run.md`.
 
+**Asked to do something with a task in the tracker** (create, close, update, comment on it, or a `#NNN` task number)? Find the source adapter as described in `_LOUIE_/adapters/louie-source-adapter.md`: first `louie-adapters/<name>/` in the project, then `~/.louie/adapters/<name>/`. Then follow its `adapter.md`. Never say you have no access before checking both places.
+
 ### Commands
 
 LOUIE commands are installed as Pi prompt templates under `.pi/prompts/`. Invoke them as `/louie-setup`, `/louie-feature`, etc. Typing the bare name (e.g. `louie-setup`) also works — the routing table below lets the agent resolve names that miss the autocomplete.

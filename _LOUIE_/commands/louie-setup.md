@@ -46,7 +46,7 @@ Throughout the chain: every stop that ends a turn closes with a **phase breadcru
    - Sophie reads **all** of Tom's `requirements.md` files (one per feature folder) and produces a single set of project-wide foundation docs:
      - `_LOUIE-output/architecture.md` — system architecture with mermaid diagram, layers, patterns, folder structure, security model
      - `_LOUIE-output/tech-stack.md` — every technology choice with rationale
-     - `_LOUIE-output/runbook.md` — deployment model, ports, common commands, env vars, external services (operational reference only; no gotchas/learnings section)
+     - `_LOUIE-output/runbook.md` — deployment model, ports, common commands, env vars, external services (operational reference only; no gotchas/learnings section). If a source adapter is installed (`louie-adapters/<name>/` or `~/.louie/adapters/<name>/`), add the one-line **Task source** entry under External Services (see the template).
    - These three docs cover the **whole project**, not per-feature. Per-feature design lives in each feature folder's `feature.md` (Step 7).
    - Use templates from `_LOUIE_/templates/architecture-template.md`, `_LOUIE_/templates/tech-stack-template.md`, and `_LOUIE_/templates/runbook-template.md`
 

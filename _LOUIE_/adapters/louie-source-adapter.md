@@ -76,6 +76,19 @@ omits the operation, and LOUIE then puts the resolution in its final message.
 Writes a concept document back to the source system.
 Only needed if concepts are generated outside the source system.
 
+## Requests outside `louie-from-source`
+
+Any request about a task in the source system uses the same adapter lookup,
+not only `louie-from-source`. That includes creating a task, closing one,
+writing its resolution, commenting on it, or a bare `#NNN` task number in
+conversation. Check the project's `louie-adapters/<name>/` first, then
+`~/.louie/adapters/<name>/`, and follow that `adapter.md`. Say the source
+system is unreachable only after both places came up empty.
+
+The rules above still apply to these requests: before a close
+(`update_status(id, "Done")`), write a resolution with `update_task`, unless
+the task was rejected.
+
 ## louie_type Routing
 
 The adapter must map louie_type to a LOUIE command:

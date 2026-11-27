@@ -86,6 +86,7 @@ curl http://localhost:[port]/[health-path]
 
 - **[Name]** — [endpoint], [purpose], [auth method]
 - [...]
+- [Only if a source adapter is installed (`louie-adapters/<name>/` or `~/.louie/adapters/<name>/`): **Task source** — [name], adapter `[path to the adapter directory]`, project [id in that system, if known]. Credentials stay in the adapter's own config, never here.]
 
 [**Operational caveats go inline in the bullet** — e.g. "expects HTTP, not HTTPS", "rate-limited to 1k req/day on anonymous tier". Implementation learnings (cache invalidation rules, framework quirks) belong in a code-local `// WHY` comment + the relevant `bugfixes/<slug>.md`, **not here**.]
 
